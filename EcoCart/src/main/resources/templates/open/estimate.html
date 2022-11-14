@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+   		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+   <meta charset="UTF-8">
+   <title>Estimate</title>
+	 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+	 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+	
+   
+</head>
+
+<body>
+    <h4>견적서</h4>
+	
+	<div class="row">
+         <ul style="list-style-type : none";>
+         	<li>견적번호 <input style="width: 100px;" id="result">&nbsp; <i class="bi bi-search">&nbsp;</i>
+         		<select name="no" onchange="handleOnChange(this)" style="width: 80px;">
+         			<option value="번호1">번호1</option>
+         			<option value="번호2">번호2</option>
+         			<option value="번호3">번호3</option>   			
+         		</select> &nbsp;&nbsp; &nbsp;&nbsp; 
+         		
+         		     &nbsp;&nbsp; &nbsp;&nbsp;거래처코드 <input style="width: 100px;" id="result2">&nbsp; <i class="bi bi-search">&nbsp;</i>
+         		<select name="no" onchange="handleOnChange2(this)" style="width: 80px;">
+         			<option value="거래처1">거래처1</option>
+         			<option value="거래처2">거래처2</option>
+         			<option value="거래처3">거래처3</option>   			
+         		</select> &nbsp;&nbsp; &nbsp;&nbsp; </li> 
+         	
+         	
+         	
+         	<li>제품코드 <input style="width: 100px;" id="result3" >&nbsp; <i class="bi bi-search">&nbsp;</i>
+         		<select name="no" onchange="handleOnChange3(this)" style="width: 80px;">
+         			<option value="제품코드1">제품코드1</option>
+         			<option value="제품코드2">제품코드2</option>
+         			<option value="제품코드3">제품코드3</option>   			
+         		</select> &nbsp;&nbsp; &nbsp;&nbsp; 
+         		
+         		 &nbsp;&nbsp; &nbsp; 제품명 <input style="width: 100px;" id="result4">&nbsp; <i class="bi bi-search">&nbsp;</i>
+         		<select name="no" onchange="handleOnChange4(this)" style="width: 80px;">
+         			<option value="제품명1">제품명1</option>
+         			<option value="제품명2">제품명2</option>
+         			<option value="제품명3">제품명3</option>   			
+         		</select> &nbsp;&nbsp; &nbsp;&nbsp; </li> 
+         		
+         		
+         	<li>견적일자 <input type="date" style="width: 120px;" id="result4" >
+         	
+         	  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; 
+         	납기일자 <input type="date" style="width: 120px;"> &nbsp;<i class="bi bi-calendar-check"></i></li> 
+         
+         </ul>    
+         
+         <div style="margin-left: 3px;">
+              
+               <button type="button" style="width: 80px; background-color: black; color:white; float:right;  margin:5px; margin-right: 30px">승인</button>   
+               <button type="button" style="width: 80px; background-color: black; color:white; float:right;  margin:5px;">초기화</button>
+               <button type="button" style="width: 80px; background-color: black; color:white; float:right;  margin:5px;"
+                  data-bs-toggle="modal" data-bs-target="#staticBackdrop">조 회</button>
+              
+               <button type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">등 록</button>
+         </div>
+                  
+      </div>
+      
+	<div id ="grid">
+	
+	</div>
+	
+	
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        ...
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary">Understood</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	    
+    
+
+	
+
+
+	<script>
+		const Grid = tui.Grid;
+			
+		const instance = new Grid({
+            el: document.getElementById('grid'), // Container element
+            columns: [
+                {
+                	header: '견적코드',
+                	name: 'estmtCode'
+                },
+                {
+                	header: '거래처',
+                	name: 'clientCode'
+                },
+                {
+                	header: '견적일자',
+                    name: 'estmtDate'
+                 },
+                 {
+                 	header: '납기일자',
+                    name: 'deDate'
+                 },
+                 {
+                  	header: '총합계액',
+                     name: 'allSum'
+                  },
+
+                //체크박스
+                {
+                    header: '승인',
+                    name: 'estmtSt',
+                    formatter: 'listItemText',
+                    editor: {
+                                type: 'checkbox',
+                                options: {
+                                    listItems: [
+                                        {
+                                            text: '승인O',
+                                            value: '1'
+                                        },
+                                        {
+                                            text: '승인X',
+                                            value: '2'
+                                        }
+                                    ]
+                                }
+                            }
+                },
+
+            ],
+            data: [
+                {
+                	estmtCode: 'ES01',
+                	clientCode: 'Ci01',
+                	estmtDate: '2022-11-14',
+                	deDate : '2022-01-08',
+                    allSum : '2000원',
+                    check : '1'
+                  
+                    
+                }
+			]
+		});
+		
+		Grid.applyTheme('striped'); // Call API of static method
+		
+		const instance1 = new Grid({
+            el: document.getElementById('grid'), // Container element
+            columns: [
+                {
+                	header: 'no',
+                	name: 'estmtDno'
+                },
+                {
+                	header: '제품코드',
+                	name: 'proCode'
+                },
+                {
+                	header: '제품명',
+                    name: 'proName'
+                 },
+                 {
+                 	header: '수량',
+                    name: 'sellNum'
+                 },
+                 {
+                  	header: '단가',
+                     name: 'sellPrice'
+                  },
+                 
+                 {
+                  	header: '합계액',
+                     name: 'sumPrice'
+                  }
+                  
+            ],
+            data: [
+                {
+                	estmtDno: '01',
+                	proCode: 'pro01',
+                	proName: '2022-11-14',
+                	sellNum : '5',
+                	sellPrice : '4000',
+                	sumPrice : '20000'
+                  
+                    
+                }
+			]
+		});
+		
+		
+		function handleOnChange(e){
+			//선택된 데이터의 텍스트값 가져오기
+			const text = e.value;
+			
+			//선택한 텍스트 출력
+			document.getElementById('result').value = text;
+		}
+		
+		function handleOnChange2(e){
+			//선택된 데이터의 텍스트값 가져오기
+			const text = e.value;
+			
+			//선택한 텍스트 출력
+			document.getElementById('result2').value = text;
+		}
+		
+		function handleOnChange3(e){
+			//선택된 데이터의 텍스트값 가져오기
+			const text = e.value;
+			
+			//선택한 텍스트 출력
+			document.getElementById('result3').value = text;
+		}
+		
+		function handleOnChange4(e){
+			//선택된 데이터의 텍스트값 가져오기
+			const text = e.value;
+			
+			//선택한 텍스트 출력
+			document.getElementById('result4').value = text;
+		}
+		
+		
+		
+		//모달창
+		var myModal = document.getElementById('myModal')
+		var myInput = document.getElementById('myInput')
+
+		myModal.addEventListener('shown.bs.modal', function () {
+		  myInput.focus()
+		})
+		
+		
+		
+	</script>
+</body>
+
+</html>
