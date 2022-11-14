@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+	integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+	crossorigin="anonymous"></script>
+	 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+<style type="text/css">
+li {
+	list-style-type: none;
+}
+</style>
+</head>
+<body>
+	<div id="content">
+		<h3>발주현황</h3>
+		<ul>
+			<li>부서<input type="text"><i class="bi bi-search"> </i>사원<input type="text"> <i class="bi bi-search"></li>
+			<li>거래처<input type="text"><i class="bi bi-search"></i>발주기간<input type="date"></li>
+		</ul>
+	</div>
+	<br>
+	
+	<div id="grid"></div>
+	<div id="grid2"></div>
+	<script>
+   const gridData = [
+       {
+          name:'',
+          artist:'',
+          type:'',
+          release:'',
+          genre:''
+       }];
+   const grid = new tui.Grid({
+	    el: document.getElementById('grid'),
+	    data: gridData,
+	    scrollX: false,
+	    scrollY: false,
+	    columns: [
+	      {
+	        header: 'NO',
+	        name: '부서'
+	      },
+	      {
+	        header: '품번',
+	        name: '사원'
+	      },
+	      {
+	        header: '품명',
+	        name: '거래처'
+	      },
+	      {
+	        header: '규격',
+	        name: '발주기간'
+	      },
+	      {
+	        header: '단위',
+	        name: '발주번호'
+	      },
+	      {
+	        header: '수량',
+	        name: '발주번호'
+	        },
+	        {
+	        header: '검사수량',
+	        name: '발주번호'
+	          },
+	          {
+	        header: '구분',
+	        name: '발주번호'
+	            }
+	    ]
+	  });
+   
+   
+  const grid2 = new tui.Grid({
+    el: document.getElementById('grid2'),
+    data: gridData,
+    scrollX: false,
+    scrollY: false,
+    columns: [
+      {
+        header: 'NO',
+        name: '부서'
+      },
+      {
+        header: '품번',
+        name: '사원'
+      },
+      {
+        header: '품명',
+        name: '거래처'
+      },
+      {
+        header: '규격',
+        name: '발주기간'
+      },
+      {
+        header: '단위',
+        name: '발주번호'
+      },
+      {
+        header: '수량',
+        name: '발주번호'
+        },
+        {
+        header: '검사수량',
+        name: '발주번호'
+          },
+          {
+        header: '구분',
+        name: '발주번호'
+            }
+    ]
+  });
+
+	    grid.on('check', ev => {
+	      console.log('check!', ev);
+	    });
+
+	    grid.on('uncheck', ev => {
+	      console.log('uncheck!', ev);
+	    });
+
+	    grid.on('focusChange', ev => {
+	      console.log('change focused cell!', ev);
+	    });
+	  
+   </script>
+</body>
+</html>
