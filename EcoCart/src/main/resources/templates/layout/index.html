@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-<head>
+<head >
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Mazer Admin Dashboard</title>
+    <title>다들 힘내자!!홧팅</title>
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/app.css">
     <link rel="shortcut icon" href="../assets/images/favicon.svg" type="image/x-icon">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 </head>
 
 <body>
@@ -43,16 +45,18 @@
                         </ul>
                     <ul class="menu">
                         <li class="sidebar-title">기초관리</li>
-
+	
                       
 
                         <li class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-stack"></i>
+                            <a href="layout/login" class='sidebar-link'>
+                            <!--     <i class="bi bi-stack"></i> -->
+                            <i class="bi bi-bootstrap-reboot"></i>
                                 <span>인사관리</span>
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
+                              
                                     <a href="component-alert.html">사원관리</a>
                                 </li>
                                 <li class="submenu-item ">
@@ -104,75 +108,52 @@
                             </ul>
                         </li>
 
-                        <li class="sidebar-title">영업</li>
+                        <li class="sidebar-title">영업관리</li>
 
                         <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
-                                <i class="bi bi-hexagon-fill"></i>
-                                <span>Form Elements</span>
+                                <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+                                
+                                <span>주문관리</span>
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="form-element-input.html">Input</a>
+                                    <a href="#">견적서</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="form-element-input-group.html">Input Group</a>
+                                    <a href="#">주문등록</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="form-element-select.html">Select</a>
+                                    <a href="#">주문마감</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="form-element-radio.html">Radio</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="form-element-checkbox.html">Checkbox</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="form-element-textarea.html">Textarea</a>
+                                    <a href="#">주문조회</a>
                                 </li>
                             </ul>
-                        </li>
-
-                        <li class="sidebar-item  ">
-                            <a href="form-layout.html" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-medical-fill"></i>
-                                <span>Form Layout</span>
-                            </a>
                         </li>
 
                         <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-pen-fill"></i>
-                                <span>Form Editor</span>
+                                <span>출고관리</span>
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="form-editor-quill.html">Quill</a>
+                                    <a href="form-editor-quill.html">출고요청</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="form-editor-ckeditor.html">CKEditor</a>
+                                    <a href="form-editor-ckeditor.html">출고등록</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="form-editor-summernote.html">Summernote</a>
+                                    <a href="form-editor-summernote.html">출고처리</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="form-editor-tinymce.html">TinyMCE</a>
+                                    <a href="form-editor-tinymce.html">배송정보</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="form-editor-tinymce.html">재고현황및BOM수급현황</a>
                                 </li>
                             </ul>
-                        </li>
-
-                        <li class="sidebar-item  ">
-                            <a href="table.html" class='sidebar-link'>
-                                <i class="bi bi-grid-1x2-fill"></i>
-                                <span>Table</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item  ">
-                            <a href="table-datatable.html" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-spreadsheet-fill"></i>
-                                <span>Datatable</span>
-                            </a>
                         </li>
 
                         <li class="sidebar-title">자재</li>
@@ -180,17 +161,17 @@
                         <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-pentagon-fill"></i>
-                                <span>자재발주관리</span>
+                                <span>Widgets</span>
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="materialList">발주등록</a>
+                                    <a href="ui-widgets-chatbox.html">Chatbox</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="materialList">발주취소</a>
+                                    <a href="ui-widgets-pricing.html">Pricing</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="materialList">발주현황</a>
+                                    <a href="ui-widgets-todolist.html">To-do List</a>
                                 </li>
                             </ul>
                         </li>
@@ -198,17 +179,17 @@
                         <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-egg-fill"></i>
-                                <span>자재입고관리</span>
+                                <span>Icons</span>
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="materialList">입고검사</a>
+                                    <a href="ui-icons-bootstrap-icons.html">Bootstrap Icons </a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="materialList">입고처리</a>
+                                    <a href="ui-icons-fontawesome.html">Fontawesome</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="materialList">입고현황</a>
+                                    <a href="ui-icons-dripicons.html">Dripicons</a>
                                 </li>
                             </ul>
                         </li>
@@ -216,97 +197,102 @@
                         <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-bar-chart-fill"></i>
-                                <span>자재출고관리</span>
+                                <span>Charts</span>
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="materialList">출고처리</a>
+                                    <a href="ui-chart-chartjs.html">ChartJS</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="materialList">출고현황</a>
+                                    <a href="ui-chart-apexcharts.html">Apexcharts</a>
                                 </li>
                             </ul>
                         </li>
 
-                      
-						
+                        <li class="sidebar-item  ">
+                            <a href="ui-file-uploader.html" class='sidebar-link'>
+                                <i class="bi bi-cloud-arrow-up-fill"></i>
+                                <span>File Uploader</span>
+                            </a>
+                        </li>
+
                         <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-map-fill"></i>
-                                <span>자재관리</span>
+                                <span>Maps</span>
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="materialList">자재LOT재고조회</a>
+                                    <a href="ui-map-google-map.html">Google Map</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="materialList">자재재고조회</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="materialList">자재불량조회</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="materialList">자재이동</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="materialList">자재이월</a>
+                                    <a href="ui-map-jsvectormap.html">JS Vector Map</a>
                                 </li>
                             </ul>
                         </li>
 
-                        <li class="sidebar-title ">생산</li>
+                        <li class="sidebar-title">Pages</li>
 
-                        <li class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-chat-right-text-fill"></i>
-                                <span>생산계획관리</span>
-                            </a>
-                            <ul class="submenu ">
-                                <li class="submenu-item ">
-                                    <a href="#">생산계획등록</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="mfPlanList">생산계획조회</a>
-                                </li>
-                            </ul>
-                        </li>
-
-						<li class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-calendar3-week-fill"></i>
-                                <span>생산지시관리</span>
-                            </a>
-                            <ul class="submenu ">
-                                <li class="submenu-item ">
-                                    <a href="#">생산지시등록</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="#">생산지시확정</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="#">생산지시조회</a>
-                                </li>
-                            </ul>
-                        </li>
-                        
                         <li class="sidebar-item  ">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-hammer"></i>
-                                <span>생산관리</span>
+                            <a href="application-email.html" class='sidebar-link'>
+                                <i class="bi bi-envelope-fill"></i>
+                                <span>Email Application</span>
                             </a>
                         </li>
-                        
+
+                        <li class="sidebar-item  ">
+                            <a href="application-chat.html" class='sidebar-link'>
+                                <i class="bi bi-chat-dots-fill"></i>
+                                <span>Chat Application</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item  ">
+                            <a href="application-gallery.html" class='sidebar-link'>
+                                <i class="bi bi-image-fill"></i>
+                                <span>Photo Gallery</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item  ">
+                            <a href="application-checkout.html" class='sidebar-link'>
+                                <i class="bi bi-basket-fill"></i>
+                                <span>Checkout Page</span>
+                            </a>
+                        </li>
+
                         <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
-                                <i class="bi bi-gear-fill"></i>
-                                <span>생산공정</span>
+                                <i class="bi bi-person-badge-fill"></i>
+                                <span>Authentication</span>
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item ">
-                                    <a href="#">공정실적조회</a>
+                                    <a href="auth-login.html">Login</a>
                                 </li>
                                 <li class="submenu-item ">
-                                    <a href="#">생산공정관리</a>
+                                    <a href="auth-register.html">Register</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="auth-forgot-password.html">Forgot Password</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-x-octagon-fill"></i>
+                                <span>Errors</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item ">
+                                    <a href="error-403.html">403</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="error-404.html">404</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="error-500.html">500</a>
                                 </li>
                             </ul>
                         </li>
@@ -316,7 +302,8 @@
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
             </div>
         </div>
-        <div id="main">
+      
+        <div id="main" layout:fragment="main">
             <header class="mb-3">
                 <a href="#" class="burger-btn d-block d-xl-none">
                     <i class="bi bi-justify fs-3"></i>
