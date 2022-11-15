@@ -13,7 +13,7 @@
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
 </head>
 <body>
-	<div>
+	<div layout:fragment="content" class="page-content">
 		<div class="page-heading"><h2>생산계획조회</h2></div>
 		<div>
 			<table>
@@ -43,9 +43,8 @@
 			<br>
 		</div>
 	
-		<div id="grid"></div>      
-    </div>
-    <script>
+		<div id="grid"></div>
+		<script>
     const gridData = [
    		{
    			mfPlanCode:'1',
@@ -133,6 +132,7 @@
 		]
 	});
     
-    </script>
+    </script>      
+    </div>
 </body>
 </html>

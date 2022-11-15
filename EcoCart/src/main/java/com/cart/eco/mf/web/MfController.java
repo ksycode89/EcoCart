@@ -16,4 +16,9 @@ public class MfController {
 		return "manufacture/mfPlanManage";
 	}
 	
+	@GetMapping("/mfOrderRegist")
+	public String mfOrderRegist() {
+		return "manufacture/mfOrderRegist";
+	}
+	
 }

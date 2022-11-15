@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"  
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>생산지시등록</title>
+</head>
+<body>
+	<div layout:fragment="content" class="page-content">
+		<div class="page-heading"><h2>생산지시조회</h2></div>
+		<div class="row">
+			<div class="col-4">
+				<h3>생산계획</h3>
+				<button>지시등록</button>
+			</div>
+			<div class="col-7">
+				<h3>생산지시</h3>
+				<button>지시등록</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-4">
+				<h3>필요자재</h3>
+				<button>자재주문</button>
+			</div>
+			<div class="col-7">
+				<h3>자재지시</h3>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
