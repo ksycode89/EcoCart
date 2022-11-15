@@ -10,4 +10,23 @@ public class MaterialController {
 	public String materialList() {
 		return "material/materialList";
 	}
+	
+	@GetMapping("/materialinsert")
+	public String materialInsert() {
+		return "material/materialinsert";
+	}
+	
+	@GetMapping("/materialreta")
+	public String materialReta() {
+		return "material/materialreta";
+	}
+	
+	@GetMapping("/Wearingtest")
+	public String WearingTest() {
+		return "material/Wearingtest";
+	}
+	@GetMapping("/Wearingprocess")
+	public String WearingProcess() {
+		return "material/Wearingprocess";
+	}
 }
