@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
 <title>거래처 등록</title>
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
 </head>
 <body>
+	<div layout:fragment="content">
+	<div>
+		<h3>거래처</h3>
+	</div>
+	<div >
+	<div class="mb-3 row">
+			<label  class="col-lg-1 col-sm-12 col-form-label">거래처</label>
+			<div class="col-lg-auto col-sm-6">
+			<input  id="empCode" name="empCode" class="form-control">
+			</div>
+			 <div class="col-lg-auto col-sm-6">
+			<button type="button"><i class="bi bi-search"></i></button> 
+			</div>
+			<div class="col-lg-auto col-sm-12">
+			<input  id="name" name="name" class="form-control">
+			</div>
+	</div>		
+	<div class="mb-3 row">
+			<label  class="col-lg-1 col-sm-12 col-form-label">등록일</label>
+			<div class="col-lg-auto col-sm-6">
+			<input  id="depCode" name="depCode" class="form-control">
+			</div>
+			<div class="col-lg-auto col-sm-6">
+			<button type="button"><i class="bi bi-search"></i></button> 
+			</div>
+			<div class="col-lg-auto col-sm-12">
+			<input  id="depName" name="depName" class="form-control">
+			</div>
+	</div>	
 
+ </div>
+	
+	
+	</div>
 </body>
 </html>
