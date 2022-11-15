@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+
+</head>
+<body>
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="card-title">Disabled Backdrop</h4>
+		</div>
+		<div class="card-content">
+			<div class="card-body">
+				<p>
+					You can disable the backdrop by using
+					<code>data-bs-backdrop="false"</code>
+				</p>
+				<!-- Button trigger for Disabled Backdrop -->
+				<button type="button" class="btn btn-outline-primary block"
+					data-bs-toggle="modal" data-bs-backdrop="false"
+					data-bs-target="#backdrop">Launch Modal</button>
+
+				<!--Disabled Backdrop Modal -->
+				<div class="modal fade text-left" id="backdrop" tabindex="-1"
+					role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+					<div
+						class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+						role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title" id="myModalLabel4">Disabled
+									Backdrop</h4>
+								<button type="button" class="close" data-bs-dismiss="modal"
+									aria-label="Close">
+									<i data-feather="x"></i>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div id="grid"></div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-light-secondary"
+									data-bs-dismiss="modal">
+									<i class="bx bx-x d-block d-sm-none"></i> <span
+										class="d-none d-sm-block">Close</span>
+								</button>
+								<button type="button" class="btn btn-primary ml-1"
+									data-bs-dismiss="modal">
+									<i class="bx bx-check d-block d-sm-none"></i> <span
+										class="d-none d-sm-block">Accept</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Disabled Backdrop Modal -->
+	<div class="modal fade text-left" id="backdrop" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+		<div
+			class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel4">Disabled Backdrop</h4>
+					<button type="button" class="close" data-bs-dismiss="modal"
+						aria-label="Close">
+						<i data-feather="x"></i>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div id="grid"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-light-secondary"
+						data-bs-dismiss="modal">
+						<i class="bx bx-x d-block d-sm-none"></i> <span
+							class="d-none d-sm-block">Close</span>
+					</button>
+					<button type="button" class="btn btn-primary ml-1"
+						data-bs-dismiss="modal">
+						<i class="bx bx-check d-block d-sm-none"></i> <span
+							class="d-none d-sm-block">Accept</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<script type="text/javascript">
+		const grid = new tui.Grid({
+			el : document.getElementById('grid'),
+			data : [ {
+				name : 'pro_123456',
+				artist : '얇은피 김치만두 200',
+				type : 'pro_123456',
+				release : '얇은피 김치만두'
+			} ],
+
+			scrollX : false,
+			scrollY : false,
+			columns : [ {
+				header : 'Name',
+				name : 'name'
+			}, {
+				header : 'Artist',
+				name : 'artist'
+			}, {
+				header : 'Type',
+				name : 'type'
+			}, {
+				header : 'Release',
+				name : 'release'
+			}, {
+				header : 'Genre',
+				name : 'genre'
+			} ]
+		});
+
+		var myModal = document.getElementById('myModal')
+		var myInput = document.getElementById('myInput')
+
+		myModal.addEventListener('shown.bs.modal', function() {
+			myInput.focus()
+		})
+
+		$("#grid").modal(toogle);
+		$("#grid").on('shown.bs.modal', function() {
+			modalGridDraw();
+		});
+	</script>
+</body>
+</html>
