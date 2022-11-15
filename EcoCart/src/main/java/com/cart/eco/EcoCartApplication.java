@@ -21,7 +21,7 @@ public class EcoCartApplication {
 	@GetMapping("/")
 	public String index() {
 			
-		return "layout/index.html";
+		return "layout/layout.html";
 	}
 
 }
