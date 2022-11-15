@@ -24,5 +24,11 @@ public class CommonController {
 		
 		return "common/employees.html";
 	}
+	// 공통코드이동.
+	@GetMapping("/coCode")
+	public String moveCoCode() {
+		
+		return "common/coCode.html";
+	}
 	
 }
