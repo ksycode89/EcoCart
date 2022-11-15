@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>출고 처리</title>
+<style type="text/css">
+</style>
+</head>
+<body>
+	<div layout:fragment="content" class="page-content">
+		<div id="content" class="center">
+			<h3>출고처리</h3>
+			&nbsp;
+			<table class="mb-5">
+				<tr>
+					<td>출고기간 <input type="date"> ~ <input type="date"></td>
+				</tr>
+				<tr>
+					<td>출고창고 <input type="text"> <i class="bi bi-search"></i>
+						<input type="text"></td>
+				</tr>
+				<tr>
+					<td>공정 <input type="text"> <i class="bi bi-search"></i>
+						<input type="text"></td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="grid"></div>
+
+		<div style="margin-left: 3px;">
+
+			<button type="button" class="btn btn-primary"
+				style="width: 140px; background-color: black; color: white; float: right; margin: 5px;">삭제
+			</button>
+			<button type="button" class="btn btn-primary"
+				style="width: 140px; background-color: black; color: white; float: right; margin: 5px;">저장
+			</button>
+			<button type="button" class="btn btn-primary"
+				style="width: 140px; background-color: black; color: white; float: right; margin: 5px;">추가
+			</button>
+			<!-- Button trigger modal -->
+			<button id="selectCno" type="button" class="btn btn-primary"
+				data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+				style="width: 140px; background-color: black; color: white; float: right; margin: 5px;">출고요청
+			</button>
+
+
+			<!-- Modal -->
+			<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+				data-bs-keyboard="false" tabindex="-1"
+				aria-labelledby="staticBackdropLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="staticBackdropLabel">출고요청 조회 적용</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+						<table>
+							<tr>
+								<td>출고기간 <input type="date"> ~ <input type="date">
+								 </td>
+							</tr>
+							<tr>
+								<td>출고창고 <select style="width:150px">
+									<option value="테스트1">1</option>
+									<option value="테스트2">2</option>
+									<option value="테스트3">3</option>
+								</select> </td>
+							</tr>
+							</table>
+							<div id="modalGrid"></div>
+							<div id="modalGrid1"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">출고 요청</button>
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">취소</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="grid2"></div>
+		<script>
+	   const gridData = [
+	       {
+	          name:'',
+	          artist:'',
+	          type:'',
+	          position : "bottom",
+	          release:'',
+	          genre:''
+	       }];
+	   const grid = new tui.Grid({
+		    el: document.getElementById('grid'),
+		    data: gridData,
+		    scrollX: false,
+		    scrollY: false,
+		    position : "bottom",
+		    rowHeaders : ['checkbox'],
+		    columns: [
+		      {
+		    	
+		        header: '출고번호',
+		        name: '발주번호'
+		      },
+		      {
+		        header: '출고일자',
+		        name: '발주일자'
+		      },
+		      {
+		        header: '출고창고',
+		        name: '거래처'
+		      },
+		      {
+		        header: '출고장소',
+		        name: '담당자'
+		      },
+		      {
+			    header: '공정',
+			    name: '담당자'
+			  },
+		      {
+			    header: '담장자',
+			    name: '담당자'
+			  },
+		      {
+			    header: '비고',
+			    name: '담당자'
+			  }
+		    ]
+		  });
+	   
+	</script>
+
+		<script>
+   
+	
+  const grid2 = new tui.Grid({
+    el: document.getElementById('grid2'),
+    data: gridData,
+    scrollX: false,
+    scrollY: false,
+    rowHeaders : ['checkbox'],
+    columns: [
+      {
+        header: 'NO',
+        name: 'NO'
+      },
+      {
+        header: '품번',
+        name: '품번'
+      },
+      {
+        header: '품명',
+        name: '품명'
+      },
+      {
+        header: '규격',
+        name: '규격'
+      },
+      {
+        header: '단위',
+        name: '단위'
+      },
+      {
+        header: '요청수량',
+        name: '납기일'
+        },
+        {
+        header: '출고수량',
+        name: '입고예정일'
+          },
+          {
+        header: 'LOT NO',
+        name: '발주수량'
+            }
+    ]
+  });
+  
+  var modalGrid = new tui.Grid({
+      el: document.getElementById('modalGrid'),
+      bodyHeight: 200,
+      data: [{
+         planCode: 'pro12309',
+         planName: '20221115',
+         planDCode: 'hello123',
+         productName: 'oS'
+      }],
+      rowHeaders: ['checkbox'],
+      scrollX: true,
+      scrollY: true,
+      columns: [
+         {
+            header: '청구일자',
+            name: 'planCode',
+         },
+         {
+            header: '지시번호',
+            name: 'planName',
+         },
+         {
+            header: 'NO',
+            name: 'planDCode'
+         },
+         {
+            header: '품번',
+            name: 'productName'
+         },
+         {
+            header: '품명',
+            name: 'productName'
+         },
+         {
+            header: '규격',
+            name: 'productName'
+         }
+      ]
+   });
+  
+  var modalGrid1 = new tui.Grid({
+      el: document.getElementById('modalGrid1'),
+      bodyHeight: 200,
+      data: [{
+         planCode: 'pro12309',
+         planName: '20221115',
+         planDCode: 'hello123',
+         productName: 'o123',
+         productName1: '123',
+         productName2: '123'
+      }],
+      rowHeaders: ['checkbox'],
+      scrollX: true,
+      scrollY: true,
+      columns: [
+         {
+            header: '청구수량',
+            name: 'planCode',
+         },
+         {
+            header: '투입수량',
+            name: 'planName',
+         },
+         {
+            header: '청구현황',
+            name: 'planDCode'
+         }
+      ]
+   });
+  
+    staticBackdrop.addEventListener('shown.bs.modal', () => {
+    	modalGrid.refreshLayout(); //모달창 새로고침
+    })
+    staticBackdrop.addEventListener('shown.bs.modal', () => {
+    	modalGrid1.refreshLayout(); //모달창 새로고침
+    })
+	    
+   </script>
+
+	</div>
+</body>
+</html>

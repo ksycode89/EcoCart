@@ -29,4 +29,12 @@ public class MaterialController {
 	public String WearingProcess() {
 		return "material/Wearingprocess";
 	}
+	@GetMapping("/WearingList")
+	public String WearingList() {
+		return "material/WearingList";
+	}
+	@GetMapping("/release")
+	public String Release() {
+		return "material/release";
+	}
 }

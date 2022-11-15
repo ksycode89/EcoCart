@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-   		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">	
 <head>
 <meta charset="UTF-8">
 <title>발주 취소</title>
@@ -21,6 +20,7 @@
 </style>
 </head>
 <body>
+<div layout:fragment="content" class="page-content">
 	<div id="content" class="center">
 		<h3>발주취소</h3>
 		&nbsp;
@@ -148,5 +148,6 @@
 	    });
 	  
    </script>
+   </div>
 </body>
 </html>
