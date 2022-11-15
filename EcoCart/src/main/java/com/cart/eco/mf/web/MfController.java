@@ -10,4 +10,15 @@ public class MfController {
 	public String mfPlanList() {
 		return "manufacture/mfPlanList";
 	}
+	
+	@GetMapping("/mfPlanManage")
+	public String mfPlanManage() {
+		return "manufacture/mfPlanManage";
+	}
+	
+	@GetMapping("/mfOrderRegist")
+	public String mfOrderRegist() {
+		return "manufacture/mfOrderRegist";
+	}
+	
 }
