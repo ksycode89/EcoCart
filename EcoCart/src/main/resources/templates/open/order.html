@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-   		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
 
 <head>
    <meta charset="UTF-8">
    <title>Order</title>
-	 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 	 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
@@ -15,102 +12,106 @@
 </head>
 
 <body>
+<div layout:fragment="content">
+
 	<h4>주문</h4>
 	
-	<div class="row">
-		<table style="margin:30px;">
-			<tr>
-				<td>견적코드<input style="width: 100px;" id="result">&nbsp; <i class="bi bi-search">&nbsp;</i>
-         		<select name="no" onchange="handleOnChange(this)" style="width: 80px;">
-         			<option value="번호1">번호1</option>
-         			<option value="번호2">번호2</option>
-         			<option value="번호3">번호3</option>   			
-         		</select>
-         		
-         		 <button type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;"
-                  data-bs-toggle="modal" data-bs-target="#staticBackdrop">조 회</button>
-         		</td>
-         	</tr>
-         	<tr>	
-				<td>주문코드<input style="width: 100px;" id="result2">&nbsp; <i class="bi bi-search">&nbsp;</i>
-         		<select name="no" onchange="handleOnChange2(this)" style="width: 80px;">
-         			<option value="번호1">번호1</option>
-         			<option value="번호2">번호2</option>
-         			<option value="번호3">번호3</option>   			
-         		</select>
-         		
-         		 <button type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;">조 회</button>
-         		</td>
-         		
-			</tr>
-		</table>	
-	</div>
+	<div class="mb-3 row">
+	<form action="#" method="get">
+		<div>
+			<table style="margin:30px;">
+	         	<tr>
+					<td>진행구분
+						<label><input type="radio" name="orderSt" value="all" checked>전체</label>
+						<label><input type="radio" name="orderSt" value="go">진행</label>
+						<label><input type="radio" name="orderSt" value="done">마감</label>
+						<label><input type="radio" name="orderSt" value="go">완료</label>
+					</td> 
+				</tr>
+				
+	         	<tr>	
+					<td>주문코드<input class="form-control" style="width: 100px;" id="result2">&nbsp; <i class="bi bi-search">&nbsp;</i>
+		         		<select class="form-control" name="no" onchange="handleOnChange2(this)" style="width: 80px;">
+		         			<option value="">-선택-</option>
+		         			<option value="번호1">번호1</option>
+		         			<option value="번호2">번호2</option>
+		         			<option value="번호3">번호3</option>   			
+		         		</select>
+	         		 	<button type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;">조 회</button>
+	         		 	<button type="button" style="width: 150px; background-color: black; color:white;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">승인 견적서 조회</button>
+	         	
+	         		</td>
+				</tr>
+			</table>
+		</div>	
 	
 	
-	<div id="grid">
-	
-	</div>
-	
-	<div id="grid2">
-	
+	</form>
+		<div id="grid"></div>
+		<div id="grid2"></div>
+		
 	</div>
 	
 	<div class="row">
 		<table style="margin:30px;">
 			<tr>
 				<td>제품코드<input style="width: 100px;" id="result3">&nbsp; <i class="bi bi-search">&nbsp;</i>
-         		<select name="no" onchange="handleOnChange3(this)" style="width: 80px;">
-         			<option value="번호1">번호1</option>
-         			<option value="번호2">번호2</option>
-         			<option value="번호3">번호3</option>   			
-         		</select>
-         		
-         		 <button type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;">조 회</button>
+	         		<select name="no" onchange="handleOnChange3(this)" style="width: 80px;">
+	         			<option value="선택">-선택-</option>
+	         			<option value="번호1">번호1</option>
+	         			<option value="번호2">번호2</option>
+	         			<option value="번호3">번호3</option>   			
+	         		</select>
+         			<button type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;">조 회</button>
          		</td>
-         		
 			</tr>
 		</table>	
 	</div>
 	
 	
-	<div id="grid3">
-	
-	</div>
-	
-	
+	<div id="grid3"></div>
 	
 	
 	
 	
 	<!--  견적코드 모달창  -->
       <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		  <div class="modal-dialog modal-lg">
+		  <div class="modal-dialog modal-lg">  
 		    <div class="modal-content">
+		    
 		      <div class="modal-header">
 		        <h5 class="modal-title" id="staticBackdropLabel">견적서</h5>
 		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      </div>
 		        
-		        <div class="modal-body">
+		      <div class="modal-body">
 				  <div class="container-fluid">
-				    <div class="row">
-				      <div class="col-sm-9">
-
-				        Level 1: .col-sm-9
-				        
-				      </div>
-				    </div>
-				  </div>
+				  	<table style="margin:30px;">
+						
+						<tr>
+							<td>제품코드<input style="width: 100px;" id="result4">&nbsp; <i class="bi bi-search">&nbsp;</i>
+				         		<select name="no" onchange="handleOnChange4(this)" style="width: 80px;">
+				         			<option value="선택">-선택-</option>
+				         			<option value="번호1">번호1</option>
+				         			<option value="번호2">번호2</option>
+				         			<option value="번호3">번호3</option>   			
+				         		</select>
+			         		 	<button type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;">조 회</button>
+		         			</td>
+						</tr>
+						
+					</table>
 				</div>
-		        
-		        
-
-		        
-		      </div>
+			 </div>
+			 
+			 		<div id="grid4"></div>
+			 		<div id="grid5"></div>
+		      
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-primary">주문 등록</button>
 		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 		      </div>
+		      
 		    </div>
 		  </div>
 		</div>
@@ -120,49 +121,16 @@
 	   
 	    
 	    
-	    <!--  제품코드 모달창  -->
-      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		  <div class="modal-dialog modal-lg">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="staticBackdropLabel">제품코드</h5>
-		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		      </div>
-		        
-		        <div class="modal-body">
-				  <div class="container-fluid">
-				    
-				    <div id="grid">
-				    </div>
-				    
-				  </div>
-				</div>
-		        
-		        
-
-		        
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-primary">주문 등록</button>
-		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-	    
-	    <!--  모달창 끝 -->
 	
-		
-	
-	
-	
-	<script>
+		<script>
 	
 		const Grid = tui.Grid;
 		
 		//주문목록 
 		const grid = new Grid({
 	        el: document.getElementById('grid'), // Container element
+	        scrollX: false,
+            scrollY: false,
 	        columns: [
 	            {
 	            	header: '주문코드',
@@ -170,7 +138,7 @@
 	            },
 	            {
 	            	header: '거래처',
-	            	name: 'clientCode'
+	            	name: 'clientName'
 	            },
 	            {
 	            	header: '주문등록일자',
@@ -185,7 +153,7 @@
 	        data: [
 	            {
 	            	orderCode: 'Or01',
-	            	clientCode: 'Ci01',
+	            	clientName: 'Ci01',
 	            	orderDate: '2022-11-14',
 	            	deDate : '2022-01-08',
 	             
@@ -204,6 +172,8 @@
 		//제품코드 
 		const grid2 = new Grid({
 	        el: document.getElementById('grid2'), // Container element
+	        scrollX: false,
+            scrollY: false,
 	        columns: [
 	            {
 	            	header:'no',
@@ -247,9 +217,11 @@
 			]
 		});
 	
-		
+			
 		const grid3 = new Grid({
 	        el: document.getElementById('grid3'), // Container element
+	        scrollX: false,
+            scrollY: false,
 	        columns: [
 	        	{
 	            	header: '제품코드',
@@ -277,11 +249,111 @@
 		
 		
 		
+		//견적코드 모달창
+		const grid4 = new Grid({
+	        el: document.getElementById('grid4'), // Container element
+	        scrollX: false,
+            scrollY: false,
+            rowHeaders : ['checkbox'],
+	        columns: [
+	        
+	        	{
+                	header: '견적코드',
+                	name: 'estmtCode'
+                },
+                {
+                	header: '거래처',
+                	name: 'clientName'
+                },
+                 {
+                 	header: '납기일자',
+                    name: 'deDate'
+                 },
+                {
+                	header: '견적일자',
+                    name: 'estmtDate'
+                 },
+                 {
+                  	header: '총합계액',
+                     name: 'sumPrice'
+                  },
+                  
+                  
+	              
+	        ],
+	        data: [
+	            { 
+	            	
+	            	estmtCode: 'pro01',
+	            	clientName : 'cl01',
+	            	deDate: '2022-11-14',
+	            	estmtDate: '2022-11-14',
+	            	sumPrice : '5'
+	            },
+{ 
+	            	
+	            	estmtCode: 'pro01',
+	            	clientName : 'cl01',
+	            	deDate: '2022-11-14',
+	            	estmtDate: '2022-11-14',
+	            	sumPrice : '5'
+	            },
+{ 
+	            	
+	            	estmtCode: 'pro01',
+	            	clientName : 'cl01',
+	            	deDate: '2022-11-14',
+	            	estmtDate: '2022-11-14',
+	            	sumPrice : '5'
+	            }
+	           
+			]
+		});
 		
 		
 		
-		
-		
+		//견적코드 모달창
+		const grid5 = new Grid({
+	        el: document.getElementById('grid5'), // Container element
+	        scrollX: false,
+            scrollY: false,
+	        columns: [
+	        
+	        	{
+                	header: '제품코드',
+                	name: 'proCode'
+                },
+                {
+                	header: '제품명',
+                	name: 'proName'
+                },
+                 {
+                 	header: '수량',
+                    name: 'sellNum'
+                 },
+                {
+                	header: '단가',
+                    name: 'sellPrice'
+                 },
+                 {
+                  	header: '합계액',
+                     name: 'allSum'
+                  },
+                  
+                  
+	              
+	        ],
+	        data: [
+	            { 
+	            	
+	            	proCode: 'pro01',
+	            	proName : 'cl01',
+	            	sellNum: '2022-11-14',
+	            	sellPrice: '2022-11-14',
+	            	allSum : '5'
+	            }
+			]
+		});
 		
 		
 		
@@ -320,6 +392,14 @@
 			//선택한 텍스트 출력
 			document.getElementById('result3').value = text;
 		}
+		
+		function handleOnChange4(e){
+			//선택된 데이터의 텍스트값 가져오기
+			const text = e.value;
+			
+			//선택한 텍스트 출력
+			document.getElementById('result4').value = text;
+		}
 	
 		
 		
@@ -337,13 +417,15 @@
 		
 		
 		//모달창
-		var myModal = document.getElementById('myModal')
-			var myInput = document.getElementById('myInput')
-
-			myModal.addEventListener('shown.bs.modal', function () {
-			  grid3.refreshLayout();
-			  myInput.focus()
-			})
+	   	staticBackdrop.addEventListener('shown.bs.modal', () => {
+	   	      grid4.refreshLayout(); //모달창 새로고침
+	   	 })
+	   	 
+	   	 //모달창
+	   	staticBackdrop.addEventListener('shown.bs.modal', () => {
+	   	      grid5.refreshLayout(); //모달창 새로고침
+	   	 })
+			
 			
 			
 			
@@ -351,6 +433,10 @@
 			
 			
 	</script>
+	
+	
+	</div>
+	
 	
 	
 	
