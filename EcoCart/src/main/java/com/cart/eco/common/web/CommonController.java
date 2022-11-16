@@ -22,7 +22,7 @@ public class CommonController {
 	@GetMapping("/empList")
 	public String empForm() {
 		
-		return "common/employees.html";
+		return "common/employees";
 	}
 	// 공통코드이동.
 	@GetMapping("/coCode")
@@ -31,4 +31,24 @@ public class CommonController {
 		return "common/coCode.html";
 	}
 	
+	// 거래처 등록 페이지.
+	@GetMapping("/client")
+	public String clientForm() {
+		
+		return "common/client.html";
+	}
+	
+	// 검사총괄관리 페이지.
+	@GetMapping("/totalCheck")
+	public String totalCheckForm() {
+		
+		return "common/totalCheck.html";
+	}
+	
+	// 물품등록 페이지.
+	@GetMapping("/product")
+	public String productForm() {
+		
+		return "common/product";
+	}
 }

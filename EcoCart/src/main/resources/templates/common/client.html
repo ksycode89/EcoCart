@@ -20,30 +20,112 @@
 	<div class="mb-3 row">
 			<label  class="col-lg-1 col-sm-12 col-form-label">거래처</label>
 			<div class="col-lg-auto col-sm-6">
-			<input  id="empCode" name="empCode" class="form-control">
+			<input  id="depCode" name="depCode" class="form-control">
 			</div>
 			 <div class="col-lg-auto col-sm-6">
 			<button type="button"><i class="bi bi-search"></i></button> 
 			</div>
 			<div class="col-lg-auto col-sm-12">
-			<input  id="name" name="name" class="form-control">
+			<input  id="depName" name="depName" class="form-control">
 			</div>
 	</div>		
 	<div class="mb-3 row">
 			<label  class="col-lg-1 col-sm-12 col-form-label">등록일</label>
 			<div class="col-lg-auto col-sm-6">
-			<input  id="depCode" name="depCode" class="form-control">
+			<input  type="date" id="" name="" class="form-control">
 			</div>
 			<div class="col-lg-auto col-sm-6">
-			<button type="button"><i class="bi bi-search"></i></button> 
+			~
 			</div>
 			<div class="col-lg-auto col-sm-12">
-			<input  id="depName" name="depName" class="form-control">
+			<input  type="date" id="" name="" class="form-control">
 			</div>
 	</div>	
 
  </div>
 	
+	<div class="mb-3 row">
+			<label  class="col-lg-1 col-sm-12 col-form-label">업태</label>
+			<div class="col-lg-auto col-sm-6">
+			
+				<select class="form-select form-select-sm" aria-label=".form-select-sm example">
+  					<option selected></option>
+  					<option value="1">도소매업</option>
+  					<option value="2">제조업</option>
+  					<option value="3">서비스업</option>
+				</select>
+			</div>
+			
+			
+	
+			<label  class="col-lg-1 col-sm-12 col-form-label">종목</label>
+			<div class="col-lg-auto col-sm-6">
+				<select class="form-select form-select-sm" aria-label=".form-select-sm example">
+  					<option selected>Open this select menu</option>
+  					<option value="1">One</option>
+  					<option value="2">Two</option>
+  					<option value="3">Three</option>
+				</select>
+			</div>
+	</div>	
+	
+	<div id="grid" class="mb-3 row"></div>
+
+	<script>
+		const gridData = [ {
+			clientName : '1000',
+			regNum : '홍길동',
+			workType : 'abc@naver.com',
+			sellingType : '010-000-0000',
+			clientAddr : '2022-11-14',
+			clientTel : '생산',
+			clientFax : '',
+			clientHire : '진행',
+			clientGrade : '',
+			comments : ''
+		} ];
+
+		const grid = new tui.Grid({
+			el : document.getElementById('grid'),
+			data : gridData,
+			rowHeaders: ['rowNum'],
+			scrollX : false,
+			scrollY : false,
+			columns : [ {
+				header : '거래처명',
+				name : 'clientName'
+			}, {
+				header : '사업자번호',
+				name : 'regNum'
+			}, {
+				header : '업태',
+				name : 'workType'
+			}, {
+				header : '종목',
+				name : 'sellingType'
+			}, {
+				header : '주소',
+				name : 'clientAddr'
+			}, {
+				header : 'tel',
+				name : 'clientTel'
+			}, {
+				header : 'fax',
+				name : 'clientFax'
+			}, {
+				header : '등록일',
+				name : 'clientHire'
+			}, {
+				header : '등급',
+				name : 'clientGrade'
+			}, {
+				header : '비고',
+				name : 'comments'
+			}
+
+			]
+		});
+	</script>
 	
 	</div>
 </body>
