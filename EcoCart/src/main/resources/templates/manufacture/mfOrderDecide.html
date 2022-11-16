@@ -5,41 +5,13 @@
       layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
-<title>생산계획조회</title>
+<title>생산계획확정</title>
 </head>
 <body>
-	<div layout:fragment="header" class="page-heading"><h2>생산계획조회</h2></div>
+	<div layout:fragment="header" class="page-heading"><h2>생산지시확정</h2></div>
 	<div layout:fragment="content" class="page-content">
-		<div>
-			<table>
-				<tr>
-					<td>진행상황</td>
-					<td>
-						<label><input type="radio" name="planStatue" data-filter="*" value="all" checked>전체</label>&nbsp;
-						<label><input type="radio" name="planStatue" data-filter="진행" value="start">진행</label>&nbsp;
-						<label><input type="radio" name="planStatue" data-filter="완료" value="finish">완료</label>&nbsp;
-						<label><input type="radio" name="planStatue" data-filter="취소" value="cancel">취소</label>
-					</td>
-				</tr>
-				<tr>
-					<td>계획일자</td>
-					<td>
-						<input type="date" id="searchPlanDate" name="searchPlanDate"> - 
-						<input type="date" id="searchPlanDate" name="searchPlanDate">
-						<button type="button">검색</button>
-					</td>
-				</tr>
-				<tr>
-					<td>생산계획명</td>
-					<td><input type="text" id="searchPlanName" name="searchPlanName" placeholder="우엥">
-						<button type="button">검색</button></td>
-				</tr>
-			</table>
-			<br>
-		</div>
-	
-		<div id="planListId"></div>
-			
+		<div id="orderDecideGridId"></div>
+		<br>
 		<script>
 	    const gridData = [
 	   		{
@@ -84,14 +56,11 @@
 	   		},
 	   	];
 	    
-		const planListGrid = new tui.Grid({
-			el: document.getElementById('planListId'),
+		const orderDecideGrid = new tui.Grid({
+			el: document.getElementById('orderDecideGridId'),
 			data: gridData,
 			scrollX: false,
 			scrollY: false,
-			pageOptions: {
-		    	perPage: 2
-		    },
 			columns: [
 		        {
 		          header: '생산계획코드',
@@ -127,7 +96,8 @@
 		        }
 			]
 		});
+	    
 	    </script>
-    </div>
+	</div>
 </body>
 </html>
