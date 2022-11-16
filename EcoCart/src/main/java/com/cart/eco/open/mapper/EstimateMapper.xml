@@ -1,3 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cart.eco.open.mapper.EstimateMapper"></mapper>
+<mapper namespace="com.cart.eco.open.mapper.EstimateMapper">
+
+
+	<select id="selectEstimateList" resultType="com.cart.eco.open.service.EstimateVO">
+		select * from estimate
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
