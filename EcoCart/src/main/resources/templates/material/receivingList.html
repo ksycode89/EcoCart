@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>자재재고조회</title>
+</head>
+<body>
+	<div layout:fragment="content" class="page-content">
+		<div id="content" class="center">
+			<h3>자재재고조회</h3>
+			&nbsp;
+			<table class="mb-5">
+				<tr>
+					<td>구분 <input type="text"> <i class="bi bi-search"></i>
+						<select>
+						<option selected value="*">전체</option> 
+						<option value="warning">경고</option> 
+						</select> <button id="list">조회</button> </td>
+				</tr>
+			</table>
+		</div>
+		
+		<div style="margin-left: 3px;">
+
+			<!-- Modal -->
+			<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+				data-bs-keyboard="false" tabindex="-1"
+				aria-labelledby="staticBackdropLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="staticBackdropLabel">자재LOT조회</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+						<table>
+							<tr>
+								<td>조회</td>
+							</tr>
+							</table>
+							<div id="modalGrid"></div>
+							<div id="modalGrid1"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="grid"></div>
+		
+		<script>
+		
+	   const gridData = [
+	       {
+	          name:'',
+	          artist:'',
+	          type:'',
+	          position : "bottom",
+	          release:'',
+	          genre:''
+	       }];
+	   const grid = new tui.Grid({
+		    el: document.getElementById('grid'),
+		    data: gridData,
+		    scrollX: false,
+		    scrollY: false,
+		    position : "bottom",
+		    columns: [
+		      {
+		    	
+		        header: '품번',
+		        name: '발주번호'
+		      },
+		      {
+		        header: '품명',
+		        name: '발주일자'
+		      },
+		      {
+		        header: '단위',
+		        name: '거래처'
+		      },
+		      {
+		        header: '규격',
+		        name: '담당자'
+		      },
+		      {
+			    header: '기초수량',
+			    name: '담당자'
+			  },
+		      {
+			    header: '입고수량',
+			    name: '담당자'
+			  },
+		      {
+			    header: '출고수량',
+			    name: '담당자'
+			  },
+		      {
+				header: '안전재고량',
+				name: '담당자'
+			  },
+		      {
+				header: '재고수량',
+			 	name: '담당자'
+			  },
+		      {
+				header: '구분',
+				name: '담당자'
+			  }
+		    ]
+		  });
+	   
+	
+	  var modalGrid = new tui.Grid({
+	      el: document.getElementById('modalGrid'),
+	      bodyHeight: 200,
+	      data: [{
+	         planCode: 'pro12309',
+	         planName: '20221115',
+	         planDCode: 'hello123',
+	         productName: 'oS'
+	      }],
+	      scrollX: false,
+	      scrollY: false,
+	      columns: [
+	         {
+	            header: 'LOTNO',
+	            name: 'planCode',
+	         },
+	         {
+	            header: '입고수량',
+	            name: 'planName',
+	         },
+	         {
+	            header: '출고수량',
+	            name: 'planDCode'
+	         },
+	         {
+	            header: '재고수량',
+	            name: 'productName'
+	         }
+	      ]
+	   });
+ 		
+
+	   grid.on('click',(col)=>{
+		  $('#staticBackdrop').modal("show");
+	   });
+  
+	    staticBackdrop.addEventListener('shown.bs.modal', () => {
+	    	modalGrid.refreshLayout(); 
+	    })
+	    
+   </script>
+
+	</div>
+</body>
+</html>

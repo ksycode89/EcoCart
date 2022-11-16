@@ -3,19 +3,19 @@
 	layout:decorate="~{layout/layout}">	
 <head>
 <meta charset="UTF-8">
-<title>발주현황</title>
+<title>자재조정</title>
 </head>
 <body>
 <div layout:fragment="content" class="page-content">
 	<div id="content">
-		<h3>발주현황</h3>
+		<h3>자재조정</h3>
 		&nbsp;
 		<table class="mb-5">
 		<tr>
-			<td> 부서 <input type="text"> <i class="bi bi-search"> </i> 사원 <input type="text"> <i class="bi bi-search"> </i></td>
+			<td> 창고 <input type="text"> <i class="bi bi-search"></i> <input type="text"></td>
 		</tr>
 		<tr>
-			<td> 거래처 <input type="text"> <i class="bi bi-search"></i> 발주기간 <input type="date"> ~ <input type="date"> <button id="list">조회</button> </td>
+			<td> 장소 <input type="text"> <i class="bi bi-search"></i> <input type="text"> <button id="list">조회</button></td>
 		</tr>
 		</table>
 	</div>
@@ -37,37 +37,32 @@
 	    data: gridData,
 	    scrollX: false,
 	    scrollY: false,
-	    rowHeaders : ['checkbox'],
 	    columns: [
 	      {
 	    	
-	        header: '발주번호',
+	        header: '조정번호',
 	        name: '부서'
 	      },
 	      {
-	        header: '발주일자',
+	        header: '조정일자',
 	        name: '사원'
 	      },
 	      {
-	        header: '코드',
+	        header: '창고',
 	        name: '거래처'
 	      },
 	      {
-	        header: '거래처',
+	        header: '장소',
 	        name: '발주기간'
 	      },
 	      {
-	        header: '납기일',
+	        header: '담당자',
 	        name: '발주번호'
 	      },
 	      {
-	        header: '입공예정일',
+	        header: '거래처',
 	        name: '발주번호'
-	        },
-	        {
-	        header: '담당자',
-	        name: '발주번호'
-	          }
+	        }
 	    ]
 	  });
    
@@ -99,15 +94,15 @@
         name: '발주번호'
       },
       {
-        header: '수량',
+        header: '조정수량',
         name: '발주번호'
         },
         {
-        header: '검사수량',
+        header: '단가',
         name: '발주번호'
           },
           {
-        header: '구분',
+        header: 'LOT',
         name: '발주번호'
             }
     ]

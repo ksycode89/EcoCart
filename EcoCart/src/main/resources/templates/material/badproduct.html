@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">	
+<head>
+<meta charset="UTF-8">
+<title>자재불량조회</title>
+</head>
+<body>
+<div layout:fragment="content" class="page-content">
+	<div id="content" class="center">
+		<h3>자재불량조회</h3>
+		&nbsp;
+		<table class="mb-5">
+			<tr>
+				<td>검사기간 <input type="date"> ~ <input type="date"></td>
+			</tr>
+			<tr>
+				<td>불량유형 <input type="text"> <i class="bi bi-search"></i>
+					<input type="text"></td>
+			</tr>
+			<tr>
+				<td>품명 <input type="text"> <i class="bi bi-search"></i>
+					<input type="text"> <button id="list">조회</button></td>
+			</tr>
+		</table>
+	</div>
+	
+	<div id="grid"></div>
+	
+	<script>
+	
+	   const gridData = [
+	       {
+	          name:'',
+	          artist:'',
+	          type:'',
+	          position : "bottom",
+	          release:'',
+	          genre:''
+	       }];
+	   const grid = new tui.Grid({
+		    el: document.getElementById('grid'),
+		    data: gridData,
+		    scrollX: false,
+		    scrollY: false,
+		    position : "bottom",
+		    columns: [
+		      {
+		        header: '검사번호',
+		        name: '발주번호'
+		      },
+		      {
+		        header: '검사일자',
+		        name: '발주일자'
+		      },
+		      {
+		        header: 'NO',
+		        name: '거래처'
+		      },
+		      {
+		        header: '품목',
+		        name: '담당자'
+		      },
+		      {
+			    header: '품번',
+			    name: '담당자'
+			  },
+		      {
+			    header: '규격',
+			    name: '담당자'
+			  },
+		      {
+			    header: '단위',
+			    name: '담당자'
+			  },
+		      {
+			    header: '불량유형',
+			    name: '담당자'
+			  },
+		      {
+			    header: '불량수량',
+			    name: '담당자'
+			  }
+		    ]
+		  });
+	   
+	</script>    
+</div>
+</body>
+</html>
