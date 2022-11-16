@@ -5,41 +5,49 @@
       layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
-<title>생산계획조회</title>
+<title>생산관리</title>
 </head>
 <body>
-	<div layout:fragment="header" class="page-heading"><h2>생산계획조회</h2></div>
+	<div layout:fragment="header" class="page-heading"><h2>생산관리</h2></div>
 	<div layout:fragment="content" class="page-content">
 		<div>
-			<table>
-				<tr>
-					<td>진행상황</td>
-					<td>
-						<label><input type="radio" name="planStatue" data-filter="*" value="all" checked>전체</label>&nbsp;
-						<label><input type="radio" name="planStatue" data-filter="진행" value="start">진행</label>&nbsp;
-						<label><input type="radio" name="planStatue" data-filter="완료" value="finish">완료</label>&nbsp;
-						<label><input type="radio" name="planStatue" data-filter="취소" value="cancel">취소</label>
-					</td>
-				</tr>
-				<tr>
-					<td>계획일자</td>
-					<td>
-						<input type="date" id="searchPlanDate" name="searchPlanDate"> - 
-						<input type="date" id="searchPlanDate" name="searchPlanDate">
-						<button type="button">검색</button>
-					</td>
-				</tr>
-				<tr>
-					<td>생산계획명</td>
-					<td><input type="text" id="searchPlanName" name="searchPlanName" placeholder="우엥">
-						<button type="button">검색</button></td>
-				</tr>
-			</table>
-			<br>
-		</div>
-	
-		<div id="planListId"></div>
-			
+			<h4 style="height:40px">생산라인설정 & 가동관리</h4>
+			<div>
+				<table>
+					<tr>
+						<th>라인번호</th>
+						<th>생산지시코드</th>
+						<th>제품코드</th>
+						<th>제품명</th>
+						<th>지시수량</th>
+						<th>공정가동</th>
+						<th>상세조회</th>
+					</tr>
+					<tr style="height:40px">
+						<td>1</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><button>생산시작</button></td>
+						<td><button>상세조회</button></td>
+					</tr>
+					<tr style="height:40px">
+						<td>2</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><button>생산시작</button></td>
+						<td><button>상세조회</button></td>
+					</tr>
+				</table>
+			</div>
+		</div><br>
+		<div>
+			<h4 style="height:40px">생산가동상세</h4>
+			<div id="makingDetailId"></div>
+		</div><br>
 		<script>
 	    const gridData = [
 	   		{
@@ -84,14 +92,12 @@
 	   		},
 	   	];
 	    
-		const planListGrid = new tui.Grid({
-			el: document.getElementById('planListId'),
+		const makingDetail = new tui.Grid({
+			el: document.getElementById('makingDetailId'),
 			data: gridData,
 			scrollX: false,
 			scrollY: false,
-			pageOptions: {
-		    	perPage: 2
-		    },
+			rowHeaders:['rowNum'],
 			columns: [
 		        {
 		          header: '생산계획코드',
@@ -128,6 +134,6 @@
 			]
 		});
 	    </script>
-    </div>
+	</div>
 </body>
 </html>

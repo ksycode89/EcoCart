@@ -21,17 +21,19 @@
 			</ul>
 			<div class="tab-content" id="mfTabContent">
 				<div class="tab-pane fade show active" id="planInsert" role="tabpanel" aria-labelledby="planInsertTab">
-					<div id="planInsertGridD"></div>
-					<br>
-					<button type="button" id="orderBtn" data-bs-toggle="modal" data-bs-target="#orderModal">주문서 조회</button>&nbsp;
-					<button type="button">계획행 추가</button>&nbsp;
-					<button type="button">계획행 삭제</button>
-					<button type="button" style="float:right">생산계획등록</button>
+					<div id="planInsertGridId"></div>
+					<div style="margin-top:10px">
+						<button type="button" id="orderBtn" data-bs-toggle="modal" data-bs-target="#orderModal">주문서 조회</button>&nbsp;
+						<button type="button">계획행 추가</button>&nbsp;
+						<button type="button">계획행 삭제</button>
+						<button type="button" style="float:right">생산계획등록</button>
+					</div>
 				</div>
 				<div class="tab-pane fade" id="planDelete" role="tabpanel" aria-labelledby="planDeleteTab">
-					<div id="planDeleteGridD"></div>
+					<div id="planDeleteGridId"></div>
 				</div>
 			</div>
+			<br>
 			<!-- Modal -->
 			<div class="modal fade" id="orderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 				<div class="modal-dialog">
@@ -41,7 +43,7 @@
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
-							<div id="modalGridD"></div>
+							<div id="modalGridId"></div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -182,7 +184,7 @@
    	];
     
 	const planInsertGrid = new tui.Grid({
-		el: document.getElementById('planInsertGridD'),
+		el: document.getElementById('planInsertGridId'),
 		data: gridData,
 		scrollX: false,
 		scrollY: false,
@@ -223,7 +225,7 @@
 	});
 	
 	const planDeleteGrid = new tui.Grid({
-		el: document.getElementById('planDeleteGridD'),
+		el: document.getElementById('planDeleteGridId'),
 		data: gridData2,
 		scrollX: false,
 		scrollY: false,
@@ -264,7 +266,7 @@
 	});
 	
 	var modalGrid = new tui.Grid({
-		el: document.getElementById('modalGridD'),
+		el: document.getElementById('modalGridId'),
 		data: gridData3,
 		scrollX: false,
 		scrollY: false,

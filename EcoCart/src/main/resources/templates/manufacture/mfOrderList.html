@@ -8,27 +8,120 @@
 <title>생산지시등록</title>
 </head>
 <body>
+	<div layout:fragment="header" class="page-heading"><h2>생산지시현황</h2></div>
 	<div layout:fragment="content" class="page-content">
-		<div class="page-heading"><h2>생산지시조회</h2></div>
-		<div class="row">
-			<div class="col-4">
-				<h3>생산계획</h3>
-				<button>지시등록</button>
-			</div>
-			<div class="col-7">
-				<h3>생산지시</h3>
-				<button>지시등록</button>
-			</div>
+		<div>
+			<table>
+				<tr>
+					<td>진행상황</td>
+					<td>
+						<label><input type="radio" name="planStatue" data-filter="*" value="all" checked>전체</label>&nbsp;
+						<label><input type="radio" name="planStatue" data-filter="진행" value="start">대기</label>&nbsp;
+						<label><input type="radio" name="planStatue" data-filter="완료" value="finish">확정</label>&nbsp;
+						<label><input type="radio" name="planStatue" data-filter="취소" value="cancel">완료</label>
+					</td>
+				</tr>
+				<tr>
+					<td>계획일자</td>
+					<td>
+						<input type="date" id="searchPlanDate" name="searchPlanDate"> - 
+						<input type="date" id="searchPlanDate" name="searchPlanDate">
+						<button type="button">검색</button>
+					</td>
+				</tr>
+			</table>
+			<br>
 		</div>
-		<div class="row">
-			<div class="col-4">
-				<h3>필요자재</h3>
-				<button>자재주문</button>
-			</div>
-			<div class="col-7">
-				<h3>자재지시</h3>
-			</div>
-		</div>
+		<div id="orderListId"></div>
+		<script>
+	    const gridData = [
+	   		{
+	   			mfPlanCode:'1',
+	   			mfPlanName:'테스트1',
+	   			proCode:'001',
+	   			proName:'test1',
+	   			mfPlanDate:'2022-11-14',
+	   			deDate:'2022-12-12',
+	   			needNum:'20',
+	   			mfPlanStatus:'진행'
+	   		},
+	   		{
+	   			mfPlanCode:'2',
+	   			mfPlanName:'테스트2',
+	   			proCode:'002',
+	   			proName:'test2',
+	   			mfPlanDate:'2022-11-01',
+	   			deDate:'2022-11-13',
+	   			needNum:'10',
+	   			mfPlanStatus:'진행'
+	   		},
+	   		{
+	   			mfPlanCode:'3',
+	   			mfPlanName:'테스트3',
+	   			proCode:'001',
+	   			proName:'test1',
+	   			mfPlanDate:'2022-11-14',
+	   			deDate:'2022-12-12',
+	   			needNum:'30',
+	   			mfPlanStatus:'취소'
+	   		},
+	   		{
+	   			mfPlanCode:'4',
+	   			mfPlanName:'테스트4',
+	   			proCode:'003',
+	   			proName:'test3',
+	   			mfPlanDate:'2022-10-10',
+	   			deDate:'2022-11-01',
+	   			needNum:'20',
+	   			mfPlanStatus:'완료'
+	   		},
+	   	];
+	    
+		const orderListGrid = new tui.Grid({
+			el: document.getElementById('orderListId'),
+			data: gridData,
+			scrollX: false,
+			scrollY: false,
+			pageOptions: {
+		    	perPage: 2
+		    },
+			columns: [
+		        {
+		          header: '생산계획코드',
+		          name: 'mfPlanCode'
+		        },
+		        {
+		          header: '생산계획명',
+		          name: 'mfPlanName'
+		        },
+		        {
+		          header: '제품코드',
+		          name: 'proCode'
+		        },
+		        {
+		          header: '제품명',
+		          name: 'proName'
+		        },
+		        {
+		          header: '계획일자',
+		          name: 'mfPlanDate'
+		        },
+		        {
+		          header: '납기일자',
+		          name: 'deDate'
+		        },
+		        {
+		          header: '필요수량',
+		          name: 'needNum'
+		        },
+		        {
+		          header: '진행상황',
+		          name: 'mfPlanStatus'
+		        }
+			]
+		});
+    
+    	</script>  
 	</div>
 </body>
 </html>

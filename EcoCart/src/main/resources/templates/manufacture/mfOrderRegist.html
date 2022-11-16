@@ -12,27 +12,234 @@
 	<div layout:fragment="content" class="page-content">
 		<div class="row">
 			<div class="col-5">
-				<h4 style="display:inline">생산계획</h4>
-				<button type="button" style="float:right">지시등록</button>
+				<div style="height:40px">
+					<h4 style="display:inline">생산계획</h4>
+					<button type="button" style="float:right">미지시 계획 조회</button>
+				</div>
+				<div id="mfPlanGridId"></div>
 			</div>
 			<div class="col-7">
-				<h4 style="display:inline">생산지시</h4>
-				<button type="button" style="float:right">지시등록</button>
+				<div style="height:40px">
+					<h4 style="display:inline">생산지시</h4>
+					<button type="button" style="float:right">지시등록</button>
+				</div>
+				<div id="mfOrderGridId"></div>
 			</div>
 		</div>
+		<br>
 		<div class="row">
 			<div class="col-5">
-				<h4 style="display:inline">필요자재</h4>
-				<button type="button" style="float:right">자재주문</button>
+				<div style="height:40px">
+					<h4 style="display:inline">필요자재</h4>
+					<button type="button" style="float:right">자재주문</button>
+				</div>
+				<div id="mfNeedGridId"></div>
 			</div>
 			<div class="col-7">
-				<h4>자재지시</h4>
-				<div id=""></div>
+				<div style="height:40px">
+					<h4>자재지시</h4>
+				</div>
+				<div id="mfBringGridId"></div>
 			</div>
 		</div>
-	<script>
-		
-	</script>
+		<br>
+			<!-- Modal -->
+			<div class="modal fade" id="testModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticBackdropLabel">주문서 조회</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<span>테스트입니다.</span>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-primary">등록</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		<script>
+			const gridData = [
+		   		{
+		   			mfPlanCode:'1',
+		   			mfPlanName:'테스트1',
+		   			proCode:'001',
+		   			proName:'test1',
+		   			mfPlanDate:'2022-11-14',
+		   			deDate:'2022-12-12',
+		   			needNum:'20',
+		   			mfPlanStatus:'진행'
+		   		},
+		   		{
+		   			mfPlanCode:'2',
+		   			mfPlanName:'테스트2',
+		   			proCode:'002',
+		   			proName:'test2',
+		   			mfPlanDate:'2022-11-01',
+		   			deDate:'2022-11-13',
+		   			needNum:'10',
+		   			mfPlanStatus:'진행'
+		   		},
+		   		{
+		   			mfPlanCode:'3',
+		   			mfPlanName:'테스트3',
+		   			proCode:'001',
+		   			proName:'test1',
+		   			mfPlanDate:'2022-11-14',
+		   			deDate:'2022-12-12',
+		   			needNum:'30',
+		   			mfPlanStatus:'취소'
+		   		},
+		   		{
+		   			mfPlanCode:'4',
+		   			mfPlanName:'테스트4',
+		   			proCode:'003',
+		   			proName:'test3',
+		   			mfPlanDate:'2022-10-10',
+		   			deDate:'2022-11-01',
+		   			needNum:'20',
+		   			mfPlanStatus:'완료'
+		   		},
+		   	];
+		    
+			 class TestButtonRenderer {
+			      constructor(props) {
+			        const el = document.createElement('span');
+			        el.innerHTML='<a id="orderBtn" data-bs-toggle="modal" data-bs-target="#testModal">테스트</a>';
+			        this.el = el;
+			        this.render(props);
+			      }
+
+			      getElement() {
+			        return this.el;
+			      }
+
+			      render(props) {
+			        this.el.value = String(props.value);
+			      }
+			    }
+			
+			const mfPlanGrid = new tui.Grid({
+				el: document.getElementById('mfPlanGridId'),
+				data: gridData,
+				scrollX: false,
+				scrollY: false,
+				columns: [
+			        {
+			          header: '생산계획명',
+			          name: 'mfPlanName'
+			        },
+			        {
+				      header: '제품명',
+				      name: 'proName'
+				    },
+			        {
+			          header: '필요수량',
+			          name: 'needNum'
+			        },
+			        {
+			          header: '총지시수량',
+			          name: 'totalOrderNum'
+			        }
+				]
+			});
+			
+			const mfOrderGrid = new tui.Grid({
+				el: document.getElementById('mfOrderGridId'),
+				data: [],
+				scrollX: false,
+				scrollY: false,
+				columns: [
+			        {
+			          header: '생산지시코드',
+			          name: 'mfOrderCode'
+			        },
+			        {
+			          header: '제품코드',
+			          name: 'proCode'
+			        },
+			        {
+			          header: '제품명',
+			          name: 'proName'
+			        },
+			        {
+			          header: '지시일자',
+			          name: 'mfOrderDate'
+			        },
+			        {
+			          header: '지시수량',
+			          name: 'mfOrderNum'
+			        }
+				]
+			});
+			
+			const mfNeedGrid = new tui.Grid({
+				el: document.getElementById('mfNeedGridId'),
+				data: gridData,
+				scrollX: false,
+				scrollY: false,
+				rowHeaders:['rowNum'],
+				columns: [
+			        {
+			          header: '제품명',
+			          name: 'proName',
+			        },
+			        {
+			          header: '자재코드',
+			          name: 'matCode'
+			        },
+			        {
+			          header: '자재명',
+			          name: 'matName'
+			        },
+			        {
+			          header: '필요량',
+			          name: 'needNum'
+			        }
+				]
+			});
+			
+			mfNeedGrid.on('click',(ev)=>{
+				console.log(ev.rowKey);
+				$("#testModal").modal("show");
+			});
+			
+			const mfBringGrid = new tui.Grid({
+				el: document.getElementById('mfBringGridId'),
+				data: gridData,
+				scrollX: false,
+				scrollY: false,
+				rowHeaders:['rowNum'],
+				columns: [
+					{
+				      header: '자재코드',
+				      name: 'matCode'
+				    },
+				    {
+				      header: '자재명',
+				      name: 'matName'
+				    },
+			        {
+			          header: '자재LOT',
+			          name: 'lotCode'
+			        },
+			        {
+			          header: '사용량',
+			          name: 'useNum'
+			        },
+			        {
+					  header: '클릭테스트용',
+					  renderer: {
+					  	type: TestButtonRenderer
+					  }
+					}
+				]
+			});
+			
+		</script>
 	</div>
 </body>
 </html>
