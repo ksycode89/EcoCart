@@ -1,6 +1,8 @@
 package com.cart.eco.open.service;
 
-import java.util.Date;
+
+
+import java.sql.Date;
 
 import lombok.Data;
 
@@ -13,6 +15,10 @@ public class EstimateVO {
 	private Date deDate;	//납기일자
 	private String estmtSt;	//승인여부 
 	private int allSum;		//총합계액
+	
+	
+	
+	
 	
 	
 	

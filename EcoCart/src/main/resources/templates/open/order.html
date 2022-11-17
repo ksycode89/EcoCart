@@ -30,7 +30,7 @@
 				</tr>
 				
 	         	<tr>	
-					<td>주문코드<input class="form-control" style="width: 100px;" id="result2">&nbsp; <i class="bi bi-search">&nbsp;</i>
+					<td class="col-lg-5 col-sm-12 col-form-label" >주문코드<input class="form-control" style="width: 100px;" id="result2">&nbsp; <i class="bi bi-search">&nbsp;</i>
 		         		<select class="form-control" name="no" onchange="handleOnChange2(this)" style="width: 80px;">
 		         			<option value="">-선택-</option>
 		         			<option value="번호1">번호1</option>
@@ -89,7 +89,7 @@
 				  	<table style="margin:30px;">
 						
 						<tr>
-							<td>제품코드<input style="width: 100px;" id="result4">&nbsp; <i class="bi bi-search">&nbsp;</i>
+							<td>견적코드<input style="width: 100px;" id="result4">&nbsp; <i class="bi bi-search">&nbsp;</i>
 				         		<select name="no" onchange="handleOnChange4(this)" style="width: 80px;">
 				         			<option value="선택">-선택-</option>
 				         			<option value="번호1">번호1</option>
@@ -147,6 +147,10 @@
 	             {
 	             	header: '납기일자',
 	                name: 'deDate'
+	             },
+	             {
+	                 header: '총합계액',
+	                 name: 'allSum'
 	             }
 	            
 	        ],
