@@ -1,10 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
+
 <head>
 <meta charset="UTF-8">
-<title>창고 관리</title>
+<title>창고등록</title>
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
 </head>
 <body>
+	<div layout:fragment="content">
 
+		<h3>창고등록</h3>
+
+
+ <div >
+	<div class="mb-3 row">
+			<label  class="col-lg-1 col-sm-12 col-form-label">창 고</label>
+			<div class="col-lg-auto col-sm-6">
+			<input  id="empNum" name="empNum" class="form-control">
+			</div>
+			 <div class="col-lg-auto col-sm-6">
+			<button type="button"><i class="bi bi-search"></i></button> 
+			</div>
+			<div class="col-lg-auto col-sm-12">
+			<input  id="empName" name="empName" class="form-control">
+			</div>
+	</div>		
+	<div class="mb-3 row">
+			<label  class="col-lg-1 col-sm-12 col-form-label">제 품</label>
+			<div class="col-lg-auto col-sm-6">
+			<input  id="clientCode" name="clientCode" class="form-control">
+			</div>
+			<div class="col-lg-auto col-sm-6">
+			<button type="button"><i class="bi bi-search"></i></button> 
+			</div>
+			<div class="col-lg-auto col-sm-12">
+			<input  id="clientName" name="clientName" class="form-control">
+			</div>
+	</div>	
+
+ </div>
+	
+	<div id="grid" class="mb-3 row"></div>
+
+	<script>
+		const gridData = [ {
+			empNum : '1000',
+			empName : '홍길동',
+			empMail : 'abc@naver.com',
+			empTel : '010-000-0000',
+			empHire : '2022-11-14',
+			empDept : '생산',
+			empManager : '',
+			comments : '진행'
+		} ];
+
+		const grid = new tui.Grid({
+			el : document.getElementById('grid'),
+			data : gridData,
+			rowHeaders: ['checkbox'],
+			scrollX : false,
+			scrollY : false,
+			columns : [ {
+				header : '창고코드',
+				name : 'empNum'
+			}, {
+				header : '창고이름',
+				name : 'empName'
+			}, {
+				header : '창고분류',
+				name : 'empMail'
+			}, {
+				header : '창고설명',
+				name : 'empTel'
+			}, {
+				header : '사용여부',
+				name : 'empHire'
+			}, {
+				header : '등록일',
+				name : 'empDept'
+			}, {
+				header : '담당자',
+				name : 'empManager'
+			}, {
+				header : '비고',
+				name : 'comments'
+			}
+
+			]
+		});
+	</script>
+
+	
+
+
+	<div id="grid2"></div>
+
+	<script>
+		const gridData2 = [ {
+			empNum : '1000',
+			empName : '홍길동',
+			empMail : 'abc@naver.com',
+			empTel : '010-000-0000',
+			empHire : '2022-11-14',
+			empDept : '생산'
+
+		} ];
+
+		const grid2 = new tui.Grid({
+			el : document.getElementById('grid2'),
+			data : gridData2,
+			rowHeaders: ['rowNum'],
+			scrollX : false,
+			scrollY : false,
+			columns : [ {
+				header : '사원번호',
+				name : 'empNum'
+			}, {
+				header : '이름',
+				name : 'empName'
+			}, {
+				header : 'mail',
+				name : 'empMail'
+			}, {
+				header : 'tel',
+				name : 'empTel'
+			}, {
+				header : '입사일',
+				name : 'empHire'
+			}, {
+				header : '부서',
+				name : 'empDept'
+			}
+
+			]
+		});
+	</script>
+</div>
 </body>
 </html>

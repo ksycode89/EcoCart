@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>사원관리</title>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
@@ -25,12 +26,39 @@
 			<input  id="empNum" name="empNum" class="form-control">
 			</div>
 			 <div class="col-lg-auto col-sm-6">
-			<button type="button"><i class="bi bi-search"></i></button> 
+			<button type="button"><i class="bi bi-search" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></button> 
 			</div>
 			<div class="col-lg-auto col-sm-12">
 			<input  id="empName" name="empName" class="form-control">
 			</div>
-	</div>		
+	</div>
+	
+	<!-- 이름 모달 -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">사원코드</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <!--그리드  -->
+       <div id="gridM" class="mb-3 row"></div>
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+	
+	
+	
+	
+	
+			
 	<div class="mb-3 row">
 			<label  class="col-lg-1 col-sm-12 col-form-label">부 서</label>
 			<div class="col-lg-auto col-sm-6">
@@ -42,59 +70,17 @@
 			<div class="col-lg-auto col-sm-12">
 			<input  id="clientName" name="clientName" class="form-control">
 			</div>
+			<div class="col-lg-auto col-sm-6">
+			<button type="button" onclick="selectEmp()">조회</button> 
+			</div>
 	</div>	
 
  </div>
-	
-	<div id="grid" class="mb-3 row"></div>
-
-	<script>
-		const gridData = [ {
-			empNum : '1000',
-			empName : '홍길동',
-			empMail : 'abc@naver.com',
-			empTel : '010-000-0000',
-			empHire : '2022-11-14',
-			empDept : '생산',
-			empManager : '',
-			comments : '진행'
-		} ];
-
-		const grid = new tui.Grid({
-			el : document.getElementById('grid'),
-			data : gridData,
-			rowHeaders: ['checkbox'],
-			scrollX : false,
-			scrollY : false,
-			columns : [ {
-				header : '사원번호',
-				name : 'empNum'
-			}, {
-				header : '이름',
-				name : 'empName'
-			}, {
-				header : '메일',
-				name : 'empMail'
-			}, {
-				header : '전화번호',
-				name : 'empTel'
-			}, {
-				header : '입사일',
-				name : 'empHire'
-			}, {
-				header : '부서',
-				name : 'empDept'
-			}, {
-				header : '담당자',
-				name : 'empManager'
-			}, {
-				header : '비고',
-				name : 'comments'
-			}
-
-			]
-		});
-	</script>
+ 
+  <div id="grid" class="mb-3 row"></div>
+ 
+ 
+ 
 
 	<div>
 		<h3>담당자</h3>
@@ -143,24 +129,97 @@
 
 	<div>
 		<h3>담당사원</h3>
+		
+		<div class="col-lg-auto col-sm-6">
+			<button type="button" onclick="selectInfo()">조회</button> 
+			</div>
 	</div>
 
-	<div id="grid2"></div>
+	 <div id="grid2" class="mb-3 row"></div>
 
 	<script>
-		const gridData2 = [ {
-			empNum : '1000',
-			empName : '홍길동',
-			empMail : 'abc@naver.com',
-			empTel : '010-000-0000',
-			empHire : '2022-11-14',
-			empDept : '생산'
+ 	
+ /*사원 이름 모달 */
 
-		} ];
+		const gridM = new tui.Grid({
+			el : document.getElementById('gridM'),
+			rowHeaders: ['checkbox'],
+			scrollX : false,
+			scrollY : false,
+			columns : [ {
+				header : '사원번호',
+				name : 'empNum'
+			}, {
+				header : '이름',
+				name : 'empName'
+			}
+			]
+		});
+		
+		
+		
+		exampleModal.addEventListener('shown.bs.modal', () => {
+	
+			gridM.refreshLayout(); //모달창 새로고침
+			
+			fetch("ajax/empName")
+			.then(data => data.json())
+			.then (objs => {
+				gridM.resetData(objs);
+			})
+	 
+	   	      
+	   	      
+	   	 })
+		
+ /* 사원정보  */
+		
+
+		const grid1 = new tui.Grid({
+			el : document.getElementById('grid'),
+			rowHeaders: ['checkbox'],
+			scrollX : false,
+			scrollY : false,
+			columns : [ {
+				header : '사원번호',
+				name : 'empNum',
+				filter: 'text'
+			}, {
+				header : '이름',
+				name : 'empName',
+				filter: 'select'
+				
+			}, {
+				header : '메일',
+				name : 'empMail'
+			}, {
+				header : '전화번호',
+				name : 'empTel'
+			}, {
+				header : '입사일',
+				name : 'empHire'
+			}, {
+				header : '부서',
+				name : 'empDept'
+			}, {
+				header : '담당자',
+				name : 'empManager'
+			}, {
+				header : '비고',
+				name : 'comments'
+			}
+
+			]
+		
+		
+		
+		});
+		
+ /* 담당사원 */
+		
 
 		const grid2 = new tui.Grid({
 			el : document.getElementById('grid2'),
-			data : gridData2,
 			rowHeaders: ['rowNum'],
 			scrollX : false,
 			scrollY : false,
@@ -186,7 +245,43 @@
 
 			]
 		});
+		
+	// 사원조회 ajax
+		function selectEmp(){
+			 url = "ajax/list";
+			        fetch(url)
+			        .then(data => data.json()) // 받은 결과 데이터.
+			        .then(objs => {
+			        	grid1.resetData(objs);
+			            console.log(objs);
+			        })
+			        }
+	
+	// 담당사원 ajax
+		function selectInfo(){
+		 	$.ajax({
+				url : "ajax/empInfo",
+				success : function(result){
+					grid2.resetData(result);
+					console.log(result);
+				},
+				error : function(error){
+					console.log(error)
+				}
+			}) 
+			console.log(123);
+	}
+	
+	// 이름 모달 ajax.
+	
+		
 	</script>
 </div>
 </body>
 </html>
+ 
+ 
+ 
+	
+	
+	

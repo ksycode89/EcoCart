@@ -15,22 +15,12 @@
 <body>
 	<div layout:fragment="content">
 
-		<h3>BOM 등록</h3>
+		<h3>BOM등록</h3>
 
 
  <div >
 	<div class="mb-3 row">
-			<label  class="col-lg-1 col-sm-12 col-form-label">검사번호</label>
-			<div class="col-lg-auto col-sm-6">
-			<input  id="empNum" name="empNum" class="form-control">
-			</div>
-			 <div class="col-lg-auto col-sm-6">
-			<button type="button"><i class="bi bi-search"></i></button> 
-			</div>
-			
-	</div>		
-	<div class="mb-3 row">
-			<label  class="col-lg-1 col-sm-12 col-form-label">부 서</label>
+			<label  class="col-lg-1 col-sm-12 col-form-label">모제품</label>
 			<div class="col-lg-auto col-sm-6">
 			<input  id="clientCode" name="clientCode" class="form-control">
 			</div>
@@ -40,7 +30,11 @@
 			<div class="col-lg-auto col-sm-12">
 			<input  id="clientName" name="clientName" class="form-control">
 			</div>
+			<div class="col-lg-auto col-sm-12">
+			<input  id="clientName" name="clientName" class="form-control">
+			</div>
 	</div>	
+	
 
  </div>
 	
@@ -48,43 +42,43 @@
 
 	<script>
 		const gridData = [ {
-			empNum : '1000',
-			empName : '홍길동',
-			empMail : 'abc@naver.com',
-			empTel : '010-000-0000',
-			empHire : '2022-11-14',
-			empDept : '생산',
-			empManager : '',
+			proCode : '1000',
+			proName : '홍길동',
+			bomNum : '',
+			loss : '',
+			needNum : '',
+			bomHire : '',
+			bomFire : '',
 			comments : '진행'
 		} ];
 
 		const grid = new tui.Grid({
 			el : document.getElementById('grid'),
 			data : gridData,
-			rowHeaders: ['checkbox'],
+			rowHeaders: ['rowNum'],
 			scrollX : false,
 			scrollY : false,
 			columns : [ {
-				header : '사원번호',
-				name : 'empNum'
+				header : '제품코드',
+				name : 'proCode'
 			}, {
-				header : '이름',
-				name : 'empName'
+				header : '제품명',
+				name : 'proName'
 			}, {
-				header : '메일',
-				name : 'empMail'
+				header : '수량',
+				name : 'proNum'
 			}, {
-				header : '전화번호',
-				name : 'empTel'
+				header : '로스율',
+				name : 'loss'
 			}, {
-				header : '입사일',
-				name : 'empHire'
+				header : '필요수량',
+				name : 'needNum'
 			}, {
-				header : '부서',
-				name : 'empDept'
+				header : '시작일',
+				name : 'bomHire'
 			}, {
-				header : '담당자',
-				name : 'empManager'
+				header : '종료일',
+				name : 'bomFire'
 			}, {
 				header : '비고',
 				name : 'comments'
@@ -94,97 +88,7 @@
 		});
 	</script>
 
-	<div>
-		<h3>담당자</h3>
-	</div>
-
-	<div >
-	<div class="mb-3 row">
-			<label  class="col-lg-1 col-sm-12 col-form-label">이 름</label>
-			<div class="col-lg-auto col-sm-6">
-			<input  id="empNum" name="empCode" class="form-control">
-			</div>
-			 <div class="col-lg-auto col-sm-6">
-			<button type="button"><i class="bi bi-search"></i></button> 
-			</div>
-			<div class="col-lg-auto col-sm-12">
-			<input  id="name" name="name" class="form-control">
-			</div>
-	</div>		
-	<div class="mb-3 row">
-			<label  class="col-lg-1 col-sm-12 col-form-label">부 서</label>
-			<div class="col-lg-auto col-sm-6">
-			<input  id="depCode" name="depCode" class="form-control">
-			</div>
-			<div class="col-lg-auto col-sm-6">
-			<button type="button"><i class="bi bi-search"></i></button> 
-			</div>
-			<div class="col-lg-auto col-sm-12">
-			<input  id="depName" name="depName" class="form-control">
-			</div>
-	</div>	
-
- </div>
 	
-	<div class="mb-3 row">
-			<label  class="col-lg-1 col-sm-12 col-form-label">mail</label>
-			<div class="col-lg-auto col-sm-6">
-			<input  id="mail" name="mail" class="form-control">
-			</div>
-	
-			<label  class="col-lg-1 col-sm-12 col-form-label">Tel</label>
-			<div class="col-lg-auto col-sm-6">
-			<input  id="tel" name="tel" class="form-control">
-			</div>
-	</div>	
-
-
-	<div>
-		<h3>담당사원</h3>
-	</div>
-
-	<div id="grid2"></div>
-
-	<script>
-		const gridData2 = [ {
-			empNum : '1000',
-			empName : '홍길동',
-			empMail : 'abc@naver.com',
-			empTel : '010-000-0000',
-			empHire : '2022-11-14',
-			empDept : '생산'
-
-		} ];
-
-		const grid2 = new tui.Grid({
-			el : document.getElementById('grid2'),
-			data : gridData2,
-			rowHeaders: ['rowNum'],
-			scrollX : false,
-			scrollY : false,
-			columns : [ {
-				header : '사원번호',
-				name : 'empNum'
-			}, {
-				header : '이름',
-				name : 'empName'
-			}, {
-				header : 'mail',
-				name : 'empMail'
-			}, {
-				header : 'tel',
-				name : 'empTel'
-			}, {
-				header : '입사일',
-				name : 'empHire'
-			}, {
-				header : '부서',
-				name : 'empDept'
-			}
-
-			]
-		});
-	</script>
 </div>
 </body>
 </html>

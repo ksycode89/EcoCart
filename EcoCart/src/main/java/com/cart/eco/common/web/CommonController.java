@@ -1,12 +1,22 @@
 package com.cart.eco.common.web;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cart.eco.common.service.EmpService;
+import com.cart.eco.common.service.EmpVO;
 
 
-@Controller()
+@Controller
 public class CommonController {
 	
+	
+	@Autowired 	EmpService empService;
+	 
 	@GetMapping("/login")
 	public String loginForm() {
 		
@@ -24,6 +34,34 @@ public class CommonController {
 		
 		return "common/employees";
 	}
+	
+	// 사원조회 ajax 응답.
+	
+	  @GetMapping("ajax/list")
+	  
+	  @ResponseBody 
+	  public List<EmpVO> ajaxList() {
+		  
+		  return empService.getEmpList();
+	  }
+	 
+	// 담당 사원 ajax 응답.
+	  @GetMapping("ajax/empInfo")
+	  @ResponseBody
+	  public List<EmpVO> ajaxEmpInfo() {
+		 
+		  return empService.getEmpList();
+	  }
+	  
+	// 사원 이름 모달 ajax 응답.
+	  @GetMapping("ajax/empName")
+	  @ResponseBody
+	  public List<EmpVO> ajaxEmpName() {
+		  
+		  return empService.getEmpList();
+	  }
+	
+	
 	// 공통코드이동.
 	@GetMapping("/coCode")
 	public String moveCoCode() {
@@ -50,5 +88,33 @@ public class CommonController {
 	public String productForm() {
 		
 		return "common/product";
+	}
+	
+	// 창고등록 페이지.
+	@GetMapping("/wareHouse")
+	public String wareHouseForm() {
+		
+		return "common/wareHouse";
+	}
+	
+	// BOM 등록 페이지.
+	@GetMapping("/bom")
+	public String bomForm() {
+		
+		return "common/bom";
+	}
+	
+	// BOM 역전개 페이지.
+	@GetMapping("/bomR")
+	public String bomReversalForm() {
+		
+		return "common/bomReversal";
+	}
+	
+	// 불량코드 페이지.
+	@GetMapping("/check")
+	public String checkForm() {
+		
+		return "common/check";
 	}
 }
