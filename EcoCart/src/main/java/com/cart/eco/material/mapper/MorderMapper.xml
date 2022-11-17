@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cart.eco.material.mapper.MorderMapper">
+
+	<select id="selectOrderList"
+		resultType="com.cart.eco.material.service.MorderVO">
+		select order_no, order_date,
+		c.client_code, c.client_name,
+		e.emp_name "manager", order_receiving
+		from m_order m join client c
+		on
+		m.client_code = c.client_code
+		join employees e
+		on m.manager = e.emp_num
+	</select>
+
+	<select id="detailList"
+		parameterType="com.cart.eco.material.service.MorderVO"
+		resultType="com.cart.eco.material.service.MorderdetailVO">
+		select d.pro_code, p.pro_name, d.order_num, i.standard
+		from m_order m join m_order_detail d
+		on m.order_no = d.order_no
+		join product p
+		on p.pro_code = d.pro_code
+		join product_option i
+		on p.pro_code = i.pro_code
+		where d.order_no = #{orderNo}
+	</select>
+
+</mapper>
