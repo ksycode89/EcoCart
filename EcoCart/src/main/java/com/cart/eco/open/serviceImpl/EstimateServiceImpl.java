@@ -1,6 +1,7 @@
 package com.cart.eco.open.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ public class EstimateServiceImpl implements EstimateService {
 
 	@Autowired
 	EstimateMapper mapper;
+	
 	
 	@Override
 	public List<EstimateVO> selectEstimateList() {
@@ -33,4 +35,24 @@ public class EstimateServiceImpl implements EstimateService {
 		return 0;
 	}
 
+	//견적서 상세 조회
+	@Override
+	public List<Map<String, Object>> EstimateDList(String estmtCode) {
+		// TODO Auto-generated method stub
+		return mapper.EstimateDList(estmtCode);
+	}
+
+	@Override
+	public int updateEstimate(EstimateVO vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String selectBox() {
+		return mapper.selectBox();
+		
+	}
+
+	
 }

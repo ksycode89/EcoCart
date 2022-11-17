@@ -2,15 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cart.eco.open.mapper.EstimateMapper">
 
-
+	<!-- 견적서 전체 조회 -->
 	<select id="selectEstimateList" resultType="com.cart.eco.open.service.EstimateVO">
-		select * from estimate
+		select e.estmt_code, c.client_name "client_code", e.estmt_date, e.de_date, e.all_sum,e.estmt_st
+		from estimate e, client c
+		where e.client_code = c.client_code
+		
 	</select>
 
+	
+	<!--  견적서 상세 조회 -->
+	<select id="EstimateDList" resultType="Map" parameterType="String">
+		select d.estmt_dno, d.pro_code, p.pro_name, d.sell_num, o.sell_price, (d.sell_num * o.sell_price) sum_price
+		from estimate e, estimate_D d, product p, product_option o
+		where e.estmt_code = d.estmt_code 
+		and d.pro_code = p.pro_code
+		and p.pro_code = o.pro_code
+		and e.estmt_code = #{estmtCode}
+		order by estmt_dno
+	
+	</select>
 
-
-
-
+	<select id="selectBox" resultType="com.cart.eco.open.service.EstimateVO" >
+		select * from estimates
+	</select>
 
 
 
