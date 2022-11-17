@@ -1,30 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout}">	
+	layout:decorate="~{layout/layout}">
 <head>
 <meta charset="UTF-8">
 <title>발주현황</title>
 </head>
 <body>
-<div layout:fragment="content" class="page-content">
-	<div id="content">
-		<h3>발주현황</h3>
-		&nbsp;
-		<table class="mb-5">
-		<tr>
-			<td> 부서 <input type="text"> <i class="bi bi-search"> </i> 사원 <input type="text"> <i class="bi bi-search"> </i></td>
-		</tr>
-		<tr>
-			<td> 거래처 <input type="text"> <i class="bi bi-search"></i> 발주기간 <input type="date"> ~ <input type="date"> <button id="list">조회</button> </td>
-		</tr>
-		</table>
-	</div>
-	<br>
+	<div layout:fragment="content" class="page-content">
+		<div id="content">
+			<h3>발주현황</h3>
+			&nbsp;
+			<table class="mb-5">
+				<tr id="c1">
+					<td id="detail">부서 <input type="text" id="code_group"
+						name="cg"> <i class="bi bi-search"> </i> 사원 <input
+						type="text" id="code_group" name="code_group"> <i
+						class="bi bi-search"> </i></td>
+				</tr>
+				<tr id="c2">
+					<td>거래처 <input type="text" id="client_code" name="cc">
+						<i class="bi bi-search"></i> 발주기간 <input type="date"> ~ <input
+						type="date">
+						<button type="button" id="SelectBtn">조회</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br>
+		<div id="grid"></div>
+		<div id="grid2"></div>
+		<script>
+	$(document).ready(function() {
+		$('#SelectBtn').click(selectList);
+	});
 	
-	<div id="grid"></div>
-	<div id="grid2"></div>
-	<script>
-   const gridData = [
+	function selectList() {
+		$.ajax({
+			url : '/materialListInfo',
+			success : function(data) {
+				grid.resetData(data)
+				console.log(data);
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	}
+	
+   var gridData = [
        {
           name:'',
           artist:'',
@@ -32,7 +55,7 @@
           release:'',
           genre:''
        }];
-   const grid = new tui.Grid({
+   var grid = new tui.Grid({
 	    el: document.getElementById('grid'),
 	    data: gridData,
 	    scrollX: false,
@@ -40,79 +63,90 @@
 	    rowHeaders : ['checkbox'],
 	    columns: [
 	      {
-	    	
 	        header: '발주번호',
-	        name: '부서'
+	        name: 'orderNo'
 	      },
 	      {
 	        header: '발주일자',
-	        name: '사원'
+	        name: 'orderDate'
 	      },
 	      {
-	        header: '코드',
-	        name: '거래처'
+	        header: '거래처코드',
+	        name: 'clientCode'
 	      },
 	      {
-	        header: '거래처',
-	        name: '발주기간'
+	        header: '거래처명',
+	        name: 'clientName'
 	      },
 	      {
 	        header: '납기일',
-	        name: '발주번호'
+	        name: 'orderReceiving'
 	      },
-	      {
-	        header: '입공예정일',
-	        name: '발주번호'
-	        },
 	        {
 	        header: '담당자',
-	        name: '발주번호'
+	        name: 'manager'
 	          }
 	    ]
 	  });
    
    
-  const grid2 = new tui.Grid({
+   grid.on('click',(ab)=>{
+	   console.log(ab.nativeEvent.target.innerText)
+	   $.ajax({
+		   url:'/detailList',
+		   data : {'orderNo' : ab.nativeEvent.target.innerText },
+		   success : function(data) {
+			   console.log(data);
+			   grid2.resetData(data);				   
+			   
+		   },
+		   error :  function(reject) {
+			   console.log(111)
+		   }
+	   })
+	   
+   })
+   
+   //상세조회
+  var grid2 = new tui.Grid({
     el: document.getElementById('grid2'),
+    rowHeders : ['rowNum'], 
     data: gridData,
     scrollX: false,
     scrollY: false,
+    
     columns: [
       {
-        header: 'NO',
-        name: '부서'
-      },
-      {
         header: '품번',
-        name: '사원'
+        name: 'proCode'
       },
       {
         header: '품명',
-        name: '거래처'
+        name: 'proName'
       },
       {
         header: '규격',
-        name: '발주기간'
+        name: 'standard'
       },
       {
         header: '단위',
-        name: '발주번호'
+        name: 'unit'
       },
       {
-        header: '수량',
-        name: '발주번호'
+        header: '발주수량',
+        name: 'orderNum'
         },
         {
         header: '검사수량',
-        name: '발주번호'
+        name: 'checkNum'
           },
           {
         header: '구분',
-        name: '발주번호'
+        name: 'orderGroup'
             }
     ]
   });	  
    </script>
-   </div>
+	</div>
 </body>
 </html>
