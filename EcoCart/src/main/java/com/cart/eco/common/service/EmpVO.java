@@ -17,4 +17,5 @@ public class EmpVO {
 	private String empManager; // 담당자
 	private String empId;         // 아이디
 	private String empPw;       // 비번
+	private String commets;     // 비고
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cart.eco.common.mapper.EmpMapper">
+	
+	<!--사원 조회  -->
+	<select id="selectEmpList" resultType="com.cart.eco.common.service.EmpVO">
+		SELECT emp_num,emp_name,emp_mail,emp_tel,emp_hire,emp_dept,emp_manager,comments
+        FROM employees ORDER BY emp_num
+	</select>
+
+
+
+
+</mapper>
