@@ -10,15 +10,17 @@ import lombok.Data;
 public class MorderVO {
 	// 자재발주등록
 	
-	private int OrderNo; //발주번호
+	private int orderNo; //발주번호
 	@DateTimeFormat(pattern="yyyy-MM-dd") 
-	private Date OrderDate; //발주일자
-	private String ClientCode; //거래처코드
-	private String Comments; //비고
-	private String OrderGroup; //구분
+	private Date orderDate; //발주일자
+	private String clientCode; //거래처코드
+	private String comments; //비고
+	private String orderGroup; //구분
 	@DateTimeFormat(pattern="yyyy-MM-dd") 
-	private Date OrderReceiving; //입고일
-	private int Total; //합계
-	private String Manger; // 담당자
+	private Date orderReceiving; //납기일
+	private int total; //합계
+	private String manager; // 담당자
+	
+	private String clientName; // 거래처명 조인
 	
 }
