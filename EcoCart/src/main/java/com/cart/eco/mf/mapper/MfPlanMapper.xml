@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cart.eco.mf.mapper.MfPlanMapper">
+	<select id="getMfPlanList" resultType="com.cart.eco.mf.service.MfPlanVO">
+		SELECT p.mf_plan_code, p.mf_plan_name, d.pro_code, d.pro_name, p.mf_plan_date, d.need_num, d.total_order_num, p.mf_plan_status
+		FROM mf_plan p JOIN mf_plan_detail d
+		ON p.mf_plan_code = d.mf_plan_code
+	</select>
+</mapper>

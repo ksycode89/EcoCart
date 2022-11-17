@@ -11,87 +11,33 @@
 	<div layout:fragment="header" class="page-heading"><h2>생산계획조회</h2></div>
 	<div layout:fragment="content" class="page-content">
 		<div>
-			<table>
-				<tr>
-					<td>진행상황</td>
-					<td>
-						<label><input type="radio" name="planStatue" data-filter="*" value="all" checked>전체</label>&nbsp;
-						<label><input type="radio" name="planStatue" data-filter="진행" value="start">진행</label>&nbsp;
-						<label><input type="radio" name="planStatue" data-filter="완료" value="finish">완료</label>&nbsp;
-						<label><input type="radio" name="planStatue" data-filter="취소" value="cancel">취소</label>
-					</td>
-				</tr>
-				<tr>
-					<td>계획일자</td>
-					<td>
-						<input type="date" id="searchPlanDate" name="searchPlanDate"> - 
-						<input type="date" id="searchPlanDate" name="searchPlanDate">
-						<button type="button">검색</button>
-					</td>
-				</tr>
-				<tr>
-					<td>생산계획명</td>
-					<td><input type="text" id="searchPlanName" name="searchPlanName" placeholder="우엥">
-						<button type="button">검색</button></td>
-				</tr>
-			</table>
-			<br>
+			<div class="filters" style="height:35px">
+				<label for="planStatus" style="width:100px">진행상황</label>
+				<label><input type="radio" name="planStatus" data-filter="*" value="all" checked>전체</label>&nbsp;
+				<label><input type="radio" name="planStatus" data-filter="대기" value="start">대기</label>&nbsp;
+				<label><input type="radio" name="planStatus" data-filter="진행" value="finish">진행</label>&nbsp;
+				<label><input type="radio" name="planStatus" data-filter="완료" value="cancel">완료</label>
+			</div>
+			<div style="height:50px">
+				<label for="planDate" style="width:100px">계획일자</label>
+				<input type="date" class="form-control" id="searchPlanDate" name="searchPlanDate" style="width:200px; display:inline">&nbsp;
+				<button type="button" class="btn btn-sm btn-primary">검색</button>
+			</div>
+			<div style="height:50px; margin-bottom:10px">
+				<label for="planName" style="width:100px">생산계획명</label>
+				<input type="text" class="form-control" id="searchPlanName" name="searchPlanName" style="width:200px; display:inline" placeholder="우엥">&nbsp;
+				<button type="button" class="btn btn-sm btn-primary">검색</button>
+			</div>
 		</div>
 	
 		<div id="planListId"></div>
 			
 		<script>
-	    const gridData = [
-	   		{
-	   			mfPlanCode:'1',
-	   			mfPlanName:'테스트1',
-	   			proCode:'001',
-	   			proName:'test1',
-	   			mfPlanDate:'2022-11-14',
-	   			deDate:'2022-12-12',
-	   			needNum:'20',
-	   			mfPlanStatus:'진행'
-	   		},
-	   		{
-	   			mfPlanCode:'2',
-	   			mfPlanName:'테스트2',
-	   			proCode:'002',
-	   			proName:'test2',
-	   			mfPlanDate:'2022-11-01',
-	   			deDate:'2022-11-13',
-	   			needNum:'10',
-	   			mfPlanStatus:'진행'
-	   		},
-	   		{
-	   			mfPlanCode:'3',
-	   			mfPlanName:'테스트3',
-	   			proCode:'001',
-	   			proName:'test1',
-	   			mfPlanDate:'2022-11-14',
-	   			deDate:'2022-12-12',
-	   			needNum:'30',
-	   			mfPlanStatus:'취소'
-	   		},
-	   		{
-	   			mfPlanCode:'4',
-	   			mfPlanName:'테스트4',
-	   			proCode:'003',
-	   			proName:'test3',
-	   			mfPlanDate:'2022-10-10',
-	   			deDate:'2022-11-01',
-	   			needNum:'20',
-	   			mfPlanStatus:'완료'
-	   		},
-	   	];
-	    
-		const planListGrid = new tui.Grid({
+	    const planListGrid = new tui.Grid({
 			el: document.getElementById('planListId'),
-			data: gridData,
 			scrollX: false,
 			scrollY: false,
-			pageOptions: {
-		    	perPage: 2
-		    },
+			rowHeaders: ['rowNum'],
 			columns: [
 		        {
 		          header: '생산계획코드',
@@ -111,15 +57,19 @@
 		        },
 		        {
 		          header: '계획일자',
-		          name: 'mfPlanDate'
+		          name: 'mfPlanDate',
 		        },
 		        {
 		          header: '납기일자',
-		          name: 'deDate'
+		          name: 'deDate',
 		        },
 		        {
 		          header: '필요수량',
 		          name: 'needNum'
+		        },
+		        {
+		          header: '지시수량',
+		          name: 'totalOrderNum'
 		        },
 		        {
 		          header: '진행상황',
@@ -127,6 +77,23 @@
 		        }
 			]
 		});
+	    
+	    document.addEventListener("DOMContentLoaded", mfPlanList1)
+	    function mfPlanList1(){
+	    	$.ajax({
+	    		url:'/mfPlanList1',
+	    		success:function(data){
+	    			planListGrid.resetData(data);
+	    		},
+	    		error:function(error){
+	    			console.log(error);
+	    		}
+	    	})
+	    }
+	    
+	    testBtn.addEventListener('click', () => {
+	    });
+	    
 	    </script>
     </div>
 </body>

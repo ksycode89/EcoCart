@@ -21,33 +21,37 @@
 			</ul>
 			<div class="tab-content" id="mfTabContent">
 				<div class="tab-pane fade show active" id="planInsert" role="tabpanel" aria-labelledby="planInsertTab">
+					<div style="margin-top:10px; margin-bottom:10px">
+						<button type="button" class="btn btn-sm btn-primary">계획등록</button>
+					</div>
 					<div id="planInsertGridId"></div>
 					<div style="margin-top:10px">
-						<button type="button" id="orderBtn" data-bs-toggle="modal" data-bs-target="#orderModal">주문서 조회</button>&nbsp;
-						<button type="button">계획행 추가</button>&nbsp;
-						<button type="button">계획행 삭제</button>
-						<button type="button" style="float:right">생산계획등록</button>
+						<button type="button" class="btn btn-sm btn-primary" id="orderBtn" data-bs-toggle="modal" data-bs-target="#orderModal">주문서 조회</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-primary">계획행 추가</button>&nbsp;
+						<button type="button" class="btn btn-sm btn-primary">계획행 삭제</button>
 					</div>
 				</div>
 				<div class="tab-pane fade" id="planDelete" role="tabpanel" aria-labelledby="planDeleteTab">
+					<div style="margin-top:10px; margin-bottom:10px">
+						<button type="button" class="btn btn-sm btn-primary">계획삭제</button>						
+					</div>
 					<div id="planDeleteGridId"></div>
 				</div>
-			</div>
-			<br>
+			</div><br>
 			<!-- Modal -->
-			<div class="modal fade" id="orderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal fade" id="orderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="orderList" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="staticBackdropLabel">주문서 조회</h5>
+							<h5 class="modal-title" id="orderList">주문서 조회</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
 							<div id="modalGridId"></div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-							<button type="button" class="btn btn-primary">등록</button>
+							<button type="button" class="btn btn-sm btn-primary">선택</button>
+							<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">닫기</button>						
 						</div>
 					</div>
 				</div>
@@ -188,8 +192,47 @@
 		data: gridData,
 		scrollX: false,
 		scrollY: false,
+		rowHeaders: ['checkbox'],
 		columns: [
 	        {
+	          header: '생산계획코드',
+	          name: 'mfPlanCode'
+	        },
+	        {
+	          header: '생산계획명',
+	          name: 'mfPlanName'
+	        },
+	        {
+	          header: '주문코드',
+	          name: 'orderCode'
+	        },
+	        {
+	          header: '제품코드',
+	          name: 'proCode'
+	        },
+	        {
+	          header: '제품명',
+	          name: 'proName'
+	        },
+	        {
+	          header: '납기일자',
+	          name: 'deDate'
+	        },
+	        {
+	          header: '필요수량',
+	          name: 'needNum'
+	        }
+		]
+	});
+	
+	const planDeleteGrid = new tui.Grid({
+		el: document.getElementById('planDeleteGridId'),
+		data: gridData2,
+		scrollX: false,
+		scrollY: false,
+		rowHeaders: ['checkbox'],
+		columns: [
+			{
 	          header: '생산계획코드',
 	          name: 'mfPlanCode'
 	        },
@@ -218,49 +261,8 @@
 	          name: 'needNum'
 	        },
 	        {
-	          header: '진행상황',
-	          name: 'mfPlanStatus'
-	        }
-		]
-	});
-	
-	const planDeleteGrid = new tui.Grid({
-		el: document.getElementById('planDeleteGridId'),
-		data: gridData2,
-		scrollX: false,
-		scrollY: false,
-		columns: [
-	        {
-	          header: '주문서코드',
-	          name: 'orderCode'
-	        },
-	        {
-	          header: '생산계획명',
-	          name: 'mfPlanName'
-	        },
-	        {
-	          header: '제품코드',
-	          name: 'proCode'
-	        },
-	        {
-	          header: '제품명',
-	          name: 'proName'
-	        },
-	        {
-	          header: '계획일자',
-	          name: 'mfPlanDate'
-	        },
-	        {
-	          header: '납기일자',
-	          name: 'deDate'
-	        },
-	        {
-	          header: '필요수량',
-	          name: 'needNum'
-	        },
-	        {
-	          header: '진행상황',
-	          name: 'mfPlanStatus'
+	          header: '지시수량',
+	          name: 'totalOrderNum'
 	        }
 		]
 	});
