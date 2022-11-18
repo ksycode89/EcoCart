@@ -7,7 +7,7 @@ import com.cart.eco.common.service.EmpVO;
 public interface EmpMapper {
 
 	// 사원조회
-	public List<EmpVO> selectEmpList();
+	public List<EmpVO> selectEmpList(EmpVO vo);
 	
 
 }
