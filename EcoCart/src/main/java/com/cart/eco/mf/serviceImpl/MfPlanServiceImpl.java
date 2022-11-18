@@ -31,6 +31,11 @@ public class MfPlanServiceImpl implements MfPlanService {
 	}
 
 	@Override
+	public List<MfPlanVO> getMfDeletePlanList() {
+		return mapper.getMfDeletePlanList();
+	}
+	
+	@Override
 	public int deleteMfPlan(MfPlanVO mfvo) {
 		return mapper.deleteMfPlan(mfvo);
 	}

@@ -33,7 +33,7 @@
 				</div>
 				<div class="tab-pane fade" id="planDelete" role="tabpanel" aria-labelledby="planDeleteTab">
 					<div style="margin-top:10px; margin-bottom:10px">
-						<button type="button" class="btn btn-sm btn-primary">계획삭제</button>						
+						<button type="button" class="btn btn-sm btn-primary" id="planDeleteSearchBtn">계획삭제</button>						
 					</div>
 					<div id="planDeleteGridId"></div>
 				</div>
@@ -200,7 +200,8 @@
 	        },
 	        {
 	          header: '생산계획명',
-	          name: 'mfPlanName'
+	          name: 'mfPlanName',
+	          editor: 'text'
 	        },
 	        {
 	          header: '주문코드',
@@ -215,19 +216,20 @@
 	          name: 'proName'
 	        },
 	        {
-	          header: '납기일자',
-	          name: 'deDate'
+		      header: '필요수량',
+	          name: 'needNum',
+	          editor: 'text'
 	        },
 	        {
-	          header: '필요수량',
-	          name: 'needNum'
+	          header: '납기일자',
+	          name: 'deDate'
 	        }
+	        
 		]
 	});
 	
 	const planDeleteGrid = new tui.Grid({
 		el: document.getElementById('planDeleteGridId'),
-		data: gridData2,
 		scrollX: false,
 		scrollY: false,
 		rowHeaders: ['checkbox'],
@@ -267,6 +269,20 @@
 		]
 	});
 	
+	document.addEventListener('DOMContentLoaded', mfPlanDeleteList)
+	
+	function mfPlanDeleteList(){
+    	$.ajax({
+    		url:'/mfPlanDeleteList',
+    		success:function(data){
+    			planDeleteGrid.resetData(data);
+    		},
+    		error:function(error){
+    			console.log(error);
+    		}
+    	})
+    }
+	
 	var modalGrid = new tui.Grid({
 		el: document.getElementById('modalGridId'),
 		data: gridData3,
@@ -279,32 +295,16 @@
 	          name: 'orderCode'
 	        },
 	        {
-	          header: '생산계획명',
-	          name: 'mfPlanName'
-	        },
-	        {
-	          header: '제품코드',
-	          name: 'proCode'
-	        },
-	        {
 	          header: '제품명',
 	          name: 'proName'
 	        },
 	        {
-	          header: '계획일자',
-	          name: 'mfPlanDate'
+	          header: '필요수량',
+		      name: 'needNum'
 	        },
 	        {
 	          header: '납기일자',
-	          name: 'deDate'
-	        },
-	        {
-	          header: '필요수량',
-	          name: 'needNum'
-	        },
-	        {
-	          header: '진행상황',
-	          name: 'mfPlanStatus'
+		      name: 'deDate'
 	        }
 		]
 	});
