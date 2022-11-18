@@ -7,10 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>사원관리</title>
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
 
 </head>
 <body>
@@ -26,35 +23,89 @@
 			<input  id="empNum" name="empNum" class="form-control">
 			</div>
 			 <div class="col-lg-auto col-sm-6">
-			<button type="button"><i class="bi bi-search" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></button> 
+			<button type="button"><i class="bi bi-search" data-bs-toggle="modal" data-bs-target="#large"></i></button> 
 			</div>
 			<div class="col-lg-auto col-sm-12">
 			<input  id="empName" name="empName" class="form-control">
 			</div>
 	</div>
 	
-	<!-- 이름 모달 -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">사원코드</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-      <!--그리드  -->
-       <div id="gridM" class="mb-3 row"></div>
+										<!-- 이름 Modal lg size -->
+                                        <div class="me-1 mb-1 d-inline-block">
+                                           
+                                            <!--large size Modal -->
+                                            <div class="modal fade text-left" id="large" tabindex="-1" role="dialog"
+                                                aria-labelledby="myModalLabel17" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+                                                    role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title" id="myModalLabel17">사원목록</h4>
+                                                            <button type="button" class="close" data-bs-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <i data-feather="x"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <!--그리드  -->
+      														 <div id="gridM" class="mb-3 row"></div>
        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">확인</button>
-      </div>
-    </div>
-  </div>
-</div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-light-secondary"
+                                                                data-bs-dismiss="modal">
+                                                                <i class="bx bx-x d-block d-sm-none"></i>
+                                                                <span class="d-none d-sm-block">Close</span>
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary ml-1"
+                                                                data-bs-dismiss="modal">
+                                                                <i class="bx bx-check d-block d-sm-none"></i>
+                                                                <span class="d-none d-sm-block">확인</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 	
 	
+										<!--부서 Modal lg size -->
+                                        <div class="me-1 mb-1 d-inline-block">
+                                           
+                                            <div class="modal fade text-left" id="large2" tabindex="-1" role="dialog"
+                                                aria-labelledby="myModalLabel17" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+                                                    role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title" id="myModalLabel17">부서목록</h4>
+                                                            <button type="button" class="close" data-bs-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <i data-feather="x"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                           <!--그리드  -->
+      														 <div id="gridD" class="mb-3 row"></div>
+       
+                                                           
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-light-secondary"
+                                                                data-bs-dismiss="modal">
+                                                                <i class="bx bx-x d-block d-sm-none"></i>
+                                                                <span class="d-none d-sm-block">Close</span>
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary ml-1"
+                                                                data-bs-dismiss="modal">
+                                                                <i class="bx bx-check d-block d-sm-none"></i>
+                                                                <span class="d-none d-sm-block">확인</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 	
 	
 	
@@ -65,7 +116,7 @@
 			<input  id="clientCode" name="clientCode" class="form-control">
 			</div>
 			<div class="col-lg-auto col-sm-6">
-			<button type="button"><i class="bi bi-search"></i></button> 
+			<button type="button"><i class="bi bi-search" data-bs-toggle="modal" data-bs-target="#large2" ></i></button> 
 			</div>
 			<div class="col-lg-auto col-sm-12">
 			<input  id="clientName" name="clientName" class="form-control">
@@ -157,15 +208,51 @@
 		});
 		
 		
+ 	//cosole.log(large);
 		
-		exampleModal.addEventListener('shown.bs.modal', () => {
+		large.addEventListener('shown.bs.modal', () => {
 	
 			gridM.refreshLayout(); //모달창 새로고침
 			
+			// 이름 모달 ajax.
 			fetch("ajax/empName")
 			.then(data => data.json())
 			.then (objs => {
 				gridM.resetData(objs);
+			})
+	 
+	   	      
+	   	      
+	   	 })
+	   	 
+	   	 /*부서 모달 */
+
+		const gridD = new tui.Grid({
+			el : document.getElementById('gridD'),
+			rowHeaders: ['checkbox'],
+			scrollX : false,
+			scrollY : false,
+			columns : [ {
+				header : '부서코드',
+				name : 'empNum'
+			}, {
+				header : '부서명',
+				name : 'empName'
+			}
+			]
+		});
+		
+		
+		
+		large2.addEventListener('shown.bs.modal', () => {
+	
+			gridD.refreshLayout(); //모달창 새로고침
+			
+			// 부서 모달 ajax.
+			fetch("ajax/depName")
+			.then(data => data.json())
+			.then (objs => {
+				gridD.resetData(objs);
 			})
 	 
 	   	      
@@ -197,7 +284,8 @@
 				name : 'empTel'
 			}, {
 				header : '입사일',
-				name : 'empHire'
+				name : 'empHire',
+				editor : 'datePicker'
 			}, {
 				header : '부서',
 				name : 'empDept'
@@ -272,7 +360,19 @@
 			console.log(123);
 	}
 	
-	// 이름 모달 ajax.
+	
+	// 모달 안 그리드 클릭시 input 태그에 값 넣기.
+	gridM.on("click", event => {
+		// getRow : 그리드 한 행에서 td값 가져오기.
+		//console.log(event.nativeEvent.target.innerText);  td 값. 셀값
+		console.log(gridM.getRow(event.rowKey))
+		// input 태그에 값 넣어주기.
+		$('#empNum').val(gridM.getRow(event.rowKey).empNum);
+		$('#empName').val(gridM.getRow(event.rowKey)['empName']);
+		// 모달창 숨기기.
+		$('#large').modal('hide');
+	})
+	
 	
 		
 	</script>

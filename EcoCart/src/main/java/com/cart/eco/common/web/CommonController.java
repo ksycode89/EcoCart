@@ -61,6 +61,13 @@ public class CommonController {
 		  return empService.getEmpList();
 	  }
 	
+	// 부서 모달 ajax 응답.
+		  @GetMapping("ajax/depName")
+		  @ResponseBody
+		  public List<EmpVO> ajaxDepName() {
+			  
+			  return empService.getEmpList();
+		  }
 	
 	// 공통코드이동.
 	@GetMapping("/coCode")

@@ -19,8 +19,7 @@ public class EstimateController {
 	@Autowired
 	EstimateService estimateService;
 	
-	@Autowired
-	OrdersService oerderService;
+	
 	
 	
 	//견적 페이지 보여주는거 (+전체조회)
