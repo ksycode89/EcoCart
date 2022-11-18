@@ -110,8 +110,46 @@
             </div>
          
          </div>
+          
+       
+      </div>
+      
+      <div style="display: flex">
+            <div >
+     	        <button class="btn btn-primary" onclick="commonBtnDo()">조회</button>
+            </div>
+            <div>
+     	        <button class="btn btn-primary" onclick="commonBtnModi()">저장</button>
+            </div>
+              <div>
+     	        <button class="btn btn-primary" onclick="commonBtnInsert()">등록</button>
+            </div>
+            
+            
+       </div>
+      
+    <!--   <div class="row">
+
+         <div class="col-md-3 mb-1">
+            <div class="input-group mb-3">
+               <label for="staticEmail" class="col-sm-3 col-form-label">그룹코드</label>
+               <input type="text" id="commonCodeCo" class="form-control" placeholder="Common Code"
+                  aria-label="Recipient's username" aria-describedby="button-addon2">
+               <span class="input-group-text" data-bs-toggle="modal" data-bs-target="#large2" id="basic-addon1" style="cursor:pointer"  ><i
+                  class="bi bi-search"></i></span>
+            </div>
+         </div>
+         <div class="col-md-3 mb-1">
+            <div class="input-group mb-3">
+               <label for="staticEmail" class="col-sm-3 col-form-label">그룹명</label>
+               <input type="text" id="commonNameCo" class="form-control" placeholder="Code Name"
+                  aria-label="Recipient's username" aria-describedby="button-addon2"
+                  readonly="readonly">
+
+            </div>
          
-            <div class="col-md-3 mb-1">
+         </div>
+          <div class="col-md-3 mb-1">
             <div class="input-group mb-3">
                <button class="btn btn-primary" onclick="commonBtnDo()">조회</button>
             </div>
@@ -122,8 +160,10 @@
                <button class="btn btn-primary" onclick="commonBtnDo()">초기화</button>
             </div>
          </div>
-
+           
       </div>
+       -->
+ 
       
       <!--modal  -->
             <!-- 이름 Modal lg size -->
@@ -222,7 +262,7 @@
                <div id="common-code-detail"></div>
             </section>
          </div>
-
+		<div style="display: none" id="common-code-insert" class="mt-10"></div>
       </div>
       <script type="text/javascript">
       
@@ -246,27 +286,67 @@
          
          const grid3 = new tui.Grid({
             el : document.getElementById('common-code-detail'), // Container element
-            scrollX : false,
-            scrollY : false,
+            scrollY : true,
+            rowHeaders: ['rowNum'],
             columns : [ {
-               header : 'no',
-               name : 'estmtDno'
+               header : '공통코드',
+               name : 'codeId', 
+              
+     
+               
             }, {
-               header : '코드',
-               name : 'proCode'
+               header : '코드이름',
+               name : 'codeName',
+               
+                minWidth: 200,
             }, {
-               header : '코드명',
-               name : 'proCode'
+               header : '코드구분',
+               name : 'codeGroup'
+               
             }, {
-               header : '코드설명',
-               name : 'proCode'
-            }, {
+               header : '코드내용',
+               name : 'codeContent',
+             
+            },{
                header : '사용여부',
-               name : 'proCode'
-            }]
+               name : 'codeUsed'
+                
+            }
+            ]
          });
          
-         
+         const gridInsert = new tui.Grid({
+             el : document.getElementById('common-code-insert'), // Container element
+             scrollY : true,
+             rowHeaders: ['rowNum'],
+             columns : [ {
+                header : '공통코드',
+                name : 'codeId', 
+                editor: 'text'
+                
+             }, {
+                header : '코드이름',
+                name : 'codeName',
+                editor: 'text',
+                
+                 minWidth: 200,
+             }, {
+                header : '코드구분',
+                name : 'codeGroup',
+                	editor: 'text'
+                
+             }, {
+                header : '코드내용',
+                name : 'codeContent',
+                editor: 'text'
+              
+             },{
+                header : '사용여부',
+                name : 'codeUsed',
+                editor: 'text'
+             }
+             ]
+          });
          
          
          const gridCommon = new tui.Grid({
@@ -337,7 +417,40 @@
          
          //단건누를시 우측에서 상세정보
          grid2.on('click',ev=>{
-            console.log(ev)
+        	let groupCheck = grid2.getRow(ev.rowKey).codeGroup
+        	if (groupCheck != null){
+        		   $.ajax({
+                       url : "/callCommon",
+                       type: "post",
+                       data : {codeId :grid2.getRow(ev.rowKey).codeId },
+                       success : function(data){
+                          console.log(data)
+                          grid3.resetData(data)
+                          
+                       },
+                       error : err=>{
+                          console.log(err)
+                       }
+                    })
+        		
+        	}else{
+        		  $.ajax({
+                      url : "/callCommon",
+                      type: "post",
+                      data : {codeGroup :grid2.getRow(ev.rowKey).codeId },
+                      success : function(data){
+                         console.log(data)
+                         grid3.resetData(data)
+                         
+                      },
+                      error : err=>{
+                         console.log(err)
+                      }
+                   })
+        		
+        	}
+            console.log()
+            
             
          })
          
@@ -349,6 +462,7 @@
          }
          //공통코드조회
          function commonBtnDo(){
+        	 
             $.ajax({
                url : "/callCommon",
                type: "post",
@@ -365,6 +479,19 @@
                
                
             }
+         
+         	function commonBtnInsert(){
+
+         		$('#common-code-insert').css('display','block')
+         		 gridInsert.refreshLayout();
+         		gridInsert.appendRow()
+         		
+         	}
+         	
+         	gridInsert.on('click',ev=>{
+         		console.log(ev)
+         		
+         	})
          
       </script>
       <!-- end layout -->
