@@ -13,20 +13,22 @@
 		<div>
 			<div class="filters" style="height:35px">
 				<label for="planStatus" style="width:100px">진행상황</label>
-				<label><input type="radio" name="planStatus" data-filter="*" value="all" checked>전체</label>&nbsp;
-				<label><input type="radio" name="planStatus" data-filter="대기" value="start">대기</label>&nbsp;
-				<label><input type="radio" name="planStatus" data-filter="진행" value="finish">진행</label>&nbsp;
-				<label><input type="radio" name="planStatus" data-filter="완료" value="cancel">완료</label>
+				<label><input type="radio" id="planAll" name="planStatus" value="all" checked>전체</label>&nbsp;
+				<label><input type="radio" id="planWait" name="planStatus" value="wait">대기</label>&nbsp;
+				<label><input type="radio" id="planStart" name="planStatus" value="start">진행</label>&nbsp;
+				<label><input type="radio" id="planFinish" name="planStatus" value="finish">완료</label>
 			</div>
 			<div style="height:50px">
 				<label for="planDate" style="width:100px">계획일자</label>
 				<input type="date" class="form-control" id="searchPlanDate" name="searchPlanDate" style="width:200px; display:inline">&nbsp;
-				<button type="button" class="btn btn-sm btn-primary">검색</button>
+				<button type="button" class="btn btn-sm btn-primary" id="planDateSearch">검색</button>&nbsp;
+				<button type="button" class="btn btn-sm btn-secondary" id="planDateReset">초기화</button>
 			</div>
 			<div style="height:50px; margin-bottom:10px">
 				<label for="planName" style="width:100px">생산계획명</label>
 				<input type="text" class="form-control" id="searchPlanName" name="searchPlanName" style="width:200px; display:inline" placeholder="우엥">&nbsp;
-				<button type="button" class="btn btn-sm btn-primary">검색</button>
+				<button type="button" class="btn btn-sm btn-primary" id="planNameSearch">검색</button>&nbsp;
+				<button type="button" class="btn btn-sm btn-secondary" id="planNameReset">초기화</button>
 			</div>
 		</div>
 	
@@ -45,7 +47,8 @@
 		        },
 		        {
 		          header: '생산계획명',
-		          name: 'mfPlanName'
+		          name: 'mfPlanName',
+		          filter: 'text'
 		        },
 		        {
 		          header: '제품코드',
@@ -58,10 +61,12 @@
 		        {
 		          header: '계획일자',
 		          name: 'mfPlanDate',
+		          filter: 'date'
 		        },
 		        {
 		          header: '납기일자',
 		          name: 'deDate',
+		          filter: 'date'
 		        },
 		        {
 		          header: '필요수량',
@@ -73,7 +78,8 @@
 		        },
 		        {
 		          header: '진행상황',
-		          name: 'mfPlanStatus'
+		          name: 'mfPlanStatus',
+		          filter: 'text'
 		        }
 			]
 		});
@@ -91,10 +97,41 @@
 	    	})
 	    }
 	    
-	    testBtn.addEventListener('click', () => {
-	    });
+	    planAll.addEventListener('click', () => {
+	    	planListGrid.unfilter('mfPlanStatus');
+	    })
 	    
-	    </script>
+	    planWait.addEventListener('click', () => {
+	    	planListGrid.filter('mfPlanStatus', [{code:'eq', value:'대기'}]);
+	    })
+	    
+	    planStart.addEventListener('click', () => {
+	    	planListGrid.filter('mfPlanStatus', [{code:'eq', value:'진행'}]);
+	    })
+	    
+	    planFinish.addEventListener('click', () => {
+	    	planListGrid.filter('mfPlanStatus', [{code:'eq', value:'완료'}]);
+	    })
+	    
+	    planDateSearch.addEventListener('click', () => {
+	    	planListGrid.filter('mfPlanDate', [{code:'beforeEq', value:$('#searchPlanDate').val()}]);
+	    })
+	    
+	    planDateReset.addEventListener('click', () => {
+	    	document.getElementById('searchPlanDate').value='';
+	    	planListGrid.unfilter('mfPlanDate');
+	    })
+	    
+	    planNameSearch.addEventListener('click', () => {
+	    	planListGrid.filter('mfPlanName', [{code:'contain', value:$('#searchPlanName').val()}]);
+	    })
+	    
+	    planNameReset.addEventListener('click', () => {
+	    	document.getElementById('searchPlanName').value='';
+	    	planListGrid.unfilter('mfPlanName');
+	    })
+	    
+	    </script>	
     </div>
 </body>
 </html>

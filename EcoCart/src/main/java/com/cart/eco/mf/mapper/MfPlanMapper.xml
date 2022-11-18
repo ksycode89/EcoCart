@@ -4,8 +4,32 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cart.eco.mf.mapper.MfPlanMapper">
 	<select id="getMfPlanList" resultType="com.cart.eco.mf.service.MfPlanVO">
-		SELECT p.mf_plan_code, p.mf_plan_name, d.pro_code, d.pro_name, p.mf_plan_date, d.need_num, d.total_order_num, p.mf_plan_status
+		SELECT p.mf_plan_code, p.mf_plan_name, d.pro_code, d.pro_name, p.mf_plan_date, o.de_date, d.need_num, d.total_order_num, p.mf_plan_status
 		FROM mf_plan p JOIN mf_plan_detail d
 		ON p.mf_plan_code = d.mf_plan_code
+		LEFT JOIN orders o
+		ON p.order_code = o.order_code
 	</select>
+	
+	<select id="getOrderList" parameterType="com.cart.eco.mf.service.MfPlanVO" resultType="com.cart.eco.mf.service.MfPlanVO">
+		
+	</select>
+	
+	<insert id="insertMfPlan">
+	
+	</insert>
+	
+	<select id="getMfDeletePlanList" resultType="com.cart.eco.mf.service.MfPlanVO">
+		SELECT p.mf_plan_code, p.mf_plan_name, d.pro_code, d.pro_name, p.mf_plan_date, o.de_date, d.need_num, d.total_order_num
+		FROM mf_plan p JOIN mf_plan_detail d
+		ON p.mf_plan_code = d.mf_plan_code
+		LEFT JOIN orders o
+		ON p.order_code = o.order_code
+		WHERE p.mf_plan_status != '완료'
+	</select>
+	
+	<delete id="deleteMfPlan">
+		DELETE FROM mf_plan_code
+		WHERE mf_plan_code = #{mfPlanCode}
+	</delete>
 </mapper>

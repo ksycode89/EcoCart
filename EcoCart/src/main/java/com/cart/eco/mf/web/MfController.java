@@ -35,6 +35,12 @@ public class MfController {
 		return "manufacture/mfPlanManage";
 	}
 	
+	@GetMapping("/mfPlanDeleteList")
+	@ResponseBody
+	public List<MfPlanVO> mfPlanDeleteList(){
+		return mfplan.getMfDeletePlanList();
+	}
+	
 	@GetMapping("/mfOrderList")
 	public String mfOrderList(Model model) {
 		return "manufacture/mfOrderList";
