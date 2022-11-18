@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cart.eco.common.mapper.CommonMapper">
+
+<!--공통코드 - 부서코드, 부서이름 조회  -->
+	<select id="selectDept" resultType="com.cart.eco.common.service.CommonVO">
+		SELECT code_id, code_name
+		FROM common_code
+		WHERE code_group ='dept'
+	</select>
+	
+	   <select id="callClient" resultType="com.cart.eco.common.service.ClientVO">
+      select client_code from client
+   </select>
+   
+   <select id="callCommon" resultType="com.cart.eco.common.service.CommonVO" parameterType="com.cart.eco.common.service.CommonVO">
+      select * 
+      from common_code 
+      <where>
+         <if test="codeId != null and !codeId.equals('')">
+            code_id = #{codeId}
+         </if>
+         <if test="codeName != null and !ccodeName.equals('')">
+            code_name = #{codeName}
+         </if>
+         <if test="codeGroup != null and !codeGroup.equals('')">
+            code_group = #{codeGroup}
+         </if>
+         <if test="codeUsed != null and !codeUsed.equals('')">
+            code_used = #{codeUsed}
+         </if>
+         
+      </where>
+   </select>
+	
+</mapper>

@@ -5,8 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cart.eco.common.service.ClientVO;
+import com.cart.eco.common.service.CommonService;
+import com.cart.eco.common.service.CommonVO;
 import com.cart.eco.common.service.EmpService;
 import com.cart.eco.common.service.EmpVO;
 
@@ -16,6 +20,8 @@ public class CommonController {
 	
 	
 	@Autowired 	EmpService empService;
+	@Autowired CommonService commonService;
+	
 	 
 	@GetMapping("/login")
 	public String loginForm() {
@@ -34,7 +40,7 @@ public class CommonController {
 		
 		return "common/employees";
 	}
-	
+	//===================================================================================//
 	// 사원조회 ajax 응답.
 	
 	  @GetMapping("ajax/list")
@@ -62,14 +68,34 @@ public class CommonController {
 	  }
 	
 	// 부서 모달 ajax 응답.
-		  @GetMapping("ajax/depName")
+		  @GetMapping("ajax/dept")
 		  @ResponseBody
-		  public List<EmpVO> ajaxDepName() {
+		  public List<CommonVO> ajaxDepName() {
 			  
-			  return empService.getEmpList();
+			  return commonService.getDept();
 		  }
+		//공통코드가져오기
+	      
+	      //거래처 들고오기
+	         @GetMapping("/callClient")
+	         @ResponseBody
+	         public List<ClientVO>callClient(){
+	            
+	            return commonService.callClient();
+	         }
+	         
+	         //공통코드가져오기
+	         @PostMapping("/callCommon")
+	         @ResponseBody
+	         public List<CommonVO>callCommon(CommonVO vo){
+	            
+	            System.out.println("callCommon : "+commonService.callCommon(vo));
+	            return commonService.callCommon(vo);
+	         }	  
+	//===================================================================================//
 	
-	// 공통코드이동.
+	         
+	         // 공통코드이동.
 	@GetMapping("/coCode")
 	public String moveCoCode() {
 		
@@ -124,4 +150,8 @@ public class CommonController {
 		
 		return "common/check";
 	}
+	
+	
+	
+	
 }

@@ -1,220 +1,375 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/layout/layout}">
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{/layout/layout}">
+   
 <head>
 <meta charset="UTF-8">
 <title>공통코드</title>
+
 </head>
 <body>
-	<div layout:fragment="header">
+   <div layout:fragment="header">
 
-		<header class='mb-3'>
-			<nav class="navbar navbar-expand navbar-light ">
-			<div class="container-fluid">
+      <header class='mb-3'>
+         <nav class="navbar navbar-expand navbar-light ">
+         <div class="container-fluid">
+
+               
+               <button class="navbar-toggler" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent" aria-expanded="false"
+                  aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <h1>공통코드관리</h1>   
+                  <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                     <li class="nav-item dropdown me-1"><a
+                        class="nav-link active dropdown-toggle" href="#"
+                        data-bs-toggle="dropdown" aria-expanded="false"> <i
+                           class='bi bi-envelope bi-sub fs-4 text-gray-600'></i>
+                     </a>
+                        <ul class="dropdown-menu dropdown-menu-end"
+                           aria-labelledby="dropdownMenuButton">
+                           <li>
+                              <h6 class="dropdown-header">Mail</h6>
+                           </li>
+                           <li><a class="dropdown-item" href="#">No new mail</a></li>
+                        </ul></li>
+                     <li class="nav-item dropdown me-3"><a
+                        class="nav-link active dropdown-toggle" href="#"
+                        data-bs-toggle="dropdown" aria-expanded="false"> <i
+                           class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
+                     </a>
+                        <ul class="dropdown-menu dropdown-menu-end"
+                           aria-labelledby="dropdownMenuButton">
+                           <li>
+                              <h6 class="dropdown-header">Notifications</h6>
+                           </li>
+                           <li><a class="dropdown-item">No notification available</a></li>
+                        </ul></li>
+                  </ul>
+                  <div class="dropdown">
+                     <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="user-menu d-flex">
+                           <div class="user-name text-end me-3">
+                              <h6 class="mb-0 text-gray-600">John Ducky</h6>
+                              <p class="mb-0 text-sm text-gray-600">Administrator</p>
+                           </div>
+                           <div class="user-img d-flex align-items-center">
+                              <div class="avatar avatar-md">
+                                 <img src="assets/images/faces/1.jpg">
+                              </div>
+                           </div>
+                        </div>
+                     </a>
+                     <ul class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="dropdownMenuButton">
+                        <li>
+                           <h6 class="dropdown-header">Hello, John!</h6>
+                        </li>
+                        <li><a class="dropdown-item" href="#"><i
+                              class="icon-mid bi bi-person me-2"></i> My Profile</a></li>
+                        <li><a class="dropdown-item" href="#"><i
+                              class="icon-mid bi bi-gear me-2"></i> Settings</a></li>
+                        <li><a class="dropdown-item" href="#"><i
+                              class="icon-mid bi bi-wallet me-2"></i> Wallet</a></li>
+                        <li>
+                           <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#"><i
+                              class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </nav>
+      </header>
+   </div>
+
+   <div layout:fragment="content">
+      <div class="row">
+
+         <div class="col-md-3 mb-1">
+            <div class="input-group mb-3">
+               <label for="staticEmail" class="col-sm-3 col-form-label">공통코드</label>
+               <input type="text" id="commonCodeCo" class="form-control" placeholder="Common Code"
+                  aria-label="Recipient's username" aria-describedby="button-addon2">
+               <span class="input-group-text" data-bs-toggle="modal" data-bs-target="#large2" id="basic-addon1" style="cursor:pointer"  ><i
+                  class="bi bi-search"></i></span>
+            </div>
+         </div>
+         <div class="col-md-3 mb-1">
+            <div class="input-group mb-3">
+               <label for="staticEmail" class="col-sm-3 col-form-label">코드명</label>
+               <input type="text" id="commonNameCo" class="form-control" placeholder="Code Name"
+                  aria-label="Recipient's username" aria-describedby="button-addon2"
+                  readonly="readonly">
+
+            </div>
+         
+         </div>
+         
+            <div class="col-md-3 mb-1">
+            <div class="input-group mb-3">
+               <button class="btn btn-primary" onclick="commonBtnDo()">조회</button>
+            </div>
+         </div>
+         
+         <div class="col-md-3 mb-1">
+            <div class="input-group mb-3">
+               <button class="btn btn-primary" onclick="commonBtnDo()">초기화</button>
+            </div>
+         </div>
+
+      </div>
+      
+      <!--modal  -->
+            <!-- 이름 Modal lg size -->
+                                        <div class="me-1 mb-1 d-inline-block">
+                                           
+                                            <!--large size Modal -->
+                                            <div class="modal fade text-left" id="large2" tabindex="-1" role="dialog"
+                                                aria-labelledby="myModalLabel17" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+                                                    role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title" id="myModalLabel17">거래처</h4>
+                                                            <button type="button" class="close" data-bs-dismiss="modal"
+                                                                aria-label="Close" >
+                                                                <i data-feather="x"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <!--그리드  -->
+                                                 <div id="gridCommon" class="mb-3 row"></div>
+       
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-light-secondary"
+                                                                data-bs-dismiss="modal" onclick="commonReset()">
+                                                                <i class="bx bx-x d-block d-sm-none"></i>
+                                                                <span class="d-none d-sm-block">Close</span>
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary ml-1"
+                                                                data-bs-dismiss="modal">
+                                                                <i class="bx bx-check d-block d-sm-none"></i>
+                                                                <span class="d-none d-sm-block">확인</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+   
+      
+      <!-- <div class="row">
+
+         <div class="col-md-3 mb-1">
+            <div class="input-group mb-3">
+               <input type="text" class="form-control"
+                  placeholder="Recipient's username"
+                  aria-label="Recipient's username" aria-describedby="button-addon2">
+               <span class="input-group-text" id="basic-addon1"><i
+                  class="bi bi-search"></i></span>
+            </div>
+         </div>
+         <div class="col-md-3 mb-1">
+            <div class="input-group mb-3">
+               <input type="text" class="form-control"
+                  placeholder="Recipient's username"
+                  aria-label="Recipient's username" aria-describedby="button-addon2">
+               <span class="input-group-text" id="basic-addon2"><i
+                  class="bi bi-search"></i></span>
+            </div>
+         </div>
+         <div class="col-md-3 mb-1">
+            <div class="input-group mb-3">
+               <input type="text" class="form-control"
+                  placeholder="Recipient's username"
+                  aria-label="Recipient's username" aria-describedby="button-addon2">
+               <span class="input-group-text" id="basic-addon3"><i
+                  class="bi bi-search"></i></span>
+            </div>
+         </div>
+         <div class="col-md-3 mb-1">
+            <div class="input-group mb-3">
+               <input type="text" class="form-control"
+                  placeholder="Recipient's username"
+                  aria-label="Recipient's username" aria-describedby="button-addon2">
+               <span class="input-group-text" id="basic-addon4"><i
+                  class="bi bi-search"></i></span>
+            </div>
+         </div>
+
+      </div>
+ -->
+
+      <div id="main-content">
+
+         <div class="row">
+            <section class="section col-4 ">
+
+               <div id="common-code01"></div>
 
 
-					<button class="navbar-toggler" type="button"
-						data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-						aria-controls="navbarSupportedContent" aria-expanded="false"
-						aria-label="Toggle navigation">
-						<span class="navbar-toggler-icon"></span>
-					</button>
-					<div class="collapse navbar-collapse" id="navbarSupportedContent">
-						<h1>공통코드관리</h1>	
-						<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-							<li class="nav-item dropdown me-1"><a
-								class="nav-link active dropdown-toggle" href="#"
-								data-bs-toggle="dropdown" aria-expanded="false"> <i
-									class='bi bi-envelope bi-sub fs-4 text-gray-600'></i>
-							</a>
-								<ul class="dropdown-menu dropdown-menu-end"
-									aria-labelledby="dropdownMenuButton">
-									<li>
-										<h6 class="dropdown-header">Mail</h6>
-									</li>
-									<li><a class="dropdown-item" href="#">No new mail</a></li>
-								</ul></li>
-							<li class="nav-item dropdown me-3"><a
-								class="nav-link active dropdown-toggle" href="#"
-								data-bs-toggle="dropdown" aria-expanded="false"> <i
-									class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
-							</a>
-								<ul class="dropdown-menu dropdown-menu-end"
-									aria-labelledby="dropdownMenuButton">
-									<li>
-										<h6 class="dropdown-header">Notifications</h6>
-									</li>
-									<li><a class="dropdown-item">No notification available</a></li>
-								</ul></li>
-						</ul>
-						<div class="dropdown">
-							<a href="#" data-bs-toggle="dropdown" aria-expanded="false">
-								<div class="user-menu d-flex">
-									<div class="user-name text-end me-3">
-										<h6 class="mb-0 text-gray-600">John Ducky</h6>
-										<p class="mb-0 text-sm text-gray-600">Administrator</p>
-									</div>
-									<div class="user-img d-flex align-items-center">
-										<div class="avatar avatar-md">
-											<img src="assets/images/faces/1.jpg">
-										</div>
-									</div>
-								</div>
-							</a>
-							<ul class="dropdown-menu dropdown-menu-end"
-								aria-labelledby="dropdownMenuButton">
-								<li>
-									<h6 class="dropdown-header">Hello, John!</h6>
-								</li>
-								<li><a class="dropdown-item" href="#"><i
-										class="icon-mid bi bi-person me-2"></i> My Profile</a></li>
-								<li><a class="dropdown-item" href="#"><i
-										class="icon-mid bi bi-gear me-2"></i> Settings</a></li>
-								<li><a class="dropdown-item" href="#"><i
-										class="icon-mid bi bi-wallet me-2"></i> Wallet</a></li>
-								<li>
-									<hr class="dropdown-divider">
-								</li>
-								<li><a class="dropdown-item" href="#"><i
-										class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</nav>
-		</header>
-	</div>
 
-	<div layout:fragment="content">
-		<div class="row">
+            </section>
+            <section class="col-1"></section>
+            <section class="section col-6">
+               <div id="common-code-detail"></div>
+            </section>
+         </div>
 
-			<div class="col-md-3 mb-1">
-				<div class="input-group mb-3">
-					<label for="staticEmail" class="col-sm-3 col-form-label">공통코드</label>
-					<input type="text" class="form-control" placeholder="Common Code"
-						aria-label="Recipient's username" aria-describedby="button-addon2">
-					<span class="input-group-text" id="basic-addon1"><i
-						class="bi bi-search"></i></span>
-				</div>
-			</div>
-			<div class="col-md-3 mb-1">
-				<div class="input-group mb-3">
-					<label for="staticEmail" class="col-sm-3 col-form-label">코드명</label>
-					<input type="text" class="form-control" placeholder="Code Name"
-						aria-label="Recipient's username" aria-describedby="button-addon2"
-						readonly="readonly">
+      </div>
+      <script type="text/javascript">
+      
+         
+      /*그리드  */
+         const grid2 = new tui.Grid({
+            el : document.getElementById('common-code01'), // Container element
+            scrollX : false,
+            scrollY : false,
+            columns : [ {
+               header : '공통코드',
+               name : 'codeId'
+            }, {
+               header : '코드이름',
+               name : 'codeName'
+            }
 
-				</div>
-			</div>
+            ]
+         });
 
-		</div>
-		<div class="row">
+         
+         const grid3 = new tui.Grid({
+            el : document.getElementById('common-code-detail'), // Container element
+            scrollX : false,
+            scrollY : false,
+            columns : [ {
+               header : 'no',
+               name : 'estmtDno'
+            }, {
+               header : '코드',
+               name : 'proCode'
+            }, {
+               header : '코드명',
+               name : 'proCode'
+            }, {
+               header : '코드설명',
+               name : 'proCode'
+            }, {
+               header : '사용여부',
+               name : 'proCode'
+            }]
+         });
+         
+         
+         
+         
+         const gridCommon = new tui.Grid({
+            el : document.getElementById('gridCommon'),
+         
+            scrollY : true,
+            rowHeaders: ['rowNum'],
+            columns : [ {
+               header : '공통코드',
+               name : 'codeId', 
+                width: 'auto',
+               minWidth: 200,
+               
+            }, {
+               header : '코드이름',
+               name : 'codeName',
+               
+                minWidth: 200,
+            }, {
+               header : '코드구분',
+               name : 'codeGroup'
+               
+            }, {
+               header : '코드내용',
+               name : 'codeContent',
+                minWidth: 200,
+            },{
+               header : '사용여부',
+               name : 'codeUsed'
+                
+            }
+            ]
+         });   
+         //공통코드실행시 일어나는 것 :
+         large2.addEventListener('shown.bs.modal', () => {
+            
+            gridCommon.refreshLayout(); //모달창 새로고침
+            
 
-			<div class="col-md-3 mb-1">
-				<div class="input-group mb-3">
-					<input type="text" class="form-control"
-						placeholder="Recipient's username"
-						aria-label="Recipient's username" aria-describedby="button-addon2">
-					<span class="input-group-text" id="basic-addon1"><i
-						class="bi bi-search"></i></span>
-				</div>
-			</div>
-			<div class="col-md-3 mb-1">
-				<div class="input-group mb-3">
-					<input type="text" class="form-control"
-						placeholder="Recipient's username"
-						aria-label="Recipient's username" aria-describedby="button-addon2">
-					<span class="input-group-text" id="basic-addon2"><i
-						class="bi bi-search"></i></span>
-				</div>
-			</div>
-			<div class="col-md-3 mb-1">
-				<div class="input-group mb-3">
-					<input type="text" class="form-control"
-						placeholder="Recipient's username"
-						aria-label="Recipient's username" aria-describedby="button-addon2">
-					<span class="input-group-text" id="basic-addon3"><i
-						class="bi bi-search"></i></span>
-				</div>
-			</div>
-			<div class="col-md-3 mb-1">
-				<div class="input-group mb-3">
-					<input type="text" class="form-control"
-						placeholder="Recipient's username"
-						aria-label="Recipient's username" aria-describedby="button-addon2">
-					<span class="input-group-text" id="basic-addon4"><i
-						class="bi bi-search"></i></span>
-				</div>
-			</div>
-
-		</div>
-
-
-		<div id="main-content">
-
-			<div class="row">
-				<section class="section col-4 ">
-
-					<div id="common-code01"></div>
-
-
-
-				</section>
-				<section class="col-1"></section>
-				<section class="section col-6">
-					<div id="common-code-detail"></div>
-				</section>
-			</div>
-
-		</div>
-		<script type="text/javascript">
-			console.log($('#common-code01'))
-			const grid2 = new tui.Grid({
-				el : document.getElementById('common-code01'), // Container element
-				scrollX : false,
-				scrollY : false,
-				columns : [ {
-					header : 'no',
-					name : 'estmtDno'
-				}, {
-					header : '제품코드',
-					name : 'proCode'
-				}
-
-				]
-			});
-
-			const grid3 = new tui.Grid({
-				el : document.getElementById('common-code-detail'), // Container element
-				scrollX : false,
-				scrollY : false,
-				columns : [ {
-					header : 'no',
-					name : 'estmtDno'
-				}, {
-					header : '코드',
-					name : 'proCode'
-				}, {
-					header : '코드명',
-					name : 'proCode'
-				}, {
-					header : '코드설명',
-					name : 'proCode'
-				}, {
-					header : '사용여부',
-					name : 'proCode'
-				}
-
-				]
-			});
-			
-		
-			
-		</script>
-		<!-- end layout -->
-		
-	</div>
+            $.ajax({
+               url : "/callCommon",
+               type: "post",
+               success : function(data){
+                  console.log(data)
+                  gridCommon.resetData(data)
+                  
+               },
+               error : err=>{
+                  console.log(err)
+               }
+            })
+         })
+         //한줄선택시키기
+         gridCommon.on('click', function(ev) {
+              var record = {
+           start : [ev.rowKey,0],
+           end : [ev.rowKey,gridCommon.getColumns().length]
+          }
+                 gridCommon.setSelectionRange(record);
+          });
+               
+         gridCommon.on('click',ev=>{
+            let  tt = gridCommon.getRow(ev.rowKey);
+            $('#commonCodeCo').val(tt.codeId);
+            $('#commonNameCo').val(tt.codeName);
+            console.log(tt)
+         })
+         
+         //단건누를시 우측에서 상세정보
+         grid2.on('click',ev=>{
+            console.log(ev)
+            
+         })
+         
+         //공통코드 취소시 인풋창 비워주기
+         function commonReset(){
+            console.log(123)
+            $('#commonCodeCo').val('');
+            $('#commonNameCo').val('');
+         }
+         //공통코드조회
+         function commonBtnDo(){
+            $.ajax({
+               url : "/callCommon",
+               type: "post",
+               data : {codeId : $('#commonCodeCo').val()},
+               success : function(data){
+                  console.log(data)
+                  grid2.resetData(data)
+                  
+               },
+               error : err=>{
+                  console.log(err)
+               }
+            })
+               
+               
+            }
+         
+      </script>
+      <!-- end layout -->
+      
+   </div>
 
 
 </body>
