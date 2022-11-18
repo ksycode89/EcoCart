@@ -190,8 +190,8 @@
 
 	<script>
  	
- /*사원 이름 모달 */
 
+        /*사원 이름 모달 */
 		const gridM = new tui.Grid({
 			el : document.getElementById('gridM'),
 			rowHeaders: ['checkbox'],
@@ -215,9 +215,16 @@
 		large.addEventListener('shown.bs.modal', () => {
 	
 			gridM.refreshLayout(); //모달창 새로고침
-			
+			let data ={};
 			// 이름 모달 ajax.
-			fetch("ajax/empName")
+			fetch("ajax/list",{
+				method:"post",
+				headers : {
+					"Content-Type" : "application.json"
+								},
+				body : JSON.stringify(data)
+			
+			})			
 			.then(data => data.json())
 			.then (objs => {
 				gridM.resetData(objs);
@@ -227,8 +234,8 @@
 	   	      
 	   	 })
 	   	 
-	   	 /*부서 모달 */
 
+	   	 /*부서 모달 */
 		const gridD = new tui.Grid({
 			el : document.getElementById('gridD'),
 			rowHeaders: ['checkbox'],
@@ -251,7 +258,7 @@
 			gridD.refreshLayout(); //모달창 새로고침
 			
 			// 부서 모달 ajax.
-			fetch("ajax/dept")
+			fetch("ajax/dept",{method:"get"})
 			.then(data => data.json())
 			.then (objs => {
 				gridD.resetData(objs);
@@ -261,9 +268,9 @@
 	   	      
 	   	 })
 		
- /* 사원정보  */
 		
 
+ 	/* 사원정보  */
 		const grid1 = new tui.Grid({
 			el : document.getElementById('grid'),
 			rowHeaders: ['checkbox'],
@@ -305,9 +312,9 @@
 		
 		});
 		
- /* 담당사원 */
 		
 
+		 /* 담당사원 */
 		const grid2 = new tui.Grid({
 			el : document.getElementById('grid2'),
 			rowHeaders: ['rowNum'],
@@ -338,19 +345,25 @@
 		
 	// 사원조회 ajax
 		function selectEmp(){
-			 url = "ajax/list";
-			        fetch(url)
-			        .then(data => data.json()) // 받은 결과 데이터.
-			        .then(objs => {
-			        	grid1.resetData(objs);
-			            console.log(objs);
-			        })
-			        }
+			 $.ajax({
+				 url : "ajax/list",
+				 type : 'post' ,
+				 data : {"empNum" : $('#empNum').val(),"empDept" : $('#codeId').val()},
+				 success : function(data){
+					 console.log(data);
+					 grid1.resetData(data);
+				 },
+				 error : function(error) {
+					 console.log(error)
+				 }
+			 })
+		}
 	
 	// 담당사원 ajax
 		function selectInfo(){
 		 	$.ajax({
-				url : "ajax/empInfo",
+				url : "ajax/list",
+				type : 'post' ,
 				success : function(result){
 					grid2.resetData(result);
 					console.log(result);
@@ -359,7 +372,7 @@
 					console.log(error)
 				}
 			}) 
-			console.log(123);
+			
 	}
 	
 	

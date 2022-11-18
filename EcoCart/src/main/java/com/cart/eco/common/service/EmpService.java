@@ -5,7 +5,7 @@ import java.util.List;
 public interface EmpService {
 
 	// 사원조회
-	public List<EmpVO> getEmpList();
+	public List<EmpVO> getEmpList(EmpVO vo);
 	
 	// 등록
 }

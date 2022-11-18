@@ -2,15 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cart.eco.common.mapper.EmpMapper">
 	
-	<!--사원 조회  -->
-	<select id="selectEmpList" resultType="com.cart.eco.common.service.EmpVO">
+
+
+	<!--사원 필터  -->
+	<select id="selectEmpList" parameterType="com.cart.eco.common.service.EmpVO" resultType="com.cart.eco.common.service.EmpVO">
 		SELECT emp_num,emp_name,emp_mail,emp_tel,emp_hire,c.code_name AS emp_dept,emp_manager,comments
 		FROM employees e join common_code c
    		 ON e.emp_dept = c.code_id 
+   		<where>
+   		 <if test="empNum != null and !empNum.equals('')">
+   		 	emp_num = #{empNum}
+   		 </if>
+   		  <if test="empName != null and !empName.equals('')">
+   		 	emp_name = #{empName}
+   		 </if>
+   		 <if test="empDept != null and !empDept.equals('')">
+            emp_dept = #{empDept}
+         </if>
+        
+   		
+   		
+   		</where>
+   		
+   		
+   		
+   		
+   		
    		ORDER BY emp_num
 	</select>
-
-	
 
 
 </mapper>
