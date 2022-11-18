@@ -128,35 +128,34 @@
 		        columns: [
 		            {
 		            	header: '출고처리일자',
-		            	name: 'dlivyDate'
+		            	name: 'dlivyDate',
+		            	filter : 'select'
+		          
 		            },
 		            {
 		            	header: '출고처리코드',
-		            	name: 'dlivyProCode'
+		            	name: 'dlivyProCode',
+		            	filter : 'select'
+
 		            },
 		            {
 		            	header: '거래처',
-		                name: 'clientName'
+		                name: 'clientName',
+		                filter : 'select'
+
 		             },
 		             {
 		             	header: '담당자',
-		                name: 'empName'
+		                name: 'empName',
+		                filter : 'select'
+  
 		             },
 		             {
 			            header: '총합계액',
 			            name: 'allSum'
 			             }
 		            
-		        ],
-		        data: [
-		            {
-		            	dlivyDate: '2022-01-08',
-		            	dlivyProCode :'dlq01',
-		            	clientName: '거래처박씨',
-		            	empName: '김씨',
-		            	allSum : '2000',
-		            }
-				]
+		        ]
 			});
 			
 			const grid2 = new Grid({
@@ -188,21 +187,6 @@
 			             header: '합계액',
 			             name: 'sumPrice'
 			         }
-		            
-		        ],
-		        data: [
-		            {
-		            	dlivyPno : '01',
-		            	proCode: 'Or01',
-		            	proName : '헤드',
-		            	sellNum: '80',
-		            	sellPrice: '100',
-		            	sumPrice : '20',
-		             
-		    
-		              
-		                
-		            }
 				]
 			});
 			
@@ -362,8 +346,22 @@
 		}
 		
 		
-	      
-	      
+		document.addEventListener("DOMContentLoaded", DeliveryList)
+		
+		function DeliveryList(){
+			$.ajax({
+				url:'/listDeliveryPro',
+				success : function(result) {
+					console.log(result);
+					grid.resetData(result);
+				},
+				error : function(error){
+					console.log(error);
+				}
+			})
+			
+     }
+	    
 		
       
       

@@ -127,36 +127,31 @@
 	            scrollY: false,
 		        columns: [
 		            {
-		            	header: '출고등록일자',
-		            	name: 'dlivyDate'
+		            	header: '출고등록코드',
+		            	name: 'dlivyGCode',
+		            	filter : 'select'
 		            },
 		            {
-		            	header: '출고등록코드',
-		            	name: 'dlivyGCode'
+		            	header: '출고등록일자',
+		            	name: 'dlivyDate',
+		            	filter : 'select'
 		            },
 		            {
 		            	header: '거래처',
-		                name: 'clientName'
+		                name: 'clientCode',
+		                filter : 'select'
 		             },
 		             {
 		             	header: '담당자',
-		                name: 'empName'
+		                name: 'empNum',
+		                filter : 'select'
 		             },
 		             {
 			            header: '총합계액',
 			            name: 'allSum'
-			             }
+			          }
 		            
-		        ],
-		        data: [
-		            {
-		            	dlivyDate: '2022-01-08',
-		            	dlivyGCode :'dlq01',
-		            	clientName: '거래처박씨',
-		            	empName: '김씨',
-		            	allSum : '2000',
-		            }
-				]
+		        ]
 			});
 			
 			const grid2 = new Grid({
@@ -166,44 +161,30 @@
 		        columns: [
 		            {
 		            	header: 'no',
-		            	name: 'dlivyGno'
+		            	name: 'DLIVY_GNO'
 		            },
 		            {
 		            	header: '제품코드',
-		            	name: 'proCode'
+		            	name: 'PRO_CODE'
 		            },
 		            {
 		            	header: '제품명',
-		            	name: 'proName'
+		            	name: 'PRO_NAME'
 		            },
 		            {
 		            	header: '수량',
-		                name: 'sellNum'
+		                name: 'SELL_NUM'
 		             },
 		             {
 		             	header: '단가',
-		                name: 'sellPrice'
+		                name: 'SELL_PRICE'
 		             },
 		             {
 			             header: '합계액',
-			             name: 'sumPrice'
+			             name: 'SUM_PRICE'
 			         }
 		            
-		        ],
-		        data: [
-		            {
-		            	dlivyGno : '01',
-		            	proCode: 'Or01',
-		            	proName : '헤드',
-		            	sellNum: '80',
-		            	sellPrice: '100',
-		            	sumPrice : '20',
-		             
-		    
-		              
-		                
-		            }
-				]
+		        ]
 			});
 			
 			Grid.applyTheme('striped'); // Call API of static method
@@ -363,7 +344,40 @@
 		
 		
 	      
-	      
+		document.addEventListener("DOMContentLoaded", DeliveryList)
+		
+		function DeliveryList(){
+			$.ajax({
+				url:'/listDeliveryG',
+				success : function(result) {
+					console.log(result);
+					grid.resetData(result);
+				},
+				error : function(error){
+					console.log(error);
+				}
+			})
+			
+     	}
+     
+	     //tr 
+	     grid.on('click',(event)=>{
+	    	 console.log(event.nativeEvent.target.textContent);
+			var a = event.nativeEvent.target.textContent;
+			
+			$.ajax({
+				method:'GET',
+				url:'/listDeliveryGd?dlivyCode='+a,
+				success : function(result){
+					grid2.resetData(result)
+				},
+				error: function(error){
+					console.log(error);
+				}
+				
+			})
+	     })
+			
 		
       
       

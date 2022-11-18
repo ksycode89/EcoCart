@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cart.eco.open.mapper.OrdersMapper">
+
+	<!--//주문서 조회  -->
+	<select id="OrdersList" resultType="com.cart.eco.open.service.OrdersVO">
+		select o.order_code, c.client_name "client_code", o.order_date, o.de_date, o.all_sum
+		from orders o, client c
+		where o.client_code = c.client_code
+		
+	</select>
+
+
+	<!-- //주문서 상세 조회 -->
+	<select id="OrdersDList" resultType="Map" parameterType="String">
+		select d.order_dno, o.pro_code, p.pro_name, d.sell_num, o.sell_price,(d.sell_num *o.sell_price) as sum_price
+		from orders o, order_d d, product p, product_option o
+		where o.order_code = d.order_code
+		and d.pro_code = p.pro_code
+		and p.pro_code = o.pro_code
+		and o.order_code = #{orderCode}
+		order by order_dno
+
+	</select>
+
+
+	<!--//제품코드 조회  -->
+	<select id="proList" resultType="com.cart.eco.common.service.ProductVO">
+		select pro_code, pro_name, pro_num
+		from product
+	
+	</select>
+	
+	
+	<!-- 주문 마감 상세 조회 -->
+	<select id="OrdersCanDList" resultType="Map" parameterType="String">
+		select d.order_dno, o.pro_code, p.pro_name, d.allsell_num, d.sell_num, d.can_num
+		from orders o, order_d d, product p, product_option o
+		where o.order_code = d.order_code
+		and d.pro_code = p.pro_code
+		and p.pro_code = o.pro_code
+		and o.order_code = #{orderCode }
+		order by order_dno	
+	
+	</select>
+</mapper>

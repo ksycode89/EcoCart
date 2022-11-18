@@ -62,38 +62,36 @@
 		        el: document.getElementById('grid'), // Container element
 		        scrollX: false,
 	            scrollY: false,
-		        columns: [
+	            columns: [
 		            {
 		            	header: '주문코드',
-		            	name: 'orderCode'
+		            	name: 'orderCode',
+		            	filter : 'select'
 		            },
 		            {
 		            	header: '거래처',
-		            	name: 'clientName'
+		            	name: 'clientCode',
+		            	filter : 'select'
 		            },
 		            {
 		            	header: '주문등록일자',
-		                name: 'orderDate'
+		                name: 'orderDate',
+		                filter : 'select'
+		                
 		             },
 		             {
 		             	header: '납기일자',
-		                name: 'deDate'
+		                name: 'deDate',
+		                filter : 'select'
+		             },
+		             {
+		                 header: '총합계액',
+		                 name: 'allSum'
 		             }
 		            
-		        ],
-		        data: [
-		            {
-		            	orderCode: 'Or01',
-		            	clientName: 'Ci01',
-		            	orderDate: '2022-11-14',
-		            	deDate : '2022-01-08',
-		             
-		    
-		              
-		                
-		            }
-				]
+		        ]
 			});
+			
 			
 			const grid2 = new Grid({
 		        el: document.getElementById('grid2'), // Container element
@@ -102,68 +100,37 @@
 		        columns: [
 		            {
 		            	header: 'no',
-		            	name: 'orderDno'
+		            	name: 'ORDER_DNO'
 		            },
 		            {
 		            	header: '제품코드',
-		            	name: 'proCode'
+		            	name: 'PRO_CODE'
 		            },
 		            {
 		            	header: '제품명',
-		            	name: 'proName'
+		            	name: 'PRO_NAME'
 		            },
 		            {
 		            	header: '총수량',
-		                name: 'allsellNum'
+		                name: 'ALLSELL_NUM'
 		             },
 		             {
 		             	header: '남품수량',
-		                name: 'sellNum'
+		                name: 'SELL_NUM'
 		             },
 		             {
 			             header: '취소수량',
-			             name: 'canNum'
+			             name: 'CAN_NUM'
 			         }
 		            
-		        ],
-		        data: [
-		            {
-		            	orderDno : '01',
-		            	proCode: 'Or01',
-		            	proName : '헤드',
-		            	allsellNum: '100',
-		            	sellNum: '80',
-		            	canNum : '20',
-		             
-		    
-		              
-		                
-		            }
-				]
+		        ]
+			
 			});
 			
 			Grid.applyTheme('striped'); // Call API of static method
       
       
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      	//모달창
-		var myModal = document.getElementById('myModal')
-			var myInput = document.getElementById('myInput')
 
-			myModal.addEventListener('shown.bs.modal', function () {
-			  myInput.focus()
-			})
       
       
       
@@ -177,6 +144,47 @@
 			}
 	      
 	      
+			
+		//실행시 조회
+		document.addEventListener("DOMContentLoaded",listOrderCan)
+	   	
+		function listOrderCan(){
+			console.log("연결성공")
+			$.ajax({
+				url:'/listorderCan',
+				success : function(result) {
+					console.log(result);
+					grid.resetData(result);
+				},
+				error : function(error){
+					console.log(error);
+				}
+			})
+			
+		}
+		
+		//tr click
+		grid.on('click', (event)=>{
+			console.log(event.nativeEvent.target.textContent);
+			var a = event.nativeEvent.target.textContent;
+			
+			$.ajax({
+				method:'GET',
+				url:'/listOrderCanD?orderCode='+a,
+				success : function(result){
+					console.log("상세tr")
+					console.log(result);
+					grid2.resetData(result)
+				},
+				error: function(error){
+					console.log(error);
+				}
+				
+			})
+		})
+			
+			
+			
 	      
       
       

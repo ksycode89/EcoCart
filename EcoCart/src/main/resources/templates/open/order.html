@@ -20,7 +20,7 @@
 	<form action="#" method="get">
 		<div>
 			<table style="margin:30px;">
-	         	<tr>
+	         	<tr >
 					<td>진행구분
 						<label><input type="radio" name="orderSt" value="all" checked>전체</label>
 						<label><input type="radio" name="orderSt" value="go">진행</label>
@@ -134,38 +134,31 @@
 	        columns: [
 	            {
 	            	header: '주문코드',
-	            	name: 'orderCode'
+	            	name: 'orderCode',
+	            	filter : 'select'
 	            },
 	            {
 	            	header: '거래처',
-	            	name: 'clientName'
+	            	name: 'clientCode',
+	            	filter : 'select'
 	            },
 	            {
 	            	header: '주문등록일자',
-	                name: 'orderDate'
+	                name: 'orderDate',
+	                filter : 'select'
+	                
 	             },
 	             {
 	             	header: '납기일자',
-	                name: 'deDate'
+	                name: 'deDate',
+	                filter : 'select'
 	             },
 	             {
 	                 header: '총합계액',
 	                 name: 'allSum'
 	             }
 	            
-	        ],
-	        data: [
-	            {
-	            	orderCode: 'Or01',
-	            	clientName: 'Ci01',
-	            	orderDate: '2022-11-14',
-	            	deDate : '2022-01-08',
-	             
-	    
-	              
-	                
-	            }
-			]
+	        ]
 		});
 		
 		Grid.applyTheme('striped'); // Call API of static method
@@ -173,7 +166,7 @@
 		
 		
 		
-		//제품코드 
+		//상세조회
 		const grid2 = new Grid({
 	        el: document.getElementById('grid2'), // Container element
 	        scrollX: false,
@@ -181,47 +174,35 @@
 	        columns: [
 	            {
 	            	header:'no',
-	            	name:'orderDno'
+	            	name:'ORDER_DNO'
 	            },
 	        	{
 	            	header: '제품코드',
-	            	name: 'proCode'
+	            	name: 'PRO_CODE',
+	            	
 	            },
 	            {
 	            	header: '제품명',
-	                name: 'proName'
+	                name: 'PRO_NAME'
 	             },
 	             {
 	             	header: '수량',
-	                name: 'sellNum'
+	                name: 'SELL_NUM'
 	             },
 	             {
 	              	header: '단가',
-	                 name: 'sellPrice'
+	                 name: 'SELL_PRICE'
 	              },
 	             
 	             {
 	              	header: '합계액',
-	                 name: 'sumPrice'
+	                 name: 'SUMP_RICE'
 	              }
 	              
-	        ],
-	        data: [
-	            { 
-	            	
-	            	orderDno: '01',
-	            	proCode: 'pro01',
-	            	proName: '헤드',
-	            	sellNum : '5',
-	            	sellPrice : '4000',
-	            	sumPrice : this.sellNum
-	              
-	                
-	            }
-			]
+	        ]
 		});
 	
-			
+		//제품재고 조회
 		const grid3 = new Grid({
 	        el: document.getElementById('grid3'), // Container element
 	        scrollX: false,
@@ -229,26 +210,20 @@
 	        columns: [
 	        	{
 	            	header: '제품코드',
-	            	name: 'proCode'
+	            	name: 'proCode',
+	            	filter : 'select'
 	            },
 	            {
 	            	header: '제품명',
-	                name: 'proName'
+	                name: 'proName',
+	                filter : 'select'
 	             },
 	             {
 	             	header: '제품재고수량',
 	                name: 'proNum'
 	             }
 	              
-	        ],
-	        data: [
-	            { 
-	      
-	            	proCode: 'pro01',
-	            	proName: '2022-11-14',
-	            	proNum : '5'
-	            }
-			]
+	        ]
 		});
 		
 		
@@ -431,10 +406,74 @@
 	   	 })
 			
 			
+		//실행시 조회
+		document.addEventListener("DOMContentLoaded",ordersList)
+	   	
+		function ordersList(){
+			console.log("연결성공")
+			$.ajax({
+				url:'/listOrders',
+				success : function(result) {
+					console.log(result);
+					grid.resetData(result);
+				},
+				error : function(error){
+					console.log(error);
+				}
+			}),
 			
+			$.ajax({
+				url:'/proList',
+				success : function(result) {
+					console.log(result);
+					grid3.resetData(result);
+				},
+				error : function(error){
+					console.log(error);
+				}
+			})
 			
+		}
+   	 
+		
+		
+		//tr click
+		grid.on('click', (event)=>{
+			console.log(event.nativeEvent.target.textContent);
+			var a = event.nativeEvent.target.textContent;
 			
+			$.ajax({
+				method:'GET',
+				url:'/listOrderd?orderCode='+a,
+				success : function(result){
+					grid2.resetData(result)
+				},
+				error: function(error){
+					console.log(error);
+				}
+				
+			})
+		})
 			
+		
+		//제품 조회 -> 일단 실행시 전체 조회로 만들어둠 ()
+/* 		document.getElementById("proListbtn").addEventListener("click",proList)
+		
+		document.addEventListener("DOMContentLoaded",proList)
+		
+		function proList(){
+			console.log('제품 조회 연결')
+			$.ajax({
+				url:'/proList',
+				success : function(result) {
+					console.log(result);
+					grid3.resetData(result);
+				},
+				error : function(error){
+					console.log(error);
+				}
+			})
+		} */
 			
 	</script>
 	
