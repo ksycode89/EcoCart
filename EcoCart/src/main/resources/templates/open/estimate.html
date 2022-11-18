@@ -53,6 +53,29 @@
 			
 			</div>
 		
+			<table>
+				<tr>
+					<td>견적번호<input class="form-control" style="width: 100px;" id="result">&nbsp; <i class="bi bi-search">&nbsp;</i>
+	         		<select class="from-control" name="no" onchange="handleOnChange(this)" style="width: 80px;">
+	         			<option value="">-선택-</option>
+	         			<option value="번호1">번호1</option>
+	         			<option value="번호2">번호2</option>
+	         			<option value="번호3">번호3</option>   			
+	         		</select>
+	         		</td>
+	         		
+	         		<td>거래처코드 <input style="width: 100px;" id="result2">&nbsp; <i class="bi bi-search">&nbsp;</i>
+	         		<select name="no" onchange="handleOnChange2(this)" style="width: 80px;">
+	         			<option value="선택">-선택-</option>
+	         			<option value="거래처1">거래처1</option>
+	         			<option value="거래처2">거래처2</option>
+	         			<option value="거래처3">거래처3</option>   			
+	         		</select> 
+	         		</td>
+				</tr>
+			</table>
+		
+		
 			<table >
 				<tr>
 					<td style="width: 400px">견적번호<input style="width: 100px;" id="result">&nbsp; <i class="bi bi-search">&nbsp;</i>
@@ -500,12 +523,7 @@
 						console.log(11);
 					}
 				})
-				
-			
-		 
-		 
-		 
-		 
+
 	 })
 	
 	

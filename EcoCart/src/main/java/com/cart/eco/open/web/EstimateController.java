@@ -65,34 +65,34 @@ public class EstimateController {
 	
 	
 	//주문
-	@GetMapping("/order")
-	public String Order() {
-		return "open/order";
-	}
+//	@GetMapping("/order")
+//	public String Order() {
+//		return "open/order";
+//	}
 	
-	//주문마감
-	@GetMapping("/orderCan")
-	public String OrderCan() {
-		return "open/orderCan";
-	}
+//	//주문마감
+//	@GetMapping("/orderCan")
+//	public String OrderCan() {
+//		return "open/orderCan";
+//	}
+//	
+//	//출고요청1
+//	@GetMapping("/deliveryQ")
+//	public String deliveryQ() {
+//		return "open/deliveryQ";
+//	}
 	
-	//출고요청1
-	@GetMapping("/deliveryQ")
-	public String deliveryQ() {
-		return "open/deliveryQ";
-	}
+//	//출고등록2
+//	@GetMapping("/deliveryG")
+//	public String deliveryG() {
+//		return "open/deliveryG";
+//	}
 	
-	//출고등록2
-	@GetMapping("/deliveryG")
-	public String deliveryG() {
-		return "open/deliveryG";
-	}
-	
-	//출고처리3
-	@GetMapping("/deliveryPro")
-	public String deliveryPro() {
-		return "open/deliveryPro";
-	}
+//	//출고처리3
+//	@GetMapping("/deliveryPro")
+//	public String deliveryPro() {
+//		return "open/deliveryPro";
+//	}
 	
 	//재고/bom현황
 	@GetMapping("/proBom")
@@ -100,11 +100,11 @@ public class EstimateController {
 		return "open/proBom";
 	}
 
-	//배송정보
-	@GetMapping("/deliveryInfo")
-	public String deliveryInfo() {
-		return "open/deliveryInfo";
-	}
+//	//배송정보
+//	@GetMapping("/deliveryInfo")
+//	public String deliveryInfo() {
+//		return "open/deliveryInfo";
+//	}
 	
 	
 	

@@ -1,6 +1,6 @@
 package com.cart.eco.open.service;
 
-import java.util.Date;
+import java.sql.Date;
 
 import lombok.Data;
 
@@ -8,6 +8,7 @@ import lombok.Data;
 public class DeliveryProVO {
 	//출고처리(배송처리)
 	private String dlivyProCode;	//출고처리코드
+	
 	private Date dlivyDate;	//출고처리일자
 	private String orderCode;	//주문코드 FK
 	private String clientCode;	//거래처코드 FK

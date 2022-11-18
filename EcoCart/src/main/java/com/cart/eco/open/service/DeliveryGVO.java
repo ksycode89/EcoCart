@@ -1,6 +1,6 @@
 package com.cart.eco.open.service;
 
-import java.util.Date;
+import java.sql.Date;
 
 import lombok.Data;
 

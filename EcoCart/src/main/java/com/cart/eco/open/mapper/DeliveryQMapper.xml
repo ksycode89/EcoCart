@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cart.eco.open.mapper.DeliveryQMapper">
+	
+	<!-- 출고 요청1 -->
+	
+	<!-- 출고 요청 1 전제 조회 -->
+	<select id="DeliveryQList" resultType="com.cart.eco.open.service.DeliveryQVO">
+		select d.dlivy_date, d.dlivy_q_code, c.client_name "client_code", e.emp_name "emp_num", d.all_sum
+		from delivery_q d, client c, employees e
+		where d.client_code = c.client_code
+		and e.emp_num = d.emp_num
+	
+	</select>
+	
+	
+	<!-- 출고 요청2 상세 조회 -->
+	<select id="DeliveryQDList" resultType="Map"  parameterType="String">
+		select d.dlivy_qno, o.pro_code, p.pro_name, d.sell_num, o.sell_price, (d.sell_num * o.sell_price) as sum_price
+		from delivery_q q, delivery_qd d, product p, product_option o
+		where q.dlivy_q_code = d.dlivy_q_code
+		and d.pro_code = p.pro_code
+		and p.pro_code = o.pro_code
+		and q.dlivy_q_code= #{dlivyCode}
+		order by dlivy_qno
+	
+	</select>
+
+
+
+
+
+
+
+
+
+
+	<!-- 출고 등록2 -->
+	
+	<!-- 출고 등록2 전제 조회 -->
+	<select id="DeliveryGList" resultType="com.cart.eco.open.service.DeliveryGVO">
+		select d.dlivy_date, d.dlivy_g_code, c.client_name "client_code", e.emp_name "emp_num", d.all_sum
+		from delivery_g d, client c, employees e
+		where d.client_code = c.client_code
+		and e.emp_num = d.emp_num
+	
+	</select>
+	
+	
+	<!-- 출고 등록2 상세 조회 -->
+	<select id="DeliveryGDList" resultType="Map"  parameterType="String">
+		select d.dlivy_gno, o.pro_code, p.pro_name, d.sell_num, o.sell_price, (d.sell_num * o.sell_price) as sum_price
+		from delivery_g g, delivery_gd d, product p, product_option o
+		where g.dlivy_g_code = d.dlivy_g_code
+		and d.pro_code = p.pro_code
+		and p.pro_code = o.pro_code
+		and g.dlivy_g_code= #{dlivyCode}
+		order by dlivy_gno
+	
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 출고 처리3 -->
+	
+	<!-- 출고 처리 전제 조회 -->
+	<select id="DeliveryPList" resultType="com.cart.eco.open.service.DeliveryProVO">
+		select d.dlivy_date, d.dlivy_pro_code, c.client_name "client_code", e.emp_name "emp_num", d.all_sum
+		from delivery_g d, client c, employees e
+		where d.client_code = c.client_code
+		and e.emp_num = d.emp_num
+	
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 배송 정보 조회 -->
+	
+	<!-- 배송 정보 전체 조회 -->
+	<select id="DeliveryInfoList" resultType="com.cart.eco.open.service.DeliveryProVO">
+		select d.dlivy_pro_code, d.dlivy_date, c.client_name "client_code", d.dlivy_mth, d.dlivy_code, d.dlivy_name, d.dlivy_pnum,e.emp_name "emp_num"
+		from delivery_pro d, client c, employees e
+		where d.client_code = c.client_code
+		and e.emp_num = d.emp_num
+	
+	</select>
+
+</mapper>
