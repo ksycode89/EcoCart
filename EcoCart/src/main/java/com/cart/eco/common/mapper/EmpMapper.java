@@ -8,4 +8,6 @@ public interface EmpMapper {
 
 	// 사원조회
 	public List<EmpVO> selectEmpList();
+	
+
 }

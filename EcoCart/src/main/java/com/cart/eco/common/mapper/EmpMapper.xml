@@ -4,11 +4,13 @@
 	
 	<!--사원 조회  -->
 	<select id="selectEmpList" resultType="com.cart.eco.common.service.EmpVO">
-		SELECT emp_num,emp_name,emp_mail,emp_tel,emp_hire,emp_dept,emp_manager,comments
-        FROM employees ORDER BY emp_num
+		SELECT emp_num,emp_name,emp_mail,emp_tel,emp_hire,c.code_name AS emp_dept,emp_manager,comments
+		FROM employees e join common_code c
+   		 ON e.emp_dept = c.code_id 
+   		ORDER BY emp_num
 	</select>
 
-
+	
 
 
 </mapper>

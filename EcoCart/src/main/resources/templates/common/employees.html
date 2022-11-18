@@ -113,13 +113,13 @@
 	<div class="mb-3 row">
 			<label  class="col-lg-1 col-sm-12 col-form-label">부 서</label>
 			<div class="col-lg-auto col-sm-6">
-			<input  id="clientCode" name="clientCode" class="form-control">
+			<input  id="codeId" name="codeId" class="form-control">
 			</div>
 			<div class="col-lg-auto col-sm-6">
 			<button type="button"><i class="bi bi-search" data-bs-toggle="modal" data-bs-target="#large2" ></i></button> 
 			</div>
 			<div class="col-lg-auto col-sm-12">
-			<input  id="clientName" name="clientName" class="form-control">
+			<input  id="codeName" name="codeName" class="form-control">
 			</div>
 			<div class="col-lg-auto col-sm-6">
 			<button type="button" onclick="selectEmp()">조회</button> 
@@ -199,10 +199,12 @@
 			scrollY : false,
 			columns : [ {
 				header : '사원번호',
-				name : 'empNum'
+				name : 'empNum',
+				filter: 'select'
 			}, {
 				header : '이름',
-				name : 'empName'
+				name : 'empName',
+				filter: 'select'
 			}
 			]
 		});
@@ -234,10 +236,10 @@
 			scrollY : false,
 			columns : [ {
 				header : '부서코드',
-				name : 'empNum'
+				name : 'codeId'
 			}, {
 				header : '부서명',
-				name : 'empName'
+				name : 'codeName'
 			}
 			]
 		});
@@ -249,7 +251,7 @@
 			gridD.refreshLayout(); //모달창 새로고침
 			
 			// 부서 모달 ajax.
-			fetch("ajax/depName")
+			fetch("ajax/dept")
 			.then(data => data.json())
 			.then (objs => {
 				gridD.resetData(objs);
@@ -361,16 +363,29 @@
 	}
 	
 	
-	// 모달 안 그리드 클릭시 input 태그에 값 넣기.
+	// 모달 안 그리드 클릭시 input 태그에 값 넣기(그리드 내 이벤트 타겟 찾기).
+	// 사원 이름 모달
 	gridM.on("click", event => {
-		// getRow : 그리드 한 행에서 td값 가져오기.
-		//console.log(event.nativeEvent.target.innerText);  td 값. 셀값
 		console.log(gridM.getRow(event.rowKey))
+		// getRow : 그리드 row(tr) 전체 가져오기.
+		//console.log(event.nativeEvent.target.innerText);  td값. 셀값
+		console.log(gridM.getRow(event.rowKey))   //rowKey : 인덱스 번호  
 		// input 태그에 값 넣어주기.
 		$('#empNum').val(gridM.getRow(event.rowKey).empNum);
 		$('#empName').val(gridM.getRow(event.rowKey)['empName']);
 		// 모달창 숨기기.
 		$('#large').modal('hide');
+	})
+	
+	// 부서 모달
+	gridD.on("click", ev => {
+		//console.log(ev.nativeEvent.target.innerText)
+		let deptT = gridD.getRow(ev.rowKey);
+		//console.log(ev.rowKey)
+		$('#codeId').val(deptT.codeId);
+		$('#codeName').val(deptT['codeName']);
+		
+		$('#large2').modal('hide');
 	})
 	
 	
