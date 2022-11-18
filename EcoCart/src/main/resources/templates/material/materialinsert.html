@@ -1,84 +1,98 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout}">	
+   layout:decorate="~{layout/layout}">   
 <head>
 <meta charset="UTF-8">
 <title>발주 등록</title>
 </head>
 <body>
 <div layout:fragment="content" class="page-content">
-	<div id="content">
-		<h3>발주등록</h3>
-		&nbsp;
-		<table class="mb-5">
-		<tr>
-			<td style="display: center;"> 부서 <input type="text"> <i class="bi bi-search"> </i> <input type="text"> 사원 <input type="text"> <i class="bi bi-search"> </i> <input type="text"></td>			
-		</tr>
-		<tr>
-			<td style="display: center;"> 발주기간 <input type="date"> ~ <input type="date"> <i class="bi bi-search"></i> <button id="list">등록</button> </td>
-		</tr>
-		</table>
-	</div>
-	
-	<div id="grid"></div>
-	
-	
-	<script>
-	   const gridData = [
-	       {
-	          name:'',
-	          artist:'',
-	          type:'',
-	          position : "bottom",
-	          release:'',
-	          genre:''
-	       }];
-	   const grid = new tui.Grid({
-		    el: document.getElementById('grid'),
-		    data: gridData,
-		    scrollX: false,
-		    scrollY: false,
-		    position : "bottom",
-		    rowHeaders : ['checkbox'],
-		    columns: [
-		      {
-		    	
-		        header: '발주번호',
-		        name: '발주번호'
-		      },
-		      {
-		        header: '발주일자',
-		        name: '발주일자'
-		      },
-		      {
-		        header: '거래처',
-		        name: '거래처'
-		      },
-		      {
-		        header: '담당자',
-		        name: '담당자'
-		      },
-		      {
-		        header: '비고',
-		        name: '비고'
-		      }
-		    ]
-		  });
-	   
-	</script>
-	
-	<div style="margin-left: 3px;">
+   <div id="content">
+      <h3>발주등록</h3>
+      &nbsp;
+      <table class="mb-5">
+      <tr>
+         <td style="display: center;"> 부서 <input type="text"> <i class="bi bi-search" id="empList()"> </i> <input type="text"> 사원 <input type="text"> <input type="text"></td>         
+      </tr>
+      <tr>
+         <td style="display: center;"> 발주기간 <input type="date"> ~ <input type="date"></td>
+      </tr>
+      </table>
+   </div>
+   
+   <script>
+      
+   </script>
+   
+   <div style="margin-left: 3px;">
               
-               <button type="button" style="width: 80px; background-color: black; color:white; float:right;  margin:5px; margin-right: 30px">추가</button>   
-               <button type="button" style="width: 80px; background-color: black; color:white; float:right;  margin:5px;">삭제</button>
-               <button type="button" style="width: 80px; background-color: black; color:white; float:right;  margin:5px;"
-                  data-bs-toggle="modal" data-bs-target="#staticBackdrop">조 회</button>
+               <button type="button" style="width: 80px; background-color: black; color:white; float:right;  margin:5px; margin-right: 30px">수정</button>   
+               <button type="button" style="width: 80px; background-color: black; color:white; float:right;  margin:5px;">취소</button>
               
-               <button type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">저  장</button>
+               <button type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">등록</button>
          </div>
-		
-	<div id="grid2"></div>
-	<script>
+   <div id="grid"></div>   
+   <div id="grid2"></div>
+   <script>
+   
+   $(document).ready(function() {
+      $('#SelectInfo').click(empList)
+   })
+   
+   function empList() {
+      $.ajax({
+         url : '',
+         type : 'POST',
+         success : function(data) {
+            console.log(data);
+         },
+         error : function(rejcet) {
+            console.log(no);
+         }
+      })
+   }
+   
+   const gridData = [
+          {
+             name:'',
+             artist:'',
+             type:'',
+             position : "bottom",
+             release:'',
+             genre:''
+          }];
+      const grid = new tui.Grid({
+          el: document.getElementById('grid'),
+          data: gridData,
+          scrollX: false,
+          scrollY: false,
+          position : "bottom",
+          rowHeaders : ['checkbox'],
+          columns: [
+            {
+             
+              header: '발주번호',
+              name: '발주번호'
+            },
+            {
+              header: '발주일자',
+              name: '발주일자'
+            },
+            {
+              header: '거래처',
+              name: '거래처'
+            },
+            {
+              header: '담당자',
+              name: '담당자'
+            },
+            {
+              header: '비고',
+              name: '비고'
+            }
+          ]
+        });
+      
    
   const grid2 = new tui.Grid({
     el: document.getElementById('grid2'),
@@ -130,18 +144,18 @@
     ]
   });
 
-	    grid.on('check', ev => {
-	      console.log('check!', ev);
-	    });
+       grid.on('check', ev => {
+         console.log('check!', ev);
+       });
 
-	    grid.on('uncheck', ev => {
-	      console.log('uncheck!', ev);
-	    });
+       grid.on('uncheck', ev => {
+         console.log('uncheck!', ev);
+       });
 
-	    grid.on('focusChange', ev => {
-	      console.log('change focused cell!', ev);
-	    });
-	  
+       grid.on('focusChange', ev => {
+         console.log('change focused cell!', ev);
+       });
+     
    </script>
    </div>
 </body>
