@@ -147,15 +147,17 @@
 	      ]
 	   });
  		
-
 	   grid.on('click',(col)=>{
 		  $('#staticBackdrop').modal("show");
+		  
 	   });
-  
+	   
+	   
 	    staticBackdrop.addEventListener('shown.bs.modal', () => {
 	    	modalGrid.refreshLayout(); 
 	    })
 	    
+	   
    </script>
 
 	</div>
