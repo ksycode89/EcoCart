@@ -18,6 +18,13 @@ public interface CommonMapper {
 		  
     //공통코드리스트
     public List<CommonVO>callCommon(CommonVO vo);
+    
+   //공통코드추가
+    public int callInsert(CommonVO vo);
+    //공통코드 수정
+    public int callupdate(CommonVO vo);
+    //공통코드 삭
+    public int callDelete(CommonVO vo);
 		
 
 }
