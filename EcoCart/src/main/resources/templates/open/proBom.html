@@ -12,61 +12,48 @@
 </head>
 
 <body>
-<div layout:fragment="content">
+<div layout:fragment="header" class="page-heading"><h2>재고현황/BOM수급현황</h2></div>
+	<div layout:fragment="content" class="page-content">
+				
+		<div class="mb-1">
+				
+			<div style="height:50px; margin-bottom:10px">
+				<label for="planName" style="width:100px">제품코드</label>
+				<input type="text" class="form-control" style="width:200px; display:inline" placeholder="제품코드" id="InProductCode">&nbsp;
+				
+			</div>	
+				
+				
+			<div style="height:50px; margin-bottom:10px">
+				<label for="planName" style="width:100px">제품명</label>
+				<input type="text" class="form-control" style="width:200px; display:inline" placeholder="제품명" id="InProduct">&nbsp;
+				<button type="button" class="btn btn-sm btn-primary" id="proSearch">검색</button>&nbsp;					
+				<button type="button" class="btn btn-sm btn-secondary" id="proReset">초기화</button>
+				
+			</div>
 
-	<h4>재고현황/BOM수급현황</h4>
-	
-	<div class="row">
-		<div>
-			<table style="margin:30px;">
-				<tr>
-					<td style="width: 400px;">제품코드<input style="width: 100px;" id="result">&nbsp; <i class="bi bi-search">&nbsp;</i>
-		         		<select name="no" onchange="handleOnChange(this)" style="width: 80px;">
-		         			<option value="선택">-선택-</option>
-		         			<th:block th:each="e : ${proCode}">
-					         	<option th:value="${e.proCode}" th:text="${e.proCode}"></option>
-				         	</th:block>   		   			
-		         		</select>
-	         		</td>
-	         		
-	         		<td >제품명<input style="width: 100px;" id="result2">&nbsp; <i class="bi bi-search">&nbsp;</i>
-		         		<select name="no" onchange="handleOnChange2(this)" style="width: 80px;">
-		         			<option value="선택">-선택-</option>
-		         			<th:block th:each="e : ${proCode}">
-					         	<option th:value="${e.proName}" th:text="${e.proName}"></option>
-				         	</th:block>  			
-		         		</select>
-	         			<button type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;">조 회</button>
-	         		</td>
-	         		
-				</tr>
-			</table>	
-		</div>
+			
+          </div>
 	
 		<div id="grid"></div>
+		<div><br></div>
 	
-	</div>
-	
-	<div class="row">
-		<div>
-			<table style="margin:30px;">
-				<tr>
-					<td style="width: 400px;">BOM코드<input style="width: 100px;" id="result3">&nbsp; <i class="bi bi-search">&nbsp;</i>
-		         		<select name="no" onchange="handleOnChange3(this)" style="width: 80px;">
-		         			<option value="선택">-선택-</option>
-		         			<th:block th:each="e : ${bomCode}">
-					         	<option th:value="${e.bomCode}" th:text="${e.bomCode}"></option>
-				         	</th:block>   			
-		         		</select>
-	         		</td>
-	         		
-				</tr>
-			</table>	
-		</div>
+	<div class="mb-1">
+		
+				
+			<div style="height:50px; margin-bottom:10px">
+				<label for="planName" style="width:100px">BOM코드</label>
+				<input type="text" class="form-control" style="width:200px; display:inline" placeholder="BOM코드" id="InBomCode">&nbsp;
+				<button type="button" class="btn btn-sm btn-primary" id="bomSearch">검색</button>&nbsp;					
+				<button type="button" class="btn btn-sm btn-secondary" id="bomReset">초기화</button>
+				
+			</div>
+
+			
+          </div>
 	
 		<div id="grid2"></div>
 	
-	</div>
 	   
 
 		<script>
@@ -81,11 +68,13 @@
 	        columns: [
 	            {
 	            	header: '제품코드',
-	            	name: 'proCode'
+	            	name: 'proCode',
+	            	filter : 'text'
 	            },
 	            {
 	            	header: '제품명',
-	            	name: 'proName'
+	            	name: 'proName',
+	            	filter : 'text'
 	            },
 	            {
 	            	header: '창고코드',
@@ -115,23 +104,25 @@
 	        columns: [
 	        	{
 	            	header: 'BOM코드',
-	            	name: 'BOM_CODE'
+	            	name: 'bomCode',
+	            	filter : 'text'
+	            	
 	            },
 	            {
 	            	header: '품번코드',
-	                name: 'PRO_CODE'
+	                name: 'prdCode'
 	             },
 	             {
 		            header: '품명',
-		            name: 'PRO_NAME'
+		            name: 'proName'
 		         },
 	             {
 		            header: '필요수량',
-		            name: 'NEED_NUM'
+		            name: 'needNum'
 	             },
 	             {
 	              	header: '재고수량',
-	                name: 'BOM_NUM'
+	                name: 'bomNum'
 	             }
 	              
 	        ]
@@ -214,10 +205,35 @@
 				
 			})
 		})
+	
+		// 그리드 필터
+	proSearch.addEventListener('click', () => {
+		grid.filter('proName' , [{code:'contain', value:$('#InProduct').val()}])
+		grid.filter('proCode' , [{code:'contain', value:$('#InProductCode').val()}])
+			
 		
+	});
+
+
+	proReset.addEventListener('click', () => {
+		document.getElementById('InProduct').value = '';
+		grid.unfilter('proName');
+		document.getElementById('InProductCode').value = '';
+		grid.unfilter('proCode');
+	})	
 		
+	
+	bomSearch.addEventListener('click', () => {
+		grid2.filter('bomCode' , [{code:'contain', value:$('#InBomCode').val()}])
+			
 		
-		
+	});
+
+
+	bomReset.addEventListener('click', () => {
+		document.getElementById('InBomCode').value = '';
+		grid2.unfilter('bomCode');
+	})	
 		
 		
 		
