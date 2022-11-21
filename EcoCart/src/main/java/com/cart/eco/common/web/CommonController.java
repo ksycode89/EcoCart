@@ -1,9 +1,12 @@
 package com.cart.eco.common.web;
 
-import java.util.Iterator;
 import java.util.List;
 
+import javax.security.auth.message.callback.SecretKeyCallback.Request;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -95,15 +98,18 @@ public class CommonController {
 	         @GetMapping("/callClient")
 	         @ResponseBody
 	         public List<ClientVO>callClient(){
-	            
+	           
 	            return commonService.callClient();
 	         }
 	         
 	         //공통코드가져오기
 	         @PostMapping("/callCommon")
 	         @ResponseBody
-	         public List<CommonVO>callCommon(CommonVO vo){
-	            
+	         public List<CommonVO>callCommon(CommonVO vo , HttpServletRequest request){
+	        	 
+	        	    EmpVO sess  = (EmpVO)request.getSession().getAttribute("infos");
+		            System.out.println("inner callclient : "+sess);
+		            
 	            System.out.println("callCommon : "+commonService.callCommon(vo));
 	            return commonService.callCommon(vo);
 	         }	  

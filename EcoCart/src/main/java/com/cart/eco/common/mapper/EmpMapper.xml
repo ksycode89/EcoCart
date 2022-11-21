@@ -13,13 +13,13 @@
           ON m.emp_num = e.emp_manager
    		<where>
    		 <if test="empNum != null and !empNum.equals('')">
-   		 	emp_num = #{empNum}
+   		 	e.emp_num = #{empNum}
    		 </if>
    		  <if test="empName != null and !empName.equals('')">
-   		 	OR emp_name = #{empName}
+   		 	OR e.emp_name = #{empName}
    		 </if>
    		 <if test="empDept != null and !empDept.equals('')">
-           OR emp_dept = #{empDept}
+           OR e.emp_dept = #{empDept}
          </if>
    		</where>
    		
@@ -34,6 +34,11 @@
 			WHERE emp_num = #{manager}
    		</select>
    		
+   		<select id="selectEmpOne" parameterType="String" resultType="com.cart.eco.common.service.EmpVO">
+   			SELECT * 
+   			FROM employees
+   			where emp_num= #{empNum}
+   		</select>
    		
    		
    		
