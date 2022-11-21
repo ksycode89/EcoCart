@@ -1,11 +1,13 @@
 package com.cart.eco.common.web;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cart.eco.common.service.ClientVO;
@@ -13,9 +15,14 @@ import com.cart.eco.common.service.CommonService;
 import com.cart.eco.common.service.CommonVO;
 import com.cart.eco.common.service.EmpService;
 import com.cart.eco.common.service.EmpVO;
+import com.cart.eco.common.service.ToastGridVO;
+
+import groovy.util.logging.Log4j2;
+
 
 
 @Controller
+@Log4j2
 public class CommonController {
 	
 	
@@ -100,6 +107,59 @@ public class CommonController {
 	            System.out.println("callCommon : "+commonService.callCommon(vo));
 	            return commonService.callCommon(vo);
 	         }	  
+	         
+	         @GetMapping("/callRead")
+	         @ResponseBody
+	         public List<CommonVO>callRead(CommonVO vo){
+	            
+	            System.out.println("callCommon : "+commonService.callCommon(vo));
+	            return commonService.callCommon(vo);
+	         }	  
+	         
+	         @PostMapping("/callInsert")
+	         @ResponseBody
+	         public int callInsert(@RequestBody ToastGridVO<CommonVO> vo) {
+	        	System.out.println("create : "+vo.getCreatedRows());
+	        	int result=0;
+	        	for(CommonVO common : vo.getCreatedRows()) {
+	        		
+	        	
+	        	 result += commonService.callInsert(common);
+	        	}
+	        	System.out.println("결과값 합산 : "+result);
+	        	 return result;
+	         }
+	         
+	         //업데이
+	         @PostMapping("/callupdate")
+	         @ResponseBody
+	         public int callupdate(@RequestBody ToastGridVO<CommonVO> vo) {
+	        	 int result=0;
+	        	 System.out.println("create : "+vo.getUpdatedRows());
+	        	 for(CommonVO common : vo.getUpdatedRows()) {
+	        		 
+	        		 
+	        		 result += commonService.callupdate(common);
+	        	 }
+	        	 System.out.println("result update : " + result);
+	        	 return result;
+	         }
+	        //공통코드삭제
+	         @PostMapping("/callDelete")
+	         @ResponseBody
+	         public int callDelete(@RequestBody ToastGridVO<CommonVO> vo) {
+	        	 int result=0;
+	        	 System.out.println("create : "+vo.getDeletedRows());
+	        	 for(CommonVO common : vo.getDeletedRows()) {
+	        		 
+	        		 
+	        		 result += commonService.callDelete(common);
+	        	 }
+	        	 System.out.println("result delete : " + result);
+	        	 return result;
+	         }
+	         
+	         
 	//===================================================================================//
 	
 	         

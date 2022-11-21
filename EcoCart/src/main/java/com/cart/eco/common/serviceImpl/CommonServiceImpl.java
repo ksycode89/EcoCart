@@ -32,7 +32,25 @@ public class CommonServiceImpl implements CommonService {
 
 	   @Override
 	   public List<CommonVO> callCommon(CommonVO vo) {
-	      // TODO Auto-generated method stub
 	      return commonMapper.callCommon(vo);
 	   }
+
+
+	@Override
+	public int callInsert(CommonVO vo) {
+		return commonMapper.callInsert(vo);
+	}
+
+
+	@Override
+	public int callupdate(CommonVO vo) {
+		return commonMapper.callupdate(vo);
+	}
+
+
+	@Override
+	public int callDelete(CommonVO vo) {
+		
+		return commonMapper.callDelete(vo);
+	}
 }

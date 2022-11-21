@@ -23,19 +23,48 @@
          <if test="codeId != null and !codeId.equals('')">
             code_id = #{codeId}
          </if>
-         <if test="codeName != null and !ccodeName.equals('')">
-            code_name = #{codeName}
+         <if test="codeName != null and !codeName.equals('')">
+          and code_name = #{codeName}
          </if>
          <if test="codeGroup != null and !codeGroup.equals('')">
-            code_group = #{codeGroup}
+          and  code_group = #{codeGroup}
          </if>
          <if test="codeUsed != null and !codeUsed.equals('')">
-            code_used = #{codeUsed}
+          ands  code_used = #{codeUsed} 
          </if>
          
       </where>
    </select>
 	
+	<insert id="callInsert" parameterType="com.cart.eco.common.service.CommonVO" >
+		insert into common_code
+		values (#{codeId},#{codeName},#{codeGroup},#{codeContent},#{codeUsed})
+	</insert>
 	
+	<update id="callupdate" parameterType="com.cart.eco.common.service.CommonVO">
+		update common_code 
+		<set>
+         <if test="codeName != null and !codeName.equals('')">
+            code_name = #{codeName},
+         </if>
+         <if test="codeGroup != null and !codeGroup.equals('')">
+            code_group = #{codeGroup},
+         </if>
+         <if test="codeContent != null and !codeContent.equals('')">
+            code_content = #{codeContent},
+         </if>
+         <if test="codeUsed != null and !codeUsed.equals('')">
+            code_used = #{codeUsed}
+         </if>
+		
+		</set> 
+		where code_id =  #{codeId}
 	
+	</update>
+	<delete id="callDelete" parameterType="com.cart.eco.common.service.CommonVO">
+		delete
+		from common_code
+		where code_id=#{codeId}
+	
+	</delete>
 </mapper>

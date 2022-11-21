@@ -13,6 +13,14 @@ public interface CommonService {
 	//공통코드리스트
 	   public List<CommonVO>callCommon(CommonVO vo);
 	
+	//공통코드 추가
+	  public int callInsert (CommonVO vo);
+	  //공통코드 수정
+	  public int callupdate(CommonVO vo);
+
+	  //공통코드 삭제
+	  public int callDelete(CommonVO vo);
+	  
 	
 	
 }
