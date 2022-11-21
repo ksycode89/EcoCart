@@ -13,66 +13,44 @@
 </head>
 
 <body>
-<div layout:fragment="content">
- <h4>출고요청</h4>
-	
-	<div class="row">
-		<form action="#" method="get">
-		<div>
-			<table style="margin:30px;">
-				<tr>
-					<td style="width: 400px">
-						출고요청일자 <input type="date" style="width: 120px;">
-					</td>
-					
-					<td>출고요청코드<input style="width: 100px;" id="result">&nbsp; <i class="bi bi-search">&nbsp;</i>
-		         		<select name="no" onchange="handleOnChange(this)" style="width: 80px;">
-		         			<option value="선택">-선택-</option>
-		         			<option value="번호1">번호1</option>
-		         			<option value="번호2">번호2</option>
-		         			<option value="번호3">번호3</option>   			
-		         		</select>         		
-	         		</td>
-				</tr>
+<div layout:fragment="header" class="page-heading"><h2>출고요청</h2></div>
+	<div layout:fragment="content" class="page-content">
 				
-				<tr>
-					<td>거래처<input style="width: 100px;" id="result2">&nbsp; <i class="bi bi-search">&nbsp;</i>
-		         		<select name="no" onchange="handleOnChange2(this)" style="width: 80px;">
-		         			<option value="선택">-선택-</option>
-		         			<option value="번호1">번호1</option>
-		         			<option value="번호2">번호2</option>
-		         			<option value="번호3">번호3</option>   			
-		         		</select>         		
-	         		</td>
-	         		
-	         		<td>담당자명<input style="width: 100px;" id="result3">&nbsp; <i class="bi bi-search">&nbsp;</i>
-		         		<select name="no" onchange="handleOnChange3(this)" style="width: 80px;">
-		         			<option value="선택">-선택-</option>
-		         			<option value="번호1">번호1</option>
-		         			<option value="번호2">번호2</option>
-		         			<option value="번호3">번호3</option>   			
-		         		</select>         		
-	         		</td>
+		<div class="mb-1">
 				
-				</tr>
-			</table>
+			<div style="height:50px;">
+				<label for="planName" style="width:100px">출고요청코드</label>
+				<input type="text" class="form-control" style="width:200px; display:inline" placeholder="출고요청코드" id="CodeSearch">&nbsp;
+			</div>
 			
-				<div style="margin-left: 3px;">
-		               <button type="reset" style="width: 80px; background-color: black; color:white; float:right; margin:5px;" >초기화</button>
-		               <button id="showModal" type="button" style="width: 80px; background-color: black; color:white; float:right;  margin:5px;">조회</button>
-		               <button type="button" style="width: 100px; background-color: black; color:white; float:right;  margin:5px;"
-		               data-bs-toggle="modal" data-bs-target="#staticBackdrop">출고 요청</button>   
-		         </div>
-		         
-         
-		</div>
-		
-		</form>
+            <div style="height:50px;">
+				<label for="planName" style="width:100px">출고요청일자</label>
+				<input type="date" class="form-control" style="width:200px; display:inline" id="DateSearch">&nbsp;
+			
+           </div>
+           
+			<div style="height:50px;">
+				<label for="planName" style="width:100px">거래처</label>
+				<input type="text" class="form-control"style="width:200px; display:inline" placeholder="거래처명" id="ClientSearch">&nbsp;
+            </div>
+            
+            <div style="height:50px;">
+				<label for="planName" style="width:100px">담당자</label>
+				<input type="text" class="form-control"style="width:200px; display:inline" placeholder="담당자명" id="EmpSearch">&nbsp;
+				<button type="button" class="btn btn-sm btn-primary" id="Searchbtn">검색</button>&nbsp;
+				<button type="button" class="btn btn-sm btn-secondary" id="Resetbtn">초기화</button>
+            </div>
+            
+           <div>
+               <button type="button" style="float:right; margin:5px; margin-right: 30px"  class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">출고 요청</button>
+			</div>
+
+			
+          </div>        
         
 	        <div id="grid"></div>
+	        <div><br></div>
 	        <div id="grid2"></div>
-	        
-	    </div>
         
         
         <!--  출고요청 모달창  -->
@@ -170,22 +148,22 @@
 		            {
 		            	header: '출고요청코드',
 		            	name: 'dlivyQCode',
-		            	filter : 'select'
+		            	filter : 'text'
 		            },
 		            {
 		            	header: '출고요청일자',
 		            	name: 'dlivyDate',
-		            	filter : 'select'
+		            	filter : 'date'
 		            },
 		            {
 		            	header: '거래처',
 		                name: 'clientCode',
-		                filter : 'select'
+		                filter : 'text'
 		             },
 		             {
 		             	header: '담당자',
 		                name: 'empNum',
-		                filter : 'select'
+		                filter : 'text'
 		             },
 		             {
 			            header: '총합계액',
@@ -375,7 +353,32 @@
 	     
 	      
 		
-      
+      	//조회버튼 / 리셋버튼
+
+	
+ 	Searchbtn.addEventListener('click', () => {
+		grid.filter('dlivyQCode' , [{code:'contain', value:$('#CodeSearch').val()}])
+		grid.filter('clientCode' , [{code:'contain', value:$('#ClientSearch').val()}])
+		grid.filter('empNum' , [{code:'contain', value:$('#EmpSearch').val()}])
+		
+		if($('#DateSearch').val() != '' ){
+			grid.filter('dlivyDate' , [{code:'beforeEq', value:$('#DateSearch').val()}])
+			
+		}
+	});
+
+		
+	Resetbtn.addEventListener('click', () => {
+		document.getElementById('CodeSearch').value = '';
+		grid.unfilter('dlivyQCode');
+		document.getElementById('ClientSearch').value = '';
+		grid.unfilter('clientCode');
+		document.getElementById('EmpSearch').value = '';
+		grid.unfilter('empNum');
+		document.getElementById('DateSearch').value = '';
+		grid.unfilter('dlivyDate');
+	})	 
+	
       
       </script>
       </div>
