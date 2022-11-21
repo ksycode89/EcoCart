@@ -8,16 +8,10 @@
 <body>
 <div layout:fragment="content" class="page-content">
    <div id="content">
-      <h3>발주등록</h3>
-      &nbsp;
-      <table class="mb-5">
-      <tr>
-         <td style="display: center;"> 부서 <input id="clice" type="text"> <i class="bi bi-search" id="emplist" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="cursor:pointer"> </i> <input id="clice" type="text"> 사원 <input type="text"> <input type="text"></td>         
-      </tr>
-      <tr>
-         <td style="display: center;"> 발주기간 <input type="date"> ~ <input type="date"></td>
-      </tr>
-      </table>
+      <h2>발주등록</h2>
+      <label for="code_group" style="width:65px;" >부서</label>
+      <input id="empDept" type="text"> <i class="bi bi-search" id="emplist" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="cursor:pointer"></i>
+       사원 <input id="empName" type="text">     
    </div>
    
    
@@ -46,28 +40,39 @@
       
    </script>
    
-   <div style="margin-left: 3px;">
-              
-               <button type="button" style="width: 80px; background-color: black; color:white; float:right;  margin:5px; margin-right: 30px">수정</button>   
-               <button type="button" style="width: 80px; background-color: black; color:white; float:right;  margin:5px;">취소</button>    
-               <button type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">등록</button>
+   <div style="margin-left: 3px;">   
+               <button id="insertBtn" type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">등록</button>
          </div>
    <div id="grid"></div>   
    <div id="grid2"></div>
    <script>
    
    $(document).ready(function() {
-      $('#SelectInfo').click(empList)
+      $('#emplist').click(empList)
+      $('#insertBtn').click(insertInfo)
    })
+   
+   function insertInfo() {
+	   $.ajax({
+		   url : '/materialinsertInfo',
+		   type : 'POST',
+		   success : function(data) {
+			   console.log(data);
+		   },
+		   error : function(rejcet) {
+			   console.log(123);
+		   }
+	   })
+   }
    
    function empList() {
       $.ajax({
-         url : 'ajax/dept',
-         type : 'GET',
-         dataType : 'text',
+         url : 'ajax/list',
+         type : 'POST',
+         data : {"empNum" : $('#empNum').val(),"empDept" : $('#codeId').val()},
          success : function(data) {
-        	$('emplist').innertext(data); 
             console.log(data);
+            modalGrid.resetData(data);
          },
          error : function(rejcet) {
             console.log(no);
@@ -84,34 +89,42 @@
              release:'',
              genre:''
           }];
+  
       const grid = new tui.Grid({
           el: document.getElementById('grid'),
-          data: gridData,
           scrollX: false,
           scrollY: false,
           position : "bottom",
-          rowHeaders : ['checkbox'],
           columns: [
             {
-             
               header: '발주번호',
-              name: '발주번호'
+              name: 'orderNo',
+              editor: 'text'
             },
             {
               header: '발주일자',
-              name: '발주일자'
+              name: 'orderDate',
+              editor: {
+                  type: 'datePicker', 
+              option : {
+            	  format:'yyyy-MM-dd'
+              }
+              }
             },
             {
-              header: '거래처',
-              name: '거래처'
+              header: '거래처명',
+              name: 'clientName',
+           	  editor: 'text',
             },
             {
               header: '담당자',
-              name: '담당자'
+              name: 'manager',
+              filter : 'text'
             },
             {
               header: '비고',
-              name: '비고'
+              name: 'comments',
+              editor: 'text'
             }
           ]
         });
@@ -122,78 +135,66 @@
     data: gridData,
     scrollX: false,
     scrollY: false,
-    rowHeaders : ['checkbox'],
+    rowHeaders : ['rowNum'],
     columns: [
       {
-        header: 'NO',
-        name: 'NO'
-      },
-      {
         header: '품번',
-        name: '품번'
+        name: 'proName',
+        editor: 'text'
       },
       {
         header: '품명',
-        name: '품명'
+        name: '품명',
+        editor: 'text'
       },
       {
         header: '규격',
-        name: '규격'
+        name: 'unit',
+        editor: 'text'
       },
       {
         header: '단위',
-        name: '단위'
+        name: 'standard',
+        editor: 'text'
       },
       {
         header: '납기일',
-        name: '납기일'
+        name: '납기일',
+        editor: {
+            type: 'datePicker',
+            options: {
+              format: 'yyyy-MM-dd'
+            }
+          }
         },
-        {
-        header: '입고예정일',
-        name: '입고예정일'
-          },
           {
         header: '발주수량',
-        name: '발주수량'
-            },
-            {
+        name: '발주수량',
+        editor: 'text'
+	  },
+      {
         header: '단가',
-        name: '단가'
-            },
-            {
+        name: '단가',
+        editor: 'text'
+      },
+      {
         header: '공급가',
-        name: '공급가'
-            }
+        name: '공급가',
+        editor: 'text'
+      }
     ]
   });
-
-       grid.on('check', ev => {
-         console.log('check!', ev);
-       });
-
-       grid.on('uncheck', ev => {
-         console.log('uncheck!', ev);
-       });
-
-       grid.on('focusChange', ev => {
-         console.log('change focused cell!', ev);
-       });
+ 
        
        var modalGrid = new tui.Grid({
     	      el: document.getElementById('modalGrid'),
     	      bodyHeight: 200,
-    	      data: [{
-    	         planCode: '',
-    	         planName: '',
-    	         planDCode: '',
-    	         productName: ''
-    	      }],
     	      scrollX: true,
     	      scrollY: true,
     	      columns: [
     	         {
     	            header: '부서',
-    	            name: 'empTal',
+    	            name: 'empDept',
     	         },
     	         {
     	            header: '사원',
@@ -201,10 +202,28 @@
     	         }
     	      ]
     	   });
+      
+       modalGrid.on("click", event => {
+    	   //console.log("inner modal grd ", modalGrid.getRow(event.rowKey).empName)
+    	  let managers = [
+    		  {
+    			  "manager" :  modalGrid.getRow(event.rowKey).empName
+    		  }
+    		  
+    	  ] 
+    	   
+		grid.appendRows(managers)
+		
+    	$('#empDept').val(modalGrid.getRow(event.rowKey)['empDept']);
+		$('#empName').val(modalGrid.getRow(event.rowKey)['empName']);
+		$('#large').modal('hide');
+       })
        
        staticBackdrop.addEventListener('shown.bs.modal', () => {
        	modalGrid.refreshLayout(); //모달창 새로고침
        })
+       
+     
    </script>
    </div>
 </body>
