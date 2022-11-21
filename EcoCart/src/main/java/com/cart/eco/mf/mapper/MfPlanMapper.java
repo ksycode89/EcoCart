@@ -10,7 +10,7 @@ public interface MfPlanMapper {
 	public List<MfPlanVO> getMfPlanList();
 	
 	// 주문서조회
-	public List<MfPlanVO> getOrderList(MfPlanVO mfvo);
+	public List<MfPlanVO> getOrderList();
 		
 	// 생산계획등록
 	public int insertMfPlan(MfPlanVO mfvo);

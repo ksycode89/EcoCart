@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cart.eco.mf.mapper.MfProcessMapper">
+	<select id="getMfProcessList" resultType="com.cart.eco.mf.service.MfProcessVO">
+		Select p.line_no, p.mf_process_code, p.mf_process_name, p.sys_code, f.sys_name, e.emp_name
+		FROM mf_process p LEFT OUTER JOIN facilities f
+		ON p.sys_code = f.sys_code
+		LEFT OUTER JOIN employees e
+		ON p.emp_num = e.emp_num
+	</select>
+</mapper>
+  
