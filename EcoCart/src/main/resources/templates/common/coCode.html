@@ -332,7 +332,11 @@
                editor: {
             	      type: 'select',
             	      options: {
-            	        listItems: [  ]
+            	        listItems: [
+            	        	{ text: '부서', value: 'dept' },
+            	        	{ text: '제품', value: 'material' },
+            	        	
+            	        		]
             	      }
             	    }       
                
@@ -529,21 +533,23 @@
             }
          //행추
          	function commonBtnInsert(){
-
+         		 $('#common-code-detail').css('display','block')
          	/* 	$('#common-code-insert').css('display','block') */
-         		/*  grid3.refreshLayout(); */
+         		/ grid3.refreshLayout(); 
          		grid3.appendRow()
+         		
          	}
          	
          	gridInsert.on('click',ev=>{
          		let tr = ev.nativeEvent.path[0].cellIndex
          		let tr2 =  ev
-         		console.log(tr2)
+         		
          	})
          	
          	function commonBtnSave (){
-         	console.log(123)
+    
           grid3.request('createData');
+         	grid3.clear();
          		
          	  /*   console.log(a); */
          	}
@@ -553,10 +559,16 @@
          	//행삭제
          function commonBtnDelete(){
         	
-        	let test =  grid3.removeCheckedRows(true);
-        	console.log(test)
-        	// grid3.request('deleteData');
-        	 grid3.blur();   
+        	//let test =  grid3.removeCheckedRows(true);//체크박스 정해서 삭제
+			let test = grid3.getCheckedRows()
+			
+		    $(test).each((a,b)=>{
+		    	grid3.removeRow(b.rowKey);
+
+		    })
+			//console.log(test)
+        	 grid3.request('deleteData');
+        	// grid3.blur(); 윈도우 포커스 제거  
          	}
          function commonBtnReset(){
         	 $('#common-code-detail').css('display','none')
@@ -567,7 +579,7 @@
          
          function commonBtnModi(){
         	
-        	 
+ 
         	 
          }
          
