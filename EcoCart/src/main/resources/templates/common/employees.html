@@ -17,7 +17,7 @@
 <body>
 	<div layout:fragment="content">
 
-		<h3>사원관리</h3>
+		<h2>사원관리</h2>
 
 
  <div >
@@ -73,7 +73,23 @@
                                         </div>
 	
 	
-										<!--부서 Modal lg size -->
+										
+			
+	<div class="mb-3 row">
+			<label  class="col-lg-1 col-sm-12 col-form-label">부 서</label>
+			<div class="col-lg-auto col-sm-6">
+			<input  id="codeId" name="codeId" class="form-control">
+			</div>
+			<div class="col-lg-auto col-sm-6">
+			<button type="button"><i class="bi bi-search" data-bs-toggle="modal" data-bs-target="#large2" ></i></button> 
+			</div>
+			<div class="col-lg-auto col-sm-12">
+			<input  id="codeName" name="codeName" class="form-control">
+			</div>
+			
+	</div>	
+	
+	<!--부서 Modal lg size -->
                                         <div class="me-1 mb-1 d-inline-block">
                                            
                                             <div class="modal fade text-left" id="large2" tabindex="-1" role="dialog"
@@ -113,34 +129,12 @@
 	
 	
 	
-			
-	<div class="mb-3 row">
-			<label  class="col-lg-1 col-sm-12 col-form-label">부 서</label>
-			<div class="col-lg-auto col-sm-6">
-			<input  id="codeId" name="codeId" class="form-control">
-			</div>
-			<div class="col-lg-auto col-sm-6">
-			<button type="button"><i class="bi bi-search" data-bs-toggle="modal" data-bs-target="#large2" ></i></button> 
-			</div>
-			<div class="col-lg-auto col-sm-12">
-			<input  id="codeName" name="codeName" class="form-control">
-			</div>
-			<div class="col-lg-auto col-sm-6">
+	
+	
+	<div style="display: flex; justify-content: flex-end; " id="btn-div" class="mb-3">
+		<div>
 			<button type="button" onclick="selectEmp()">조회</button> 
 			</div>
-	</div>	
-
- </div>
- 
-  <div id="grid" class="mb-5 row"></div>
- 
- 
- 
-
-	<div>
-		<h3>담당자</h3>
-	</div>
-	<div style="display: flex; justify-content: flex-end; " id="btn-div" class="mb-3">
 		<div>
 			<button type="button">등록</button> 
 		</div>
@@ -151,6 +145,18 @@
 			<button type="button">삭제</button> 
 		</div>
 	</div>	
+
+ </div>
+ 
+  <div id="grid" class="mb-5 row"></div>
+ 
+ 
+ 
+
+	<div>
+		<h2>담당자</h2>
+	</div>
+	
 		
 
 	<div >
@@ -160,20 +166,61 @@
 			<input  id="empNum2" name="empCode" class="form-control">
 			</div>
 			 <div class="col-lg-auto col-sm-6">
-			<button type="button"><i class="bi bi-search"></i></button> 
+			<button type="button"><i class="bi bi-search" data-bs-toggle="modal" data-bs-target="#large3"></i></button> 
 			</div>
 			<div class="col-lg-auto col-sm-12">
 			<input  id="empName2" name="name" class="form-control">
 			</div>
 	</div>		
+	
+	<!--담당자 이름 Modal lg size -->
+                                        <div class="me-1 mb-1 d-inline-block">
+                                           
+                                            <div class="modal fade text-left" id="large3" tabindex="-1" role="dialog"
+                                                aria-labelledby="myModalLabel17" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+                                                    role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title" id="myModalLabel17">담당자 목록</h4>
+                                                            <button type="button" class="close" data-bs-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <i data-feather="x"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                           <!--그리드  -->
+      														 <div id="gridmn" class="mb-3 row"></div>
+       
+                                                           
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-light-secondary"
+                                                                data-bs-dismiss="modal">
+                                                                <i class="bx bx-x d-block d-sm-none"></i>
+                                                                <span class="d-none d-sm-block">Close</span>
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary ml-1"
+                                                                data-bs-dismiss="modal">
+                                                                <i class="bx bx-check d-block d-sm-none"></i>
+                                                                <span class="d-none d-sm-block">확인</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+	
+	
+	
+	
+	
 	<div class="mb-3 row">
-			<label  class="col-lg-1 col-sm-12 col-form-label">부 서</label>
+			<label  class="col-lg-1 col-sm-12 col-form-label">부서코드</label>
 			<div class="col-lg-auto col-sm-6">
 			<input  id="codeId2" name="depCode" class="form-control">
 			</div>
-			<div class="col-lg-auto col-sm-6">
-			<button type="button"><i class="bi bi-search"></i></button> 
-			</div>
+			<label  class="col-lg-1 col-sm-12 col-form-label">부서명</label>
 			<div class="col-lg-auto col-sm-12">
 			<input  id="codeName2" name="depName" class="form-control">
 			</div>
@@ -181,7 +228,7 @@
 
  </div>
 	
-	<div class="mb-3 row">
+	<div class="mb-5 row">
 			<label  class="col-lg-1 col-sm-12 col-form-label">mail</label>
 			<div class="col-lg-auto col-sm-6">
 			<input  id="empMail2" name="empMail" class="form-control">
@@ -195,11 +242,16 @@
 
 
 	<div>
-		<h3>담당사원</h3>
+		<h2>담당사원</h2>
+	</div>	
+	  <div style="display: flex; justify-content: flex-end; " id="btn-div" class="mb-3">
 		
-		<div class="col-lg-auto col-sm-6">
-			<button type="button" onclick="selectInfo()">조회</button> 
-			</div>
+		<div >
+			<button type="button">추가</button> 
+		</div>
+		<div >
+			<button type="button">삭제</button> 
+		</div>
 	</div>
 
 	 <div id="grid2" class="mb-3 row"></div>
@@ -283,8 +335,64 @@
 	   	      
 	   	      
 	   	 })
+	   	 
+	   	 // 담당자 이름 모달
+		const gridMN = new tui.Grid({
+			el : document.getElementById('gridmn'),
+			rowHeaders: ['checkbox'],
+			scrollX : false,
+			scrollY : false,
+			columns : [ {
+				header : '사원번호',
+				name : 'empNum'
+			}, {
+				header : '이름',
+				name : 'empName'
+			}
+			]
+		});
 		
+		large3.addEventListener('shown.bs.modal', () => {
+			
+			gridMN.refreshLayout(); //모달창 새로고침
+			
+			// 담당자 이름 모달 ajax.
+			fetch("ajax/empInfo",{method:"get"})
+			.then(data => data.json())
+			.then (objs => {
+				 gridMN.resetData(objs);
+			})
+		})
 		
+		/* $(function(){ 담당자 조회 다른 방법. 
+			
+			let arr = [];
+		let objs = [1,0,2,0,3,4,5,0]
+		let objA =[]
+				 $(objs).each(function(idx,obj){
+					
+					console.log(obj)
+					if(obj != 0 ){
+						objA.push(obj)
+						
+					}
+					console.log("새로운 배열 ",objA)
+					/* if(obj.empManager == null) {
+					arr.push(obj)	
+				    
+					}  */
+		/* 			
+				})
+			
+		}) */
+									
+				
+					 
+		
+	   	  
+	   	      
+	   	      
+
 
  	/* 사원정보  */
 		const grid1 = new tui.Grid({
@@ -381,7 +489,7 @@
 			 })
 		}
 	
-	// 담당사원 ajax
+	// 담당자의 담당사원 ajax
 		function selectInfo(){
 		 	$.ajax({
 				url : "ajax/list",
@@ -399,7 +507,7 @@
 	
 	
 	// 모달 안 그리드 클릭시 input 태그에 값 넣기(그리드 내 이벤트 타겟 찾기).
-	// 사원 이름 모달
+	// 사원 이름 모달 이벤트.
 	gridM.on("click", event => {
 		console.log(gridM.getRow(event.rowKey))
 		console.log(event)
@@ -413,7 +521,7 @@
 		$('#large').modal('hide');
 	})
 	
-	// 부서 모달
+	// 부서 모달 이벤트.
 	gridD.on("click", ev => {
 		//console.log(ev.nativeEvent.target.innerText)
 		let deptT = gridD.getRow(ev.rowKey);
@@ -424,13 +532,38 @@
 		$('#large2').modal('hide');
 	})
 	
-	
-	// 담당자 클릭시 조회 이벤트.
-	grid1.on("click", ev => {
-		 console.log("row num : ", grid1.getFocusedCell().rowKey) ; 
-		 let emp = grid1.getRow(grid1.getFocusedCell().rowKey).empManager.split(':')[0];
+	// 담당자 모달 이벤트.
+	gridMN.on("click", ev => {
+		console.log(gridMN.getRow(gridMN.getFocusedCell().rowKey))
+		let manager = gridMN.getRow(gridMN.getFocusedCell().rowKey);
+		console.log(manager)
 		$.ajax({
-			url: "ajax/emplist",
+			url : "ajax/emplist",
+			type : "get",
+			data : {"empNum":manager},
+			success : function(data) {
+				console.log(data)
+				console.log(9999)
+		$('#empNum2').val(data.empNum);
+		$('#empName2').val(data.empName);
+		$('#codeId2').val(data.empDept);
+		$('#codeName2').val(data.empManager);
+		$('#empMail2').val(data.empMail);
+		$('#empTel2').val(data.empTel); 
+				
+			}
+		})
+	})
+	
+	
+	
+	// 담당자 셀 클릭시 조회.
+	grid1.on("click", ev => {
+		 //console.log("row num : ", grid1.getFocusedCell().rowKey) ; 
+		 let emp = grid1.getRow(grid1.getFocusedCell().rowKey).empManager.split(':')[0];
+		
+		 $.ajax({
+			url : "ajax/emplist",
 			type : "get",
 			data : {"empManager":emp},
 			success : function(data) {
@@ -443,6 +576,22 @@
 		$('#empMail2').val(data.empMail);
 		$('#empTel2').val(data.empTel); 
 				
+		
+						// 담당자의 담당사원 조회 - ajax 안에 ajax.
+						$.ajax({
+							url : "ajax/list",
+							type : "post",
+							data : {"empManager" : emp},
+							success : function(data) {
+								console.log("cccc");
+								grid2.resetData(data);
+							}, error : function(error) {
+								console.log(error);
+							}	
+						})
+			grid2.clear(); // 그리드 사라지게????  깨끗하게???? 생각해보자
+		
+		
 			}, error : function(error) {
 				console.log(error);
 			}

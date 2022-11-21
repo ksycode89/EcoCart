@@ -56,21 +56,22 @@ public class EstimateController {
 	}
 	
 	
-	//견적서insert
-	@PostMapping("/insertEstmt")
-	@ResponseBody
-	public int insertEstmt(Model model) {
-		//견적서 상세 
-		model.addAttribute("proCode",estimateService.selectProCode());
-		
-		return estimateService.insertEstimate(null);
-	}
-	
+	  //견적서insert
+	  
+	  @PostMapping("/insertEstmt")
+	  
+	  @ResponseBody public int insertEstmt(Model model) { //견적서 상세
+	  model.addAttribute("proCode",estimateService.selectProCode());
+	  
+	  //return estimateService.insertEstimate(null); 
+	  return 1;
+	  }
+	 
 	
 	//
 	
 	
-	//견적서 상세 insert
+/*	//견적서 상세 insert
 	@PostMapping("/insertEstmtD")
 	@ResponseBody
 	public int insertEstmtD( @RequestParam(value = "estmtD[]", required=false)List<String> insertEstmtD) {
@@ -78,16 +79,16 @@ public class EstimateController {
 		for (int i = 0; i < insertEstmtD.size(); i++) {
 			
 			EstimateDVO vo = new EstimateDVO();
-			vo.setEstmtCode(null)
+			vo.setEstmtCode(null);
 		
 		
-		return 
+		return 3;
 	}
 	
 	
 	
 	
-}
+}*/
 	
 	
 	
