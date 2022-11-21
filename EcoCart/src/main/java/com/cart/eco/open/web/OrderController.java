@@ -5,10 +5,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cart.eco.common.service.ProductVO;
+import com.cart.eco.open.service.EstimateVO;
 import com.cart.eco.open.service.OrdersService;
 import com.cart.eco.open.service.OrdersVO;
 
@@ -20,7 +22,9 @@ public class OrderController {
 	
 	//주문
 	@GetMapping("/order")
-	public String Order() {
+	public String Order(Model model) {
+		//셀렉트 옵션에 견적 코드 가져오기
+		model.addAttribute("estmtCode1",orderService.selectEstmtCode());
 		return "open/order";
 	}
 	
@@ -51,6 +55,27 @@ public class OrderController {
 		return orderService.proList();
 		
 	}
+	
+	//
+	
+	//모달창 승인 견적서 조회
+	@GetMapping("/MestmtList")
+	@ResponseBody
+	public List<EstimateVO> MestmtList(String estmtCode){
+		
+		return orderService.MestmtList(estmtCode);
+	}
+	
+	//모달창 승인 상세 견적서 조회
+	@GetMapping("/MestmtListD")
+	@ResponseBody
+	public List<Map<String,Object>> MestmtListD(String estmtCode){
+		
+		return orderService.MestmtListD(estmtCode);
+	}
+	
+	
+	//////////////////////////////////////////////////////////////////////////
 	
 	
 	//주문마감

@@ -16,4 +16,6 @@ public class DeliveryQVO {
 	private String empNum;	//사원번호 FK
 	private int allSum;		//총합계액
 	private String dlivyQSt; 	//출고요청상태
+	
+	private String fallSum;
 }

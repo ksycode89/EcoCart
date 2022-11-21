@@ -3,6 +3,10 @@ package com.cart.eco.open.service;
 import java.util.List;
 import java.util.Map;
 
+import com.cart.eco.common.service.ClientVO;
+import com.cart.eco.common.service.EmpVO;
+import com.cart.eco.common.service.ProductVO;
+
 
 
 public interface DeliveryQService {
@@ -30,6 +34,13 @@ public interface DeliveryQService {
 	public List<Map<String,Object>> DeliveryGDList(String dlivyCode);
 	
 	
+	//모달창 출고요청 코드 조회
+	public List<DeliveryQVO> MdeliveryQList(String dlivyCode);
+		
+	//모달창 출고요청 코드 조회
+	public List<Map<String,Object>> MdeliveryQListD(String dlivyCode);
+	
+	
 	
 	
 	////////////////////////////////////////////////////////////////////////////
@@ -42,7 +53,11 @@ public interface DeliveryQService {
 	//출고처리 상세 조회
 	public List<Map<String,Object>> DeliveryPDList(String dlivyCode);
 
-	
+	//모달창 출고등록 코드 조회
+	public List<DeliveryQVO> MdeliveryGList(String dlivyCode);
+			
+	//모달창 출고등록 코드 상세 조회
+	public List<Map<String,Object>> MdeliveryGListD(String dlivyCode);
 	
 	
 	/////////////////////////////////////////////////////////////////////////////
@@ -50,12 +65,30 @@ public interface DeliveryQService {
 	//배송 정보 조회
 	
 	public List<DeliveryProVO> DeliveryInfoList();
+
 	
 	
 	
 	
+	/////////////////////////////////////////////////////////////////////////////
+	
+	// 제품 재고 현황
+	public List<ProductVO> productList();
+
+		
+	// BOM 수급 현황
+	public List<Map<String, Object>> bomList(String proCode);
 	
 	
+	
+	//셀렉트 옵션
+	public List<ProductVO> selectProCode();
+	public List<ClientVO> selectClientName();
+	public List<EmpVO> selectEmp();
+	public List<DeliveryGVO> selectDeliveryQ();
+	public List<DeliveryQVO> selectDeliveryG();
+	public List<DeliveryProVO> selectDeliveryP();
+	public List<DeliveryProVO> selectBom();
 	
 	
 	

@@ -98,17 +98,18 @@
 							<td>거래처<input style="width: 100px;" id="result4">&nbsp; <i class="bi bi-search">&nbsp;</i>
 				         		<select name="no" onchange="handleOnChange4(this)" style="width: 80px;">
 				         			<option value="선택">-선택-</option>
-				         			<option value="번호1">번호1</option>
-				         			<option value="번호2">번호2</option>
-				         			<option value="번호3">번호3</option>   			
+				         			<th:block th:each="v : ${clientName}" >
+				         				<option th:value="${v.clientName}" th:text="${v.clientName}"></option>
+				         			</th:block>
+				         					
 				         		</select>
 		         			</td>
 		         			<td>담당자명<input style="width: 100px;" id="result5">&nbsp; <i class="bi bi-search">&nbsp;</i>
 				         		<select name="no" onchange="handleOnChange5(this)" style="width: 80px;">
 				         			<option value="선택">-선택-</option>
-				         			<option value="번호1">번호1</option>
-				         			<option value="번호2">번호2</option>
-				         			<option value="번호3">번호3</option>   			
+				         			<th:block th:each="v : ${emp}" >
+				         				<option th:value="${v.empName}" th:text="${v.empName}"></option>
+				         			</th:block>		
 				         		</select>
 		         			</td>
 						</tr>
@@ -117,17 +118,17 @@
 							<td>제품명<input style="width: 100px;" id="result6">&nbsp; <i class="bi bi-search">&nbsp;</i>
 				         		<select name="no" onchange="handleOnChange6(this)" style="width: 80px;">
 				         			<option value="선택">-선택-</option>
-				         			<option value="번호1">번호1</option>
-				         			<option value="번호2">번호2</option>
-				         			<option value="번호3">번호3</option>   			
+				         			<th:block th:each="v : ${proCode}" >
+				         				<option th:value="${v.proName}" th:text="${v.proName}"></option>
+				         			</th:block>	
 				         		</select>
 		         			</td>
 		         			<td>제품코드<input style="width: 100px;" id="result7">&nbsp; <i class="bi bi-search">&nbsp;</i>
 				         		<select name="no" onchange="handleOnChange7(this)" style="width: 80px;">
 				         			<option value="선택">-선택-</option>
-				         			<option value="번호1">번호1</option>
-				         			<option value="번호2">번호2</option>
-				         			<option value="번호3">번호3</option>   			
+				         			<th:block th:each="v : ${proCode}" >
+				         				<option th:value="${v.proCode}" th:text="${v.proCode}"></option>
+				         			</th:block>			
 				         		</select>
 		         			</td>
 				         	<td>수량<input type="text" style="width: 100px;"></td>
@@ -261,25 +262,7 @@
 			             name: 'sumPrice'
 			         }
 		            
-		        ],
-		        data: [
-		            {
-		            	dliverQno: '1',
-		            	proCode: 'Or01',
-		            	proName : '헤드',
-		            	sellNum: '80',
-		            	sellPrice: '100',
-		            	
-		            },
-		            {
-		            	dliverQno: '2',
-		            	proCode: 'Or01',
-		            	proName : '헤드',
-		            	sellNum: '80',
-		            	sellPrice: '10',
-		            	
-		            }
-				]
+		        ]
 			});
       
 

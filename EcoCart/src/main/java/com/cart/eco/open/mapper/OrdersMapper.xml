@@ -26,7 +26,7 @@
 
 	<!--//제품코드 조회  -->
 	<select id="proList" resultType="com.cart.eco.common.service.ProductVO">
-		select pro_code, pro_name, pro_num
+		select pro_code, pro_name, pro_num, wh_code
 		from product
 	
 	</select>
@@ -43,4 +43,36 @@
 		order by order_dno	
 	
 	</select>
+	
+	<!-- 모달창 승인 견적서 조회 -->
+	<select id="MestmtList" resultType="com.cart.eco.open.service.EstimateVO" parameterType="String">
+		select e.estmt_code, c.client_name "client_code", e.estmt_date, e.de_date, TO_CHAR(e.all_sum,'999,999') || '원' "fall_sum",e.estmt_st
+		from estimate e, client c
+		where e.client_code = c.client_code
+		
+		and e.estmt_code = #{estmtCode}
+	</select>
+	
+	
+	<!-- 모달창 승인 견적서 상세 조회 -->
+	<select id="MestmtListD" resultType="Map" parameterType="String">
+		select  d.pro_code, p.pro_name, d.sell_num, TO_CHAR(o.sell_price,'999,999') || '원' "fsell_price", TO_CHAR( (d.sell_num * o.sell_price),'999,999,999') || '원'  fsum_price
+		from estimate e, estimate_D d, product p, product_option o
+		where e.estmt_code = d.estmt_code 
+		and d.pro_code = p.pro_code
+		and p.pro_code = o.pro_code
+		and e.estmt_code = #{estmtCode}
+		order by estmt_dno
+	</select>
+	
+	
+	<!--  견적 코드 가져오기 -->
+	<select id="selectEstmtCode" resultType="com.cart.eco.open.service.EstimateVO">
+		select * from estimate
+	
+	</select>
+	
+	
+	
+	
 </mapper>

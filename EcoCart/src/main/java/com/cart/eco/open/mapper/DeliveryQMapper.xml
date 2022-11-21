@@ -14,9 +14,9 @@
 	</select>
 	
 	
-	<!-- 출고 요청2 상세 조회 -->
+	<!-- 출고 요청1 상세 조회 -->
 	<select id="DeliveryQDList" resultType="Map"  parameterType="String">
-		select d.dlivy_qno, o.pro_code, p.pro_name, d.sell_num, o.sell_price, (d.sell_num * o.sell_price) as sum_price
+		select d.dlivy_qno, o.pro_code, p.pro_name, d.sell_num, o.sell_price, (d.sell_num * o.sell_price) || '원' "fsum_price", p.pro_num
 		from delivery_q q, delivery_qd d, product p, product_option o
 		where q.dlivy_q_code = d.dlivy_q_code
 		and d.pro_code = p.pro_code
@@ -25,14 +25,6 @@
 		order by dlivy_qno
 	
 	</select>
-
-
-
-
-
-
-
-
 
 
 	<!-- 출고 등록2 -->
@@ -60,8 +52,27 @@
 	</select>
 	
 	
+	<!-- 모달창 출고 요청 조회 -->
+	<select id="MdeliveryQList" resultType="com.cart.eco.open.service.DeliveryQVO">
+		select d.dlivy_date, d.dlivy_q_code, c.client_name "client_code", e.emp_name "emp_num", TO_CHAR(d.all_sum,'999,999') || '원' "fall_sum"
+		from delivery_q d, client c, employees e
+		where d.client_code = c.client_code
+		and e.emp_num = d.emp_num
+		and d.dlivy_q_code= #{dlivyCode}
 	
+	</select>
 	
+	<!-- 모달창 출고 요청 상세 조회 -->
+	<select id="MdeliveryQListD" resultType="Map"  parameterType="String">
+		select d.dlivy_qno, o.pro_code, p.pro_name, d.sell_num, TO_CHAR(o.sell_price,'999,999') || '원' "fsell_price",TO_CHAR( (d.sell_num * o.sell_price),'999,999,999') || '원'  "fsum_price",p.pro_num
+		from delivery_q q, delivery_qd d, product p, product_option o
+		where q.dlivy_q_code = d.dlivy_q_code
+		and d.pro_code = p.pro_code
+		and p.pro_code = o.pro_code
+		and q.dlivy_q_code= #{dlivyCode}
+		order by dlivy_qno
+	
+	</select>
 	
 	
 	
@@ -73,14 +84,36 @@
 	
 	<!-- 출고 처리 전제 조회 -->
 	<select id="DeliveryPList" resultType="com.cart.eco.open.service.DeliveryProVO">
-		select d.dlivy_date, d.dlivy_pro_code, c.client_name "client_code", e.emp_name "emp_num", d.all_sum
-		from delivery_g d, client c, employees e
+		select d.dlivy_date, d.dlivy_pro_code, c.client_name "client_code", e.emp_name "emp_num",  TO_CHAR(d.all_sum,'999,999') || '원' "fall_sum"
+		from delivery_pro d, client c, employees e
 		where d.client_code = c.client_code
 		and e.emp_num = d.emp_num
 	
 	</select>
 	
 	
+	<!-- 모달창 출고등록 조회 -->
+	<select id="MdeliveryGList" resultType="com.cart.eco.open.service.DeliveryGVO">
+		select d.dlivy_date, d.dlivy_g_code, c.client_name "client_code", e.emp_name "emp_num", TO_CHAR(d.all_sum,'999,999') || '원' "fall_sum"
+		from delivery_g d, client c, employees e
+		where d.client_code = c.client_code
+		and e.emp_num = d.emp_num
+		and d.dlivy_g_code= #{dlivyCode}
+	
+	</select>
+	
+	<!-- 모달창 출고등록 상세 조회 -->
+	<select id="MdeliveryGListD" resultType="Map"  parameterType="String">
+		select d.dlivy_gno, p.pro_code, p.pro_num, p.pro_name, d.sell_num, TO_CHAR(o.sell_price,'999,999') || '원' "fsell_price",TO_CHAR( (d.sell_num * o.sell_price),'999,999,999') || '원' "fsum_price"
+		from delivery_g g, delivery_gd d, product p, product_option o
+		where g.dlivy_g_code = d.dlivy_g_code
+		and d.pro_code = p.pro_code
+		and p.pro_code = o.pro_code
+		and g.dlivy_g_code= #{dlivyCode}
+		order by dlivy_gno
+
+	
+	</select>
 	
 	
 	
@@ -100,5 +133,75 @@
 		and e.emp_num = d.emp_num
 	
 	</select>
+	
+	
+	
+	
+	
+	<!-- 제품재고/bom수급현황 -->
+	
+	<!-- 제품재고 -->
+	<select id="productList" resultType="com.cart.eco.common.service.ProductVO">
+		select pro_code, pro_name, pro_num, wh_code
+		from product
+	</select>
+
+
+
+	<!-- bom -->
+	<select id="bomList" resultType="Map" parameterType="String">
+		select p.pro_code,p.pro_code, p.pro_name, c.need_num, c.bom_code,
+		from product p, bom_children c, bom b
+		where p.pro_code = b.pro_code
+		and c.bom_code = b.bom_code
+		and p.pro_code = #{proCode}
+		
+	</select>
+
+
+
+	<!-- 셀렉트 옵션 -->
+	
+	<select id="selectProCode" resultType="com.cart.eco.common.service.ProductVO">
+   		select * from product
+   </select>
+   
+   
+ 	<select id="selectClientName" resultType="com.cart.eco.common.service.ClientVO">
+   		select client_name, client_code from client
+   </select>
+	
+	<select id="selectEmp" resultType="com.cart.eco.common.service.EmpVO">
+		select * from employees
+	</select>
+	
+ 	<select id="selectDeliveryQ" resultType="com.cart.eco.open.service.DeliveryQVO">
+ 		select * from delivery_q
+	</select>
+	
+	<select id="selectDeliveryG" resultType="com.cart.eco.open.service.DeliveryGVO">
+ 		select * from delivery_g
+	</select>
+	
+	<select id="selectDeliveryP" resultType="com.cart.eco.open.service.DeliveryProVO">
+ 		select * from delivery_pro
+	</select>
+
+	<select id="selectBom" resultType="com.cart.eco.common.service.BomVO">
+ 		select * from bom
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 </mapper>

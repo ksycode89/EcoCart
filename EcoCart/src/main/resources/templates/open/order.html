@@ -81,7 +81,7 @@
 		    
 		      <div class="modal-header">
 		        <h5 class="modal-title" id="staticBackdropLabel">견적서</h5>
-		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
 		      </div>
 		        
 		      <div class="modal-body">
@@ -92,11 +92,11 @@
 							<td>견적코드<input style="width: 100px;" id="result4">&nbsp; <i class="bi bi-search">&nbsp;</i>
 				         		<select name="no" onchange="handleOnChange4(this)" style="width: 80px;">
 				         			<option value="선택">-선택-</option>
-				         			<option value="번호1">번호1</option>
-				         			<option value="번호2">번호2</option>
-				         			<option value="번호3">번호3</option>   			
+				         			<th:block th:each="e : ${estmtCode1}">
+				         				<option th:value="${e.estmtCode}" th:text="${e.estmtCode}"></option>
+				         			</th:block>  			
 				         		</select>
-			         		 	<button type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;">조 회</button>
+			         		 	<button onclick="searchEstmtCode()" type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;">조 회</button>
 		         			</td>
 						</tr>
 						
@@ -131,6 +131,7 @@
 	        el: document.getElementById('grid'), // Container element
 	        scrollX: false,
             scrollY: false,
+            rowHeaders: ['checkbox'],
 	        columns: [
 	            {
 	            	header: '주문코드',
@@ -156,7 +157,13 @@
 	             {
 	                 header: '총합계액',
 	                 name: 'allSum'
-	             }
+	             },
+	             {
+               	  	header:'승인',
+               	  	name: 'orderSt',
+               	 	filter : 'select'
+                 }
+                 
 	            
 	        ]
 		});
@@ -196,7 +203,7 @@
 	             
 	             {
 	              	header: '합계액',
-	                 name: 'SUMP_RICE'
+	                 name: 'SUM_PRICE'
 	              }
 	              
 	        ]
@@ -242,51 +249,21 @@
                 },
                 {
                 	header: '거래처',
-                	name: 'clientName'
+                	name: 'clientCode'
                 },
-                 {
-                 	header: '납기일자',
-                    name: 'deDate'
-                 },
                 {
                 	header: '견적일자',
                     name: 'estmtDate'
                  },
                  {
+                 	header: '납기일자',
+                    name: 'deDate'
+                 },
+                 {
                   	header: '총합계액',
-                     name: 'sumPrice'
+                     name: 'fallSum'
                   },
-                  
-                  
-	              
-	        ],
-	        data: [
-	            { 
-	            	
-	            	estmtCode: 'pro01',
-	            	clientName : 'cl01',
-	            	deDate: '2022-11-14',
-	            	estmtDate: '2022-11-14',
-	            	sumPrice : '5'
-	            },
-{ 
-	            	
-	            	estmtCode: 'pro01',
-	            	clientName : 'cl01',
-	            	deDate: '2022-11-14',
-	            	estmtDate: '2022-11-14',
-	            	sumPrice : '5'
-	            },
-{ 
-	            	
-	            	estmtCode: 'pro01',
-	            	clientName : 'cl01',
-	            	deDate: '2022-11-14',
-	            	estmtDate: '2022-11-14',
-	            	sumPrice : '5'
-	            }
-	           
-			]
+	        ]
 		});
 		
 		
@@ -300,38 +277,25 @@
 	        
 	        	{
                 	header: '제품코드',
-                	name: 'proCode'
+                	name: 'PRO_CODE'
                 },
                 {
                 	header: '제품명',
-                	name: 'proName'
+                	name: 'PRO_NAME'
                 },
                  {
                  	header: '수량',
-                    name: 'sellNum'
+                    name: 'SELL_NUM'
                  },
                 {
                 	header: '단가',
-                    name: 'sellPrice'
+                    name: 'fsell_price'
                  },
                  {
                   	header: '합계액',
-                     name: 'allSum'
+                     name: 'FSUM_PRICE'
                   },
-                  
-                  
-	              
-	        ],
-	        data: [
-	            { 
-	            	
-	            	proCode: 'pro01',
-	            	proName : 'cl01',
-	            	sellNum: '2022-11-14',
-	            	sellPrice: '2022-11-14',
-	            	allSum : '5'
-	            }
-			]
+	        ]
 		});
 		
 		
@@ -456,6 +420,41 @@
 		})
 			
 		
+		
+		//모달창 견적코드 조회
+		function searchEstmtCode(){
+			
+			console.log(document.getElementById('result4').value);
+			var a = document.getElementById('result4').value  
+			
+			$.ajax({
+				method:'GET',
+				url:'/MestmtList?estmtCode='+a,
+				success : function(result){
+					grid4.resetData(result)
+				},
+				error: function(error){
+					console.log(error+"k");
+				}
+				
+			}),
+			
+			$.ajax({
+				method:'GET',
+				url:'/MestmtListD?estmtCode='+a,
+				success : function(result){
+					console.log(JSON.stringify(result) + "dddd");
+					console.log(result+"d");	//객체로 들어옴 -> ?
+					grid5.resetData(result)
+				},
+				error: function(error){
+					console.log(error+"mm");
+				}
+				
+			})
+		}
+		
+		
 		//제품 조회 -> 일단 실행시 전체 조회로 만들어둠 ()
 /* 		document.getElementById("proListbtn").addEventListener("click",proList)
 		
@@ -475,6 +474,21 @@
 			})
 		} */
 			
+		
+		
+		
+		//모달창 승인 견적서조회
+/* 		function OkEstimate(){
+			
+			$.ajax({
+				url:'/OkEstimate',
+				success: : function(result) {
+					console.log(result);
+						$.("#result4 option:selected").val(); 
+				}
+			})
+		
+		} */
 	</script>
 	
 	

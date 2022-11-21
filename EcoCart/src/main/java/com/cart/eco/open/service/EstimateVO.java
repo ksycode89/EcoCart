@@ -16,6 +16,8 @@ public class EstimateVO {
 	private String estmtSt;	//승인여부 
 	private int allSum;		//총합계액
 	
+	private String fallSum;
+	
 	
 	
 	

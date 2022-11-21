@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cart.eco.common.service.ProductVO;
+import com.cart.eco.open.service.EstimateVO;
 import com.cart.eco.open.service.OrdersVO;
 
 public interface OrdersMapper {
@@ -18,9 +19,20 @@ public interface OrdersMapper {
 	//제품코드 조회
 	public List<ProductVO> proList();
 	
+	//승인 견적서 조회 모달창
+	public List<EstimateVO>MestmtList(String estmtCode);
+
+	
+	//승인 견적서 상세 조회 모달창
+	public List<Map<String,Object>> MestmtListD(String estmtCode);
+
+	
 	//주문 마감 상세 조회
 	public List<Map<String,Object>> OrdersCanDList(String orderCode);
 
-
+	//
+	
+	//셀렉트옵션 
+	public List<EstimateVO> selectEstmtCode();
 	
 }

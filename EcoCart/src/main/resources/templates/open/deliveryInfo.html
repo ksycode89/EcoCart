@@ -24,18 +24,18 @@
 					<td style="width: 400px;">출고처리코드<input style="width: 100px;" id="result">&nbsp; <i class="bi bi-search">&nbsp;</i>
 		         		<select name="no" onchange="handleOnChange(this)" style="width: 80px;">
 		         			<option value="선택">-선택-</option>
-		         			<option value="번호1">번호1</option>
-		         			<option value="번호2">번호2</option>
-		         			<option value="번호3">번호3</option>   			
+		         			<th:block th:each="e : ${deliveryPro}">
+				         		<option th:value="${e.dlivyProCode}" th:text="${e.dlivyProCode}"></option>
+				         	</th:block>   			
 		         		</select>         		
 	         		</td>
 	         		
 	         		<td>거래처<input style="width: 100px;" id="result2">&nbsp; <i class="bi bi-search">&nbsp;</i>
 		         		<select name="no" onchange="handleOnChange2(this)" style="width: 80px;">
 		         			<option value="선택">-선택-</option>
-		         			<option value="번호1">번호1</option>
-		         			<option value="번호2">번호2</option>
-		         			<option value="번호3">번호3</option>   			
+		         			<th:block th:each="e : ${clientName}">
+				         		<option th:value="${e.clientName}" th:text="${e.clientName}"></option>
+				         	</th:block>   			
 		         		</select>         		
 	         		</td>
 				</tr>
@@ -48,9 +48,9 @@
 	         		<td>출고방법<input style="width: 100px;" id="result5">&nbsp; <i class="bi bi-search">&nbsp;</i>
 		         		<select name="no" onchange="handleOnChange5(this)" style="width: 80px;">
 		         			<option value="선택">-선택-</option>
-		         			<option value="차량">차량</option>
-		         			<option value="선박">선박</option>
-		         			<option value="비행기">비행기</option>   			
+		         			<th:block th:each="e : ${deliveryPro}">
+				         		<option th:value="${e.dlivyMth}" th:text="${e.dlivyMth}"></option>
+				         	</th:block>   			
 		         		</select>         		
 	         		</td>
 				
@@ -92,49 +92,19 @@
 				  			<td>출고처리코드<input style="width: 100px;" id="result10">&nbsp; <i class="bi bi-search">&nbsp;</i>
 				         		<select name="no" onchange="handleOnChange10(this)" style="width: 80px;">
 				         			<option value="선택">-선택-</option>
-				         			<option value="번호1">번호1</option>
-				         			<option value="번호2">번호2</option>
-				         			<option value="번호3">번호3</option>   			
+					         		<th:block th:each="e : ${deliveryPro}">
+					         			<option th:value="${e.dlivyProCode}" th:text="${e.dlivyProCode}"></option>
+				         			</th:block>   			
 				         		</select>
 				         	</td>
 				  			
-				  			<td >거래처<input style="width: 100px;" id="result6">&nbsp; <i class="bi bi-search">&nbsp;</i>
-				         		<select name="no" onchange="handleOnChange6(this)" style="width: 80px;">
-				         			<option value="선택">-선택-</option>
-				         			<option value="번호1">번호1</option>
-				         			<option value="번호2">번호2</option>
-				         			<option value="번호3">번호3</option>   			
-				         		</select>
-		         			</td>
-				  		
-						<tr>	
-							<td>제품명<input style="width: 100px;" id="result7">&nbsp; <i class="bi bi-search">&nbsp;</i>
-				         		<select name="no" onchange="handleOnChange7(this)" style="width: 80px;">
-				         			<option value="선택">-선택-</option>
-				         			<option value="번호1">번호1</option>
-				         			<option value="번호2">번호2</option>
-				         			<option value="번호3">번호3</option>   			
-				         		</select>
-		         			</td>
-		         			<td>제품코드<input style="width: 100px;" id="result8">&nbsp; <i class="bi bi-search">&nbsp;</i>
-				         		<select name="no" onchange="handleOnChange8(this)" style="width: 80px;">
-				         			<option value="선택">-선택-</option>
-				         			<option value="번호1">번호1</option>
-				         			<option value="번호2">번호2</option>
-				         			<option value="번호3">번호3</option>   			
-				         		</select>
-		         			</td>
-						</tr>
-				  		
-				  		
 						<tr>
-							<td>출고처리일자<input type="date" style="width: 120px;"></td>
 							<td>출고방법<input style="width: 100px;" id="result9">&nbsp; <i class="bi bi-search">&nbsp;</i>
 				         		<select name="no" onchange="handleOnChange9(this)" style="width: 80px;">
 				         			<option value="선택">-선택-</option>
-				         			<option value="차량">차량</option>
-				         			<option value="선박">선박</option>
-				         			<option value="비행기">비행기</option>   			
+				         			<th:block th:each="e : ${deliveryPro}">
+				         		<option th:value="${e.dlivyMth}" th:text="${e.dlivyMth}"></option>
+				         	</th:block> 			
 				         		</select>         		
 	         				</td>
 						</tr>

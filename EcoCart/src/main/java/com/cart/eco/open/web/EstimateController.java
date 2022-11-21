@@ -5,12 +5,15 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cart.eco.open.service.EstimateDVO;
 import com.cart.eco.open.service.EstimateService;
 import com.cart.eco.open.service.EstimateVO;
-import com.cart.eco.open.service.OrdersService;
 
 
 @Controller
@@ -22,8 +25,11 @@ public class EstimateController {
 	
 	//견적 페이지 보여주는거 (+전체조회)
 	@GetMapping("/estimate")
-	public String Estimate(EstimateVO vo) {
-		
+	public String Estimate(EstimateVO vo, Model model) {
+		//셀렉트 옵션에 제품코드 가져오기, 제품,  거래처명,
+		model.addAttribute("proCode",estimateService.selectProCode());
+		model.addAttribute("clientName",estimateService.selectClientName());
+
 		return "open/estimate";
 	}
 	
@@ -50,20 +56,45 @@ public class EstimateController {
 	}
 	
 	
-//	@GetMapping("/estimate")
-//	public String insertEstimate(Model model) {
-//		return estimateService.insertEstimate();
-//		
-//	}
-	
-//	//셀렉트박스에 db 값 불러오기
-//	@GetMapping("/estimate")
-//	public void selectBox(Model model) {
-//		model.addAttribute("selectList",estimateService.selectBox());
-//	}
-//	
+	//견적서insert
+	@PostMapping("/insertEstmt")
+	@ResponseBody
+	public int insertEstmt(Model model) {
+		//견적서 상세 
+		model.addAttribute("proCode",estimateService.selectProCode());
+		
+		return estimateService.insertEstimate(null);
+	}
 	
 	
+	//
+	
+	
+	//견적서 상세 insert
+	@PostMapping("/insertEstmtD")
+	@ResponseBody
+	public int insertEstmtD( @RequestParam(value = "estmtD[]", required=false)List<String> insertEstmtD) {
+		int result = 0;
+		for (int i = 0; i < insertEstmtD.size(); i++) {
+			
+			EstimateDVO vo = new EstimateDVO();
+			vo.setEstmtCode(null)
+		
+		
+		return 
+	}
+	
+	
+	
+	
+}
+	
+	
+	
+	
+	
+	
+
 	//주문
 //	@GetMapping("/order")
 //	public String Order() {
@@ -94,11 +125,11 @@ public class EstimateController {
 //		return "open/deliveryPro";
 //	}
 	
-	//재고/bom현황
-	@GetMapping("/proBom")
-	public String proBom() {
-		return "open/proBom";
-	}
+//	//재고/bom현황
+//	@GetMapping("/proBom")
+//	public String proBom() {
+//		return "open/proBom";
+//	}
 
 //	//배송정보
 //	@GetMapping("/deliveryInfo")

@@ -20,4 +20,7 @@ public class DeliveryProVO {
 	private String dlivyCode;	//운송코드
 	private String dlivyName;	//출고기사
 	private String dlivyPnum;	//기사연락처
+	
+	private String fallSum;		//총합계액
+	
 }

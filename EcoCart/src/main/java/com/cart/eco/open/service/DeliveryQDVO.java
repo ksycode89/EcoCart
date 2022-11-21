@@ -10,4 +10,5 @@ public class DeliveryQDVO {
 	private String proCode;	//제품코드 FK
 	private int sellNum;	//수량
 	private int sumPrice;	//합계액
+	
 }	

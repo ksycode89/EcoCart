@@ -23,18 +23,18 @@
 					<td style="width: 400px;">제품코드<input style="width: 100px;" id="result">&nbsp; <i class="bi bi-search">&nbsp;</i>
 		         		<select name="no" onchange="handleOnChange(this)" style="width: 80px;">
 		         			<option value="선택">-선택-</option>
-		         			<option value="번호1">번호1</option>
-		         			<option value="번호2">번호2</option>
-		         			<option value="번호3">번호3</option>   			
+		         			<th:block th:each="e : ${proCode}">
+					         	<option th:value="${e.proCode}" th:text="${e.proCode}"></option>
+				         	</th:block>   		   			
 		         		</select>
 	         		</td>
 	         		
 	         		<td >제품명<input style="width: 100px;" id="result2">&nbsp; <i class="bi bi-search">&nbsp;</i>
 		         		<select name="no" onchange="handleOnChange2(this)" style="width: 80px;">
 		         			<option value="선택">-선택-</option>
-		         			<option value="번호1">번호1</option>
-		         			<option value="번호2">번호2</option>
-		         			<option value="번호3">번호3</option>   			
+		         			<th:block th:each="e : ${proCode}">
+					         	<option th:value="${e.proName}" th:text="${e.proName}"></option>
+				         	</th:block>  			
 		         		</select>
 	         			<button type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;">조 회</button>
 	         		</td>
@@ -51,24 +51,15 @@
 		<div>
 			<table style="margin:30px;">
 				<tr>
-					<td style="width: 400px;">품번코드<input style="width: 100px;" id="result3">&nbsp; <i class="bi bi-search">&nbsp;</i>
+					<td style="width: 400px;">BOM코드<input style="width: 100px;" id="result3">&nbsp; <i class="bi bi-search">&nbsp;</i>
 		         		<select name="no" onchange="handleOnChange3(this)" style="width: 80px;">
 		         			<option value="선택">-선택-</option>
-		         			<option value="번호1">번호1</option>
-		         			<option value="번호2">번호2</option>
-		         			<option value="번호3">번호3</option>   			
+		         			<th:block th:each="e : ${bomCode}">
+					         	<option th:value="${e.bomCode}" th:text="${e.bomCode}"></option>
+				         	</th:block>   			
 		         		</select>
 	         		</td>
 	         		
-	         		<td>품번코드<input style="width: 100px;" id="result4">&nbsp; <i class="bi bi-search">&nbsp;</i>
-		         		<select name="no" onchange="handleOnChange4(this)" style="width: 80px;">
-		         			<option value="선택">-선택-</option>
-		         			<option value="번호1">번호1</option>
-		         			<option value="번호2">번호2</option>
-		         			<option value="번호3">번호3</option>   			
-		         		</select>
-	         			<button type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;">조 회</button>
-	         		</td>
 				</tr>
 			</table>	
 		</div>
@@ -103,18 +94,14 @@
 	             {
 		             header: '수량',
 		             name: 'proNum'
+		         },
+	             {
+		             header: 'bom코드',
+		             name: 'bomCode'
 		         }
 	            
-	        ],
-	        data: [
-	            {
-	            	proCode: 'Or01',
-	            	proName: 'Ci01',
-	            	whCode: '2022-11-14',
-	            	proNum : '2022-01-08'
-
-	            }
-			]
+	        ]
+			
 		});
 		
 		Grid.applyTheme('striped'); // Call API of static method
@@ -128,35 +115,26 @@
 	        columns: [
 	        	{
 	            	header: 'BOM코드',
-	            	name: 'proCode'
+	            	name: 'BOM_CODE'
 	            },
 	            {
-	            	header: '품명',
-	                name: 'proName'
+	            	header: '품번코드',
+	                name: 'PRO_CODE'
 	             },
 	             {
-	             	header: '창고',
-	                name: 'sellNum'
+		            header: '품명',
+		            name: 'PRO_NAME'
+		         },
+	             {
+		            header: '필요수량',
+		            name: 'NEED_NUM'
 	             },
 	             {
-	              	header: '수량',
-	                 name: 'sellPrice'
-	              }
+	              	header: '재고수량',
+	                name: 'BOM_NUM'
+	             }
 	              
-	        ],
-	        data: [
-	            { 
-	            	
-	            	orderDno: '01',
-	            	proCode: 'pro01',
-	            	proName: '헤드',
-	            	sellNum : '5',
-	            	sellPrice : '4000',
-	            	sumPrice : this.sellNum
-	              
-	                
-	            }
-			]
+	        ]
 		});
 	
 			
@@ -195,8 +173,59 @@
 		}
 	
 		
+		
+		//
+		document.addEventListener("DOMContentLoaded",proList)
+		
+		function proList(){
 			
+			$.ajax({
+				
+				url:'/productList',
+				success:function(result){
+					console.log("연결");
+					console.log(result);
+					grid.resetData(result);
+				},
+				error : function(error){
+					console.log(error);
+				}
+			})
+		}
 			
+		
+		//
+		grid.on("click", (event)=>{
+			var a  = event.nativeEvent.target.textContent;
+			
+			$.ajax({
+				method:'GET',
+				url:'/bomList?proCode='+a,
+				success:function(result){
+					console.log("연결1");
+					console.log(result);
+					
+					grid2.resetData(result);
+					
+				},
+				error : function(error){
+					console.log(error);
+				}
+				
+			})
+		})
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	</script>
 	
 	

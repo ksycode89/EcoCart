@@ -19,7 +19,7 @@
 	
 
 	<div class="mb-3 mt-3 row">
-	<form action="#" method="get">
+	<form id="form"  method="get">
 		<div>
 			<div class= "mb-3 row">
 				<div class ="input-group mb-3">
@@ -159,55 +159,76 @@
 		      </div>
 		      
 		      <div class="modal-body">
-		        <table>
-		        	<tr>
-			        	<td style="width: 300px;">견적번호&nbsp;&nbsp;<input style="width: 100px;"></td>
-			        	
-			        	<td>거래처명 &nbsp;&nbsp;<input style="width: 100px;" id="result5">&nbsp; <i class="bi bi-search">&nbsp;</i>
-			         		<select name="no" onchange="handleOnChange5(this)" style="width: 80px;">
-			         			<option value="선택">-선택-</option>
-			         			<option value="번호1">번호1</option>
-			         			<option value="번호2">번호2</option>
-			         			<option value="번호3">번호3</option>   			
-			         		</select>
-			   			</td>
-			   		</tr>
-			   		
-			   		<tr>
-			   			<td>
-							견적일자 <input type="date" style="width: 120px;">
-						</td>
-				
-						<td>
-							납기일자 <input type="date" style="width: 120px;">
-						</td>
-			   		
-			   		</tr>
-			   		
-			   		<tr>
-			   			<td>제품코드&nbsp;&nbsp;<input style="width: 100px;" id="result6">&nbsp; <i class="bi bi-search">&nbsp;</i>
-			         		<select name="no" onchange="handleOnChange6(this)" style="width: 80px;">
-			         			<option value="선택">-선택-</option>
-			         			<option value="번호1">번호1</option>
-			         			<option value="번호2">번호2</option>
-			         			<option value="번호3">번호3</option>   			
-			         		</select>
-			   			</td>
-			   			
-			   			<td>&nbsp;&nbsp;제품&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="width: 100px;" id="result7">&nbsp; <i class="bi bi-search">&nbsp;</i>
-			         		<select name="no" onchange="handleOnChange7(this)" style="width: 80px;">
-			         			<option value="선택">-선택-</option>
-			         			<option value="번호1">번호1</option>
-			         			<option value="번호2">번호2</option>
-			         			<option value="번호3">번호3</option>   			
-			         		</select>
-			   			</td>
-			   			<td>수량<input type="text" style="width: 100px;"></td>
-			   		</tr>
-
-			   		
-		        </table>
-			    <button type="button" class="btn btn-primary" style="float:right">제품추가</button>
+		      	<div class="container-fluid">
+		      		<form id="form">
+			        <table>
+			        	<tr>
+				        	<td>견적번호&nbsp;&nbsp;<input style="width: 100px;"></td>
+				        	
+				   		</tr>
+				   		
+				   		<tr >
+				        	
+				        	<td style="width:380px">거래처코드 &nbsp;&nbsp;<input style="width: 100px;" id="result8">&nbsp; <i class="bi bi-search">&nbsp;</i>
+				         		<select id="select8" name="no" onchange="handleOnChange8(this)" style="width: 80px;">
+				         			<option value="선택">--선택--</option>
+				         			<th:block th:each="v : ${clientName}">
+				         				<option th:value="${v.clientCode}" th:text="${v.clientCode}"></option>
+				         			</th:block>		
+				         		</select>
+				   			</td>
+				   			
+				   			<td>거래처명 &nbsp;&nbsp;<input style="width: 100px;" id="result5">&nbsp; <i class="bi bi-search">&nbsp;</i>
+				         		<select id="select5" name="no" onchange="handleOnChange5(this)" style="width: 80px;">
+				         			<option value="선택">-선택-</option>
+				         			<th:block th:each="v : ${clientName}">
+				         				<option th:value="${v.clientName}" th:text="${v.clientName}"></option>
+				         			</th:block>		
+				         		</select>
+				   			</td>		
+				   	
+				   		</tr>
+				   		
+				   		<tr>
+				   			<td>
+								견적일자 <input type="date" style="width: 120px;">
+							</td>
+					
+							<td>
+								납기일자 <input type="date" style="width: 120px;">
+							</td>
+				   		
+				   		</tr>
+				   		
+				   		<tr>
+				   			<td>제품코드&nbsp;&nbsp;<input style="width: 100px;" id="result6">&nbsp; <i class="bi bi-search">&nbsp;</i>
+				         		<select id="select6" name="no" onchange="handleOnChange6(this)" style="width: 80px;">
+				         			<option value="선택">-선택-</option>
+				         			<th:block th:each="v : ${proCode}">
+				         				<option th:value="${v.proCode}" th:text="${v.proCode}"></option>
+				         			</th:block>		
+				         		</select>
+				   			</td>
+				   			
+				   			<td>&nbsp;&nbsp;제품&nbsp;&nbsp;&nbsp;<input style="width: 100px;" id="result7">&nbsp; <i class="bi bi-search">&nbsp;</i>
+				         		<select id="select7" name="no" onchange="handleOnChange7(this)" style="width: 80px;">
+				         			<option value="선택">-선택-</option>
+				         			<th:block th:each="v: ${proCode}">
+				         				<option th:value="${v.proName}" th:text="${v.proName}"></option>
+				         			</th:block>  			
+				         		</select>
+				         	</td>
+				        </tr>
+				        <tr>
+				         	<td>수량&nbsp;&nbsp;<input type="text" style="width: 100px;"></td>
+				         	<td><button onclick="plusPro()" type="button" class="btn btn-primary" style="float:right">제품추가</button></td>
+				   		</tr>
+	
+				   		
+			        </table>
+ 					</form>
+			       </div>
+			    
 		      </div>
 		        
 		        
@@ -215,8 +236,8 @@
 				
 		        
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-primary">등록</button>
 		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+		        <button onclick="insertEstmt" type="button" class="btn btn-primary">등록</button>
 		      </div>
 		      
 		    </div>
@@ -263,11 +284,14 @@
                  },
                  {
                   	header: '총합계액',
-                     name: 'allSum'
+                     name: 'fallSum',
+                     
+                     
                   },
                   {
                 	  header:'승인',
-                	  name: 'estmtSt'
+                	  name: 'estmtSt',
+                	  filter : 'select'
                   }
                   
 	
@@ -322,28 +346,15 @@
                  },
                  {
                   	header: '단가',
-                     name: 'SELL_PRICE'
+                     name: 'fsell_price'
                   },
                  
                  {
                   	header: '합계액',
-                     name: 'SUM_PRICE'
+                     name: 'FSUM_PRICE'
                   },
-                  
-                  
             ]
-            /* data: [
-                {
-                	estmtDno: '01',
-                	proCode: 'pro01',
-                	proName: '2022-11-14',
-                	sellNum : '5',
-                	sellPrice : '4000',
-                	sumPrice : '20000'
-                  
-                    
-                }
-			] */
+          
 		});
 		
 		
@@ -374,19 +385,7 @@
                      name: 'sumPrice'
                   }
                   
-            ],
-            data: [
-                {
-                	estmtDno: '01',
-                	proCode: 'pro01',
-                	proName: '2022-11-14',
-                	sellNum : '5',
-                	sellPrice : '4000',
-                	sumPrice : '20000'
-                  
-                    
-                }
-			]
+            ]
 		});
 		
 		
@@ -415,6 +414,7 @@
 		function handleOnChange3(e){
 			//선택된 데이터의 텍스트값 가져오기
 			const text = e.value;
+	
 			
 			//선택한 텍스트 출력
 			document.getElementById('result3').value = text;
@@ -447,6 +447,16 @@
 			
 			//선택한 텍스트 출력
 			document.getElementById('result7').value = text;
+		}
+		
+		function handleOnChange8(e){
+			//선택된 데이터의 텍스트값 가져오기
+			const text = e.value;
+			
+			//선택한 텍스트 출력
+			document.getElementById('result8').value = text;
+			
+		
 		}
 		
 		//수량 * 단가 = 합계액
@@ -509,6 +519,7 @@
 	 //tr clickevent
 	 grid.on('click', (event)=>{
 		 console.log('clicked');
+		 console.log(event);
 		 console.log(event.nativeEvent.target.textContent);		//d
 		 var a  = event.nativeEvent.target.textContent;
 				
@@ -527,6 +538,72 @@
 	 })
 	
 	
+	 
+	 //$.("select6")
+	 
+	  //input
+		if($("#result6").val() != null){
+			$("#result7").attr('readonly', true)
+		}
+	 
+	 
+	 function plusPro(){
+		 
+		 if($("#select6").val() == $("#result6").val( ) || ($("#result6" != null) ||  $("#select6").val() != null )){
+			 
+		 	if($("#select7").val() == $("#result7").val() || ($("#result6" != null) ||  $("#select6").val() != null )){
+				alert("제품추가성공");
+				//ajax로 값 보내고 grid에 출력하기 
+				$.ajax({
+					method :'POST',
+					url:'/insertEstmtD',
+					succes : function(result){
+						grid3.reset(result);
+					},
+					error : function(error){
+						console.log(error);
+					}
+					
+				})
+				
+		 	}else{
+			 	alert("제품 올바르게 선택해주세요1");
+		 }
+		}else{
+		 	alert("제품 올바르게 선택해주세요2");
+	 	}
+		 
+		 
+		 
+	 }
+	 
+	 
+		function insertEstmt(){
+		 
+		 if($("#select8").val() == $("#result8").val() || $("#result8" != null) ||  $("#select8").val() != null ){
+			 
+		 	if($("#select5").val() == $("#result5").val()  || $("#result5" != null) || $("#select5").val() != null ){
+				alert("등록성공");
+				
+				//ajax로 값 보내고 grid에 출력하기 
+				 $("#form").submit();
+		 	}else{
+			 	alert("거래처 올바르게 선택해주세요1");
+		 }
+		}else{
+		 	alert("거래처 올바르게 선택해주세요2");
+	 	}
+		 
+		 
+		 
+	 }
+	 
+		
+		
+		
+		
+	//
+	 
 	</script>
 	</div>
 </body>
