@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cart.eco.material.service.MorderService;
@@ -32,16 +33,22 @@ public class MaterialController {
 	@GetMapping("detailList")
 	@ResponseBody
 	public List<MorderdetailVO> detailList(MorderVO morderVO) {
-		System.out.println("너 언제쳐오냐 ? : "+morder.detailList(morderVO));
-		
 		return morder.detailList(morderVO);
 	}
 	
-	
+	//발주등록페이지 이동
 	@GetMapping("/materialinsert")
 	public String materialInsert() {
 		return "material/materialinsert";
 	}
+	
+	//발주 등록
+	@PostMapping("/materialinsertInfo")
+	public String materialInsertInfo() {
+		return "material/materialinsert";
+	}	
+	
+	
 
 	@GetMapping("/materialreta")
 	public String materialReta() {

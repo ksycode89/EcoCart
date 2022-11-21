@@ -13,12 +13,23 @@ public class EmpServiceImpl implements EmpService {
 	@Autowired
 	EmpMapper empMapper;
 
+	// 사원 전체 조회.
 	@Override
 	public List<EmpVO> getEmpList(EmpVO vo) {
 		
 		return empMapper.selectEmpList(vo);
 	}
 
+	
+	// 담당자 조회
+	@Override
+	public List<EmpVO> selectM(EmpVO vo) {
+		
+		return empMapper.selectM(vo);
+	}
+
+
+	// 담당자의 담당사원 조회
 	@Override
 	public EmpVO selectManager(String manager) {
 		
@@ -30,5 +41,6 @@ public class EmpServiceImpl implements EmpService {
 		// TODO Auto-generated method stub
 		return empMapper.selectEmpOne(empNum);
 	}
+	
 
 }

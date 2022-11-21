@@ -12,21 +12,19 @@
 		&nbsp;
 		<table class="mb-5">
 		<tr>
-			<td style="display: center;"> 부서 <input type="text"> <i class="bi bi-search"> </i> <input type="text"> 사원 <input type="text"> <i class="bi bi-search"> </i> <input type="text"></td>			
+			<td style="display: center;"> 부서 <input type="text"> <i class="bi bi-search"> </i>  사원 <input type="text"> </td>			
 		</tr>
 		<tr>
-			<td style="display: center;"> 거래처 <input type="text"> <i class="bi bi-search"> </i> <input type="text"> 발주기간 <input type="date"> ~ <input type="date"> <button id="list">조회</button> </td>
+			<td style="display: center;"> 거래처 <input type="text"> <input type="text"> 발주날짜 <input type="date"> <button id="Selectlist">조회</button> </td>
 		</tr>
 		</table>
 	</div>
 	
 	<div id="grid"></div>
 	
-	<div style="margin-left: 3px;">
-               
+	<div style="margin-left: 3px;">     
                <button type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">취  소</button>
-               <button type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">저  장</button>
-               
+               <button type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">저  장</button> 
     </div>
 
 	<div id="grid2"></div>
@@ -68,9 +66,7 @@
 		    ]
 		  });
 	   
-	</script>
 	
-	<script>
   const grid2 = new tui.Grid({
     el: document.getElementById('grid2'),
     data: gridData,

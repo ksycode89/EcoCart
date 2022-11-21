@@ -1,5 +1,6 @@
 package com.cart.eco.open.web;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,10 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cart.eco.open.service.EstimateDVO;
 import com.cart.eco.open.service.EstimateService;
 import com.cart.eco.open.service.EstimateVO;
 
@@ -29,6 +28,8 @@ public class EstimateController {
 		//셀렉트 옵션에 제품코드 가져오기, 제품,  거래처명,
 		model.addAttribute("proCode",estimateService.selectProCode());
 		model.addAttribute("clientName",estimateService.selectClientName());
+		
+		//Map<K, V>  a =  new HashMap<K, V>();
 
 		return "open/estimate";
 	}
@@ -56,6 +57,7 @@ public class EstimateController {
 	}
 	
 	
+
 	//견적서insert
 	@PostMapping("/insertEstmt")
 	@ResponseBody
@@ -63,33 +65,35 @@ public class EstimateController {
 		//견적서 상세 
 		model.addAttribute("proCode",estimateService.selectProCode());
 		
-		return estimateService.insertEstimate(null);
+		return estimateService.insertEstmt(null);
 	}
 	
-	
-	//
-	
-	
-	//견적서 상세 insert
-	@PostMapping("/insertEstmtD")
-	@ResponseBody
-	public int insertEstmtD( @RequestParam(value = "estmtD[]", required=false)List<String> insertEstmtD) {
-		int result = 0;
-		for (int i = 0; i < insertEstmtD.size(); i++) {
-			
-			EstimateDVO vo = new EstimateDVO();
-			vo.setEstmtCode(null)
-		
-		
-		return 
-	}
+
+		//
 	
 	
-	
-	
-}
-	
-	
+
+//	//견적서 상세 insert
+//	@PostMapping("/insertEstmtD")
+//	@ResponseBody
+//	public int insertEstmtD( @RequestParam(value = "estmtD[]", required=false)List<String> insertEstmtD) {
+//		int result = 0;
+//		for (int i = 0; i < insertEstmtD.size(); i++) {
+//			
+//			EstimateDVO vo = new EstimateDVO();
+//			vo.setEstmtCode(null) 
+//		
+//		
+//		return estimateService.insertEstmtD(null);
+////	}
+//	
+//	
+//	
+//	
+//}
+//	
+//	
+
 	
 	
 	

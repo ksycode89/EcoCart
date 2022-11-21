@@ -12,65 +12,23 @@
 	<div layout:fragment="content" class="page-content">
 		<div style="margin-bottom:50px">
 			<div style="height:40px"><h4>실적조회</h4></div>
-			<div style="height:40px">
+			<div style="height:50px">
 				<label for="processDate" style="width:100px">생산일자</label>
-				<input type="date" name="processDate">&nbsp;&nbsp;
-				<button type="button" class="btn btn-sm btn-primary">검색</button>
+				<input type="date" class="form-control" name="processDate" style="width:200px; display:inline">&nbsp;&nbsp;
+				<button type="button" id="selectBtn" class="btn btn-sm btn-primary">검색</button>&nbsp;
+				<button type="button" id="resetBtn" class="btn btn-sm btn-secondary">초기화</button>
 			</div>
 			<div id="mfResultGridId"></div>
 		</div>
 		<div>
 			<div style="height:40px"><h4>불량조회</h4></div>
 			<div id="mfFaultyGridId"></div>
-		</div>
+		</div><br>
 		
 		<script>
-	    const gridData = [
-	   		{
-	   			mfPlanCode:'1',
-	   			mfPlanName:'테스트1',
-	   			proCode:'001',
-	   			proName:'test1',
-	   			mfPlanDate:'2022-11-14',
-	   			deDate:'2022-12-12',
-	   			needNum:'20',
-	   			mfPlanStatus:'진행'
-	   		},
-	   		{
-	   			mfPlanCode:'2',
-	   			mfPlanName:'테스트2',
-	   			proCode:'002',
-	   			proName:'test2',
-	   			mfPlanDate:'2022-11-01',
-	   			deDate:'2022-11-13',
-	   			needNum:'10',
-	   			mfPlanStatus:'진행'
-	   		},
-	   		{
-	   			mfPlanCode:'3',
-	   			mfPlanName:'테스트3',
-	   			proCode:'001',
-	   			proName:'test1',
-	   			mfPlanDate:'2022-11-14',
-	   			deDate:'2022-12-12',
-	   			needNum:'30',
-	   			mfPlanStatus:'취소'
-	   		},
-	   		{
-	   			mfPlanCode:'4',
-	   			mfPlanName:'테스트4',
-	   			proCode:'003',
-	   			proName:'test3',
-	   			mfPlanDate:'2022-10-10',
-	   			deDate:'2022-11-01',
-	   			needNum:'20',
-	   			mfPlanStatus:'완료'
-	   		},
-	   	];
 	    
 		const mfResultGrid = new tui.Grid({
 			el: document.getElementById('mfResultGridId'),
-			data: gridData,
 			scrollX: false,
 			scrollY: false,
 			columns: [
@@ -111,9 +69,9 @@
 		
 		const mfFaultyGrid = new tui.Grid({
 			el: document.getElementById('mfFaultyGridId'),
-			data: [],
 			scrollX: false,
 			scrollY: false,
+			
 			columns: [
 		        {
 		          header: '생산계획코드',

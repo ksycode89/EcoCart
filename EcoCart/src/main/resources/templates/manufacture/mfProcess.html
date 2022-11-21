@@ -10,68 +10,26 @@
 <body>
 	<div layout:fragment="header" class="page-heading"><h2>생산공정관리</h2></div>
 	<div layout:fragment="content" class="page-content">
-		<div style="height:40px">
+		<div style="height:50px">
 			<label for="lineSelect" style="width:100px">라인번호</label>
-			<select style="width:100px">
-				<option id="lineSelect" value="1">1번</option>
-				<option id="lineSelect" value="2">2번</option>
-				<option id="lineSelect" value="3">3번</option>
+			<select id="lineSelect" class="btn" style="width:200px; border:1px solid #dce7f1; background-color:white">
+				<option id="lineSelectAll" value="*" selected>전체</option>
+				<option id="lineSelect1" value="1">1번</option>
+				<option id="lineSelect2" value="2">2번</option>
+				<option id="lineSelect3" value="3">3번</option>
 			</select>
 		</div>
 		<div id="processGridId"></div><br>
 	<script>
-	    const gridData = [
-	   		{
-	   			mfPlanCode:'1',
-	   			mfPlanName:'테스트1',
-	   			proCode:'001',
-	   			proName:'test1',
-	   			mfPlanDate:'2022-11-14',
-	   			deDate:'2022-12-12',
-	   			needNum:'20',
-	   			mfPlanStatus:'진행'
-	   		},
-	   		{
-	   			mfPlanCode:'2',
-	   			mfPlanName:'테스트2',
-	   			proCode:'002',
-	   			proName:'test2',
-	   			mfPlanDate:'2022-11-01',
-	   			deDate:'2022-11-13',
-	   			needNum:'10',
-	   			mfPlanStatus:'진행'
-	   		},
-	   		{
-	   			mfPlanCode:'3',
-	   			mfPlanName:'테스트3',
-	   			proCode:'001',
-	   			proName:'test1',
-	   			mfPlanDate:'2022-11-14',
-	   			deDate:'2022-12-12',
-	   			needNum:'30',
-	   			mfPlanStatus:'취소'
-	   		},
-	   		{
-	   			mfPlanCode:'4',
-	   			mfPlanName:'테스트4',
-	   			proCode:'003',
-	   			proName:'test3',
-	   			mfPlanDate:'2022-10-10',
-	   			deDate:'2022-11-01',
-	   			needNum:'20',
-	   			mfPlanStatus:'완료'
-	   		},
-	   	];
-	    
 		const processGrid = new tui.Grid({
 			el: document.getElementById('processGridId'),
-			data: [],
 			scrollX: false,
 			scrollY: false,
 			columns: [
-				{
+		        {
 		          header: '라인번호',
-		          name: 'lineNo'
+		          name: 'lineNo',
+		          filter: 'select'
 		        },
 		        {
 		          header: '공정코드',
@@ -95,6 +53,33 @@
 		        }
 			]
 		});
+		
+		document.addEventListener("DOMContentLoaded", mfProcessListAll)
+	    function mfProcessListAll(){
+	    	$.ajax({
+	    		url:'/mfProcessListAll',
+	    		success:function(data){
+	    			processGrid.resetData(data);
+	    		},
+	    		error:function(error){
+	    			console.log(error);
+	    		}
+	    	})
+	    }
+		
+		lineSelect.addEventListener('change', () => {
+			processGrid.showColumn('lineNo');
+			if($('#lineSelect').val()==1){
+				processGrid.filter('lineNo',[{code:'eq', value:1}]);
+			} else if ($('#lineSelect').val()==2){
+				processGrid.filter('lineNo',[{code:'eq', value:2}]);
+			} else if ($('#lineSelect').val()==3){
+				processGrid.filter('lineNo',[{code:'eq', value:3}]);
+			} else {
+				processGrid.unfilter('lineNo');
+			}
+	    });
+		
     </script>
     </div>
 </body>

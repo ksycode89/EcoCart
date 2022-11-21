@@ -11,12 +11,15 @@
 		ON p.order_code = o.order_code
 	</select>
 	
-	<select id="getOrderList" parameterType="com.cart.eco.mf.service.MfPlanVO" resultType="com.cart.eco.mf.service.MfPlanVO">
-		
+	<select id="getOrderList" resultType="com.cart.eco.mf.service.MfPlanVO">
+		SELECT o.order_code, d.pro_code, d.pro_name, d.allsell_num, o.de_date
+		FROM orders o JOIN order_d d
+		ON o.order_code = d.order_code
+		WHERE o.de_date > SYSDATE
+		AND order_st = '대기'
 	</select>
 	
 	<insert id="insertMfPlan">
-	
 	</insert>
 	
 	<select id="getMfDeletePlanList" resultType="com.cart.eco.mf.service.MfPlanVO">

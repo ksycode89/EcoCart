@@ -60,15 +60,15 @@ public class CommonController {
 		  return empService.getEmpList(vo);
 	  }
 	 
-	// 담당 사원 ajax.
+	// 담당자 ajax.
 	  @GetMapping("ajax/empInfo")
 	  @ResponseBody
 	  public List<EmpVO> ajaxEmpInfo(EmpVO vo) {
 		 
-		  return empService.getEmpList(vo);
+		  return empService.selectM(vo);
 	  }
 	  
-	// 담당자 조회 ajax.
+	// 담당자의 담당사원 조회 ajax.
 	  @GetMapping("ajax/emplist")
 	  @ResponseBody
 	  public EmpVO ajaxEmpList(String empManager) {
