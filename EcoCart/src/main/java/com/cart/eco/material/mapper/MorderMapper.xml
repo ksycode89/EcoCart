@@ -7,10 +7,10 @@
 		select order_no, order_date,
 		c.client_code, c.client_name,
 		e.emp_name "manager", order_receiving
-		from m_order m join client c
+		from m_order m left outer join client c
 		on
 		m.client_code = c.client_code
-		join employees e
+		left outer join employees e
 		on m.manager = e.emp_num
 	</select>
 
@@ -26,5 +26,23 @@
 		on p.pro_code = i.pro_code
 		where d.order_no = #{orderNo}
 	</select>
-
+	
+	<insert id="insertInfo" parameterType="com.cart.eco.material.service.MorderVO">
+		insert into m_order(
+					order_no,
+					order_date,
+					clicent_name,
+					manager,
+					orderGroup
+		)
+		values (
+				#{orderNo}
+				,#{orderDate}
+				,#{clicentName}
+				,#{manager}
+				,#{orderGroup}
+		)
+		
+	</insert>
+	
 </mapper>
