@@ -72,7 +72,7 @@ public class CommonController {
 	  @GetMapping("ajax/emplist")
 	  @ResponseBody
 	  public EmpVO ajaxEmpList(String empManager) {
-		  System.out.println(empManager);
+		  System.out.println("result"+empManager);
 		  return empService.selectManager(empManager);
 	  }
 	  
