@@ -21,8 +21,8 @@ public class MfPlanServiceImpl implements MfPlanService {
 	}
 
 	@Override
-	public List<MfPlanVO> getOrderList(MfPlanVO mfvo) {
-		return mapper.getOrderList(mfvo);
+	public List<MfPlanVO> getOrderList() {
+		return mapper.getOrderList();
 	}
 
 	@Override
