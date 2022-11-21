@@ -8,44 +8,21 @@
 <body>
 	<div layout:fragment="content" class="page-content">
 		<div id="content">
-			<h3>발주현황</h3>
-			&nbsp;
-			<table class="mb-5">
-				<tr id="c1">
-					<td id="detail">부서 <input type="text" id="code_group"
-						name="cg"> <i class="bi bi-search"> </i> 사원 <input
-						type="text" id="code_group" name="code_group"> <i
-						class="bi bi-search"> </i></td>
-				</tr>
-				<tr id="c2">
-					<td>거래처 <input type="text" id="client_code" name="cc">
-						<i class="bi bi-search"></i> 발주기간 <input type="date"> ~ <input
-						type="date">
-						<button type="button" id="SelectBtn">조회</button>
-					</td>
-				</tr>
-			</table>
+			<h2>발주현황</h2>
+			<label for="code_group" style="width:80px;">담당자</label>
+			<input type="text" id="codeGroup" name="code_group" class="form-control" style="width:150px; display:inline"><br>
+			<label for="client_code" style="width:80px;">거래처명</label>
+			<input type="text" id="clientCode" name="client_code"  class="form-control" style="width:150px; display:inline"><br>
+			<label for="code_group" style="width:80px;">발주날짜</label>
+			<input type="date"  id="searchDate" class="form-control" style="width:150px; display:inline">
+			<button type="button" id="SelectBtn">검색</button>
+			<button type="button" id="ResetBtn">초기화</button>
 		</div>
 		<br>
 		<div id="grid"></div>
 		<div id="grid2"></div>
 		<script>
-	$(document).ready(function() {
-		$('#SelectBtn').click(selectList);
-	});
 	
-	function selectList() {
-		$.ajax({
-			url : '/materialListInfo',
-			success : function(data) {
-				grid.resetData(data)
-				console.log(data);
-			},
-			error : function(reject) {
-				console.log(reject);
-			}
-		})
-	}
 	
    var gridData = [
        {
@@ -55,6 +32,7 @@
           release:'',
           genre:''
        }];
+   
    var grid = new tui.Grid({
 	    el: document.getElementById('grid'),
 	    data: gridData,
@@ -68,7 +46,11 @@
 	      },
 	      {
 	        header: '발주일자',
-	        name: 'orderDate'
+	        name: 'orderDate',
+	        filter: 'date',
+	        option:{
+	        	format:'yyyy-MM-dd'
+	        }
 	      },
 	      {
 	        header: '거래처코드',
@@ -76,7 +58,8 @@
 	      },
 	      {
 	        header: '거래처명',
-	        name: 'clientName'
+	        name: 'clientName',
+	        filter: 'text'
 	      },
 	      {
 	        header: '납기일',
@@ -84,7 +67,8 @@
 	      },
 	        {
 	        header: '담당자',
-	        name: 'manager'
+	        name: 'manager',
+	        filter: 'text'
 	          }
 	    ]
 	  });
@@ -146,6 +130,39 @@
             }
     ]
   });	  
+   
+   document.addEventListener("DOMContentLoaded", selectList)
+   
+   SelectBtn.addEventListener('click',()=>{
+   		grid.filter('manager',[{code:'contain', value:$('#codeGroup').val()}]);
+   		grid.filter('clientName',[{code:'contain', value:$('#clientCode').val()}]);
+   		if($('#searchDate').val()!= ''){
+   	   		grid.filter('orderDate',[{code:'eq', value:$('#searchDate').val()}]);
+   		} 
+   })
+   
+   ResetBtn.addEventListener("click", ()=> {
+	   document.getElementById('codeGroup').value='';
+	   document.getElementById('clientCode').value='';
+	   document.getElementById('searchDate').value='';
+	   grid.unfilter('manager')
+	   grid.unfilter('clientName')
+	   grid.unfilter('orderDate')
+   })
+	
+	function selectList() {
+		$.ajax({
+			url : '/materialListInfo',
+			success : function(data) {
+				grid.resetData(data)
+				console.log(data);
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	}
+   
    </script>
 	</div>
 </body>
