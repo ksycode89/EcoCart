@@ -2,31 +2,39 @@ package com.cart.eco.mf.web;
 
 import java.util.List;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cart.eco.mf.service.MfOrderService;
+import com.cart.eco.mf.service.MfOrderVO;
 import com.cart.eco.mf.service.MfPlanService;
 import com.cart.eco.mf.service.MfPlanVO;
+import com.cart.eco.mf.service.MfProcessService;
+import com.cart.eco.mf.service.MfProcessVO;
 
 @Controller
 public class MfController {
 	
 	@Autowired
+	MfOrderService mforder;
+	
+	@Autowired
 	MfPlanService mfplan;
+	
+	@Autowired
+	MfProcessService mfprocess;
 	
 	@GetMapping("/mfPlanList")
 	public String mfPlanList(Model model) {
 		return "manufacture/mfPlanList";
 	}
 	
-	@GetMapping("/mfPlanList1")
+	@GetMapping("/mfPlanListAll")
 	@ResponseBody
-	public List<MfPlanVO> mfPlanList1(){
+	public List<MfPlanVO> mfPlanListAll(){
 		return mfplan.getMfPlanList();
 	}
 	
@@ -41,14 +49,32 @@ public class MfController {
 		return mfplan.getMfDeletePlanList();
 	}
 	
+	@GetMapping("/mfPlanOrderList")
+	@ResponseBody
+	public List<MfPlanVO> mfPlanOrderList(){
+		return mfplan.getOrderList();
+	}
+	
 	@GetMapping("/mfOrderList")
 	public String mfOrderList(Model model) {
 		return "manufacture/mfOrderList";
 	}
 	
+	@GetMapping("/mfOrderListAll")
+	@ResponseBody
+	public List<MfOrderVO> mfOrderListAll(){
+		return mforder.getMfOrderList();
+	}
+	
 	@GetMapping("/mfOrderDecide")
 	public String mfOrderDecide(Model model) {
 		return "manufacture/mfOrderDecide";
+	}
+	
+	@GetMapping("/mfOrderDecideAll")
+	@ResponseBody
+	public List<MfOrderVO> mfOrderDecideAll(){
+		return mforder.getMfReadyOrderList();
 	}
 	
 	@GetMapping("/mfOrderRegist")
@@ -69,6 +95,12 @@ public class MfController {
 	@GetMapping("/mfProcess")
 	public String mfProcess(Model model) {
 		return "manufacture/mfProcess";
+	}
+	
+	@GetMapping("/mfProcessListAll")
+	@ResponseBody
+	public List<MfProcessVO> mfProcessListAll(){
+		return mfprocess.getMfProcessList();
 	}
 	
 }

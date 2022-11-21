@@ -91,7 +91,7 @@ public class OrderController {
 	@ResponseBody
 	public List<OrdersVO> listOrderCan(OrdersVO vo){
 		
-		return orderService.OrdersList();
+		return orderService.OrdersCanList();
 		
 	}
 	

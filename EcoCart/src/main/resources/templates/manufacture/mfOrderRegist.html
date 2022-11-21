@@ -14,9 +14,9 @@
 			<div class="col-5">
 				<div style="height:40px">
 					<h4 style="display:inline">생산계획</h4>
-					<button type="button" class="btn btn-sm btn-primary" style="float:right">미지시 계획 조회</button>
+					<button type="button" id="selectPlanBtn" class="btn btn-sm btn-primary" style="float:right">미지시 계획 조회</button>
 				</div>
-				<div id="mfPlanGridId"></div>
+				<div id="mfPlanSelectGridId"></div>
 			</div>
 			<div class="col-7">
 				<div style="height:40px">
@@ -43,6 +43,25 @@
 			</div>
 		</div>
 		<br>
+			<!-- 미지시 계획 조회 Modal -->
+			<div class="modal fade" id="planListModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="planListLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="planListLabel">미지시 계획 조회</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div id="mfPlanListGridId"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-primary">등록</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 			<!-- Modal -->
 			<div class="modal fade" id="testModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 				<div class="modal-dialog">
@@ -105,8 +124,32 @@
 		   		},
 		   	];
 			
-			const mfPlanGrid = new tui.Grid({
-				el: document.getElementById('mfPlanGridId'),
+			const mfPlanSelectGrid = new tui.Grid({
+				el: document.getElementById('mfPlanSelectGridId'),
+				scrollX: false,
+				scrollY: false,
+				columns: [
+			        {
+			          header: '생산계획명',
+			          name: 'mfPlanName'
+			        },
+			        {
+				      header: '제품명',
+				      name: 'proName'
+				    },
+			        {
+			          header: '필요수량',
+			          name: 'needNum'
+			        },
+			        {
+			          header: '총지시수량',
+			          name: 'totalOrderNum'
+			        }
+				]
+			});
+			
+			const mfPlanListGrid = new tui.Grid({
+				el: document.getElementById('mfPlanListGridId'),
 				data: gridData,
 				scrollX: false,
 				scrollY: false,
@@ -187,7 +230,7 @@
 			});
 			
 			mfNeedGrid.on('click',(ev)=>{
-				console.log(ev.rowKey);
+				console.log(ev);
 				$("#testModal").modal("show");
 			});
 			

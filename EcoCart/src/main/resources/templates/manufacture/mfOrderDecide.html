@@ -13,49 +13,7 @@
 		<div id="orderDecideGridId"></div>
 		<br>
 		<script>
-	    const gridData = [
-	   		{
-	   			mfPlanCode:'1',
-	   			mfPlanName:'테스트1',
-	   			proCode:'001',
-	   			proName:'test1',
-	   			mfPlanDate:'2022-11-14',
-	   			deDate:'2022-12-12',
-	   			needNum:'20',
-	   			mfPlanStatus:'진행'
-	   		},
-	   		{
-	   			mfPlanCode:'2',
-	   			mfPlanName:'테스트2',
-	   			proCode:'002',
-	   			proName:'test2',
-	   			mfPlanDate:'2022-11-01',
-	   			deDate:'2022-11-13',
-	   			needNum:'10',
-	   			mfPlanStatus:'진행'
-	   		},
-	   		{
-	   			mfPlanCode:'3',
-	   			mfPlanName:'테스트3',
-	   			proCode:'001',
-	   			proName:'test1',
-	   			mfPlanDate:'2022-11-14',
-	   			deDate:'2022-12-12',
-	   			needNum:'30',
-	   			mfPlanStatus:'취소'
-	   		},
-	   		{
-	   			mfPlanCode:'4',
-	   			mfPlanName:'테스트4',
-	   			proCode:'003',
-	   			proName:'test3',
-	   			mfPlanDate:'2022-10-10',
-	   			deDate:'2022-11-01',
-	   			needNum:'20',
-	   			mfPlanStatus:'완료'
-	   		},
-	   	];
-	    
+
 	    class TestButtonRenderer {
 			constructor(props) {
 		    	const el = document.createElement('span');
@@ -75,7 +33,6 @@
 	    
 		const orderDecideGrid = new tui.Grid({
 			el: document.getElementById('orderDecideGridId'),
-			data: gridData,
 			scrollX: false,
 			scrollY: false,
 			rowHeaders : ['rowNum'],
@@ -93,12 +50,12 @@
 		          name: 'proName'
 		        },
 		        {
-		          header: '지시일자',
-		          name: 'mfOrderDate'
-		        },
-		        {
 		          header: '지시수량',
 		          name: 'mfOrderNum'
+		        },
+		        {
+		          header: '지시일자',
+		          name: 'mfOrderDate'
 		        },
 		        {
 				  header: '지시확정',
@@ -110,6 +67,19 @@
 			]
 		});
 	    
+		document.addEventListener("DOMContentLoaded", orderDecideAll)
+	    function orderDecideAll(){
+	    	$.ajax({
+	    		url:'/mfOrderDecideAll',
+	    		success:function(data){
+	    			orderDecideGrid.resetData(data);
+	    		},
+	    		error:function(error){
+	    			console.log(error);
+	    		}
+	    	})
+	    }
+		
 	    </script>
 	</div>
 </body>

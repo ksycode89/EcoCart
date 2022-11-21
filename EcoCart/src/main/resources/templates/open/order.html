@@ -12,64 +12,66 @@
 </head>
 
 <body>
-<div layout:fragment="content">
-
-	<h4>주문</h4>
-	
-	<div class="mb-3 row">
-	<form action="#" method="get">
-		<div>
-			<table style="margin:30px;">
-	         	<tr >
-					<td>진행구분
-						<label><input type="radio" name="orderSt" value="all" checked>전체</label>
-						<label><input type="radio" name="orderSt" value="go">진행</label>
-						<label><input type="radio" name="orderSt" value="done">마감</label>
-						<label><input type="radio" name="orderSt" value="go">완료</label>
-					</td> 
-				</tr>
+<div layout:fragment="header" class="page-heading"><h2>주문</h2></div>
+	<div layout:fragment="content" class="page-content">
 				
-	         	<tr>	
-					<td class="col-lg-5 col-sm-12 col-form-label" >주문코드<input class="form-control" style="width: 100px;" id="result2">&nbsp; <i class="bi bi-search">&nbsp;</i>
-		         		<select class="form-control" name="no" onchange="handleOnChange2(this)" style="width: 80px;">
-		         			<option value="">-선택-</option>
-		         			<option value="번호1">번호1</option>
-		         			<option value="번호2">번호2</option>
-		         			<option value="번호3">번호3</option>   			
-		         		</select>
-	         		 	<button type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;">조 회</button>
-	         		 	<button type="button" style="width: 150px; background-color: black; color:white;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">승인 견적서 조회</button>
-	         	
-	         		</td>
-				</tr>
-			</table>
-		</div>	
+		<div class="mb-1">
+			
+			<div class="filters" style="height:35px">
+				<label for="planStatus" style="width:100px">진행구분</label>
+				<label><input type="radio" id="planAll"  name="plan"value="all" checked>전체</label>&nbsp;
+				<label><input type="radio" id="planStart"  name="plan" value="start">승인</label>&nbsp;
+				<label><input type="radio" id="planWait"  name="plan" value="wait">대기</label>
+			</div>
+			
+			<div style="height:50px;">
+				<label for="planName" style="width:100px">주문코드</label>
+				<input type="text" class="form-control" style="width:200px; display:inline" placeholder="견적코드" id="InEstmtCodeSearch">&nbsp;
+			</div>
+			
+			<div style="height:50px; ">
+				<label for="planName" style="width:100px">거래처</label>
+				<input type="text" class="form-control"style="width:200px; display:inline" placeholder="거래처명" id="InClientCodeSearch">&nbsp;
+            </div>
+            
+            <div>
+				<label for="planDate" style="width:100px">주문일자</label>
+				<input type="date" class="form-control" style="width:200px; display:inline" id="InEstmtDateSearch">&nbsp;
+				<button type="button" class="btn btn-sm btn-primary" id="estmtDateSearch">검색</button>&nbsp;
+				<button type="button" class="btn btn-sm btn-secondary" id="estmtDateReset">초기화</button>
+			
+           </div>
+           <div>
+               <button type="button" class="btn btn-sm btn-primary" style="float:right;  margin:5px; margin-right: 30px">승인</button>   
+               <button id="showModal" type="button" class="btn btn-sm btn-primary" style= "float:right;  margin:5px;"
+                  data-bs-toggle="modal" data-bs-target="#staticBackdrop">주문서 등록</button>
+			</div>
+
+			
+          </div>     
 	
-	
-	</form>
 		<div id="grid"></div>
-		<div id="grid2"></div>
 		
-	</div>
+		<div><br></div>
+		
+		<div id="grid2"></div>
 	
-	<div class="row">
-		<table style="margin:30px;">
-			<tr>
-				<td>제품코드<input style="width: 100px;" id="result3">&nbsp; <i class="bi bi-search">&nbsp;</i>
-	         		<select name="no" onchange="handleOnChange3(this)" style="width: 80px;">
-	         			<option value="선택">-선택-</option>
-	         			<option value="번호1">번호1</option>
-	         			<option value="번호2">번호2</option>
-	         			<option value="번호3">번호3</option>   			
-	         		</select>
-         			<button type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;">조 회</button>
-         		</td>
-			</tr>
-		</table>	
-	</div>
-	
-	
-	<div id="grid3"></div>
+		<div><br></div>
+		<div><br></div>
+		
+		<div class="mb-1">
+				<div style="height:50px; margin-bottom:10px">
+					<label for="planName" style="width:100px">제품명</label>
+					<input type="text" class="form-control" style="width:200px; display:inline" placeholder="제품명" id="InProduct">&nbsp;
+					<button type="button" class="btn btn-sm btn-primary" id="proSearch">검색</button>&nbsp;
+					<button type="button" class="btn btn-sm btn-secondary" id="proReset">초기화</button>
+				
+				</div>
+				
+	            
+	     </div>
+		
+		<div id="grid3"></div>
 	
 	
 	
@@ -136,17 +138,17 @@
 	            {
 	            	header: '주문코드',
 	            	name: 'orderCode',
-	            	filter : 'select'
+	            	filter : 'text'
 	            },
 	            {
 	            	header: '거래처',
 	            	name: 'clientCode',
-	            	filter : 'select'
+	            	filter : 'text'
 	            },
 	            {
 	            	header: '주문등록일자',
 	                name: 'orderDate',
-	                filter : 'select'
+	                filter : 'date'
 	                
 	             },
 	             {
@@ -161,7 +163,7 @@
 	             {
                	  	header:'승인',
                	  	name: 'orderSt',
-               	 	filter : 'select'
+               	 	filter : 'text'
                  }
                  
 	            
@@ -179,10 +181,7 @@
 	        scrollX: false,
             scrollY: false,
 	        columns: [
-	            {
-	            	header:'no',
-	            	name:'ORDER_DNO'
-	            },
+	           
 	        	{
 	            	header: '제품코드',
 	            	name: 'PRO_CODE',
@@ -223,7 +222,7 @@
 	            {
 	            	header: '제품명',
 	                name: 'proName',
-	                filter : 'select'
+	                filter : 'text'
 	             },
 	             {
 	             	header: '제품재고수량',
@@ -378,7 +377,7 @@
 			$.ajax({
 				url:'/listOrders',
 				success : function(result) {
-					console.log(result);
+					console.log(JSON.stringify(result)+"ㅇㅇㅇㅇㅇ")
 					grid.resetData(result);
 				},
 				error : function(error){
@@ -489,14 +488,56 @@
 			})
 		
 		} */
+	
+	// 조회버튼 / 리셋버튼
+	 	planAll.addEventListener('click', () => {
+	    	grid.unfilter('orderSt');
+	    })
+	    
+	    planWait.addEventListener('click', () => {
+	    	grid.filter('orderSt', [{code:'eq', value:'대기'}]);
+	    })
+	    
+	    planStart.addEventListener('click', () => {
+	    	grid.filter('orderSt', [{code:'eq', value:'승인'}]);
+	    })
+	
+	
+	estmtDateSearch.addEventListener('click', () => {
+		grid.filter('orderCode' , [{code:'contain', value:$('#InEstmtCodeSearch').val()}])
+		grid.filter('clientCode' , [{code:'contain', value:$('#InClientCodeSearch').val()}])
+		if($('#InEstmtDateSearch').val() != '' ){
+			grid.filter('orderDate' , [{code:'beforeEq', value:$('#InEstmtDateSearch').val()}])
+			
+		}
+	});
+
+		
+	estmtDateReset.addEventListener('click', () => {
+		document.getElementById('InEstmtCodeSearch').value = '';
+		grid.unfilter('orderCode');
+		document.getElementById('InClientCodeSearch').value = '';
+		grid.unfilter('clientCode');
+		document.getElementById('InEstmtDateSearch').value = '';
+		grid.unfilter('orderDate');
+	})	
+	
+	
+	proSearch.addEventListener('click', () => {
+		grid3.filter('proName' , [{code:'contain', value:$('#InProduct').val()}])
+			
+		
+	});
+
+
+	proReset.addEventListener('click', () => {
+		document.getElementById('InProduct').value = '';
+		grid3.unfilter('proName');
+	})	
+	
+
 	</script>
-	
-	
 	</div>
-	
-	
-	
-	
 	
 </body>
 </html>

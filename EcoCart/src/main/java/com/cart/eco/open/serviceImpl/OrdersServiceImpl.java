@@ -62,6 +62,12 @@ public class OrdersServiceImpl implements OrdersService {
 		return mapper.MestmtListD(estmtCode);
 	}
 
+	@Override
+	public List<OrdersVO> OrdersCanList() {
+		// TODO Auto-generated method stub
+		return mapper.OrdersCanList();
+	}
+
 
 
 }

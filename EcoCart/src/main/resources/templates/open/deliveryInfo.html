@@ -13,65 +13,43 @@
 </head>
 
 <body>
-<div layout:fragment="content">
- <h4>배송정보</h4>
-	
-	<div class="row">
-		<form action="#" method="get">
-		<div>
-			<table style="margin:30px;">
-				<tr>
-					<td style="width: 400px;">출고처리코드<input style="width: 100px;" id="result">&nbsp; <i class="bi bi-search">&nbsp;</i>
-		         		<select name="no" onchange="handleOnChange(this)" style="width: 80px;">
-		         			<option value="선택">-선택-</option>
-		         			<th:block th:each="e : ${deliveryPro}">
-				         		<option th:value="${e.dlivyProCode}" th:text="${e.dlivyProCode}"></option>
-				         	</th:block>   			
-		         		</select>         		
-	         		</td>
-	         		
-	         		<td>거래처<input style="width: 100px;" id="result2">&nbsp; <i class="bi bi-search">&nbsp;</i>
-		         		<select name="no" onchange="handleOnChange2(this)" style="width: 80px;">
-		         			<option value="선택">-선택-</option>
-		         			<th:block th:each="e : ${clientName}">
-				         		<option th:value="${e.clientName}" th:text="${e.clientName}"></option>
-				         	</th:block>   			
-		         		</select>         		
-	         		</td>
-				</tr>
+<div layout:fragment="header" class="page-heading"><h2>출고정보</h2></div>
+	<div layout:fragment="content" class="page-content">
 				
-				<tr>
-					<td>출고처리일자<input type="date" style="width: 150px;" id="result2">
-		         		      		
-	         		</td>
-	         		
-	         		<td>출고방법<input style="width: 100px;" id="result5">&nbsp; <i class="bi bi-search">&nbsp;</i>
-		         		<select name="no" onchange="handleOnChange5(this)" style="width: 80px;">
-		         			<option value="선택">-선택-</option>
-		         			<th:block th:each="e : ${deliveryPro}">
-				         		<option th:value="${e.dlivyMth}" th:text="${e.dlivyMth}"></option>
-				         	</th:block>   			
-		         		</select>         		
-	         		</td>
+		<div class="mb-1">
 				
-				</tr>
-			</table>
+			<div style="height:50px;">
+				<label for="planName" style="width:100px">출고처리코드</label>
+				<input type="text" class="form-control" style="width:200px; display:inline" placeholder="출고처리코드" id="CodeSearch">&nbsp;
+			</div>
 			
-				<div style="margin-left: 3px;">
-		               <button type="reset" style="width: 80px; background-color: black; color:white; float:right; margin:5px;" >초기화</button>
-		               <button id="showModal" type="button" style="width: 80px; background-color: black; color:white; float:right;  margin:5px;">조회</button>
-		               <button type="button" style="width: 100px; background-color: black; color:white; float:right;  margin:5px;"
+            <div style="height:50px;">
+				<label for="planName" style="width:100px">출고처리일자</label>
+				<input type="date" class="form-control" style="width:200px; display:inline" id="DateSearch">&nbsp;
+			
+           </div>
+           
+			<div style="height:50px;">
+				<label for="planName" style="width:100px">거래처</label>
+				<input type="text" class="form-control"style="width:200px; display:inline" placeholder="거래처명" id="ClientSearch">&nbsp;
+            </div>
+            
+            <div style="height:50px;">
+				<label for="planName" style="width:100px">출고방법</label>
+				<input type="text" class="form-control"style="width:200px; display:inline" placeholder="출고방법" id="MthSearch">&nbsp;
+				<button type="button" class="btn btn-sm btn-primary" id="Searchbtn">검색</button>&nbsp;
+				<button type="button" class="btn btn-sm btn-secondary" id="Resetbtn">초기화</button>
+            </div>
+            
+            <div>
+            	<button type="button" class="btn btn-sm btn-primary" style="float:right; margin:5px; margin-right: 30px"
 		               data-bs-toggle="modal" data-bs-target="#staticBackdrop">정보 등록</button>   
-		         </div>
-		         
-         
-		</div>
-		
-		</form>
+            </div>
+			
+          </div>     
         
 	        <div id="grid"></div>
 	        
-	    </div>
         
         
         <!--  출고정보 등록모달창  -->
@@ -149,22 +127,22 @@
 		            {
 		            	header: '출고처리코드',
 		            	name: 'dlivyProCode',
-		            	filter : 'select'
+		            	filter : 'text'
 		            },
 		            {
 		            	header: '출고처리일자',
 		            	name: 'dlivyDate',
-		            	filter : 'select'
+		            	filter : 'date'
 		            },
 		            {
 		            	header: '거래처',
 		                name : 'clientCode',
-		                filter : 'select'
+		                filter : 'text'
 		             },
 		             {
 		             	header: '출고방법',
 		                name: 'dlivyMth',
-		                filter : 'select'
+		                filter : 'text'
 		             },
 		             {
 				         header: '운송코드',
@@ -178,10 +156,6 @@
 				         header: '기사연락처',
 				         name: 'dlivyPnum'
 				         
-				     },
-				     {   header: '담당자',
-				    	 name: 'empNum',	 
-				    	 filter : 'select'
 				     }
 				     
 			            
@@ -310,6 +284,28 @@
 			
      	}
 		
+		Searchbtn.addEventListener('click', () => {
+			grid.filter('dlivyProCode' , [{code:'contain', value:$('#CodeSearch').val()}])
+			grid.filter('clientCode' , [{code:'contain', value:$('#ClientSearch').val()}])
+			grid.filter('dlivyMth' , [{code:'contain', value:$('#MthSearch').val()}])
+			
+			if($('#DateSearch').val() != '' ){
+				grid.filter('dlivyDate' , [{code:'beforeEq', value:$('#DateSearch').val()}])
+				
+			}
+		});
+
+			
+		Resetbtn.addEventListener('click', () => {
+			document.getElementById('CodeSearch').value = '';
+			grid.unfilter('dlivyQCode');
+			document.getElementById('ClientSearch').value = '';
+			grid.unfilter('clientCode');
+			document.getElementById('MthSearch').value = '';
+			grid.unfilter('dlivyMth');
+			document.getElementById('DateSearch').value = '';
+			grid.unfilter('dlivyDate');
+		})	 
 	      
 	      
 		

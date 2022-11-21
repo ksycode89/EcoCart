@@ -4,9 +4,11 @@
 
 	<!--//주문서 조회  -->
 	<select id="OrdersList" resultType="com.cart.eco.open.service.OrdersVO">
-		select o.order_code, c.client_name "client_code", o.order_date, o.de_date, o.all_sum
+		select o.order_code, c.client_name "client_code", o.order_date, o.de_date, o.all_sum, order_st
 		from orders o, client c
 		where o.client_code = c.client_code
+		and order_st = '승인'
+		and order_st = '대기'
 		
 	</select>
 
@@ -29,6 +31,15 @@
 		select pro_code, pro_name, pro_num, wh_code
 		from product
 	
+	</select>
+	
+	<!--//주문 마감 조회  -->
+	<select id="OrderCanList" resultType="com.cart.eco.open.service.OrdersVO">
+		select o.order_code, c.client_name "client_code", o.order_date, o.de_date, o.all_sum, order_st
+		from orders o, client c
+		where o.client_code = c.client_code
+		and order_st = '승인'
+		and order_st = '마감' 
 	</select>
 	
 	

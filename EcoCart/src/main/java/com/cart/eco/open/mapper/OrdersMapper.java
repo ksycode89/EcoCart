@@ -25,7 +25,9 @@ public interface OrdersMapper {
 	
 	//승인 견적서 상세 조회 모달창
 	public List<Map<String,Object>> MestmtListD(String estmtCode);
-
+	
+	// 주문 마감 조회
+	public List<OrdersVO> OrdersCanList();
 	
 	//주문 마감 상세 조회
 	public List<Map<String,Object>> OrdersCanDList(String orderCode);
