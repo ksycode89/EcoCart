@@ -6,30 +6,37 @@
 
 	<!--사원 필터  -->
 	<select id="selectEmpList" parameterType="com.cart.eco.common.service.EmpVO" resultType="com.cart.eco.common.service.EmpVO">
-		SELECT emp_num,emp_name,emp_mail,emp_tel,emp_hire,c.code_name AS emp_dept,emp_manager,comments
+		SELECT e.emp_num,e.emp_name,e.emp_mail,e.emp_tel,e.emp_hire,c.code_name AS emp_dept,e.emp_salary,e.emp_id,e.emp_pw,m.emp_num ||':'||m.emp_name AS emp_manager,e.comments
 		FROM employees e join common_code c
    		 ON e.emp_dept = c.code_id 
+         JOIN employees m
+          ON m.emp_num = e.emp_manager
    		<where>
    		 <if test="empNum != null and !empNum.equals('')">
    		 	emp_num = #{empNum}
    		 </if>
    		  <if test="empName != null and !empName.equals('')">
-   		 	emp_name = #{empName}
+   		 	OR emp_name = #{empName}
    		 </if>
    		 <if test="empDept != null and !empDept.equals('')">
-            emp_dept = #{empDept}
+           OR emp_dept = #{empDept}
          </if>
-        
-   		
-   		
    		</where>
-   		
-   		
-   		
-   		
    		
    		ORDER BY emp_num
 	</select>
+        
+   		<!--담당자 조회  -->
+   		<select id="selectManager" parameterType="String" resultType="com.cart.eco.common.service.EmpVO">
+   			SELECT emp_num, emp_name, emp_dept,code_name as emp_manager, emp_mail, emp_tel
+			FROM employees e join common_code m
+    		 on  e.emp_dept = m. code_id
+			WHERE emp_num = #{manager}
+   		</select>
+   		
+   		
+   		
+   		
 
 
 </mapper>

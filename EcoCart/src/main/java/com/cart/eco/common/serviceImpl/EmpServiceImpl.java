@@ -19,4 +19,10 @@ public class EmpServiceImpl implements EmpService {
 		return empMapper.selectEmpList(vo);
 	}
 
+	@Override
+	public EmpVO selectManager(String manager) {
+		
+		return empMapper.selectManager(manager);
+	}
+
 }

@@ -41,8 +41,8 @@ public class CommonController {
 		return "common/employees";
 	}
 	//===================================================================================//
-	// 사원조회 ajax.
 	
+	// 사원조회 ajax.
 	  @PostMapping("ajax/list")
 	  @ResponseBody 
 	  public List<EmpVO> ajaxList(EmpVO vo) {
@@ -56,6 +56,14 @@ public class CommonController {
 	  public List<EmpVO> ajaxEmpInfo(EmpVO vo) {
 		 
 		  return empService.getEmpList(vo);
+	  }
+	  
+	// 담당자 조회 ajax.
+	  @GetMapping("ajax/emplist")
+	  @ResponseBody
+	  public EmpVO ajaxEmpList(String empManager) {
+		  System.out.println(empManager);
+		  return empService.selectManager(empManager);
 	  }
 	  
 	// 사원 이름 모달 ajax.
@@ -74,7 +82,7 @@ public class CommonController {
 			  return commonService.getDept();
 		  }
 		
-		  //공통코드가져오기
+	//공통코드가져오기
 	      
 	      //거래처 들고오기
 	         @GetMapping("/callClient")
