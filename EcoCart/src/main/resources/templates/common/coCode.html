@@ -5,6 +5,8 @@
 
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>공통코드</title>
 
 </head>
@@ -278,6 +280,11 @@
 			<div style="display: none" id="common-code-insert" class="mt-10 "></div>
 		</div>
 		<script type="text/javascript">
+		
+	/* token */
+		 var token = $("meta[name='_csrf']").attr("content");
+		 var header = $("meta[name='_csrf_header']").attr("content");
+		
 	/* data resouce */
 		  const dataSource = {
 	        		 withCredentials: false,
@@ -334,9 +341,9 @@
             	      options: {
             	        listItems: [
             	        	{ text: '부서', value: 'dept' },
-            	        	{ text: '제품', value: 'material' },
+            	        	{ text: '제품', value: 'material' }
+            	        ]
             	        	
-            	        		]
             	      }
             	    }       
                
@@ -440,6 +447,9 @@
             $.ajax({
                url : "/callCommon",
                type: "post",
+               beforeSend : function(xhr){
+           		xhr.setRequestHeader(header, token);
+           	 },
                success : function(data){
                   console.log(data)
                   gridCommon.resetData(data)
@@ -476,6 +486,9 @@
                        url : "/callCommon",
                        type: "post",
                        data : {codeId :grid2.getRow(ev.rowKey).codeId },
+                       beforeSend : function(xhr){
+                      		xhr.setRequestHeader(header, token);
+                      	 },
                        success : function(data){
                           console.log(data)
                           grid3.resetData(data)
@@ -491,6 +504,9 @@
                       url : "/callCommon",
                       type: "post",
                       data : {codeGroup :grid2.getRow(ev.rowKey).codeId },
+                      beforeSend : function(xhr){
+                    		xhr.setRequestHeader(header, token);
+                    	 },
                       success : function(data){
                          console.log(data)
                          grid3.resetData(data)
@@ -505,6 +521,11 @@
             console.log()
             
             
+         })
+         //ajax처리전에 돌아감 
+         	 grid3.on('beforeRequest', function(ev) {
+         		 ev.xhr.setRequestHeader(header, token);
+         		  console.log("aa", ev.xhr)
          })
          
          //공통코드 취소시 인풋창 비워주기
@@ -521,6 +542,9 @@
                url : "/callCommon",
                type: "post",
                data : {codeId : $('#commonCodeCo').val()},
+               beforeSend : function(xhr){
+             		xhr.setRequestHeader(header, token);
+             	 },
                success : function(data){
                   console.log(data)
                   grid2.resetData(data)
@@ -533,9 +557,9 @@
             }
          //행추
          	function commonBtnInsert(){
-         		 $('#common-code-detail').css('display','block')
+         		 $('#common-code-detail').css('display','block') 
          	/* 	$('#common-code-insert').css('display','block') */
-         		/ grid3.refreshLayout(); 
+         		 grid3.refreshLayout(); 
          		grid3.appendRow()
          		
          	}
@@ -550,11 +574,14 @@
     
           grid3.request('createData');
          	grid3.clear();
+         	 $('#common-code-detail').css('display','none')	
          		
          	  /*   console.log(a); */
          	}
+         
+         	
          	function commonBtnUpdate(){
-         	   grid3.request('updateData');
+         	 grid3.request('updateData');
          	}
          	//행삭제
          function commonBtnDelete(){

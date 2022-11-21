@@ -36,6 +36,11 @@ public class EmpServiceImpl implements EmpService {
 		return empMapper.selectManager(manager);
 	}
 
+	@Override
+	public EmpVO selectEmpOne(String empNum) {
+		// TODO Auto-generated method stub
+		return empMapper.selectEmpOne(empNum);
+	}
 	
 
 }

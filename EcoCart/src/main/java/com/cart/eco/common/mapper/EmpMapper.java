@@ -12,6 +12,9 @@ public interface EmpMapper {
 	// 담당자의 담당사원 조회.
 	public EmpVO selectManager(String manager);
 	
+	//단건 사원 조회
+	public EmpVO selectEmpOne(String empNum);
+
 	// 담당자 조회.
 	public List<EmpVO> selectM(EmpVO vo);
 }

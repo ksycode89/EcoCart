@@ -37,6 +37,13 @@
 			WHERE emp_num = #{manager}
    		</select>
    		
+   		<select id="selectEmpOne" parameterType="String" resultType="com.cart.eco.common.service.EmpVO">
+   			SELECT * 
+   			FROM employees
+   			where emp_num= #{empNum}
+   		</select>
+   		
+   		
    		<!--담당자 조회  -->
    		<select id="selectM" parameterType="com.cart.eco.common.service.EmpVO" resultType="com.cart.eco.common.service.EmpVO">
    			SELECT * 
