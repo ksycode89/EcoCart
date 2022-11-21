@@ -7,5 +7,8 @@ public interface EmpService {
 	// 사원조회
 	public List<EmpVO> getEmpList(EmpVO vo);
 	
-	// 등록
+
+	// 담당자 조회.
+	public EmpVO selectManager(String manager);
+
 }

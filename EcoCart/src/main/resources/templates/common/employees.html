@@ -7,7 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <title>사원관리</title>
-
+<style type="text/css">
+#btn-div div{
+	margin-right:20px;
+}
+</style>
 
 </head>
 <body>
@@ -128,7 +132,7 @@
 
  </div>
  
-  <div id="grid" class="mb-3 row"></div>
+  <div id="grid" class="mb-5 row"></div>
  
  
  
@@ -136,30 +140,42 @@
 	<div>
 		<h3>담당자</h3>
 	</div>
+	<div style="display: flex; justify-content: flex-end; " id="btn-div" class="mb-3">
+		<div>
+			<button type="button">등록</button> 
+		</div>
+		<div >
+			<button type="button">수정</button> 
+		</div>
+		<div >
+			<button type="button">삭제</button> 
+		</div>
+	</div>	
+		
 
 	<div >
 	<div class="mb-3 row">
 			<label  class="col-lg-1 col-sm-12 col-form-label">이 름</label>
 			<div class="col-lg-auto col-sm-6">
-			<input  id="empNum" name="empCode" class="form-control">
+			<input  id="empNum2" name="empCode" class="form-control">
 			</div>
 			 <div class="col-lg-auto col-sm-6">
 			<button type="button"><i class="bi bi-search"></i></button> 
 			</div>
 			<div class="col-lg-auto col-sm-12">
-			<input  id="name" name="name" class="form-control">
+			<input  id="empName2" name="name" class="form-control">
 			</div>
 	</div>		
 	<div class="mb-3 row">
 			<label  class="col-lg-1 col-sm-12 col-form-label">부 서</label>
 			<div class="col-lg-auto col-sm-6">
-			<input  id="depCode" name="depCode" class="form-control">
+			<input  id="codeId2" name="depCode" class="form-control">
 			</div>
 			<div class="col-lg-auto col-sm-6">
 			<button type="button"><i class="bi bi-search"></i></button> 
 			</div>
 			<div class="col-lg-auto col-sm-12">
-			<input  id="depName" name="depName" class="form-control">
+			<input  id="codeName2" name="depName" class="form-control">
 			</div>
 	</div>	
 
@@ -168,12 +184,12 @@
 	<div class="mb-3 row">
 			<label  class="col-lg-1 col-sm-12 col-form-label">mail</label>
 			<div class="col-lg-auto col-sm-6">
-			<input  id="mail" name="mail" class="form-control">
+			<input  id="empMail2" name="empMail" class="form-control">
 			</div>
 	
 			<label  class="col-lg-1 col-sm-12 col-form-label">Tel</label>
 			<div class="col-lg-auto col-sm-6">
-			<input  id="tel" name="tel" class="form-control">
+			<input  id="empTel2" name="empTel" class="form-control">
 			</div>
 	</div>	
 
@@ -299,6 +315,12 @@
 				header : '부서',
 				name : 'empDept'
 			}, {
+				header : '급여',
+				name : 'empSalary'
+			}, {
+				header : '아이디',
+				name : 'empId'
+			}, {
 				header : '담당자',
 				name : 'empManager'
 			}, {
@@ -380,6 +402,7 @@
 	// 사원 이름 모달
 	gridM.on("click", event => {
 		console.log(gridM.getRow(event.rowKey))
+		console.log(event)
 		// getRow : 그리드 row(tr) 전체 가져오기.
 		//console.log(event.nativeEvent.target.innerText);  td값. 셀값
 		console.log(gridM.getRow(event.rowKey))   //rowKey : 인덱스 번호  
@@ -401,6 +424,30 @@
 		$('#large2').modal('hide');
 	})
 	
+	
+	// 담당자 클릭시 조회 이벤트.
+	grid1.on("click", ev => {
+		 console.log("row num : ", grid1.getFocusedCell().rowKey) ; 
+		 let emp = grid1.getRow(grid1.getFocusedCell().rowKey).empManager.split(':')[0];
+		$.ajax({
+			url: "ajax/emplist",
+			type : "get",
+			data : {"empManager":emp},
+			success : function(data) {
+				console.log(data)
+
+		$('#empNum2').val(data.empNum);
+		$('#empName2').val(data.empName);
+		$('#codeId2').val(data.empDept);
+		$('#codeName2').val(data.empManager);
+		$('#empMail2').val(data.empMail);
+		$('#empTel2').val(data.empTel); 
+				
+			}, error : function(error) {
+				console.log(error);
+			}
+		})
+	})
 	
 		
 	</script>
