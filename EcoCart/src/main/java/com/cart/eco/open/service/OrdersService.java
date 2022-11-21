@@ -18,7 +18,18 @@ public interface OrdersService {
 	public List<ProductVO> proList();
 	
 	
+	//모달 승인 견적서 조회
+	public List<EstimateVO> MestmtList(String estmtCode);
+	
+	//모달 승인 견적서 상세 조회
+	public List<Map<String,Object>> MestmtListD(String estmtCode);
+	
+	
 	//주문 마감 상세 조회
 	public List<Map<String,Object>> OrdersCanDList(String orderCode);
+	
+	
+	//섹렉트 옵션 - 견적코드 
+	public List<EstimateVO> selectEstmtCode();
 
 }

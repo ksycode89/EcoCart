@@ -4,7 +4,7 @@
 
 	<!-- 견적서 전체 조회 -->
 	<select id="selectEstimateList" resultType="com.cart.eco.open.service.EstimateVO">
-		select e.estmt_code, c.client_name "client_code", e.estmt_date, e.de_date, e.all_sum,e.estmt_st
+		select e.estmt_code, c.client_name "client_code", e.estmt_date, e.de_date, TO_CHAR(e.all_sum,'999,999') || '원' "fall_sum",e.estmt_st
 		from estimate e, client c
 		where e.client_code = c.client_code
 		
@@ -13,7 +13,7 @@
 	
 	<!--  견적서 상세 조회 -->
 	<select id="EstimateDList" resultType="Map" parameterType="String">
-		select d.estmt_dno, d.pro_code, p.pro_name, d.sell_num, o.sell_price, (d.sell_num * o.sell_price) sum_price
+		select d.estmt_dno, d.pro_code, p.pro_name, d.sell_num, TO_CHAR(o.sell_price,'999,999') || '원' "fsell_price", TO_CHAR( (d.sell_num * o.sell_price),'999,999,999') || '원'  fsum_price
 		from estimate e, estimate_D d, product p, product_option o
 		where e.estmt_code = d.estmt_code 
 		and d.pro_code = p.pro_code
@@ -23,14 +23,44 @@
 	
 	</select>
 
-	<select id="selectBox" resultType="com.cart.eco.open.service.EstimateVO" >
-		select * from estimates
-	</select>
+   <!-- 셀렉트 옵션 -->
+   <select id="selectProCode" resultType="com.cart.eco.common.service.ProductVO">
+   		select * from product
+   </select>
+   
+   <!-- 셀렉트 옵션 -->
+   <select id="selectClientName" resultType="com.cart.eco.common.service.ClientVO">
+   		select client_name, client_code from client
+   </select>
+	
 
 
 
+	<!-- 견적서 등록 -->
+	<insert id="insertEstmt" parameterType="com.cart.eco.open.service.EstimateVO">
+		<selectKey keyProperty="estmtCode" resultType="String" order="BEFORE">
+			select  concat('est' , 
+  					concat (to_char(sysdate,'YYmmdd'), 
+        			concat ('-', nvl(max(substr(estmt_code, 11)),0)+1 )
+        			)) 
+        	from estimate
+		</selectKey>
+		
+		<!-- 코드, 거래처, 견적일ㄹ자(sysdate), 납기일자 승인  -->
+		insert into estimate  (estmt_code, client_code, estmt_date, de_date, etmt_st)
+			values( #{estmtCode}, #{clientCode} , sysdate, '#{deDate}, 'X')
+			
+	</insert>	
 
-
-
+	<!-- 견적서 상세 등록 -->
+	<insert id="insertEstmtD" parameterType="com.cart.eco.open.service.EstimateDVO">
+		<selectKey keyProperty="estmtDno">
+			select nvl(max(esmtm_dno),0)+1
+		</selectKey>
+		
+		insert into estimate_d (estmt_dno, pro_code, sell_num, sum_price)
+			values ( #{estmtDno}, #{proCode}, #{sellNum}, )
+		
+	</insert>
 
 </mapper>

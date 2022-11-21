@@ -14,4 +14,6 @@ public class DeliveryGVO {
 	private String empNum;	//사원번호 FK
 	private int allSum;		//총합계액
 	private String dlivyGSt; 	//출고등록상태
+	
+	private String fallSum;
 }

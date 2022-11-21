@@ -5,13 +5,16 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cart.eco.common.service.ProductVO;
 import com.cart.eco.open.service.DeliveryGVO;
 import com.cart.eco.open.service.DeliveryProVO;
 import com.cart.eco.open.service.DeliveryQService;
 import com.cart.eco.open.service.DeliveryQVO;
+import com.cart.eco.open.service.EstimateVO;
 
 @Controller
 public class DeliveryQController {
@@ -23,7 +26,11 @@ public class DeliveryQController {
 	
 	//출고요청1
 	@GetMapping("/deliveryQ")
-	public String deliveryQ() {
+	public String deliveryQ(Model model) {
+		model.addAttribute("proCode",deliverQService.selectProCode());
+		model.addAttribute("clientName",deliverQService.selectClientName());
+		model.addAttribute("emp",deliverQService.selectEmp());
+		
 		return "open/deliveryQ";
 	}
 	
@@ -52,7 +59,8 @@ public class DeliveryQController {
 	
 	//출고등록2
 	@GetMapping("/deliveryG")
-	public String deliveryG() {
+	public String deliveryG(Model model) {
+		model.addAttribute("deliveryQ",deliverQService.selectDeliveryQ());
 		return "open/deliveryG";
 	}
 	
@@ -73,14 +81,32 @@ public class DeliveryQController {
 		return deliverQService.DeliveryGDList(dlivyCode);
 				
 	}
+
+	//모달창 출고요청  조회
+	@GetMapping("/MdeliveryQList")
+	@ResponseBody
+	public List<DeliveryQVO> MdeliveryQList(String dlivyCode){
+		
+		return deliverQService.MdeliveryQList(dlivyCode);
+	}
 	
+	//모달창 출고요청 코드 조회
+	@GetMapping("/MdeliveryQListD")
+	@ResponseBody
+	public List<Map<String,Object>> MdeliveryQListD(String dlivyCode){
+		
+		return deliverQService.MdeliveryQListD(dlivyCode);
+	}
+		
+		
 	/////////////////////////////////////////////////////////////////////////////
 	
 	//출고처리
 	
 	//출고처리3
 	@GetMapping("/deliveryPro")
-	public String deliveryPro() {
+	public String deliveryPro(Model model) {
+		model.addAttribute("deliveryG",deliverQService.selectDeliveryG());
 		return "open/deliveryPro";
 	}
 	
@@ -92,12 +118,31 @@ public class DeliveryQController {
 		return deliverQService.DeliveryPList();
 	}	
 	
+	//모달창 출고등록  조회
+	@GetMapping("/MdeliveryGList")
+	@ResponseBody
+	public List<DeliveryQVO> MdeliveryGList(String dlivyCode){
+		
+		return deliverQService.MdeliveryGList(dlivyCode);
+	}
+	
+	//모달창 출고요청 코드 조회
+	@GetMapping("/MdeliveryGListD")
+	@ResponseBody
+	public List<Map<String,Object>> MdeliveryGListD(String dlivyCode){
+		
+		return deliverQService.MdeliveryGListD(dlivyCode);
+	}
 	
 	///////////////////////////////////////////////////////////////////////////////
 	
 	//배송정보
 	@GetMapping("/deliveryInfo")
-	public String deliveryInfo() {
+	public String deliveryInfo(Model model) {
+		model.addAttribute("deliveryPro",deliverQService.selectDeliveryP());
+		model.addAttribute("proCode",deliverQService.selectProCode());
+		model.addAttribute("clientName",deliverQService.selectClientName());
+		model.addAttribute("emp",deliverQService.selectEmp());
 		return "open/deliveryInfo";
 	}	
 	
@@ -110,6 +155,36 @@ public class DeliveryQController {
 	}		
 	
 	
+	
+	//재고/bom현황
+	@GetMapping("/proBom")
+	public String proBom(Model model) {
+		model.addAttribute("proCode",deliverQService.selectProCode());
+		model.addAttribute("bomCode",deliverQService.selectBom());
+		
+		
+		
+		return "open/proBom";
+	}
+	
+	
+	//제품 재고 현황
+	@GetMapping("/productList")
+	@ResponseBody
+	public List<ProductVO> proList(ProductVO vo){
+		
+		return deliverQService.productList();
+		
+	}
+	
+	//bom 수급현황
+	@GetMapping("/bomList")
+	@ResponseBody
+	public List<Map<String,Object>> bomList(String proCode){
+		System.out.println("dd");
+		return deliverQService.bomList(proCode);
+				
+	}	
 	
 	
 }
