@@ -8,12 +8,14 @@
 		FROM mf_order o JOIN mf_order_detail d
 		ON o.mf_order_code = d.mf_order_code
 	</select>
+
 	<select id="getMfReadyOrderList" resultType="com.cart.eco.mf.service.MfOrderVO">
 		SELECT o.mf_order_code, d.pro_code, d.pro_name, d.mf_order_num, o.mf_order_date
 		FROM mf_order o JOIN mf_order_detail d
 		ON o.mf_order_code = d.mf_order_code
 		WHERE o.mf_order_status = '대기'
 	</select>
+	
 	<select id="getMfReadyPlanList" resultType="com.cart.eco.mf.service.MfOrderVO">
 		SELECT p.mf_plan_code, p.mf_plan_name, d.pro_code, d.pro_name, p.mf_plan_date, o.de_date, d.need_num, d.total_order_num
 		FROM mf_plan p JOIN mf_plan_detail d
@@ -21,5 +23,8 @@
 		LEFT JOIN orders o
 		ON p.order_code = o.order_code
 		WHERE p.mf_plan_status != '완료'
+	</select>
+	
+	<select id="getMfOrderMaterialList">
 	</select>
 </mapper>

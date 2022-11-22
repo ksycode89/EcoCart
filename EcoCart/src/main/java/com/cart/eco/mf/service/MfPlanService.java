@@ -14,8 +14,8 @@ public interface MfPlanService {
 	public List<MfPlanVO> getMfDeletePlanList();
 	
 	// 생산계획등록
-	public int insertMfPlan(MfPlanVO mfvo);
+	public int insertMfPlan(List<MfPlanVO> vo);
 	
 	// 생산계획삭제
-	public int deleteMfPlan(MfPlanVO mfvo);
+	public int deleteMfPlan(List<MfPlanVO> vo);
 }

@@ -14,7 +14,7 @@
 			<div class="col-5">
 				<div style="height:40px">
 					<h4 style="display:inline">생산계획</h4>
-					<button type="button" id="selectPlanBtn" class="btn btn-sm btn-primary" style="float:right">미지시 계획 조회</button>
+					<button type="button" id="selectPlanBtn" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#planListModal" style="float:right">미지시 계획 조회</button>
 				</div>
 				<div id="mfPlanSelectGridId"></div>
 			</div>
@@ -52,11 +52,10 @@
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
-							<div id="mfPlanListGridId"></div>
+							<div id="mfPlanListModalGridId"></div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-							<button type="button" class="btn btn-primary">등록</button>
 						</div>
 					</div>
 				</div>
@@ -128,6 +127,7 @@
 				el: document.getElementById('mfPlanSelectGridId'),
 				scrollX: false,
 				scrollY: false,
+				data: [],
 				columns: [
 			        {
 			          header: '생산계획명',
@@ -148,9 +148,8 @@
 				]
 			});
 			
-			const mfPlanListGrid = new tui.Grid({
-				el: document.getElementById('mfPlanListGridId'),
-				data: gridData,
+			const mfPlanListModalGrid = new tui.Grid({
+				el: document.getElementById('mfPlanListModalGridId'),
 				scrollX: false,
 				scrollY: false,
 				columns: [
@@ -175,7 +174,6 @@
 			
 			const mfOrderGrid = new tui.Grid({
 				el: document.getElementById('mfOrderGridId'),
-				data: [],
 				scrollX: false,
 				scrollY: false,
 				rowHeaders:['rowNum'],
@@ -194,18 +192,24 @@
 			        },
 			        {
 			          header: '지시일자',
-			          name: 'mfOrderDate'
+			          name: 'mfOrderDate',
+			          editor: {
+						type: 'datePicker',
+							options: {
+			                	format: 'yyyy-MM-dd'
+				            }
+						}
 			        },
 			        {
 			          header: '지시수량',
-			          name: 'mfOrderNum'
+			          name: 'mfOrderNum',
+			          editor: 'text'
 			        }
 				]
 			});
 			
 			const mfNeedGrid = new tui.Grid({
 				el: document.getElementById('mfNeedGridId'),
-				data: gridData,
 				scrollX: false,
 				scrollY: false,
 				rowHeaders:['rowNum'],
@@ -229,14 +233,13 @@
 				]
 			});
 			
-			mfNeedGrid.on('click',(ev)=>{
-				console.log(ev);
+			mfNeedGrid.on('click',(ev) => {
+				console.log(ev.rowKey);
 				$("#testModal").modal("show");
 			});
 			
 			const mfBringGrid = new tui.Grid({
 				el: document.getElementById('mfBringGridId'),
-				data: gridData,
 				scrollX: false,
 				scrollY: false,
 				rowHeaders:['rowNum'],
@@ -259,6 +262,43 @@
 			        }
 				]
 			});
+		    
+		    document.addEventListener("DOMContentLoaded", mfPlanListAll)
+		    function mfPlanListAll(){
+		    	$.ajax({
+		    		url:'/mfPlanListAll',
+		    		success:function(data){
+		    			mfPlanListModalGrid.resetData(data);
+		    		},
+		    		error:function(error){
+		    			console.log(error);
+		    		}
+		    	})
+		    };
+		    
+		    planListModal.addEventListener('shown.bs.modal', () => {
+		    	mfPlanListModalGrid.refreshLayout();
+		    });
+		    
+		    mfPlanListModalGrid.on('click', (ev) => {
+		    	if(ev.rowKey != null){
+		    		mfPlanSelectGrid.setRow(mfPlanListModalGrid.getRow(ev.rowKey));
+		    		$('#planListModal').modal('hide');
+		    	}
+		    })
+		    
+		    var today = new Date();
+		    
+		    mfPlanSelectGrid.on('click', (ev) => {
+		    	if(ev.rowKey != null){
+		    		console.log(mfPlanSelectGrid.getRow(ev.rowKey))
+		    		mfOrderGrid.appendRow({
+		    			proCode : mfPlanSelectGrid.getRow(ev.rowKey).proCode,
+		    			proName : mfPlanSelectGrid.getRow(ev.rowKey).proName,
+		    			mfOrderDate : today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+		    		});
+		    	}
+		    })
 			
 		</script>
 	</div>
