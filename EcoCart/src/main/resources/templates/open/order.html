@@ -82,27 +82,22 @@
 		    <div class="modal-content">
 		    
 		      <div class="modal-header">
-		        <h5 class="modal-title" id="staticBackdropLabel">견적서</h5>
+		        <h4 class="modal-title" id="staticBackdropLabel">견적서</h4>
 		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
 		      </div>
 		        
 		      <div class="modal-body">
 				  <div class="container-fluid">
-				  	<table style="margin:30px;">
-						
-						<tr>
-							<td>견적코드<input style="width: 100px;" id="result4">&nbsp; <i class="bi bi-search">&nbsp;</i>
-				         		<select name="no" onchange="handleOnChange4(this)" style="width: 80px;">
-				         			<option value="선택">-선택-</option>
+				
+							<label for="row2" style="width:80px; height: 30px; text-align:center;"> 견적코드</label>
+				         		<select id="select4" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white" name="no" onchange="handleOnChange4(this)">
+				         			<option value="선택">----선 택----</option>
 				         			<th:block th:each="e : ${estmtCode1}">
 				         				<option th:value="${e.estmtCode}" th:text="${e.estmtCode}"></option>
 				         			</th:block>  			
 				         		</select>
-			         		 	<button onclick="searchEstmtCode()" type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;">조 회</button>
-		         			</td>
-						</tr>
-						
-					</table>
+			         		 	<button class="btn-sm btn-primary" onclick="searchEstmtCode()" type="button" >조 회</button>
+		         			
 				</div>
 			 </div>
 			 
@@ -423,8 +418,8 @@
 		//모달창 견적코드 조회
 		function searchEstmtCode(){
 			
-			console.log(document.getElementById('result4').value);
-			var a = document.getElementById('result4').value  
+			console.log($("#select4").val());
+			var a = $("#select4").val();  
 			
 			$.ajax({
 				method:'GET',

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cart.eco.open.service.EstimateService;
@@ -29,7 +30,16 @@ public class EstimateController {
 		model.addAttribute("proCode",estimateService.selectProCode());
 		model.addAttribute("clientName",estimateService.selectClientName());
 		
-		//Map<K, V>  a =  new HashMap<K, V>();
+		
+		Map<String, String> estmtPlusPro= new HashMap<>();
+		
+		//
+//		String product[];
+//		model.addAttribute("proCode",product[]);
+//		
+		
+		
+		
 
 		return "open/estimate";
 	}
@@ -61,11 +71,15 @@ public class EstimateController {
 	//견적서insert
 	@PostMapping("/insertEstmt")
 	@ResponseBody
-	public int insertEstmt(Model model) {
+	public int insertEstmt(Model model, @RequestBody EstimateVO vo) {
 		//견적서 상세 
 		model.addAttribute("proCode",estimateService.selectProCode());
 		
-		return estimateService.insertEstmt(null);
+		HashMap<String, String> Estmt = new HashMap<String, String>(); 
+		
+		int result = 0;
+		
+		return estimateService.insertEstmt(vo);
 	}
 	
 

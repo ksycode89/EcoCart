@@ -61,48 +61,53 @@
 		        <h5 class="modal-title" id="staticBackdropLabel">배송 정보 등록</h5>
 		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      </div>
-		        
+		      
+		      
 		      <div class="modal-body">
 				  <div class="container-fluid">
-				  	<table style="margin:30px;">
-				  		
-				  		<tr>
-				  			<td>출고처리코드<input style="width: 100px;" id="result10">&nbsp; <i class="bi bi-search">&nbsp;</i>
-				         		<select name="no" onchange="handleOnChange10(this)" style="width: 80px;">
-				         			<option value="선택">-선택-</option>
+				  		<div style="margin-bottom:5px">
+							<label for="row1" style="width:100px; height: 30px; text-align:center;">출고처리코드</label>
+								<select name="no" onchange="handleOnChange8(this)" class="btn" style="width:135px; border:1px solid #dce7f1; background-color:white">
+				         			<option value="선택">----선 택----</option>
 					         		<th:block th:each="e : ${deliveryPro}">
 					         			<option th:value="${e.dlivyProCode}" th:text="${e.dlivyProCode}"></option>
-				         			</th:block>   			
+				         			</th:block>  			
 				         		</select>
-				         	</td>
-				  			
-						<tr>
-							<td>출고방법<input style="width: 100px;" id="result9">&nbsp; <i class="bi bi-search">&nbsp;</i>
-				         		<select name="no" onchange="handleOnChange9(this)" style="width: 80px;">
-				         			<option value="선택">-선택-</option>
-				         			<th:block th:each="e : ${deliveryPro}">
-				         		<option th:value="${e.dlivyMth}" th:text="${e.dlivyMth}"></option>
-				         	</th:block> 			
-				         		</select>         		
-	         				</td>
-						</tr>
-						
-						<tr>	
-							<td colspan="3">운송코드<input style="width: 100px;" >
-		         			출고기사<input style="width: 100px;" >
-		         			기사연락처<input style="width: 100px;" ></td>
-						</tr>
-						
-						
+							
+				  		</div>
+
+						<div style="margin-bottom:5px">
+							<label for="row2" style="width:100px; height: 30px; text-align:center; " >출고 방법 </label>
+				         		<select id="select8" name="no"  onchange="handleOnChange8(this)" class="btn" style="width:135px; border:1px solid #dce7f1; background-color:white">
+				         			<option value="선택">----선 택----</option>
+				         			<option value="차량">    차 량    </option>
+				         			<option value="선박">    선 박    </option>
+				         			<option value="비행기">    비행기    </option>
+				         		</select>
+				         		
+						</div>	
 				   		
-					</table>
-				</div>
-			</div>
-			
+				   		<div style="margin-bottom:5px; margin-top:5px;">
+				   			<label for="row3" style="width:100px; height: 30px; text-align:center; " >운송코드</label>
+				         		<input type="text" class="form-control form-control-sm" style="width:135px; display:inline">
+
+				   			<label for="row3" style="width:100px; height: 30px; text-align:center;" >출고기사</label>
+				         		<input type="text" class="form-control form-control-sm" style="width:135px; display:inline">
+						         		
+				         	<label for="row3" style="width:100px; height: 30px; text-align:center;" >기사연락처</label>	
+				         		<input type="text" class="form-control form-control-sm" style="width:135px; display:inline" >
+				         
+				        </div>	
+				         	
 				   	  <div class="modal-footer">
-					        <button type="button" class="btn btn-primary">출고요청</button>
+					        <button type="button" class="btn btn-primary">배송정보 등록</button>
 					        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 				      </div>
+				         	
+				</div>
+			</div>  
+		     
+			
 						
 		      
 		    </div>

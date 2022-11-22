@@ -52,13 +52,13 @@ public class EstimateServiceImpl implements EstimateService {
 	@Override
 	public int insertEstmt(EstimateVO vo) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.insertEstmt(vo);
 	}
 
 	@Override
 	public int insertEstmtD(EstimateVO vo) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.insertEstmtD(vo);
 	}
 
 	

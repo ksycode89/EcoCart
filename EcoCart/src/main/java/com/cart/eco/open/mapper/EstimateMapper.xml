@@ -25,7 +25,10 @@
 
    <!-- 셀렉트 옵션 -->
    <select id="selectProCode" resultType="com.cart.eco.common.service.ProductVO">
-   		select * from product
+   		select p.pro_code, p.pro_name, o.sell_price
+		from product p, product_option o
+		where p.pro_code =o.pro_code
+		
    </select>
    
    <!-- 셀렉트 옵션 -->
@@ -48,6 +51,8 @@
 		insert into estimate  (estmt_code, client_code, estmt_date, de_date, etmt_st)
 			values( #{estmtCode}, #{clientCode} , sysdate, '#{deDate}, 'X')
 			
+		
+			
 	</insert>	
 
 	<!-- 견적서 상세 등록 -->
@@ -57,7 +62,7 @@
 		</selectKey>
 		
 		insert into estimate_d (estmt_dno, pro_code, sell_num, sum_price)
-			values ( #{estmtDno}, #{proCode}, #{sellNum}, )
+			values ( #{estmtDno}, #{proCode}, #{sellNum}, #{sumPrice} )
 		
 	</insert>
 
