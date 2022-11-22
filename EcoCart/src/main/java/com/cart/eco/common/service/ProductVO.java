@@ -17,6 +17,8 @@ public class ProductVO {
 	private Date proHire;		// 등록일
 	private int proNum;			// 수량
 	private String whCode;		// 창고코드
+	private String unit;		// 창고코드
+
 	
 	private int sellPrice;
 }

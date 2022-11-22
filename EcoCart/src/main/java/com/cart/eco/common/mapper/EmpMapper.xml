@@ -6,9 +6,11 @@
 
 	<!--사원 필터. 조회  -->
 	<select id="selectEmpList" parameterType="com.cart.eco.common.service.EmpVO" resultType="com.cart.eco.common.service.EmpVO">
+
 		SELECT e.emp_num,e.emp_name,c.code_name AS emp_dept,e.job_grade,e.emp_hire,e.emp_mail,e.emp_tel,e.comments
 		FROM employees e join common_code c
    		 ON e.emp_dept = c.code_id 
+
          LEFT JOIN employees m
           ON m.emp_num = e.emp_manager
    		<where>
@@ -56,6 +58,8 @@
    			FROM employees 
    			WHERE emp_manager is null
    		</select>
+   		
+   		<!--사원조회 사번 이름 부서/부서이름 -->
    		
 
 

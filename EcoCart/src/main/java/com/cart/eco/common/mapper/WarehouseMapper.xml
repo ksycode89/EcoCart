@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cart.eco.common.mapper.WarehouseMapper">
+	<select id="WHList" parameterType="com.cart.eco.common.service.WHVO" resultType="com.cart.eco.common.service.WHVO">
+		SELECT * 
+      FROM warehouse
+      <where>
+         <if test="whCode != null and !whCode.equals('')">
+            wh_code = #{whCode}
+         </if>
+         <if test="whName != null and !whName.equals('')">
+          and wh_name = #{whName}
+         </if>
+         <if test="whField != null and !whField.equals('')">
+          and  wh_field = #{whField}
+         </if>
+         <if test="whUsed != null and !whUsed.equals('')">
+          and  wh_used = #{whUsed} 
+         </if>
+         <if test="whManager != null and !whManager.equals('')">
+          and  wh_manager = #{whManager} 
+         </if>
+         
+      </where>
+		
+		
+	</select>
+
+</mapper>

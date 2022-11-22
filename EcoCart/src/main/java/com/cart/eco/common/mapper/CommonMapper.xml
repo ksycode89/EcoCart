@@ -9,6 +9,12 @@
 		WHERE code_group ='dept'
 	</select>
 	
+	<!-- 공통 그룹 리스트 -->
+	<select id="selectWHCC" resultType="com.cart.eco.common.service.CommonVO" parameterType="com.cart.eco.common.service.CommonVO">
+		SELECT code_id, code_name,code_content
+		FROM common_code
+		WHERE code_group =#{codeGroup}
+	</select>
 	
 	<!--공통코드 - 거래처  -->
    <select id="callClient" resultType="com.cart.eco.common.service.ClientVO">

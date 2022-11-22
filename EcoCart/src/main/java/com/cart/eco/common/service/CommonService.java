@@ -7,19 +7,21 @@ public interface CommonService {
 	// 공통코드 - 부서코드, 부서이름 조회
 	public List<CommonVO> getDept();
 
-	
+	 
 	//거래처리스트
 	   public List<ClientVO>callClient();
-	//공통코드리스트
+	 //공통코드리스트
 	   public List<CommonVO>callCommon(CommonVO vo);
 	
-	//공통코드 추가
+	 //공통코드 추가
 	  public int callInsert (CommonVO vo);
 	  //공통코드 수정
 	  public int callupdate(CommonVO vo);
 
 	  //공통코드 삭제
 	  public int callDelete(CommonVO vo);
+	  
+	 
 	  
 	
 	

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,11 @@ import com.cart.eco.common.service.CommonService;
 import com.cart.eco.common.service.CommonVO;
 import com.cart.eco.common.service.EmpService;
 import com.cart.eco.common.service.EmpVO;
+import com.cart.eco.common.service.ProductService;
+import com.cart.eco.common.service.ProductVO;
 import com.cart.eco.common.service.ToastGridVO;
+import com.cart.eco.common.service.WHService;
+import com.cart.eco.common.service.WHVO;
 
 import groovy.util.logging.Log4j2;
 
@@ -31,6 +36,8 @@ public class CommonController {
 	
 	@Autowired 	EmpService empService;
 	@Autowired CommonService commonService;
+	@Autowired WHService whService;
+	@Autowired ProductService proService;
 	
 	 
 	@GetMapping("/login")
@@ -137,7 +144,7 @@ public class CommonController {
 	        	 return result;
 	         }
 	         
-	         //업데이
+	         //업데이트
 	         @PostMapping("/callupdate")
 	         @ResponseBody
 	         public int callupdate(@RequestBody ToastGridVO<CommonVO> vo) {
@@ -167,7 +174,7 @@ public class CommonController {
 	         }
 	         
 	         
-	//===================================================================================//
+	//===================== ↓ 이동 페이지↓=====================================//
 	
 	         
 	         // 공통코드이동.
@@ -200,15 +207,17 @@ public class CommonController {
 	
 	// 창고등록 페이지.
 	@GetMapping("/wareHouse")
-	public String wareHouseForm() {
-		
+	public String wareHouseForm(Model model) {
+		CommonVO vo = new CommonVO();
+		vo.setCodeGroup("wh_field");
+		model.addAttribute("CClist", commonService.callCommon(vo));
 		return "common/wareHouse";
 	}
 	
 	// BOM 등록 페이지.
 	@GetMapping("/bom")
 	public String bomForm() {
-		
+		 
 		return "common/bom";
 	}
 	
@@ -226,7 +235,21 @@ public class CommonController {
 		return "common/check";
 	}
 	
-	
+//	========↓  창고  ↓  ========================================================//
+	@PostMapping("/whList") 
+	@ResponseBody
+	public List<WHVO>whList(WHVO vo){
+		
+		return  whService.WHList(vo);
+		
+	}
+	//제품 명 이름 가져오기
+	@GetMapping("/selectName") 
+	@ResponseBody
+	public List<ProductVO>selectName(){
+		
+		return proService.selectName() ;
+	}
 	
 	
 }
