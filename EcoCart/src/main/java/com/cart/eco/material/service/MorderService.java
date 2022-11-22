@@ -13,6 +13,9 @@ public interface MorderService {
 	// 발주상세현황
 	public List<MorderdetailVO> detailList(MorderVO morderVO);
 	
+	// 발주등록목록 기본값
+	public List<MorderVO> proInfo(MorderVO morderVO);
+	
 	// 발주등록
 	public int insertOrder(MorderVO morderVO);
 

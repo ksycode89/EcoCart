@@ -26,5 +26,10 @@ public class MorderVO {
 	private String manager; // 담당자
 	
 	private String clientName; // 거래처명 조인
-	
+	private String proItme; // 품목군
+	private String proName; // 제품명
+	private int cost; // 원가
+	private int sellPrice; // 단가
+	private String standard; // 규격
+	private String proCode; // 제품코드
 }

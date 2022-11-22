@@ -36,11 +36,36 @@
 					</div>
 				</div>
 			</div>
+			
+			   <!-- Modal -->
+			<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static"
+				data-bs-keyboard="false" tabindex="-1"
+				aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="staticBackdropLabel2">제품 목록</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div id="modalGrid1"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
    <script>
       
    </script>
    <div style="margin-left: 3px;">   
+               <button id="deleteInfo" type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">취소</button>
                <button id="insertBtn" type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">등록</button>
+               <button id="addBtn" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">행 추가</button>
+               
          </div>
    <div id="grid"></div>   
    <div id="grid2"></div>
@@ -49,6 +74,8 @@
    $(document).ready(function() {
       $('#emplist').click(empList)
       $('#insertBtn').click(insertInfo)
+      $('#delBtn').click(deleteInfo)
+      $('#addBtn').click(addInfo)
    })
    
    function insertInfo() {
@@ -56,6 +83,8 @@
 		   url : '/materialinsertInfo',
 		   type : 'POST',
 		   success : function(data) {
+			   
+			   
 			   console.log(data);
 		   },
 		   error : function(rejcet) {
@@ -74,7 +103,7 @@
             modalGrid.resetData(data);
          },
          error : function(rejcet) {
-            console.log(no);
+            console.log(123);
          }
       })
    }
@@ -93,12 +122,11 @@
           el: document.getElementById('grid'),
           scrollX: false,
           scrollY: false,
-          position : "bottom",
+          rowHeaders : ['checkbox'],
           columns: [
             {
               header: '발주번호',
               name: 'orderNo',
-              editor: 'text'
             },
             {
               header: '발주일자',
@@ -106,19 +134,17 @@
               editor: {
                   type: 'datePicker', 
               option : {
-            	  format:'yyyy-MM-dd'
+            	  format:'yyyy-MM-dd',
               }
               }
             },
             {
               header: '거래처명',
               name: 'clientName',
-           	  editor: 'text',
             },
             {
               header: '담당자',
               name: 'manager',
-              filter : 'text'
             },
             {
               header: '비고',
@@ -131,54 +157,48 @@
    
   const grid2 = new tui.Grid({
     el: document.getElementById('grid2'),
-    data: gridData,
     scrollX: false,
     scrollY: false,
     rowHeaders : ['rowNum'],
     columns: [
       {
         header: '품번',
-        name: 'proName',
-        editor: 'text'
+        name: 'proCode',
       },
       {
-        header: '품명',
-        name: '품명',
-        editor: 'text'
+        header: '품명',	
+        name: 'proName',
       },
       {
         header: '규격',
-        name: 'unit',
-        editor: 'text'
+        name: 'standard',
       },
       {
         header: '단위',
-        name: 'standard',
-        editor: 'text'
+        name: 'unit',
       },
       {
         header: '납기일',
-        name: '납기일',
+        name: 'orderReceiving',
         editor: {
             type: 'datePicker',
             options: {
-              format: 'yyyy-MM-dd'
+            format: 'yyyy-MM-dd'
             }
           }
         },
           {
         header: '발주수량',
-        name: '발주수량',
+        name: 'orderNum',
         editor: 'text'
 	  },
       {
         header: '단가',
-        name: '단가',
-        editor: 'text'
+        name: 'sellPrice',
       },
       {
         header: '공급가',
-        name: '공급가',
+        name: 'sumPrice',
         editor: 'text'
       }
     ]
@@ -201,16 +221,59 @@
     	         }
     	      ]
     	   });
-      
+       
+       var modalGrid1 = new tui.Grid({
+    	      el: document.getElementById('modalGrid1'),
+    	      bodyHeight: 200,
+    	      scrollX: true,
+    	      scrollY: true,
+    	      columns: [
+    	    	 {
+  	      	     	header: '품번',
+	      	    	name: 'proCode',
+	       		 },
+    	         {
+    	            header: '품명',
+    	            name: 'proName',
+    	         },
+    	         {
+    	        	header: '규격',
+     	            name: 'standard',
+    	         },
+    	         {
+     	        	header: '단가',
+      	            name: 'sellPrice',
+     	         },
+     	        {
+      	        	header: '단위',
+       	            name: 'unit',
+      	         }
+    	      ]
+    	   });
+       
+       $('#addBtn').on('click', (col) =>{
+    	   $('#staticBackdrop2').modal("show");
+    	   $.ajax({
+    		   url:'/proInfo',
+    		   type : 'GET',
+    		   success : function(data) {
+    			   console.log(data);
+    			   modalGrid1.resetData(data);		
+    		   },
+    		   error :  function(reject) {
+    			   console.log(reject)
+    		   }
+    	   })
+       })
+       
        modalGrid.on("click", event => {
     	   //console.log("inner modal grd ", modalGrid.getRow(event.rowKey).empName)
     	  let managers = [
     		  {
     			  "manager" :  modalGrid.getRow(event.rowKey).empName
     		  }
-    		  
     	  ] 
-    	   
+    	
 		grid.appendRows(managers)
 		
     	$('#empDept').val(modalGrid.getRow(event.rowKey)['empDept']);
@@ -218,9 +281,37 @@
 		$('#large').modal('hide');
        })
        
-       staticBackdrop.addEventListener('shown.bs.modal', () => {
-       	modalGrid.refreshLayout(); //모달창 새로고침
+       modalGrid1.on('click', event => {
+    	   let pronames = [
+    		   {
+    			   "proCode" : modalGrid1.getRow(event.rowKey).proCode,
+    			   "proName" : modalGrid1.getRow(event.rowKey).proName,
+    			   "sellPrice" : modalGrid1.getRow(event.rowKey).sellPrice,
+    			   "standard" : modalGrid1.getRow(event.rowKey).standard,
+    			   "unit" : modalGrid1.getRow(event.rowKey).unit
+    		   }
+    	   ]
+    	   
+    	   grid2.appendRows(pronames)
+    	   
+    	   $('#proCode').val(modalGrid1.getRow(event.rowKey)['proCode']);
+    	   $('#proName').val(modalGrid1.getRow(event.rowKey)['proName']);
+    	   $('#standard').val(modalGrid1.getRow(event.rowKey)['standard']);
+    	   $('#sellPrice').val(modalGrid1.getRow(event.rowKey)['sellPrice']);
+    	   $('#unit').val(modalGrid1.getRow(event.rowKey)['unit']);
+    	   
+    	   $('#large').modal('hide');
        })
+       
+       
+       staticBackdrop.addEventListener('shown.bs.modal', () => {
+       	modalGrid.refreshLayout(); 
+       })
+       
+      staticBackdrop2.addEventListener('shown.bs.modal', () => {
+       	modalGrid1.refreshLayout(); 
+       })
+       
        
      
    </script>
