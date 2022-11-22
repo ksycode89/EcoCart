@@ -22,14 +22,12 @@
 			<div class="tab-content" id="mfTabContent">
 				<div class="tab-pane fade show active" id="planInsert" role="tabpanel" aria-labelledby="planInsertTab">
 					<div style="margin-top:10px; margin-bottom:10px">
-						<button type="button" class="btn btn-sm btn-primary">계획등록</button>
+						<button type="button" class="btn btn-sm btn-primary" id="removeRowBtn" style="float:right">계획행 삭제</button>
+						<button type="button" class="btn btn-sm btn-primary" id="addRowBtn" style="float:right; margin-right:8px">계획행 추가</button>
+						<button type="button" class="btn btn-sm btn-primary" id="orderBtn" style="float:right; margin-right:8px" data-bs-toggle="modal" data-bs-target="#orderModal">주문서 조회</button>
+						<button type="button" class="btn btn-sm btn-primary" id="planRegistBtn">계획등록</button>
 					</div>
 					<div id="planInsertGridId"></div>
-					<div style="margin-top:10px">
-						<button type="button" class="btn btn-sm btn-primary" id="orderBtn" data-bs-toggle="modal" data-bs-target="#orderModal">주문서 조회</button>&nbsp;
-						<button type="button" class="btn btn-sm btn-primary">계획행 추가</button>&nbsp;
-						<button type="button" class="btn btn-sm btn-primary">계획행 삭제</button>
-					</div>
 				</div>
 				<div class="tab-pane fade" id="planDelete" role="tabpanel" aria-labelledby="planDeleteTab">
 					<div style="margin-top:10px; margin-bottom:10px">
@@ -50,7 +48,6 @@
 							<div id="orderModalGridId"></div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-sm btn-primary">선택</button>
 							<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">닫기</button>						
 						</div>
 					</div>
@@ -58,59 +55,17 @@
 			</div>
 		</div>
 	<script>
-    const gridData = [
-   		{
-   			mfPlanCode:'1',
-   			mfPlanName:'테스트1',
-   			proCode:'001',
-   			proName:'test1',
-   			mfPlanDate:'2022-11-14',
-   			deDate:'2022-12-12',
-   			needNum:'20',
-   			mfPlanStatus:'진행'
-   		},
-   		{
-   			mfPlanCode:'2',
-   			mfPlanName:'테스트2',
-   			proCode:'002',
-   			proName:'test2',
-   			mfPlanDate:'2022-11-01',
-   			deDate:'2022-11-13',
-   			needNum:'10',
-   			mfPlanStatus:'진행'
-   		},
-   		{
-   			mfPlanCode:'3',
-   			mfPlanName:'테스트3',
-   			proCode:'001',
-   			proName:'test1',
-   			mfPlanDate:'2022-11-14',
-   			deDate:'2022-12-12',
-   			needNum:'30',
-   			mfPlanStatus:'취소'
-   		},
-   		{
-   			mfPlanCode:'4',
-   			mfPlanName:'테스트4',
-   			proCode:'003',
-   			proName:'test3',
-   			mfPlanDate:'2022-10-10',
-   			deDate:'2022-11-01',
-   			needNum:'20',
-   			mfPlanStatus:'완료'
-   		},
-   	];
     
-	const planInsertGrid = new tui.Grid({
+	var planInsertGrid = new tui.Grid({
 		el: document.getElementById('planInsertGridId'),
-		data: gridData,
 		scrollX: false,
 		scrollY: false,
 		rowHeaders: ['checkbox'],
 		columns: [
-	        {
+			{
 	          header: '생산계획코드',
-	          name: 'mfPlanCode'
+	          name: 'mfPlanCode',
+	          editor: 'text'
 	        },
 	        {
 	          header: '생산계획명',
@@ -123,11 +78,17 @@
 	        },
 	        {
 	          header: '제품코드',
-	          name: 'proCode'
+	          name: 'proCode',
+	          editor: 'text'
 	        },
 	        {
 	          header: '제품명',
-	          name: 'proName'
+	          name: 'proName',
+	          editor: 'text'
+	        },
+	        {
+	          header: '주문수량',
+		      name: 'allsellNum'
 	        },
 	        {
 		      header: '필요수량',
@@ -142,7 +103,7 @@
 		]
 	});
 	
-	const planDeleteGrid = new tui.Grid({
+	var planDeleteGrid = new tui.Grid({
 		el: document.getElementById('planDeleteGridId'),
 		scrollX: false,
 		scrollY: false,
@@ -197,11 +158,10 @@
     	})
     }
 	
-	const orderModalGrid = new tui.Grid({
+	var orderModalGrid = new tui.Grid({
 		el: document.getElementById('orderModalGridId'),
 		scrollX: false,
 		scrollY: false,
-		rowHeaders : ['checkbox'],
 		columns: [
 	        {
 	          header: '주문서코드',
@@ -212,7 +172,7 @@
 	          name: 'proName'
 	        },
 	        {
-	          header: '총수량',
+	          header: '주문수량',
 		      name: 'allsellNum'
 	        },
 	        {
@@ -240,13 +200,60 @@
     	setInterval(()=>{planInsertGrid.refreshLayout()},1);
     });
     
+    addRowBtn.addEventListener('click', () => {
+    	planInsertGrid.appendRow({});
+    });
+    
+    removeRowBtn.addEventListener('click', () => {
+    	planInsertGrid.removeRows(planInsertGrid.getCheckedRowKeys());
+    });
+    
+    planRegistBtn.addEventListener('click', () => {
+    	$.ajax({
+    		url: '/mfInsertPlan',
+    		method: 'POST',
+    		contentType: 'application/json',
+    		data: JSON.stringify(planInsertGrid.getData()),
+    		dataType: 'JSON',
+    		success: function(data){
+    			location.reload();
+    		},
+    		error: function(error){
+    			console.log(error);
+    		}
+    	})
+    })
+    
     planDeleteTab.addEventListener('click', () => {
     	setInterval(()=>{planDeleteGrid.refreshLayout()},1);
+    });
+    
+    planDeleteSearchBtn.addEventListener('click', () => {
+    	$.ajax({
+    		url: '/mfPlanCheckDelete',
+    		type: 'POST',
+    		contentType: 'application/json',
+    		data: JSON.stringify(planDeleteGrid.getCheckedRows()),
+    		dataType: 'JSON',
+    		success: function(data){
+    			location.reload();
+    		},
+    		error: function(error){
+    			console.log(error)
+    		}
+    	})
     });
     
     orderModal.addEventListener('shown.bs.modal', () => {
     	orderModalGrid.refreshLayout();
     });
+    
+    orderModalGrid.on('click', (ev) => {
+    	if(ev.rowKey != null){
+    		planInsertGrid.appendRow(orderModalGrid.getRow(ev.rowKey));
+    		$('#orderModal').modal('hide');
+    	}
+    })
     
     </script>
 	</div>

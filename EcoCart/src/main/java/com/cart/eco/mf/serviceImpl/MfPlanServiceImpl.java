@@ -26,8 +26,12 @@ public class MfPlanServiceImpl implements MfPlanService {
 	}
 
 	@Override
-	public int insertMfPlan(MfPlanVO mfvo) {
-		return mapper.insertMfPlan(mfvo);
+	public int insertMfPlan(List<MfPlanVO> vo) {
+		int result = 0;
+		for(int i=0; i<vo.size(); i++) {
+			result += mapper.insertMfPlan(vo.get(i));
+		}
+		return result;
 	}
 
 	@Override
@@ -36,8 +40,13 @@ public class MfPlanServiceImpl implements MfPlanService {
 	}
 	
 	@Override
-	public int deleteMfPlan(MfPlanVO mfvo) {
-		return mapper.deleteMfPlan(mfvo);
+	public int deleteMfPlan(List<MfPlanVO> vo) {
+		int result = 0;
+		for(int i=0; i<vo.size(); i++) {
+			mapper.deleteMfPlan2(vo.get(i));
+			
+			result += mapper.deleteMfPlan(vo.get(i));
+		}
+		return result;
 	}
-
 }
