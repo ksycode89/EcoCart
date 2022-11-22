@@ -7,15 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cart.eco.common.mapper.CommonMapper;
+import com.cart.eco.common.mapper.WarehouseMapper;
 import com.cart.eco.common.service.ClientVO;
 import com.cart.eco.common.service.CommonService;
 import com.cart.eco.common.service.CommonVO;
+import com.cart.eco.common.service.WHVO;
 
 @Service
 public class CommonServiceImpl implements CommonService {
 
-	@Autowired
-	CommonMapper commonMapper;
+	@Autowired	CommonMapper commonMapper;
+
 	
 	@Override
 	public List<CommonVO> getDept() {
@@ -53,4 +55,13 @@ public class CommonServiceImpl implements CommonService {
 		
 		return commonMapper.callDelete(vo);
 	}
+
+
+	
+
+
+
+
+	
+	
 }

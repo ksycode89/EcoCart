@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cart.eco.common.service.ClientVO;
 import com.cart.eco.common.service.CommonVO;
+import com.cart.eco.common.web.CommonController;
 
 
 
@@ -25,6 +26,11 @@ public interface CommonMapper {
     public int callupdate(CommonVO vo);
     //공통코드 삭
     public int callDelete(CommonVO vo);
+    
+    //공통 코드 그룹으로 찾기
+    public List<CommonVO> selectWHCC (CommonVO vo);
+    
+    
 		
 
 }
