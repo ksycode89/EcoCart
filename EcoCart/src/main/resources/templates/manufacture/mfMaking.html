@@ -121,18 +121,13 @@
 	    
 		const makingDetailGrid = new tui.Grid({
 			el: document.getElementById('makingDetailGridId'),
-			data: gridData,
 			scrollX: false,
 			scrollY: false,
 			rowHeaders:['rowNum'],
 			columns: [
 		        {
-		          header: '생산계획코드',
-		          name: 'mfPlanCode'
-		        },
-		        {
-		          header: '생산계획명',
-		          name: 'mfPlanName'
+		          header: '생산지시코드',
+		          name: 'mfOrderCode'
 		        },
 		        {
 		          header: '제품코드',

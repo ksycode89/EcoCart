@@ -27,6 +27,12 @@
 		where d.order_no = #{orderNo}
 	</select>
 	
+	<select id="proInfo" parameterType="com.cart.eco.material.service.MorderVO" resultType="com.cart.eco.material.service.MorderVO">
+		select p.pro_code, p.pro_name, o.cost, o.sell_price, o.standard, unit
+		from product p join product_option o
+		on p.pro_code = o.pro_code
+	</select>
+	
 	<insert id="insertInfo" parameterType="com.cart.eco.material.service.MorderVO">
 		insert into m_order(
 					order_no,

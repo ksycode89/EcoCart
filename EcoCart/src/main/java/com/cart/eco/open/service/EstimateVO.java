@@ -17,7 +17,7 @@ public class EstimateVO {
 	private int allSum;		//총합계액
 	
 	private String fallSum;
-	
+	private int sellPrice;
 	
 	
 	

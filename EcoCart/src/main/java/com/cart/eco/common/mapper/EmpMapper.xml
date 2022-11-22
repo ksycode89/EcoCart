@@ -4,11 +4,13 @@
 	
 
 
-	<!--사원 필터  -->
+	<!--사원 필터. 조회  -->
 	<select id="selectEmpList" parameterType="com.cart.eco.common.service.EmpVO" resultType="com.cart.eco.common.service.EmpVO">
-	SELECT e.emp_num,e.emp_name,c.code_name AS emp_dept,e.job_grade,e.emp_hire,e.emp_mail,e.emp_tel,e.comments
-      FROM employees e join common_code c
-          ON e.emp_dept = c.code_id 
+
+		SELECT e.emp_num,e.emp_name,c.code_name AS emp_dept,e.job_grade,e.emp_hire,e.emp_mail,e.emp_tel,e.comments
+		FROM employees e join common_code c
+   		 ON e.emp_dept = c.code_id 
+
          LEFT JOIN employees m
           ON m.emp_num = e.emp_manager
    		<where>
@@ -16,18 +18,24 @@
    		 	e.emp_num = #{empNum}
    		 </if>
    		  <if test="empName != null and !empName.equals('')">
-   		 	OR e.emp_name = #{empName}
+   		 	AND e.emp_name = #{empName}
    		 </if>
    		 <if test="empDept != null and !empDept.equals('')">
-           OR e.emp_dept = #{empDept}
+           AND e.emp_dept = #{empDept}
          </if>
          <if test="empManager != null and !empManager.equals('')">
-           OR e.emp_manager = #{empManager} 
+           AND e.emp_manager = #{empManager} 
          </if>
    		</where>
    		
    		ORDER BY emp_num
 	</select>
+	
+	
+	<!--사원 등록  -->
+	<insert id="">
+	
+	</insert>
         
    		<!--담당자의 담당사원 조회  -->
    		<select id="selectManager" parameterType="String" resultType="com.cart.eco.common.service.EmpVO">

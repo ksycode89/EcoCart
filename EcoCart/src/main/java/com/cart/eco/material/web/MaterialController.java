@@ -30,6 +30,7 @@ public class MaterialController {
 		return morder.selectOrderList();
 	}
 	
+	//발주 Order목록 가져오는거
 	@GetMapping("detailList")
 	@ResponseBody
 	public List<MorderdetailVO> detailList(MorderVO morderVO) {
@@ -46,9 +47,14 @@ public class MaterialController {
 	@PostMapping("/materialinsertInfo")
 	public String materialInsertInfo() {
 		return "material/materialinsert";
+	}
+	
+	//발주등록 목록 가져오기
+	@GetMapping("/proInfo")
+	@ResponseBody
+	public List<MorderVO> proInfo(MorderVO morderVO) {
+		return morder.proInfo(morderVO);
 	}	
-	
-	
 
 	@GetMapping("/materialreta")
 	public String materialReta() {

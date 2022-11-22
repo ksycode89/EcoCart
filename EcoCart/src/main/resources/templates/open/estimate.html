@@ -20,7 +20,7 @@
 		<div class="mb-1">
 				
 			<div style="height:50px; margin-bottom:10px">
-				<label for="planName" style="width:100px">견적코드</label>
+				<label for="planName" style="width:100px; height:20px">견적코드</label>
 				<input type="text" class="form-control" style="width:200px; display:inline" placeholder="견적코드" id="InEstmtCodeSearch">&nbsp;
 			</div>
 			
@@ -66,59 +66,62 @@
 		      
 		      <div class="modal-body">
 		      	<div class="container-fluid">
-		      		
+		      			<div style="margin-bottom:5px">
 				        	<label for="row1" style="width:80px; height: 30px; text-align:center;">견적번호</label>
-				        		<input stype="text" class="form-control"style="width:150px; display:inline" readonly>
+				        		<input type="text" class="form-control form-control-sm" style="width:150px; display:inline" readonly>
 				        	
-				    		<label for="row1" style="width:80px; height: 30px; text-align:center;  ">납기일자</label>
+				    		<label for="row1" style="width:80px; height: 30px; text-align:center; margin-left:30px; ">납기일자</label>
 								<input type="date" class="form-control" style="width: 150px; display:inline; text-align:center;">
 								
-				   			<div><br></div>
-				   			
+		      			</div>
+
+						<div style="margin-bottom:5px">
 				        	<label for="row2" style="width:80px; height: 30px; text-align:center;" >거래처코드 </label>
-				         		<select id="select8" name="no"  class="btn" style="width:150px; border:1px solid #dce7f1;; background-color:white">
+				         		<select id="select8" name="no"  onchange="handleOnChange8(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white">
 				         			<option value="선택">----선 택----</option>
 				         			<th:block th:each="v : ${clientName}">
-				         				<option th:value="${v.clientCode}" th:text="${v.clientCode}"></option>
+				         				<option th:value="${v.clientName}" th:text="${v.clientCode}"></option>
 				         			</th:block>		
 				         		</select>
 				   		
 				   			
-				   			<label for="row2" style="width:80px; height: 30px; text-align:center;" >거래처명</label>
-				         		<select id="select5" name="no"  class="form-control" style="width: 150px; display:inline; text-align:center;">
+				   			<label for="row2" style="width:80px; height: 30px; text-align:center; margin-left:30px;" >거래처명</label>
+				         		<select id="select5" name="no"  onchange="handleOnChange5(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white; display:inline; text-align:center;">
 				         			<option value="선택">----선 택----</option>
 				         			<th:block th:each="v : ${clientName}">
-				         				<option th:value="${v.clientName}" th:text="${v.clientName}"></option>
+				         				<option th:value="${v.clientCode}" th:text="${v.clientName}" ></option>
 				         			</th:block>		
 				         		</select>
 				         		
-							<div><br></div>
-				   		
+						</div>				   			
+				
+						<div style="margin-bottom:5px">
+										   		
 				   			<label for="row3" style="width:80px; height: 30px; text-align:center;" >제품코드</label>
-				         		<select id="select6" name="no" onchange="handleOnChange6(this)" class="form-control" style="width: 150px; display:inline; text-align:center;">
+				         		<select id="select6" name="no" onchange="handleOnChange6(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white; display:inline; text-align:center;">
 				         			<option value="선택">----선 택----</option>
 				         			<th:block th:each="v : ${proCode}">
-				         				<option th:value="${v.proCode}" th:text="${v.proCode}"></option>
-				         			</th:block>		
-				         		</select>
-
-				   			
-				   			<label for="row3" style="width:80px; height: 30px; text-align:center;" >제품명</label>
-				         		<select id="select7" name="no" onchange="handleOnChange7(this)" class="form-control" style="width: 150px; display:inline; text-align:center;">
-				         			<option value="선택">----선 택----</option>
-				         			<th:block th:each="v: ${proCode}">
-				         				<option th:value="${v.proName}" th:text="${v.proName}"></option>
-				         			</th:block>  			
+				         				<option th:value="${v.proName}+'-'+${v.sellPrice}" th:text="${v.proCode}"></option>
+											         				
+				         			</th:block>
 				         		</select>
 				         		
-				         	<label for="row3" style="width:80px; height: 30px; text-align:center;" >수량</label>	
-				         		<input stype="text" class="form-control"style="width:150px; display:inline" >
-				         	<div><br></div>
-				         	<div>
-					         	<button onclick="modalResetBtn()" type="button"  class="btn-sm btn-secondary" style="float:right;" >초기화</button></td>
-					         	<button onclick="plusPro()" type="button" class="btn-sm btn-primary" style="float:right; margin-right:5px" >제품추가</button></td>
-				         	
-				         	</div>
+				   			
+				   			<label for="row3" style="width:80px; height: 30px; text-align:center; margin-left:30px;" >제품명</label>
+				         		<select id="select7" name="no" onchange="handleOnChange7(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white; display:inline; text-align:center;">
+				         			<option value="선택">----선 택----</option>
+				         			<th:block th:each="v: ${proCode}">
+				         				<option th:value="${v.proCode}+'-'+${v.sellPrice}" th:text="${v.proName}"></option>
+				         			</th:block>
+				         		</select>
+				        </div> 		
+				        <div style="margin-bottom:5px"> 		
+				         	<label for="row3" style="width:80px; height: 30px; text-align:center;" min="0">수량</label>	
+				         		<input type="number" class="form-control"style="width:150px; display:inline" id="productNum">
+					         	<button onclick="modalResetBtn()" type="button"  class="btn-sm btn-secondary" style="float:right;" >초기화</button>
+					         	<button onclick="deletePro()" type="button" class="btn-sm btn-primary" style="float:right; margin-right:5px">제품삭제</button>
+					         	<button onclick="plusPro()" type="button" class="btn-sm btn-primary" style="float:right; margin-right:5px" >제품추가</button>
+				        </div>
 			       </div>
 			    
 		      </div>
@@ -129,7 +132,7 @@
 		        
 		      <div class="modal-footer">
 		        <button onclick="insertEstmt" type="button" class="btn btn-primary">등록</button>
-		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+		        <button type="button" class="btn btn-secondary" onclick="modalClose" data-bs-dismiss="modal">취소</button>
 		      </div>
 		      
 		    </div>
@@ -251,6 +254,7 @@
             el: document.getElementById('grid3'), // Container element
             scrollX: false,
             scrollY: false,
+            rowHeaders: ['checkbox'],
             columns: [
                 {
                 	header: '제품코드',
@@ -282,11 +286,35 @@
 		
 		
 		//모달창 선택값 리셋
-		function modalResetBtn(e){
-			console.log("버튼")
-			$("#select6").val() == '선택'
-			$("#select7").val() == '선택'
+		function modalResetBtn(){
+			console.log( $("#select6").val() );
+			
+			if($("#select6").val() != '선택' ){
 				
+				$("#select6").val('선택');
+				$("#select7").attr('disabled', false)
+				$("#productNum").val('');
+				
+			
+			} else if ($("#select7").val() != '선택' ){
+				
+				$("#select7").val('선택');
+				$("#select6").attr('disabled', false)
+				$("#productNum").val('');
+				
+			} else if ($("#select5").val() != '선택' ){
+				
+				$("#select5").val('선택');
+				$("#select8").attr('disabled', false)
+				$("#productNum").val('');
+				
+			}else if ($("#select8").val() != '선택' ){
+				
+				$("#select8").val('선택');
+				$("#select5").attr('disabled', false)
+				$("#productNum").val('');
+				
+			}
 					
 		}
 		
@@ -295,6 +323,7 @@
 		
 		function handleOnChange5(e){
 			if($("#select5").val() != '선택'){
+				
 				$("#select8").attr('disabled', true)
 			}
 		} 
@@ -323,7 +352,6 @@
 			 }
 		}
 		
-			 
 		
 		//수량 * 단가 = 합계액
 		function add(){
@@ -387,52 +415,124 @@
 
 	 })
 	
-	
-	 // select 8 5    6 7
-	 //$.("select6")
 	 
-	 /*  //input
-	if($("#select6").val() != '선택'){
-			$("#select7").attr('disabled', true)
-		}
-	 
-	 if($("#select7").val() != '선택'){
-			$("#select6").attr('disabled', true)
-		} */
-	 
-	 
-	 
-	 function plusPro(){
-		 
-		 if($("#select6").val() == $("#result6").val( ) || ($("#result6" != null) ||  $("#select6").val() != null )){
+	 	//모달창 제품추가 버튼 누르기
+		function plusPro(){
 			 
-		 	if($("#select7").val() == $("#result7").val() || ($("#result6" != null) ||  $("#select6").val() != null )){
-				alert("제품추가성공");
-				//ajax로 값 보내고 grid에 출력하기 
-				$.ajax({
-					method :'POST',
-					url:'/insertEstmtD',
-					succes : function(result){
-						grid3.reset(result);
-					},
-					error : function(error){
-						console.log(error);
+			//객체에 담아서 grid에 뽑기
+			//console.log($("#select6").val());		//제품코드	
+			//console.log($("#select7").val());		//제품명
+			//console.log($("#productNum").val());	//수량
+			//console.log($("#select66").val());
+			//console.log($('#select66 option:selected').text());
+			console.log()
+			
+			
+			//제품 코드 
+			console.log($("#select6").val());	//	제품명 출력		
+			//console.log($("#select6").text());	//  
+			
+			if( $("#select6").val() != '선택' && $("#productNum").val() !=''){			
+				console.log("제품코드 입력 + 수량")
+				
+				
+				console.log($("#select6").val());	//	제품명 출력	
+				console.log($('#select6 option:selected').text());	//	제품코드 출력
+				
+				
+				//select66 값이랑 select6 값이랑 똑같이 설정
+				/*if( $($("#select66").val() == '선택')){
+					let text = $('#select6 option:selected').text();
+					$('#select66 option:selected').val(text)
+					
+					console.log($("#select66").val());
+					
+				}*/
+				 
+				let a = $('#select6').val();
+				console.log("================")
+				console.log(a);
+				console.log(a.split('-'));
+				console.log((a.split('-'))[0]);
+				console.log((a.split('-'))[1]);
+				
+				for (let b of a.split('-')){
+					console.log(b)
+				}
+				
+				let sumA = parseInt($('#productNum').val());
+				let sumB = parseInt((a.split('-'))[1]);
+				let result = sumA * sumB;
+				console.log( result)
+				 
+				const rowData = [
+					{
+						proCode : $('#select6 option:selected').text(),
+						proName : (a.split('-'))[0],
+						sellNum : $('#productNum').val(),
+						sellPrice : (a.split('-'))[1],
+						sumPrice : result
+					}	
+				];
+				 
+				
+				rowData.forEach(row => {
+					  grid3.appendRow(row);
+					});
+				
+				
+			  }else if ( $("#select7").val() != '선택'  && $("#productNum").val() !=''){		
+				  console.log("제품명 입력 + 수량")
+				  
+				  
+				  
+				  let a = $('#select7').val();
+					
+					for (let b of a.split('-')){
+						console.log(b)
 					}
 					
-				})
+					let sumA = parseInt($('#productNum').val());
+					let sumB = parseInt((a.split('-'))[1]);
+					let result = sumA * sumB;
+					console.log( result)
+					 
+					const rowData = [
+						{
+							proCode : (a.split('-'))[0],
+							proName : $('#select7 option:selected').text(),
+							sellNum : $('#productNum').val(),
+							sellPrice : (a.split('-'))[1],
+							sumPrice : result
+						}	
+					];
+					 
+					
+					rowData.forEach(row => {
+						  grid3.appendRow(row);
+						});
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				$("#input7").val ($("#select7").val()) ;		
+				console.log($("#input7").val());			//제품명 출력
 				
-		 	}else{
-			 	alert("제품 올바르게 선택해주세요1");
-		 }
-		}else{
-		 	alert("제품 올바르게 선택해주세요2");
-	 	}
-		 
-		 
-		 
-	 }
+					  
+			  }else{
+				  //제품코드만 입력
+				  console.log("값을 다 넣어")
+			  }
+			 
+			 
+			 
+		 }//function
 	 
-	 
+		
 		function insertEstmt(){
 		 
 		 if($("#select8").val() == $("#result8").val() || $("#result8" != null) ||  $("#select8").val() != null ){
@@ -478,10 +578,14 @@
 		grid.unfilter('estmtDate');
 	})	
 	
+	$("staticBackdrop").on('hidden.bs.modal', function (e) {
+		console.log('modal close');
+		document.forms['form-name'].reset();
 	
-		
-	//
+	});
 	 
+	
+	//모달창 끌때 reset되도록
 	</script>
 	</div>
 </body>

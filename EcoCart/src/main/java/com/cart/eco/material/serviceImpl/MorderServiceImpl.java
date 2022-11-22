@@ -18,35 +18,37 @@ public class MorderServiceImpl implements MorderService {
 	@Autowired
 	MorderMapper moMapper;
 	
+	
+	
 	@Override
 	public int getOrderNo(MorderVO morderVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return morderVO.getOrderNo();
 	}
 
 	@Override
 	public List<MorderVO> selectOrderList() {
-		// TODO Auto-generated method stub
 		return moMapper.selectOrderList();
 	}
 	
 	
 	@Override
 	public int insertOrder(MorderVO morderVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return moMapper.insertOrder(morderVO);
 	}
 
 	@Override
 	public int deleteOrder(MorderVO morderVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return moMapper.deleteOrder(morderVO);
 	}
-
+	//발주현황상세조회
 	@Override
 	public List<MorderdetailVO> detailList(MorderVO morderVO) {
-		
 		return moMapper.detailList(morderVO);
+	}
+	//발주등록목록 가져오기
+	@Override
+	public List<MorderVO> proInfo(MorderVO morderVO) {
+		return moMapper.proInfo(morderVO);
 	}
 
 

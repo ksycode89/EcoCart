@@ -59,60 +59,70 @@
 		    <div class="modal-content">
 		    
 		      <div class="modal-header">
-		        <h5 class="modal-title" id="staticBackdropLabel">출고요청</h5>
+		        <h4 class="modal-title" id="staticBackdropLabel">출고요청</h4>
 		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      </div>
 		        
 		      <div class="modal-body">
 				  <div class="container-fluid">
-				  	<table style="margin:30px;">
-				  		
-						<tr>
-							<td>출고요청일자<input type="date" style="width: 120px;"></td>
-							<td>출고요청코드<input type="text" style="width: 120px;" ></td>
-						</tr>
-						
-						<tr>	
-							<td>거래처<input style="width: 100px;" id="result4">&nbsp; <i class="bi bi-search">&nbsp;</i>
-				         		<select name="no" onchange="handleOnChange4(this)" style="width: 80px;">
-				         			<option value="선택">-선택-</option>
-				         			<th:block th:each="v : ${clientName}" >
-				         				<option th:value="${v.clientName}" th:text="${v.clientName}"></option>
-				         			</th:block>
-				         					
-				         		</select>
-		         			</td>
-		         			<td>담당자명<input style="width: 100px;" id="result5">&nbsp; <i class="bi bi-search">&nbsp;</i>
-				         		<select name="no" onchange="handleOnChange5(this)" style="width: 80px;">
-				         			<option value="선택">-선택-</option>
-				         			<th:block th:each="v : ${emp}" >
-				         				<option th:value="${v.empName}" th:text="${v.empName}"></option>
+				  		<div style="margin-bottom:5px">
+							<label for="row1" style="width:100px; height: 30px; text-align:center;">출고요청코드</label>
+								<input type="text" class="form-control form-control-sm" style="width:150px; display:inline" readonly >
+							
+							
+							<label for="row1" style="width:100px; height: 30px; text-align:center; margin-left:30px">출고요청일자</label>
+								<input type="date" class="form-control" style="width: 150px; display:inline; text-align:center;">
+							
+				  		</div>
+
+						<div style="margin-bottom:5px">
+							<label for="row2" style="width:100px; height: 30px; text-align:center; " >거래처코드 </label>
+				         		<select id="select8" name="no"  onchange="handleOnChange8(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white">
+				         			<option value="선택">----선 택----</option>
+				         			<th:block th:each="v : ${clientName}">
+				         				<option th:value="${v.clientCode}" th:text="${v.clientCode}"></option>
 				         			</th:block>		
 				         		</select>
-		         			</td>
-						</tr>
-						
-						<tr>	
-							<td>제품명<input style="width: 100px;" id="result6">&nbsp; <i class="bi bi-search">&nbsp;</i>
-				         		<select name="no" onchange="handleOnChange6(this)" style="width: 80px;">
-				         			<option value="선택">-선택-</option>
-				         			<th:block th:each="v : ${proCode}" >
-				         				<option th:value="${v.proName}" th:text="${v.proName}"></option>
-				         			</th:block>	
+				   		
+				   			
+				   			<label for="row2" style="width:100px; height: 30px; text-align:center; margin-left:30px;" >거래처명</label>
+				         		<select id="select5" name="no"  onchange="handleOnChange5(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white; display:inline; text-align:center;">
+				         			<option value="선택">----선 택----</option>
+				         			<th:block th:each="v : ${clientName}">
+				         				<option th:value="${v.clientName}" th:text="${v.clientName}"></option>
+				         			</th:block>		
 				         		</select>
-		         			</td>
-		         			<td>제품코드<input style="width: 100px;" id="result7">&nbsp; <i class="bi bi-search">&nbsp;</i>
-				         		<select name="no" onchange="handleOnChange7(this)" style="width: 80px;">
-				         			<option value="선택">-선택-</option>
-				         			<th:block th:each="v : ${proCode}" >
+				         		
+						</div>	
+				   		
+				   		<div style="margin-bottom:5px; margin-top:5px;">
+				   			<label for="row3" style="width:100px; height: 30px; text-align:center; " >제품코드</label>
+				         		<select id="select6" name="no" onchange="handleOnChange6(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white; display:inline; text-align:center;">
+				         			<option value="선택">----선 택----</option>
+				         			<th:block th:each="v : ${proCode}">
 				         				<option th:value="${v.proCode}" th:text="${v.proCode}"></option>
-				         			</th:block>			
+				         			</th:block>		
 				         		</select>
-		         			</td>
-				         	<td>수량<input type="text" style="width: 100px;"></td>
-						</tr>
-					</table>
-				    <button type="button" class="btn btn-primary" style="float:right">제품추가</button>
+
+				   			
+				   			<label for="row3" style="width:100px; height: 30px; text-align:center; margin-left:30px;" >제품명</label>
+				         		<select id="select7" name="no" onchange="handleOnChange7(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white; display:inline; text-align:center;">
+				         			<option value="선택">----선 택----</option>
+				         			<th:block th:each="v: ${proCode}">
+				         				<option th:value="${v.proName}" th:text="${v.proName}"></option>
+				         			</th:block>  			
+				         		</select>
+						</div>		
+						
+						<div >		         		
+				         	<label for="row3" style="width:100px; height: 30px; text-align:center;" >수량</label>	
+				         		<input stype="text" class="form-control"style="width:150px; display:inline" >
+				         
+					         	<button onclick="modalResetBtn()" type="button"  class="btn-sm btn-secondary" style="float:right;" >초기화</button></td>
+					         	<button onclick="plusPro()" type="button" class="btn-sm btn-primary" style="float:right; margin-right:5px" >제품추가</button></td>
+				        </div>	
+				         	
+				         	
 				</div>
 			</div>
 			
@@ -258,62 +268,66 @@
 			
       
       	
-	      function handleOnChange(e){
-				//선택된 데이터의 텍스트값 가져오기
-				const text = e.value;
+	//모달창 선택값 리셋
+		function modalResetBtn(){
+			console.log( $("#select6").val() );
+			
+			if($("#select6").val() != '선택' ){
 				
-				//선택한 텍스트 출력
-				document.getElementById('result').value = text;
+				$("#select6").val('선택');
+				$("#select7").attr('disabled', false)
+				
+			
+			} else if ($("#select7").val() != '선택' ){
+				
+				$("#select7").val('선택');
+				$("#select6").attr('disabled', false)
+				
+			} else if ($("#select5").val() != '선택' ){
+				
+				$("#select5").val('선택');
+				$("#select8").attr('disabled', false)
+				
+			}else if ($("#select8").val() != '선택' ){
+				
+				$("#select8").val('선택');
+				$("#select5").attr('disabled', false)
+				
 			}
-			
-			
-		function handleOnChange2(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result2').value = text;
+					
 		}
 		
 		
-		function handleOnChange3(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result3').value = text;
-		}
-		
-		function handleOnChange4(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result4').value = text;
-		}
+		// 모달창 둘중에 하나만 선택 되도록 58거래처     67제품
 		
 		function handleOnChange5(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result5').value = text;
+			if($("#select5").val() != '선택'){
+				$("#select8").attr('disabled', true)
+			}
+		} 
+
+		
+		function handleOnChange8(e){
+			if($("#select8").val() != '선택'){
+				$("#select5").attr('disabled', true)
+			}
+		
 		}
+		
+		
 		
 		function handleOnChange6(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
+			if($("#select6").val() != '선택'){
+				$("#select7").attr('disabled', true)
+			}
 			
-			//선택한 텍스트 출력
-			document.getElementById('result6').value = text;
 		}
 		
-		function handleOnChange7(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result7').value = text;
+		
+		 function handleOnChange7(e){
+			 if($("#select7").val() != '선택'){
+					$("#select6").attr('disabled', true)
+			 }
 		}
 		
 		

@@ -67,21 +67,20 @@
 							aria-label="Close"></button>
 					</div>
 					
-					<table style="margin:30px;">
-						
-						<tr>
-							<td>출고요청코드<input style="width: 100px;" id="result8">&nbsp; <i class="bi bi-search">&nbsp;</i>
-				         		<select name="no" onchange="handleOnChange8(this)" style="width: 80px;">
+					  <div class="modal-body">
+				  			<div class="container-fluid">
+					
+							<label for="row2" style="width:150px; height: 30px; text-align:center;">출고요청코드</label>
+				         		<select id="select8" name="no" onchange="handleOnChange8(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white">
 				         			<option value="선택">-선택-</option>
 				         			<th:block th:each="e : ${deliveryQ}">
 				         				<option th:value="${e.dlivyQCode}" th:text="${e.dlivyQCode}"></option>
 				         			</th:block>  			
 				         		</select>
-			         		 	<button onclick="searchQ()" type="button" style="width: 80px; background-color: black; color:white;  margin-left:20px;">조 회</button>
-		         			</td>
-						</tr>
-					</table>
-
+				         		<button class="btn-sm btn-primary" onclick="searchQ()" type="button" >조 회</button>
+		         			</div>
+		         		</div>
+		         				
 					<div id="grid3"></div>
 					<div id="grid4"></div>
 
@@ -213,10 +212,7 @@
 		        scrollX: false,
 	            scrollY: false,
 		        columns: [
-		        	 {
-			            	header: 'no',
-			            	name: 'DLIVY_QNO'
-			            },
+		        	 
 			            {
 			            	header: '제품코드',
 			            	name: 'PRO_CODE'
@@ -361,8 +357,8 @@
 		
       	function searchQ(){
 	    	 
-	    	 console.log(document.getElementById('result8').value);
-				var a = document.getElementById('result8').value  
+	    	 console.log(document.getElementById('select8').value);
+				var a = document.getElementById('select8').value  
 				
 				$.ajax({
 					method:'GET',

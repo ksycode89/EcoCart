@@ -19,9 +19,6 @@
 		AND order_st = '대기'
 	</select>
 	
-	<insert id="insertMfPlan">
-	</insert>
-	
 	<select id="getMfDeletePlanList" resultType="com.cart.eco.mf.service.MfPlanVO">
 		SELECT p.mf_plan_code, p.mf_plan_name, d.pro_code, d.pro_name, p.mf_plan_date, o.de_date, d.need_num, d.total_order_num
 		FROM mf_plan p JOIN mf_plan_detail d
@@ -31,8 +28,38 @@
 		WHERE p.mf_plan_status != '완료'
 	</select>
 	
-	<delete id="deleteMfPlan">
-		DELETE FROM mf_plan_code
+	<insert id="insertMfPlan" parameterType="com.cart.eco.mf.service.MfPlanVO">
+		<selectKey>
+		
+		</selectKey>
+		INSERT ALL
+		INTO mf_plan(mf_plan_code
+					, mf_plan_name
+					<if test="orderCode != null and !orderCode.equals('')">, order_code</if>)
+		VALUES(#{mfPlanCode}
+				, #{mfPlanName}
+				<if test="orderCode != null and !orderCode.equals('')">, #{orderCode}</if>)
+		INTO mf_plan_detail(mf_plan_code
+							, pro_code
+							, pro_name
+							, need_num)
+		VALUES(#{mfPlanCode}
+				, #{proCode}
+				, #{proName}
+				, #{needNum})
+		SELECT * FROM DUAL
+	</insert>
+	
+	<delete id="deleteMfPlan" parameterType="com.cart.eco.mf.service.MfPlanVO">
+		DELETE FROM mf_plan
 		WHERE mf_plan_code = #{mfPlanCode}
 	</delete>
+	
+	<delete id="deleteMfPlan2" parameterType="com.cart.eco.mf.service.MfPlanVO">
+		DELETE FROM mf_plan_detail
+		WHERE mf_plan_code = #{mfPlanCode}
+	</delete>
+	
+	
+	
 </mapper>
