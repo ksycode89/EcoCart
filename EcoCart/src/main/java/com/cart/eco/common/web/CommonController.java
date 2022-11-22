@@ -55,6 +55,7 @@ public class CommonController {
 	// 사원조회 ajax.
 	  @PostMapping("ajax/list")
 	  @ResponseBody 
+	  
 	  public List<EmpVO> ajaxList(EmpVO vo) {
 		  System.out.println(vo);
 		  return empService.getEmpList(vo);
@@ -72,7 +73,7 @@ public class CommonController {
 	  @GetMapping("ajax/emplist")
 	  @ResponseBody
 	  public EmpVO ajaxEmpList(String empManager) {
-		  System.out.println("result"+empManager);
+		  System.out.println("result "+empManager);
 		  return empService.selectManager(empManager);
 	  }
 	  
