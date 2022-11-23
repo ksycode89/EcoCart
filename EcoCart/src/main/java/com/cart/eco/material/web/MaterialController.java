@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cart.eco.material.service.MorderService;
@@ -45,8 +46,10 @@ public class MaterialController {
 	
 	//발주 등록
 	@PostMapping("/materialinsertInfo")
-	public String materialInsertInfo() {
-		return "material/materialinsert";
+	@ResponseBody
+	public int materialInsertInfo(@RequestBody List<MorderVO> morderVO) {
+		System.out.println(morderVO);
+		return morder.insertOrder(morderVO);
 	}
 	
 	//발주등록 목록 가져오기
@@ -54,6 +57,11 @@ public class MaterialController {
 	@ResponseBody
 	public List<MorderVO> proInfo(MorderVO morderVO) {
 		return morder.proInfo(morderVO);
+	}	
+	//삭제
+	@PostMapping("/deleteInfo")
+	public int delteInfo(MorderVO morderVO) {
+		return morder.deleteOrder(morderVO);
 	}	
 
 	@GetMapping("/materialreta")
