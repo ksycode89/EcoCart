@@ -44,7 +44,6 @@ public class MfPlanServiceImpl implements MfPlanService {
 		int result = 0;
 		for(int i=0; i<vo.size(); i++) {
 			mapper.deleteMfPlan2(vo.get(i));
-			
 			result += mapper.deleteMfPlan(vo.get(i));
 		}
 		return result;

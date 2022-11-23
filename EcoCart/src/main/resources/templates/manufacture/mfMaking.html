@@ -21,51 +21,23 @@
 		<script>
 	    const gridData = [
 	   		{
-	   			mfPlanCode:'1',
-	   			mfPlanName:'테스트1',
-	   			proCode:'001',
-	   			proName:'test1',
-	   			mfPlanDate:'2022-11-14',
-	   			deDate:'2022-12-12',
-	   			needNum:'20',
-	   			mfPlanStatus:'진행'
+	   			lineNo:'1'
 	   		},
 	   		{
-	   			mfPlanCode:'2',
-	   			mfPlanName:'테스트2',
-	   			proCode:'002',
-	   			proName:'test2',
-	   			mfPlanDate:'2022-11-01',
-	   			deDate:'2022-11-13',
-	   			needNum:'10',
-	   			mfPlanStatus:'진행'
+	   			lineNo:'2'
 	   		},
 	   		{
-	   			mfPlanCode:'3',
-	   			mfPlanName:'테스트3',
-	   			proCode:'001',
-	   			proName:'test1',
-	   			mfPlanDate:'2022-11-14',
-	   			deDate:'2022-12-12',
-	   			needNum:'30',
-	   			mfPlanStatus:'취소'
+	   			lineNo:'3'
 	   		},
 	   		{
-	   			mfPlanCode:'4',
-	   			mfPlanName:'테스트4',
-	   			proCode:'003',
-	   			proName:'test3',
-	   			mfPlanDate:'2022-10-10',
-	   			deDate:'2022-11-01',
-	   			needNum:'20',
-	   			mfPlanStatus:'완료'
+	   			lineNo:'4'
 	   		},
 	   	];
 	    
 	    class MakingButtonRenderer {
 			constructor(props) {
 		    	const el = document.createElement('span');
-		        el.innerHTML='<button type="button" class="btn btn-sm btn-success" id="orderBtn" style="width:80px">시작</button> <button type="button" class="btn btn-sm btn-danger" id="orderBtn" style="width:80px">긴급정지</button>';
+		        el.innerHTML='<button type="button" class="btn btn-sm btn-success" id="orderBtn" style="width:60px">시작</button> <button type="button" class="btn btn-sm btn-danger" id="orderBtn" style="width:80px">긴급정지</button>';
 		        this.el = el;
 		        this.render(props);
 		    }
@@ -87,7 +59,7 @@
 			columns: [
 		        {
 		          header: '라인번호',
-		          name: 'lineNo'
+		          name: 'lineNo',
 		        },
 		        {
 		          header: '생산지시코드',
@@ -115,10 +87,6 @@
 			]
 		});
 	    
-	    makingGrid.on('click',(ev)=>{
-			console.log(ev.rowKey);
-		});
-	    
 		const makingDetailGrid = new tui.Grid({
 			el: document.getElementById('makingDetailGridId'),
 			scrollX: false,
@@ -126,32 +94,32 @@
 			rowHeaders:['rowNum'],
 			columns: [
 		        {
-		          header: '생산지시코드',
-		          name: 'mfOrderCode'
+		          header: '생산코드',
+		          name: 'mfMakingCode'
 		        },
 		        {
-		          header: '제품코드',
-		          name: 'proCode'
+		          header: '프레임용접공정',
+		          name: 'mfMaking1'
 		        },
 		        {
-		          header: '제품명',
-		          name: 'proName'
+		          header: '엔진조립공정',
+		          name: 'mfMaking2'
 		        },
 		        {
-		          header: '계획일자',
-		          name: 'mfPlanDate'
+		          header: '최종조립공정',
+		          name: 'mfMaking3'
 		        },
 		        {
-		          header: '납기일자',
-		          name: 'deDate'
+		          header: '테스트공정',
+		          name: 'mfMaking4'
 		        },
 		        {
-		          header: '필요수량',
-		          name: 'needNum'
+		          header: '불량코드',
+		          name: 'faultyCode'
 		        },
 		        {
-		          header: '진행상황',
-		          name: 'mfPlanStatus'
+		          header: '불량내용',
+		          name: 'faultyContent'
 		        }
 			]
 		});

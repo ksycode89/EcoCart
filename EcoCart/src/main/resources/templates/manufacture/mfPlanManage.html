@@ -5,6 +5,8 @@
       layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>생산계획관리</title>
 </head>
 <body>
@@ -56,6 +58,9 @@
 		</div>
 	<script>
     
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
 	var planInsertGrid = new tui.Grid({
 		el: document.getElementById('planInsertGridId'),
 		scrollX: false,
@@ -215,6 +220,9 @@
     		contentType: 'application/json',
     		data: JSON.stringify(planInsertGrid.getData()),
     		dataType: 'JSON',
+    		beforeSend : function(xhr){
+           		xhr.setRequestHeader(header, token);
+           	},
     		success: function(data){
     			location.reload();
     		},
@@ -235,6 +243,9 @@
     		contentType: 'application/json',
     		data: JSON.stringify(planDeleteGrid.getCheckedRows()),
     		dataType: 'JSON',
+    		beforeSend : function(xhr){
+           		xhr.setRequestHeader(header, token);
+           	},
     		success: function(data){
     			location.reload();
     		},

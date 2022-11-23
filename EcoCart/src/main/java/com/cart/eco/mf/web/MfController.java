@@ -1,6 +1,7 @@
 package com.cart.eco.mf.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -78,6 +79,12 @@ public class MfController {
 	@ResponseBody
 	public List<MfOrderVO> mfOrderListAll(){
 		return mforder.getMfOrderList();
+	}
+	
+	@GetMapping("/mfOrderNeedList")
+	@ResponseBody
+	public List<Map<String,Object>> mfOrderNeedList(String proCode){
+		return mforder.getMfOrderMaterialList(proCode);
 	}
 	
 	@GetMapping("/mfOrderDecide")

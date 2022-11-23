@@ -1,6 +1,7 @@
 package com.cart.eco.mf.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cart.eco.mf.service.MfOrderVO;
 
@@ -16,7 +17,7 @@ public interface MfOrderMapper {
 	public List<MfOrderVO> getMfReadyPlanList();
 	
 	//필요자재조회
-	public List<MfOrderVO> getMfOrderMaterialList(MfOrderVO mfvo);
+	public List<Map<String, Object>> getMfOrderMaterialList(String proCode);
 	
 	//필요자재LOT조회
 	
@@ -25,4 +26,5 @@ public interface MfOrderMapper {
 	//필요자재LOT등록
 	
 	//생산지시확정변경
+	public int decideMfOrder(MfOrderVO mfvo);
 }

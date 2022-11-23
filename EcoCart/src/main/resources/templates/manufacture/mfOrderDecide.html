@@ -59,6 +59,7 @@
 		        },
 		        {
 				  header: '지시확정',
+				  name: 'mfOrderStatus',
 				  align: 'center',
 				  renderer: {
 				  	type: TestButtonRenderer
@@ -79,6 +80,11 @@
 	    		}
 	    	})
 	    }
+		
+		orderDecideGrid.on('click', (ev) => {
+			console.log(ev)
+			
+		})
 		
 	    </script>
 	</div>

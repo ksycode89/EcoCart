@@ -59,7 +59,4 @@
 		DELETE FROM mf_plan_detail
 		WHERE mf_plan_code = #{mfPlanCode}
 	</delete>
-	
-	
-	
 </mapper>

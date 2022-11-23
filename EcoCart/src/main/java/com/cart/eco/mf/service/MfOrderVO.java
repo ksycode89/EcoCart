@@ -21,5 +21,7 @@ public class MfOrderVO {
 	private String mfOrderStatus; //진행상황
 	private int mfOrderNo; //생산지시카운트
 	private String bomCode; //BOM코드
-
+	private int bomNum; //BOM재료갯수
+	private int needNum; //필요수량
+	private int bomNeedNum; //bomNum*needNum
 }
