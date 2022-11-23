@@ -22,10 +22,11 @@ public interface EstimateService {
 	
 
 	//견적서 등록
-	public int insertEstmt(EstimateVO vo);
+	public String insertEstmt(EstimateVO vo);
+
+	public int insertEstmtD(List<EstimateDVO> vo);
+
 	
-	//견적서 상세 등록
-	public int insertEstmtD(EstimateVO vo);
 
 
 //	//견적 번호 가져오기

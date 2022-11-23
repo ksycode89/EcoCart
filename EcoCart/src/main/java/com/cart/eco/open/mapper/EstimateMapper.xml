@@ -38,7 +38,7 @@
 	
 
 	<!-- 견적서 등록 -->
-	<insert id="insertEstmt" parameterType="com.cart.eco.open.service.EstimateVO">
+	<insert id="insertEstmt" parameterType="com.cart.eco.open.service.EstimateVO" >
 		<selectKey keyProperty="estmtCode" resultType="String" order="BEFORE">
 			select  concat('est' , 
   					concat (to_char(sysdate,'YYmmdd'), 
@@ -48,21 +48,19 @@
 		</selectKey>
 		
 		<!-- 코드, 거래처, 견적일ㄹ자(sysdate), 납기일자 승인  -->
-		insert into estimate  (estmt_code, client_code, estmt_date, de_date, etmt_st)
-			values( #{estmtCode}, #{clientCode} , sysdate, '#{deDate}, 'X')
-			
-		
+		insert into estimate  (estmt_code, client_code, estmt_date, de_date, estmt_st)
+			values( #{estmtCode}, #{clientCode} , sysdate, sysdate, '대기')
 			
 	</insert>	
 
 	<!-- 견적서 상세 등록 -->
-	<insert id="insertEstmtD" parameterType="com.cart.eco.open.service.EstimateDVO">
-		<selectKey keyProperty="estmtDno">
-			select nvl(max(esmtm_dno),0)+1
+	<insert id="insertEstmtD" parameterType="com.cart.eco.open.service.EstimateVO" >
+		<selectKey keyProperty="estmtDno" order="BEFORE" resultType="integer">
+			select nvl(max(estmt_dno),0)+1 from estimate_d
 		</selectKey>
 		
-		insert into estimate_d (estmt_dno, pro_code, sell_num, sum_price)
-			values ( #{estmtDno}, #{proCode}, #{sellNum}, #{sumPrice} )
+		insert into estimate_d (estmt_dno, estmt_code, pro_code, sell_num, sum_price)
+			values ( #{estmtDno}, #{estmt_code},  #{proCode}, #{sellNum}, #{sumPrice} )
 		
 	</insert>
 

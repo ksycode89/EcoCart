@@ -1,5 +1,6 @@
 package com.cart.eco.open.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cart.eco.open.service.EstimateDVO;
 import com.cart.eco.open.service.EstimateService;
 import com.cart.eco.open.service.EstimateVO;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 
 @Controller
@@ -66,47 +69,44 @@ public class EstimateController {
 		
 	}
 	
-	
+
 
 	//견적서insert
-	@PostMapping("/insertEstmt")
+	@PostMapping("/insertEstmt") 
 	@ResponseBody
-	public int insertEstmt(Model model, @RequestBody EstimateVO vo) {
+	@JsonCreator
+	public EstimateVO insertEstmt (@RequestBody List<EstimateVO> vo) {
 		//견적서 상세 
-		model.addAttribute("proCode",estimateService.selectProCode());
 		
-		HashMap<String, String> Estmt = new HashMap<String, String>(); 
+		EstimateVO a = vo.get(0);
+		System.out.println(vo.get(0));
+		estimateService.insertEstmt(a);
+		System.out.println(a);
+		System.out.println( a.getClass().getName()) ;
 		
-		int result = 0;
-		
-		return estimateService.insertEstmt(vo);
+		System.out.println(	a.getEstmtCode());
+			//System.out.println(vo.getEstmtCode() + "컨트롤러");
+			//String pkCode = vo.getEstmtCode();
+	
+	 	return a;
 	}
 	
 
-		//
-	
+	//견적서 상세 insert
+	@PostMapping("/insertEstmtD")
+	@ResponseBody
+	public int insertEstmtD( @RequestBody List<EstimateDVO> vo ) {
+		int result = 0;
+		
+		
+		
+		estimateService.insertEstmtD(vo);
+		
+		
+		return result;
+	}
 	
 
-//	//견적서 상세 insert
-//	@PostMapping("/insertEstmtD")
-//	@ResponseBody
-//	public int insertEstmtD( @RequestParam(value = "estmtD[]", required=false)List<String> insertEstmtD) {
-//		int result = 0;
-//		for (int i = 0; i < insertEstmtD.size(); i++) {
-//			
-//			EstimateDVO vo = new EstimateDVO();
-//			vo.setEstmtCode(null) 
-//		
-//		
-//		return estimateService.insertEstmtD(null);
-////	}
-//	
-//	
-//	
-//	
-//}
-//	
-//	
 
 	
 	

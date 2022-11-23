@@ -70,8 +70,8 @@
 				        	<label for="row1" style="width:80px; height: 30px; text-align:center;">견적번호</label>
 				        		<input type="text" class="form-control form-control-sm" style="width:150px; display:inline" readonly>
 				        	
-				    		<label for="row1" style="width:80px; height: 30px; text-align:center; margin-left:30px; ">납기일자</label>
-								<input type="date" class="form-control" style="width: 150px; display:inline; text-align:center;">
+				    		<label for="row1" style="width:80px; height: 30px; text-align:center; margin-left:30px;" >납기일자</label>
+								<input type="date" class="form-control" style="width: 150px; display:inline; text-align:center;" id="deDate">
 								
 		      			</div>
 
@@ -131,7 +131,7 @@
 				
 		        
 		      <div class="modal-footer">
-		        <button onclick="insertEstmt" type="button" class="btn btn-primary">등록</button>
+		        <button onclick="insertEstmt()" type="button" class="btn btn-primary" >등록</button>
 		        <button type="button" class="btn btn-secondary" onclick="modalClose" data-bs-dismiss="modal">취소</button>
 		      </div>
 		      
@@ -411,7 +411,7 @@
 					error : function(error){
 						console.log(11);
 					}
-				})
+		})
 
 	 })
 	
@@ -429,32 +429,22 @@
 			
 			
 			//제품 코드 
-			console.log($("#select6").val());	//	제품명 출력		
+			//console.log($("#select6").val());	//	제품명 출력		
 			//console.log($("#select6").text());	//  
 			
 			if( $("#select6").val() != '선택' && $("#productNum").val() !=''){			
-				console.log("제품코드 입력 + 수량")
+				//console.log("제품코드 입력 + 수량")
 				
+				//console.log($("#select6").val());	//	제품명 출력	
+				//console.log($('#select6 option:selected').text());	//	제품코드 출력
 				
-				console.log($("#select6").val());	//	제품명 출력	
-				console.log($('#select6 option:selected').text());	//	제품코드 출력
-				
-				
-				//select66 값이랑 select6 값이랑 똑같이 설정
-				/*if( $($("#select66").val() == '선택')){
-					let text = $('#select6 option:selected').text();
-					$('#select66 option:selected').val(text)
-					
-					console.log($("#select66").val());
-					
-				}*/
 				 
 				let a = $('#select6').val();
 				console.log("================")
-				console.log(a);
-				console.log(a.split('-'));
-				console.log((a.split('-'))[0]);
-				console.log((a.split('-'))[1]);
+				//console.log(a);
+				//console.log(a.split('-'));
+				//console.log((a.split('-'))[0]);
+				//console.log((a.split('-'))[1]);
 				
 				for (let b of a.split('-')){
 					console.log(b)
@@ -513,12 +503,6 @@
 						});
 				  
 				  
-				  
-				  
-				  
-				  
-				  
-				  
 				$("#input7").val ($("#select7").val()) ;		
 				console.log($("#input7").val());			//제품명 출력
 				
@@ -532,21 +516,89 @@
 			 
 		 }//function
 	 
-		
-		function insertEstmt(){
 		 
-		 if($("#select8").val() == $("#result8").val() || $("#result8" != null) ||  $("#select8").val() != null ){
-			 
-		 	if($("#select5").val() == $("#result5").val()  || $("#result5" != null) || $("#select5").val() != null ){
-				alert("등록성공");
+		 
+		//견적서 등록
+		function insertEstmt(){
+		 console.log("버튼클릭")
+		 console.log("#deDate")
+		 if( $("#select5").val() != '선택'  && $("#deDate").val() !=''){
+				console.log("거래처명 입력5")
+			 	$.ajax({
+						method:'POST',
+						url:'/insertEstmt',
+						success : function(result) {
+							console.log(result)
+							grid1.resetData(result);
+						},
+						error : function(error){
+							console.log(333);
+						}
+					})
+					
+					
+		 }else if($("#select8").val() != '선택' && $("#deDate").val() !=''){
+		 		console.log("거래처코드 입력8") 
+				console.log($("#deDate").val())
+				console.log($("#select8 option:selected").text())
+		 		
 				
-				//ajax로 값 보내고 grid에 출력하기 
-				 $("#form").submit();
-		 	}else{
-			 	alert("거래처 올바르게 선택해주세요1");
-		 }
+		 		const data = [
+
+		 			{	
+		 				 
+						deDate : $("#deDate").val(),
+						clientCode : $("#select8 option:selected").text()
+		 			}
+		 		]
+		 		
+				// 견적서 input에 있는 값들 insert 
+				$.ajax({
+					method:'POST',
+					url:'/insertEstmt',
+					contentType : "application/json",
+					dataType:"JSON",
+					data: JSON.stringify(data),
+					success : function(result) {
+						console.log("견적서 insert")
+						console.log(result);
+						
+						// 견적상세 그리드에 있는 값을 insert + 견적코드 
+						$.ajax({
+							method:'POST',
+							url:'/insertEstmtD',
+							contentType : "application/json",
+							dataType:"JSON",
+							data: JSON.stringify(grid3.getData()),
+							success : function(result) {
+								console.log("견적서상세 insert")
+								console.log(result);
+								
+								
+								
+								
+							},
+							error : function(error){
+								console.log(error +"견적상세 er");
+							}
+						})
+						 
+						//그리드에 출력된 합계액들로 총 합계액 update해주기  (getSummaryValues(columnName) 사용 )
+						//합계액 다 더해서 총 합계액 update해주기
+					
+					},
+					error : function(error){
+						console.log("견적 er");
+						console.log(error);
+					}
+				})
+				
+				
+				//insert된 견적코드를 가져와서 여어기에 넣어주기
+				
+			
 		}else{
-		 	alert("거래처 올바르게 선택해주세요2");
+		 	console.log("값 다 넣어");
 	 	}
 		 
 		 
@@ -578,14 +630,35 @@
 		grid.unfilter('estmtDate');
 	})	
 	
-	$("staticBackdrop").on('hidden.bs.modal', function (e) {
-		console.log('modal close');
-		document.forms['form-name'].reset();
 	
+	
+	
+	//모달창 선택된 행 삭제
+	function deletePro(){
+		grid3.removeCheckedRows(true)
+	}
+	
+	
+	
+	
+	//모달창 끌때 reset되도록
+	$("#staticBackdrop").on('hidden.bs.modal', function (e) {
+		grid3.clear()
+		$("#deDate").val('');
+		document.getElementById("select5").value = '선택';
+		document.getElementById("select8").value = '선택';
+		document.getElementById("select7").value = '선택';
+		document.getElementById("select6").value = '선택';
+		$("#productNum").val('');
+		
+			/* $("#select5").attr('disabled', true)
+			$("#select6").attr('disabled',true)
+			$("#select7").attr('disabled', true)
+			$("#select8").attr('disabled', true)
+			 */
 	});
 	 
 	
-	//모달창 끌때 reset되도록
 	</script>
 	</div>
 </body>
