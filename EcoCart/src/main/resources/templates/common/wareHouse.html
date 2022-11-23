@@ -90,7 +90,7 @@
 				<button class="ml-5 btn btn-sm btn-primary">수정</button>
 				<button class="ml-5 btn btn-sm btn-primary" onclick="addRow()"><svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></button>
 				<button class="ml-5 btn btn-sm btn-secondary">삭제</button>
-				<button class="ml-5 btn btn-sm btn-secondary">초기화</button>
+				<button class="ml-5 btn btn-sm btn-secondary" onclick="reset()">초기화</button>
 				
 			</div>
 	</div>
@@ -98,7 +98,25 @@
 
  </div>
 	
-	<div id="gird1" class="mb-3 row"></div>
+	<div id="gird1" class="mb-5 row"></div>
+<!-- 	//grid2의 인풋창 -->
+			<div class="row  flex-right ">
+			     <div class="col-md-3 mb-1">
+					<div class="input-group mb-3">
+						<label for="staticEmail" class="col-sm-3 col-form-label">총수량</label>
+						<input type="text" id="sumProCode" class="form-control"
+							placeholder="prodcut code" aria-label="Recipient's username"
+							aria-describedby="button-addon2"> 
+					</div>
+				</div>
+				<div class="col-lg-auto col-sm-12">
+					<input  id="sumProName" name="sumProName" class="form-control"placeholder="product name">
+				</div>
+				<div class="col-lg-auto col-sm-12">
+					<input  id="proTotal" name="proTotal" class="form-control"placeholder="total">
+				</div>
+			</div>	
+			
 	<div id="grid2"></div>
 
 <!--창고코드 modal  -->
@@ -219,9 +237,24 @@
 				</div>
 			</div>
 		</div>
+		
+		
 
 	<script>
-		
+	/* data source */
+	const dataSource = {
+   		 withCredentials: false,
+   		 contentType: 'application/json',
+
+   		  api: {
+   			  
+   		    readData  : { url: '/', method: 'GET' },
+   		    createData: { url: '/WHInsert', method: 'POST' },
+   		    updateData: { url: '/', method: 'POST' },
+   		    deleteData : { url: '/', method: 'POST' },
+   		    updateModifiy: { url: '/', method: 'POST' },
+   		  }
+   		};
 
 		const gird1 = new tui.Grid({
 			el : document.getElementById('gird1'),
@@ -230,38 +263,49 @@
 			scrollY : false,
 			columns : [ {
 				header : '창고코드',
-				name : 'whCode'
+				name : 'whCode',
+				editor : 'text'
 			}, {
 				header : '창고이름',
-				name : 'whName'
+				name : 'whName',
+				editor : 'text'
 			}, {
 				header : '창고분류',
 				name : 'whField'
 			}, {
 				header : '창고설명',
-				name : 'whExplain'
+				name : 'whExplain',
+				editor : 'text'
 			}, {
 				header : '사용여부',
-				name : 'whUsed'
+				name : 'whUsed',
+				editor: {
+          	      type: 'select',
+        	      options: {
+        	        listItems: [
+        	        	{ text: 'Y', value: 'Y' },
+        	        	{ text: 'N', value: 'N' }
+        	        ]
+        	        	
+        	      }
+        	    }       
 			}, {
 				header : '등록일',
-				name : 'whHire'
+				name : 'whHire',
+				editor : 'datePicker'
 			}, {
 				header : '담당자',
-				name : 'whManager'
+				name : 'whManager',
+				editor : 'text'
 			}, {
 				header : '비고',
-				name : 'comments'
+				name : 'comments',
+				editor : 'text'
 			}
 
-			]
+			],
+			data : dataSource
 		});
-	
-
-	
-
-
-	
 
 		
 		const grid2 = new tui.Grid({
@@ -311,7 +355,8 @@
 	//grid1 클릭이벤트
 	 gird1.on('click',ev=>{
 			 	let event = gird1.getRow(ev.rowKey);
-			 	console.log(event)
+			 	console.log(ev.columnName	)
+			if(event.whCode != null) 	{
 			$.ajax({
 				 url : "/innerWH",
 	               type: "post",
@@ -320,18 +365,41 @@
 	           		xhr.setRequestHeader(header, token);
 	           	 }, */
 	               success : function(data){
-	                  console.log(data);
+	      
 	    			grid2.resetData(data)
-	                 
-	          
 	                  
 	               },
 	               error : err=>{
 	                  console.log(err)
 	               }
 			})
-		   })
+			}
+			 		   })
+		gird1.on('dblclick',ev=>{
+			if (ev.columnName = 'whManager'){
+				console.log('123')
+				$('empmodal').modal('show')
+				
+			}
+		})	 		   
+	//grid2 온클릭
+	 grid2.on('click',ev=>{
+		 let proCode =grid2.getRow(ev.rowKey).proCode;
+		 let proName =grid2.getRow(ev.rowKey).proName;
+		 let newOrderNum=0
+		 console.log(proName)
+	$(grid2.getData()).each((index,one)=>{
+		if(one.proCode ==proCode){
+			newOrderNum += one.orderNum
+		}
+			})
+		//총합인풋창
+	$('#sumProCode').val(proCode)
+	$('#sumProName').val(proName)
+	$('#proTotal').val(newOrderNum)
+	
 		
+	 })
 		
 	//wh그리드 ㅇ클릭이벤트
 		   gridWH.on('click',ev=>{
@@ -421,10 +489,17 @@
 	       }
 		
 	///버튼들///
+	//등록
 	function insertWH(){
-	
+		
+	    gird1.request('createData');
 		
 	}
+	//리셋
+	function reset(){
+		window.location.reload();
+	}
+
 		 //사원검색 모달/아작스
 		 
 		 	const searchEmp = new tui.Grid({
@@ -442,6 +517,27 @@
 				header : '부서',
 				name : 'empDept'
 			}
+			]
+		});
+		 	//사원검색 수정 그리드
+			 
+		 	const modiEmpGrid = new tui.Grid({
+			el : document.getElementById('searchEmp'),
+			rowHeaders: ['rowNum'],
+			scrollX : false,
+			scrollY : false,
+			columns : [ {
+				header : '사원번호',
+				name : 'empNum'
+			}, {
+				header : '사원이름',
+				name : 'empName'
+			}, {
+				header : '부서',
+				name : 'empDept'
+			}, {
+				header : '부서',
+				name : 'empDept'}
 			]
 		});
 		 
@@ -494,6 +590,7 @@
 			}else if ($('#whfield').val() =='==선택==' || $('#whfield').val() ==''){
 				alert('창고분류를 ')
 			}else {
+				gird1.refreshLayout(); 
 				gird1.appendRows(data);
 			}
 		 }
@@ -506,8 +603,11 @@
 			    data : { 'whcode': $('#whcode').val()}
 				
 			 }).then((data)=>{
-				 gird1.resetData(data)
 				 console.log("data",data)
+			
+				
+				 gird1.resetData(data)
+				 
 			 })
 		 }
 		 

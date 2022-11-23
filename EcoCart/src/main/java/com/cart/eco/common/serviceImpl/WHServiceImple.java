@@ -21,4 +21,10 @@ public class WHServiceImple implements WHService {
 		return WHmapper.WHList(vo);
 	}
 
+	@Override
+	public int WHInsert(WHVO vo) {
+		
+		return WHmapper.WHInsert(vo);
+	}
+
 }

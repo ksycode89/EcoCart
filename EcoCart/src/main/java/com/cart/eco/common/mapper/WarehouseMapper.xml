@@ -25,5 +25,39 @@
 		
 		
 	</select>
+	
+	<insert id="WHInsert" parameterType="com.cart.eco.common.service.WHVO">
+		
+		insert into warehouse(
+			wh_code,
+			wh_name,
+			wh_field,
+			<if test="whExplain != null and !whExplain.equals('')">
+		            wh_explain ,
+		    </if>
+			wh_used,
+			wh_hire,
+			wh_manager
+			<if test="comments != null and !comments.equals('')">
+		           ,comments
+		    </if>
+		)
+		values (#{whCode},
+				#{whName},
+				#{whField},
+				 <if test="whExplain != null and !whExplain.equals('')">
+		        #{whExplain} ,
+		         </if>
+				#{whUsed},
+				#{whHire},
+				#{whManager}
+				 <if test="comments != null and !comments.equals('')">
+		            ,comments = #{comments} 
+		         </if>
+				)
+	
+		
+		
+	</insert>
 
 </mapper>

@@ -3,11 +3,13 @@
 <mapper namespace="com.cart.eco.material.mapper.ReceivingMapper">
 <!-- 입고 상세조회  -->
 <select id="collectPro" parameterType="com.cart.eco.material.service.ReDetailVO" resultType="com.cart.eco.material.service.ReDetailVO">
-	SELECT *
-	FROM receiving_detail
+	SELECT r.pro_code,p.pro_name,order_num,total_price,lot_code,r.wh_code
+	FROM receiving_detail r join product p 
+    ON r.pro_code= p.pro_code
+
 	<where>
 		<if test="whCode != null and !whCode.equals('')">
-            wh_code = #{whCode}
+            r.wh_code = #{whCode}
          </if>
 	</where>
 

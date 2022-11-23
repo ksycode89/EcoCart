@@ -7,5 +7,7 @@ public interface WHService {
 	  
 	  //창고조회//List
 	  public List<WHVO>WHList(WHVO vo);
+	  //창고등록 
+	  public int WHInsert(WHVO vo);
 
 }
