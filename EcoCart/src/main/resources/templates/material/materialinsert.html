@@ -62,9 +62,9 @@
       
    </script>
    <div style="margin-left: 3px;">   
-               <button id="deleteInfo" type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">취소</button>
+               <button id="deleteInfo" type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">삭제</button>
                <button id="insertBtn" type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">등록</button>
-               <button id="addBtn" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">행 추가</button>
+               <button id="addBtn" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">제품목록</button>
                
          </div>
    <div id="grid"></div>   
@@ -75,20 +75,40 @@
       $('#emplist').click(empList)
       $('#insertBtn').click(insertInfo)
       $('#delBtn').click(deleteInfo)
-      $('#addBtn').click(addInfo)
+      $('#addBtn').click()
    })
    
    function insertInfo() {
+	   console.log(grid.getData()[0])
 	   $.ajax({
 		   url : '/materialinsertInfo',
 		   type : 'POST',
+		   contentType: 'application/json',
+		   data : JSON.stringify(grid.getData()),
 		   success : function(data) {
-			   
-			   
 			   console.log(data);
+			   location.reload();
 		   },
-		   error : function(rejcet) {
-			   console.log(123);
+		   error : function(error) {
+			   console.log(error);
+			   alert('실패')
+		   }
+	   })
+   }
+   
+   function deleteInfo() {
+	   $.ajax({
+		   url : '/deleteInfo',
+		   type : 'POST',
+		   contentType: 'application/json',
+		   data: JSON.stringify(deleteInfo.getCheckedRows()),
+		   dataType: 'JSON',
+		   success : function(data) {
+			   console.log(data);
+			   location.reload();
+		   },
+		   error : function(error) {
+			   console.log(error);
 		   }
 	   })
    }
@@ -97,7 +117,7 @@
       $.ajax({
          url : 'ajax/list',
          type : 'POST',
-         data : {"empNum" : $('#empNum').val(),"empDept" : $('#codeId').val()},
+         data : {"empNum" : $('#empNum').val(),},
          success : function(data) {
             console.log(data);
             modalGrid.resetData(data);
@@ -108,7 +128,7 @@
       })
    }
    
-   const gridData = [
+   var gridData = [
           {
              name:'',
              artist:'',
@@ -136,11 +156,21 @@
               option : {
             	  format:'yyyy-MM-dd',
               }
-              }
+             }
+              },
+              {
+              header: '납기일',
+              name: 'orderReceiving',
+              editor: {
+              type: 'datePicker',
+              options: {
+              format: 'yyyy-MM-dd'
+             }
+             }
             },
             {
-              header: '거래처명',
-              name: 'clientName',
+              header: '부서',
+              name: 'empDept',
             },
             {
               header: '담당자',
@@ -155,7 +185,7 @@
         });
       
    
-  const grid2 = new tui.Grid({
+  var grid2 = new tui.Grid({
     el: document.getElementById('grid2'),
     scrollX: false,
     scrollY: false,
@@ -177,20 +207,17 @@
         header: '단위',
         name: 'unit',
       },
-      {
-        header: '납기일',
-        name: 'orderReceiving',
-        editor: {
-            type: 'datePicker',
-            options: {
-            format: 'yyyy-MM-dd'
-            }
-          }
-        },
+    
           {
         header: '발주수량',
         name: 'orderNum',
-        editor: 'text'
+        editor : 'text',
+        onAfterChange : function(ev) {
+	        //console.log(ev.value,this)	
+	        let row = grid2.getRow(ev.rowKey)
+	        let sum = row.sellPrice * ev.value
+	        grid2.setValue(ev.rowKey, 'sumPrice', sum)
+        }
 	  },
       {
         header: '단가',
@@ -198,12 +225,10 @@
       },
       {
         header: '공급가',
-        name: 'sumPrice',
-        editor: 'text'
+        name: 'sumPrice'
       }
     ]
   });
- 
        
        var modalGrid = new tui.Grid({
     	      el: document.getElementById('modalGrid'),
@@ -267,10 +292,11 @@
        })
        
        modalGrid.on("click", event => {
-    	   //console.log("inner modal grd ", modalGrid.getRow(event.rowKey).empName)
+    	   //console.log("inner modal grd ", modalGrid.getRow(event.rowKey).empDept)
     	  let managers = [
     		  {
-    			  "manager" :  modalGrid.getRow(event.rowKey).empName
+    			  "manager" :  modalGrid.getRow(event.rowKey).empName,
+    			  "empDept" :  modalGrid.getRow(event.rowKey).empDept
     		  }
     	  ] 
     	

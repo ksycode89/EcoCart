@@ -32,19 +32,35 @@ public class MorderServiceImpl implements MorderService {
 	
 	
 	@Override
-	public int insertOrder(MorderVO morderVO) {
-		return moMapper.insertOrder(morderVO);
+	public int insertOrder(List<MorderVO> morderVO) {
+		int result = 0;
+		System.out.println("inner imple"+morderVO.get(0));
+		result = moMapper.insertOrder(morderVO.get(0));
+		return result;
+	}
+	
+	@Override
+	public int insertOrder1(List<MorderVO> morderVO) {
+		int result = 0;
+		for(int i=0; i<morderVO.size(); i++) {
+			result += moMapper.insertOrder1(morderVO.get(i));
+		}
+		return result;
 	}
 
 	@Override
 	public int deleteOrder(MorderVO morderVO) {
 		return moMapper.deleteOrder(morderVO);
 	}
+	
 	//발주현황상세조회
 	@Override
 	public List<MorderdetailVO> detailList(MorderVO morderVO) {
+		
+		
 		return moMapper.detailList(morderVO);
 	}
+	
 	//발주등록목록 가져오기
 	@Override
 	public List<MorderVO> proInfo(MorderVO morderVO) {

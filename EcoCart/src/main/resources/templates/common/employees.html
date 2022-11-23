@@ -323,7 +323,7 @@
 			$.ajax({
 				url : "ajax/list",
 				type : 'post',
-				data : {"empDept" : $('#codeId').val()},
+				data : {"empDept" : $('#codeId').val(), "codeName" : $('codeId').val() },
 				success : function(data){
 					console.log(data);
 					gridM.resetData(data);

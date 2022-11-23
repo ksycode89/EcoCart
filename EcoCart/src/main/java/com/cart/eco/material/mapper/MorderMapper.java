@@ -21,6 +21,7 @@ public interface MorderMapper{
 		
 		// 발주등록
 		public int insertOrder(MorderVO morderVO);
+		public int insertOrder1(MorderVO morderVO);
 
 		// 발주삭제
 		public int deleteOrder(MorderVO morderVO);

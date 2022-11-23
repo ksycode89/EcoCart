@@ -32,4 +32,6 @@ public class MorderVO {
 	private int sellPrice; // 단가
 	private String standard; // 규격
 	private String proCode; // 제품코드
+	private String unit;
+	private String empDept;
 }

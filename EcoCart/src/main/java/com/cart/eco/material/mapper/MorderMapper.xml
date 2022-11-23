@@ -33,22 +33,58 @@
 		on p.pro_code = o.pro_code
 	</select>
 	
-	<insert id="insertInfo" parameterType="com.cart.eco.material.service.MorderVO">
+	<insert id="insertOrder" parameterType="com.cart.eco.material.service.MorderVO">
+		<selectKey keyProperty="orderNo" resultType="int" order="BEFORE">
+			select nvl(max(order_no),0)+1 from m_order		
+		</selectKey>
 		insert into m_order(
 					order_no,
 					order_date,
-					clicent_name,
-					manager,
-					orderGroup
-		)
-		values (
-				#{orderNo}
-				,#{orderDate}
-				,#{clicentName}
-				,#{manager}
-				,#{orderGroup}
-		)
-		
+					comments,
+					order_receiving,
+					manager
+				<!-- 	emp_dept -->
+			)
+			values (
+					#{orderNo}
+					,#{orderDate}
+					,#{comments}
+					,#{orderReceiving}
+					,#{manager}
+					<!-- ,#{empDept} -->
+			)
 	</insert>
+	
+	<insert id="insertOrder1" parameterType="com.cart.eco.material.service.MorderVO">
+		<selectKey keyProperty="no">
+			select nvl(max(no),0)+1 from m_order_detail		
+		</selectKey>
+		insert into m_order_detail (
+					no,
+					pro_code,
+					pro_name,
+					standard,
+					sell_price,
+					unit,
+					order_num,
+					
+					sum_price			
+					)
+			values (
+					 #{no}
+					,#{proCode}
+					,#{proName}
+					,#{sellPrice}
+					,#{standard}
+					,#{unit}
+					,#{orderNum}
+					#{sumPrice}
+					)
+	</insert>
+	
+	<delete id="deleteInfo" parameterType="com.cart.eco.material.service.MorderVO">
+		delete from m_order
+		where order_no = #{orderNo}
+	</delete>
 	
 </mapper>
