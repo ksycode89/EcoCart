@@ -7,5 +7,7 @@ import com.cart.eco.common.service.WHVO;
 public interface WarehouseMapper {
 	//창고리스트
 	public List<WHVO>WHList(WHVO vo);
+	 //창고등록 
+	  public int WHInsert(WHVO vo);
 
 }

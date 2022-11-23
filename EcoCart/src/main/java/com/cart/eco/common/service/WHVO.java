@@ -1,6 +1,8 @@
 package com.cart.eco.common.service;
 
-import java.util.Date;
+
+
+import java.sql.Date;
 
 import lombok.Data;
 
@@ -13,4 +15,5 @@ public class WHVO {
 	private String whUsed; 		// 창고 사용여부
 	private Date whHire;		// 등록일
 	private String whManager; 	// 담당자
+	private String comments; 	// 비고
 }

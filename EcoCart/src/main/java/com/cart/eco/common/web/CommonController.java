@@ -261,6 +261,21 @@ public class CommonController {
 		
 	}
 	
+	//창고등록
+	 @PostMapping("/WHInsert")
+     @ResponseBody
+     public int WHInsert(@RequestBody ToastGridVO<WHVO> vo) {
+    	System.out.println("create : "+vo.getCreatedRows());
+    	int result=0;
+    	for(WHVO wh : vo.getCreatedRows()) {
+    		
+    	
+    	 result += whService.WHInsert(wh);
+    	}
+    	System.out.println("결과값 합산 : "+result);
+    	 return result;
+     }
+	
 	
 	
 }
