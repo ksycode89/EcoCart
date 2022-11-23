@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cart.eco.material.mapper.ReceivingMapper">
+<!-- 입고 상세조회  -->
+<select id="collectPro" parameterType="com.cart.eco.material.service.ReDetailVO" resultType="com.cart.eco.material.service.ReDetailVO">
+	SELECT *
+	FROM receiving_detail
+	<where>
+		<if test="whCode != null and !whCode.equals('')">
+            wh_code = #{whCode}
+         </if>
+	</where>
+
+</select>
+</mapper>

@@ -277,13 +277,13 @@
 				name : 'proName'
 			}, {
 				header : '수량',
-				name : 'number'
+				name : 'orderNum'
 			}, {
 				header : '상세위치',
 				name : 'empTel'
 			}, {
 				header : 'LOT',
-				name : 'empHire'
+				name : 'lotCode'
 			}
 			]
 		});
@@ -308,6 +308,31 @@
 			}
 			]
 		});
+	//grid1 클릭이벤트
+	 gird1.on('click',ev=>{
+			 	let event = gird1.getRow(ev.rowKey);
+			 	console.log(event)
+			$.ajax({
+				 url : "/innerWH",
+	               type: "post",
+	               data: {'whCode' : event.whCode},
+	              /*  beforeSend : function(xhr){
+	           		xhr.setRequestHeader(header, token);
+	           	 }, */
+	               success : function(data){
+	                  console.log(data);
+	    			grid2.resetData(data)
+	                 
+	          
+	                  
+	               },
+	               error : err=>{
+	                  console.log(err)
+	               }
+			})
+		   })
+		
+		
 	//wh그리드 ㅇ클릭이벤트
 		   gridWH.on('click',ev=>{
 			 	let event = gridWH.getRow(ev.rowKey);
@@ -474,18 +499,19 @@
 		 }
 		 //창고조회
 		 function getList(){
-console.log(123)
+
 			 $.ajax({
 				url : '/whList' ,
 				type : 'post',
+			    data : { 'whcode': $('#whcode').val()}
 				
 			 }).then((data)=>{
 				 gird1.resetData(data)
 				 console.log("data",data)
 			 })
-			 
-			 
 		 }
+		 
+		 
 	</script>
 </div>
 </body>

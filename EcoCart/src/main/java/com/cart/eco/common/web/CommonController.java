@@ -24,6 +24,8 @@ import com.cart.eco.common.service.ProductVO;
 import com.cart.eco.common.service.ToastGridVO;
 import com.cart.eco.common.service.WHService;
 import com.cart.eco.common.service.WHVO;
+import com.cart.eco.material.service.ReDetailService;
+import com.cart.eco.material.service.ReDetailVO;
 
 import groovy.util.logging.Log4j2;
 
@@ -38,6 +40,7 @@ public class CommonController {
 	@Autowired CommonService commonService;
 	@Autowired WHService whService;
 	@Autowired ProductService proService;
+	@Autowired ReDetailService reService;
 	
 	 
 	@GetMapping("/login")
@@ -250,6 +253,14 @@ public class CommonController {
 		
 		return proService.selectName() ;
 	}
+	@PostMapping("/innerWH") 
+	@ResponseBody
+	public List<ReDetailVO>collectPro(ReDetailVO vo){
+		
+		return reService.collectPro(vo);
+		
+	}
+	
 	
 	
 }
