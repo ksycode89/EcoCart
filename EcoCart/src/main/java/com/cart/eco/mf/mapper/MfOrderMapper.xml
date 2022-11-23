@@ -25,6 +25,19 @@
 		WHERE p.mf_plan_status != '완료'
 	</select>
 	
-	<select id="getMfOrderMaterialList">
+	<select id="getMfOrderMaterialList" parameterType="String" resultType="Map">
+		SELECT c.pro_code, c.pro_name, p.need_num*c.bom_num as bom_need_num
+		FROM mf_plan_detail p JOIN bom b
+        ON p.pro_code = b.pro_code
+        JOIN bom_children c
+        ON b.bom_code = c.bom_code
+        WHERE p.pro_code = #{proCode}
+        ORDER BY c.ch_no
 	</select>
+	
+	<update id="decideMfOrder" parameterType="com.cart.eco.mf.service.MfOrderVO">
+		UPDATE mf_order
+		SET mf_order_status = '확정'
+		WHERE mf_order_code = #{mfOrderCode}
+	</update>
 </mapper>

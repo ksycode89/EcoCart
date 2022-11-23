@@ -43,263 +43,269 @@
 			</div>
 		</div>
 		<br>
-			<!-- 미지시 계획 조회 Modal -->
-			<div class="modal fade" id="planListModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="planListLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="planListLabel">미지시 계획 조회</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<div id="mfPlanListModalGridId"></div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-						</div>
+		<!-- 미지시 계획 조회 Modal -->
+		<div class="modal fade" id="planListModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="planListLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="planListLabel">미지시 계획 조회</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="mfPlanListModalGridId"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 					</div>
 				</div>
 			</div>
+		</div>
 			
-			<!-- Modal -->
-			<div class="modal fade" id="testModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="staticBackdropLabel">주문서 조회</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<span>테스트입니다.</span>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-							<button type="button" class="btn btn-primary">등록</button>
-						</div>
+		<!-- Modal -->
+		<div class="modal fade" id="testModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel">주문서 조회</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<span>테스트입니다.</span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+						<button type="button" class="btn btn-primary">등록</button>
 					</div>
 				</div>
 			</div>
-		<script>
-			const gridData = [
-		   		{
-		   			mfPlanCode:'1',
-		   			mfPlanName:'테스트1',
-		   			proCode:'001',
-		   			proName:'test1',
-		   			mfPlanDate:'2022-11-14',
-		   			deDate:'2022-12-12',
-		   			needNum:'20',
-		   			mfPlanStatus:'진행'
-		   		},
-		   		{
-		   			mfPlanCode:'2',
-		   			mfPlanName:'테스트2',
-		   			proCode:'002',
-		   			proName:'test2',
-		   			mfPlanDate:'2022-11-01',
-		   			deDate:'2022-11-13',
-		   			needNum:'10',
-		   			mfPlanStatus:'진행'
-		   		},
-		   		{
-		   			mfPlanCode:'3',
-		   			mfPlanName:'테스트3',
-		   			proCode:'001',
-		   			proName:'test1',
-		   			mfPlanDate:'2022-11-14',
-		   			deDate:'2022-12-12',
-		   			needNum:'30',
-		   			mfPlanStatus:'취소'
-		   		},
-		   		{
-		   			mfPlanCode:'4',
-		   			mfPlanName:'테스트4',
-		   			proCode:'003',
-		   			proName:'test3',
-		   			mfPlanDate:'2022-10-10',
-		   			deDate:'2022-11-01',
-		   			needNum:'20',
-		   			mfPlanStatus:'완료'
-		   		},
-		   	];
-			
-			const mfPlanSelectGrid = new tui.Grid({
-				el: document.getElementById('mfPlanSelectGridId'),
-				scrollX: false,
-				scrollY: false,
-				data: [],
-				columns: [
-			        {
-			          header: '생산계획명',
-			          name: 'mfPlanName'
-			        },
-			        {
-				      header: '제품명',
-				      name: 'proName'
-				    },
-			        {
-			          header: '필요수량',
-			          name: 'needNum'
-			        },
-			        {
-			          header: '총지시수량',
-			          name: 'totalOrderNum'
-			        }
-				]
-			});
-			
-			const mfPlanListModalGrid = new tui.Grid({
-				el: document.getElementById('mfPlanListModalGridId'),
-				scrollX: false,
-				scrollY: false,
-				columns: [
-			        {
-			          header: '생산계획명',
-			          name: 'mfPlanName'
-			        },
-			        {
-				      header: '제품명',
-				      name: 'proName'
-				    },
-			        {
-			          header: '필요수량',
-			          name: 'needNum'
-			        },
-			        {
-			          header: '총지시수량',
-			          name: 'totalOrderNum'
-			        }
-				]
-			});
-			
-			const mfOrderGrid = new tui.Grid({
-				el: document.getElementById('mfOrderGridId'),
-				scrollX: false,
-				scrollY: false,
-				rowHeaders:['rowNum'],
-				columns: [
-			        {
-			          header: '생산지시코드',
-			          name: 'mfOrderCode'
-			        },
-			        {
-			          header: '제품코드',
-			          name: 'proCode'
-			        },
-			        {
-			          header: '제품명',
-			          name: 'proName'
-			        },
-			        {
-			          header: '지시일자',
-			          name: 'mfOrderDate',
-			          editor: {
-						type: 'datePicker',
-							options: {
-			                	format: 'yyyy-MM-dd'
-				            }
-						}
-			        },
-			        {
-			          header: '지시수량',
-			          name: 'mfOrderNum',
-			          editor: 'text'
-			        }
-				]
-			});
-			
-			const mfNeedGrid = new tui.Grid({
-				el: document.getElementById('mfNeedGridId'),
-				scrollX: false,
-				scrollY: false,
-				rowHeaders:['rowNum'],
-				columns: [
-			        {
-			          header: '제품명',
-			          name: 'proName',
-			        },
-			        {
-			          header: '자재코드',
-			          name: 'matCode'
-			        },
-			        {
-			          header: '자재명',
-			          name: 'matName'
-			        },
-			        {
-			          header: '필요량',
-			          name: 'needNum'
-			        }
-				]
-			});
-			
-			mfNeedGrid.on('click',(ev) => {
-				console.log(ev.rowKey);
-				$("#testModal").modal("show");
-			});
-			
-			const mfBringGrid = new tui.Grid({
-				el: document.getElementById('mfBringGridId'),
-				scrollX: false,
-				scrollY: false,
-				rowHeaders:['rowNum'],
-				columns: [
-					{
-				      header: '자재코드',
-				      name: 'matCode'
-				    },
-				    {
-				      header: '자재명',
-				      name: 'matName'
-				    },
-			        {
-			          header: '자재LOT',
-			          name: 'lotCode'
-			        },
-			        {
-			          header: '사용량',
-			          name: 'useNum'
-			        }
-				]
-			});
-		    
-		    document.addEventListener("DOMContentLoaded", mfPlanListAll)
-		    function mfPlanListAll(){
-		    	$.ajax({
-		    		url:'/mfPlanListAll',
-		    		success:function(data){
-		    			mfPlanListModalGrid.resetData(data);
-		    		},
-		    		error:function(error){
-		    			console.log(error);
-		    		}
-		    	})
-		    };
-		    
-		    planListModal.addEventListener('shown.bs.modal', () => {
-		    	mfPlanListModalGrid.refreshLayout();
-		    });
-		    
-		    mfPlanListModalGrid.on('click', (ev) => {
-		    	if(ev.rowKey != null){
-		    		mfPlanSelectGrid.setRow(mfPlanListModalGrid.getRow(ev.rowKey));
-		    		$('#planListModal').modal('hide');
-		    	}
-		    })
-		    
-		    var today = new Date();
-		    
-		    mfPlanSelectGrid.on('click', (ev) => {
-		    	if(ev.rowKey != null){
-		    		console.log(mfPlanSelectGrid.getRow(ev.rowKey))
-		    		mfOrderGrid.appendRow({
-		    			proCode : mfPlanSelectGrid.getRow(ev.rowKey).proCode,
-		    			proName : mfPlanSelectGrid.getRow(ev.rowKey).proName,
-		    			mfOrderDate : today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
-		    		});
-		    	}
-		    })
-			
+		</div>
+	<script>
+	var mfPlanSelectGrid = new tui.Grid({
+		el: document.getElementById('mfPlanSelectGridId'),
+		scrollX: false,
+		scrollY: false,
+		columns: [
+			{
+	          header: '생산계획코드',
+	          name: 'mfPlanCode'
+	        },
+	        {
+	          header: '생산계획명',
+	          name: 'mfPlanName'
+	        },
+	        {
+		      header: '제품코드',
+		      name: 'proCode'
+		    },
+	        {
+		      header: '제품명',
+		      name: 'proName'
+		    },
+	        {
+	          header: '필요수량',
+	          name: 'needNum'
+	        }
+		]
+	});
+	
+	var mfPlanListModalGrid = new tui.Grid({
+		el: document.getElementById('mfPlanListModalGridId'),
+		scrollX: false,
+		scrollY: false,
+		columns: [
+			{
+	          header: '생산계획코드',
+	          name: 'mfPlanCode'
+	        },
+	        {
+	          header: '생산계획명',
+	          name: 'mfPlanName'
+	        },
+	        {
+		      header: '제품코드',
+		      name: 'proCode'
+		    },
+	        {
+		      header: '제품명',
+		      name: 'proName'
+		    },
+	        {
+	          header: '필요수량',
+	          name: 'needNum'
+	        }
+		]
+	});
+	
+	document.addEventListener("DOMContentLoaded", mfPlanListAll)
+    function mfPlanListAll(){
+    	$.ajax({
+    		url:'/mfPlanDeleteList',
+    		success:function(data){
+    			mfPlanListModalGrid.resetData(data);
+    		},
+    		error:function(error){
+    			console.log(error);
+    		}
+    	})
+    };
+	
+
+    
+	var mfOrderGrid = new tui.Grid({
+		el: document.getElementById('mfOrderGridId'),
+		scrollX: false,
+		scrollY: false,
+		rowHeaders:['rowNum'],
+		columns: [
+	        {
+	          header: '생산지시코드',
+	          name: 'mfOrderCode'
+	        },
+	        {
+	          header: '제품코드',
+	          name: 'proCode'
+	        },
+	        {
+	          header: '제품명',
+	          name: 'proName'
+	        },
+	        {
+	          header: '지시일자',
+	          name: 'mfOrderDate',
+	          editor: {
+				type: 'datePicker',
+					options: {
+	                	format: 'yyyy-MM-dd'
+		            }
+				}
+	        },
+	        {
+	          header: '지시수량',
+	          name: 'mfOrderNum',
+	          editor: 'text'
+	        }
+		]
+	});
+	
+    var mfNeedGrid = new tui.Grid({
+		el: document.getElementById('mfNeedGridId'),
+		scrollX: false,
+		scrollY: false,
+		rowHeaders:['rowNum'],
+		columns: [
+	        {
+	          header: '자재코드',
+	          name: 'proCode'
+	        },
+	        {
+	          header: '자재명',
+	          name: 'proName'
+	        },
+	        {
+	          header: '필요량',
+	          name: 'bomNeedNum'
+	        }
+		]
+	});
+		
+	mfNeedGrid.on('click',(ev) => {
+		console.log(ev.rowKey);
+		$("#testModal").modal("show");
+	});
+		
+	var mfBringGrid = new tui.Grid({
+		el: document.getElementById('mfBringGridId'),
+		scrollX: false,
+		scrollY: false,
+		rowHeaders:['rowNum'],
+		columns: [
+			{
+		      header: '자재코드',
+		      name: 'matCode'
+		    },
+		    {
+		      header: '자재명',
+		      name: 'matName'
+		    },
+	        {
+	          header: '자재LOT',
+    	      name: 'lotCode'
+	        },
+	        {
+	          header: '사용량',
+	          name: 'useNum'
+	        }
+		]
+	});
+		    			
+	planListModal.addEventListener('shown.bs.modal', () => {
+    	mfPlanListModalGrid.refreshLayout();
+    });
+	
+	mfPlanListModalGrid.on('click', (ev) => {
+		let mfPlanCode1 = mfPlanListModalGrid.getRow(ev.rowKey).mfPlanCode;
+		let mfPlanName1 = mfPlanListModalGrid.getRow(ev.rowKey).mfPlanName;
+		let proCode1 = mfPlanListModalGrid.getRow(ev.rowKey).proCode;
+		let proName1 = mfPlanListModalGrid.getRow(ev.rowKey).proName;
+		let needNum1 = mfPlanListModalGrid.getRow(ev.rowKey).needNum;
+		let totalOrderNum1 = mfPlanListModalGrid.getRow(ev.rowKey).totalOrderNum;
+		let data1 = [{
+			mfPlanCode : mfPlanCode1,
+			mfPlanName : mfPlanName1,
+			proCode : proCode1,
+			proName : proName1,
+			needNum : needNum1,
+			totalOrderNum : totalOrderNum1
+		}]
+    	if(ev.rowKey != null){
+    		//mfPlanSelectGrid.appendRow(mfPlanListModalGrid.getRow(ev.rowKey));
+    		mfPlanSelectGrid.resetData(data1);
+    		mfOrderGrid.clear();
+    		mfNeedGrid.clear();
+    		$('#planListModal').modal('hide');
+    	}
+    })
+	
+    var today = new Date();
+	
+    mfPlanSelectGrid.on('click', (ev) => {
+    	console.log(mfPlanSelectGrid.getRow(0).proCode);
+    	if(ev.rowKey != null){
+    		//console.log(mfPlanSelectGrid.getRow(ev.rowKey));
+    		mfOrderGrid.appendRow({
+    			proCode : mfPlanSelectGrid.getRow(ev.rowKey).proCode,
+    			proName : mfPlanSelectGrid.getRow(ev.rowKey).proName,
+    			mfOrderDate : today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+    		});
+    	}
+    })
+    
+    mfOrderGrid.on('afterChange', (ev) => {
+    	let orderRowCount = 0;
+    	for(i=0; i<mfOrderGrid.getRowCount(); i++){
+    		if(mfOrderGrid.getRow(i).mfOrderNum != null){
+    			orderRowCount += parseInt(mfOrderGrid.getRow(i).mfOrderNum);
+    			console.log(orderRowCount)
+    		}
+    		if(orderRowCount > mfPlanSelectGrid.getRow(0).needNum){
+        		alert('안됨');
+        	} else if (orderRowCount = mfPlanSelectGrid.getRow(0).needNum){
+        		let a = mfPlanSelectGrid.getRow(0).proCode;
+        		$.ajax({
+        			url: '/mfOrderNeedList?proCode='+a,
+        			method: 'GET',
+        			success: function(data){
+        				console.log(data);
+        				mfNeedGrid.resetData(data);
+        			},
+        			error: function(error){
+        				console.log(error)
+        			}
+        		})
+        	}
+		}    	
+    })
+    
 		</script>
 	</div>
 </body>

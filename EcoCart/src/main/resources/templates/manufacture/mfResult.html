@@ -14,7 +14,7 @@
 			<div style="height:40px"><h4>실적조회</h4></div>
 			<div style="height:50px">
 				<label for="processDate" style="width:100px">생산일자</label>
-				<input type="date" class="form-control" name="processDate" style="width:200px; display:inline">&nbsp;&nbsp;
+				<input type="date" class="form-control" id="processDate" name="processDate" style="width:200px; display:inline">&nbsp;&nbsp;
 				<button type="button" id="selectBtn" class="btn btn-sm btn-primary">검색</button>&nbsp;
 				<button type="button" id="resetBtn" class="btn btn-sm btn-secondary">초기화</button>
 			</div>
@@ -31,79 +31,87 @@
 			el: document.getElementById('mfResultGridId'),
 			scrollX: false,
 			scrollY: false,
+			rowHeaders: ['rowNum'],
 			columns: [
 		        {
-		          header: '생산계획코드',
-		          name: 'mfPlanCode'
+		          header: '생산코드',
+		          name: 'mfMakingCode'
 		        },
 		        {
-		          header: '생산계획명',
-		          name: 'mfPlanName'
+		          header: '생산지시코드',
+		          name: 'mfOrderCode'
 		        },
 		        {
-		          header: '제품코드',
-		          name: 'proCode'
+		          header: '라인번호',
+		          name: 'lineNo'
 		        },
 		        {
-		          header: '제품명',
-		          name: 'proName'
+		          header: '총투입량',
+		          name: 'inputNum'
 		        },
 		        {
-		          header: '계획일자',
-		          name: 'mfPlanDate'
+		          header: '총생산량',
+		          name: 'makingNum'
 		        },
 		        {
-		          header: '납기일자',
-		          name: 'deDate'
+		          header: '총불량량',
+		          name: 'faultyNum'
 		        },
 		        {
-		          header: '필요수량',
-		          name: 'needNum'
+		          header: '작업시작시간',
+		          name: 'startTime'
 		        },
 		        {
-		          header: '진행상황',
-		          name: 'mfPlanStatus'
+		          header: '작업종료시간',
+		          name: 'endTime'
+		        },
+		        {
+		          header: '생산일자',
+		          name: 'mfOrderDate',
+		          filter: 'date'
 		        }
 			]
 		});
+		
+		selectBtn.addEventListener('click', () => {
+	    	if($('#mfOrderDate').val()!=''){
+	    		mfResultGrid.filter('mfOrderDate', [{code:'eq', value:$('#mfOrderDate').val()}]);
+			}
+	    })
 		
 		const mfFaultyGrid = new tui.Grid({
 			el: document.getElementById('mfFaultyGridId'),
 			scrollX: false,
 			scrollY: false,
-			
+			rowHeaders: ['rowNum'],
 			columns: [
 		        {
-		          header: '생산계획코드',
-		          name: 'mfPlanCode'
+		          header: '생산코드',
+		          name: 'mfMakingCode'
 		        },
 		        {
-		          header: '생산계획명',
-		          name: 'mfPlanName'
+		          header: '프레임용접공정',
+		          name: 'mfMaking1'
 		        },
 		        {
-		          header: '제품코드',
-		          name: 'proCode'
+		          header: '엔진조립공정',
+		          name: 'mfMaking2'
 		        },
 		        {
-		          header: '제품명',
-		          name: 'proName'
+		          header: '최종조립공정',
+		          name: 'mfMaking3'
 		        },
 		        {
-		          header: '계획일자',
-		          name: 'mfPlanDate'
+		          header: '테스트공정',
+		          name: 'mfMaking4'
 		        },
 		        {
-		          header: '납기일자',
-		          name: 'deDate'
+		          header: '불량코드',
+		          name: 'faultyCode'
 		        },
 		        {
-		          header: '필요수량',
-		          name: 'needNum'
-		        },
-		        {
-		          header: '진행상황',
-		          name: 'mfPlanStatus'
+		          header: '불량내용',
+		          name: 'faultyContent'
 		        }
 			]
 		});

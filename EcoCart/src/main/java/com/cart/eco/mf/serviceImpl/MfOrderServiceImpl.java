@@ -1,6 +1,7 @@
 package com.cart.eco.mf.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,13 @@ public class MfOrderServiceImpl implements MfOrderService {
 	}
 
 	@Override
-	public List<MfOrderVO> getMfOrderMaterialList(MfOrderVO mfvo) {
-		return mapper.getMfOrderMaterialList(mfvo);
+	public List<Map<String, Object>> getMfOrderMaterialList(String proCode) {
+		return mapper.getMfOrderMaterialList(proCode);
+	}
+
+	@Override
+	public int decideMfOrder(MfOrderVO mfvo) {
+		return mapper.decideMfOrder(mfvo);
 	}
 
 }
