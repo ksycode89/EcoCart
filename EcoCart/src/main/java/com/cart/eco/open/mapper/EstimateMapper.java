@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.cart.eco.common.service.ClientVO;
 import com.cart.eco.common.service.ProductVO;
+import com.cart.eco.open.service.EstimateDVO;
 import com.cart.eco.open.service.EstimateVO;
 
 public interface EstimateMapper {
@@ -25,9 +26,9 @@ public interface EstimateMapper {
 	
 	//견적서 등록
 	public int insertEstmt(EstimateVO vo);
+
+	public int insertEstmtD(List<EstimateDVO> vo);
 	
-	//견적서 상세 등록
-	public int insertEstmtD(EstimateVO vo);
 	
 	
 	

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.cart.eco.common.service.ClientVO;
 import com.cart.eco.common.service.ProductVO;
 import com.cart.eco.open.mapper.EstimateMapper;
+import com.cart.eco.open.service.EstimateDVO;
 import com.cart.eco.open.service.EstimateService;
 import com.cart.eco.open.service.EstimateVO;
 
@@ -49,17 +50,26 @@ public class EstimateServiceImpl implements EstimateService {
 		return mapper.selectClientName();
 	}
 
-	@Override
-	public int insertEstmt(EstimateVO vo) {
-		// TODO Auto-generated method stub
-		return mapper.insertEstmt(vo);
-	}
 
 	@Override
-	public int insertEstmtD(EstimateVO vo) {
+	public String insertEstmt(EstimateVO vo) {
+
+		
+		return String.valueOf( mapper.insertEstmt(vo)  );
+	}
+
+
+	@Override
+	public int insertEstmtD(List<EstimateDVO> vo) {
 		// TODO Auto-generated method stub
 		return mapper.insertEstmtD(vo);
 	}
+
+	
+	
+
+
+	
 
 	
 	
