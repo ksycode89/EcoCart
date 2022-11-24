@@ -3,11 +3,13 @@
 	layout:decorate="~{layout/layout}">
 
 <head>
-   <meta charset="UTF-8">
+   <meta charset="UTF-8">.
+   <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+   <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
    <title>Estimate</title>
-	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-	 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 	 
 	
    
@@ -146,6 +148,11 @@
 
 
 	<script>
+	
+	/* token */
+	 var token = $("meta[name='_csrf']").attr("content");
+	 var header = $("meta[name='_csrf_header']").attr("content");
+	
 	
 		const Grid = tui.Grid;
 		
@@ -527,6 +534,9 @@
 			 	$.ajax({
 						method:'POST',
 						url:'/insertEstmt',
+	                      beforeSend : function(xhr){
+	                    		xhr.setRequestHeader(header, token);
+	                    	 },
 						success : function(result) {
 							console.log(result)
 							grid1.resetData(result);
@@ -559,10 +569,13 @@
 					contentType : "application/json",
 					dataType:"JSON",
 					data: JSON.stringify(data),
+                    beforeSend : function(xhr){
+                		xhr.setRequestHeader(header, token);
+                	 },
 					success : function(result) {
 						console.log("견적서 insert")
 						console.log(result);
-						
+						console.log(grid3.getData())
 						// 견적상세 그리드에 있는 값을 insert + 견적코드 
 						$.ajax({
 							method:'POST',
@@ -570,6 +583,9 @@
 							contentType : "application/json",
 							dataType:"JSON",
 							data: JSON.stringify(grid3.getData()),
+		                    beforeSend : function(xhr){
+		                		xhr.setRequestHeader(header, token);
+		                	 },
 							success : function(result) {
 								console.log("견적서상세 insert")
 								console.log(result);
