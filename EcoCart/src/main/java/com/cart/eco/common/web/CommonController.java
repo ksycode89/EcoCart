@@ -42,7 +42,7 @@ public class CommonController {
 	@Autowired ProductService proService;
 	@Autowired ReDetailService reService;
 	
-	 
+	//페이지 이동 
 	@GetMapping("/login")
 	public String loginForm() {
 		
@@ -60,7 +60,7 @@ public class CommonController {
 		
 		return "common/employees";
 	}
-	//===================================================================================//
+	//============= employees(사원)테이블 ===========================================================//
 	
 	// 사원조회 ajax.
 	  @PostMapping("ajax/list")
@@ -264,6 +264,7 @@ public class CommonController {
 	@GetMapping("/bom")
 	public String bomForm() {
 		 
+		
 		return "common/bom";
 	}
 	

@@ -6,6 +6,8 @@
 
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>창고등록</title>
 
 </head>
@@ -18,7 +20,7 @@
  <div >
 	<div class="mb-3 row">
 			<div class="col-md-3 mb-1">
-				<div class="input-group mb-3">`
+				<div class="input-group mb-3">
 					<label for="staticEmail" class="col-sm-3 col-form-label">창고코드</label>
 					<input type="text" id="whcode" class="form-control"
 						placeholder="WH code" aria-label="Recipient's username"
@@ -28,30 +30,22 @@
 						class="bi bi-search" ></i></span>
 				</div>
 			</div>
-			
 			<div class="col-lg-auto col-sm-12">
 			<input  id="whname" name="empName" class="form-control"placeholder="WH name">
 			</div>
-			
 			<div class="col-md-3 mb-1">
 				<div class="input-group mb-3">
 					<label for="staticEmail" class="col-sm-3 col-form-label">창고분류</label>
-				
 					<select id="whfield" class="form-control"
 						aria-label="Recipient's username"
 						aria-describedby="button-addon2" >
 						<option value="none">==선택==</option>
 						<th:block th:each="item:${CClist}">
-							
 						    <option th:value="${item.CodeId}" th:text="${item.CodeName}" th:if="${item.codeUsed eq 'Y' ? '' : 'disable'}" >
-						
 						</th:block>
-						
-
 						</select>
 				</div>
 			</div>
-			
 	</div>		
 	<div class="mb-3 row">
 			<div class="col-md-3 mb-1">
@@ -281,6 +275,12 @@
 		
 
 	<script>
+	
+	/* token */
+	 var token = $("meta[name='_csrf']").attr("content");
+	 var header = $("meta[name='_csrf_header']").attr("content");
+	
+	 
 	/* data source */
 	const dataSource = {
    		 withCredentials: false,
@@ -446,9 +446,9 @@
 				 url : "/innerWH",
 	               type: "post",
 	               data: {'whCode' : event.whCode},
-	              /*  beforeSend : function(xhr){
+	                beforeSend : function(xhr){
 	           		xhr.setRequestHeader(header, token);
-	           	 }, */
+	           	 }, 
 	               success : function(data){
 	      	console.log(123)
 	    			grid2.resetData(data)
@@ -474,9 +474,9 @@
 				 $.ajax({
 		               url : "ajax/list",
 		               type: "post",
-		              /*  beforeSend : function(xhr){
+		               beforeSend : function(xhr){
 		           		xhr.setRequestHeader(header, token);
-		           	 }, */
+		           	 }, 
 		               success : function(data){
 		                 modiEmpGrid.resetData(data)
 		                 
@@ -533,9 +533,9 @@
 			 $.ajax({
 	               url : "/whList",
 	               type: "post",
-	              /*  beforeSend : function(xhr){
+	               beforeSend : function(xhr){
 	           		xhr.setRequestHeader(header, token);
-	           	 }, */
+	           	 },
 	               success : function(data){
 	                  console.log(data);
 	    
@@ -574,9 +574,9 @@
 				 $.ajax({
 		               url : "selectName",
 		               type: "get",
-		              /*  beforeSend : function(xhr){
+		            beforeSend : function(xhr){
 		           		xhr.setRequestHeader(header, token);
-		           	 }, */
+		           	 },
 		               success : function(data){
 		                  console.log(data);
 		    
@@ -601,7 +601,10 @@
 			   $('#procode').val("")
 			   $('#proname').val("")
 	       }
-		
+	//ajax grid 토큰처리
+    gird1.on('beforeRequest', function(ev) {
+         	ev.xhr.setRequestHeader(header, token);
+    })
 	///버튼들///
 	//등록
 	function insertWH(){
@@ -626,9 +629,9 @@
 				 $.ajax({
 		               url : "ajax/list",
 		               type: "post",
-		              /*  beforeSend : function(xhr){
+		               beforeSend : function(xhr){
 		           		xhr.setRequestHeader(header, token);
-		           	 }, */
+		           	 }, 
 		               success : function(data){
 		                  console.log(data);
 		                 searchEmp.resetData(data);
@@ -662,8 +665,8 @@
 				console.log( $('#whcode').val())
 		     if ($('#empcode').val() ==null || $('#empcode').val() ==''){
 				alert('담당자를 선택해주세요')
-			}else if ($('#whfield').val() =='==선택==' || $('#whfield').val() ==''){
-				alert('창고분류를 ')
+			}else if ($('#whfield').val() =='none`' || $('#whfield').val() ==''){
+				alert('창고분류를 선택해주세요 ')
 			}else {
 				gird1.refreshLayout(); 
 				gird1.appendRows(data);
@@ -675,7 +678,10 @@
  */			 $.ajax({
 				url : '/whList' ,
 				type : 'post',
-			    data : { 'whCode': $('#whcode').val()}
+			    data : { 'whCode': $('#whcode').val()} ,
+			    beforeSend : function(xhr){
+	           		xhr.setRequestHeader(header, token);
+	           	 },
 				
 			 }).then((data)=>{
 				 console.log("data",data)

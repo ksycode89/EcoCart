@@ -14,4 +14,5 @@ public class BomVO {
 	private int bomNeedDay;		// 제작소요일
 	private int totalPrice;		// 총단가
 	private String bomManager;  // 담당자
+	private String bom_group;  // 구분
 }
