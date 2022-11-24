@@ -86,12 +86,11 @@
 	<div class="mb-3 row flex-right mt-3">
 			<div class="col-lg-auto col-sm-12 ">
 		        <button class="ml-5 btn btn-sm btn-primary" onclick="getList()">조회</button>
+				<button class="ml-5 btn btn-sm btn-primary">상품조회</button>
 		        <button class="ml-5 btn btn-sm btn-primary" onclick="insertWH()">등록</button>
-				<button class="ml-5 btn btn-sm btn-primary">수정</button>
 				<button class="ml-5 btn btn-sm btn-primary" onclick="addRow()"><svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></button>
-				<button class="ml-5 btn btn-sm btn-secondary">삭제</button>
+				<button class="ml-5 btn btn-sm btn-primary" onclick="updateWH()">수정</button>
 				<button class="ml-5 btn btn-sm btn-secondary" onclick="reset()">초기화</button>
-				
 			</div>
 	</div>
 	</div>	
@@ -148,7 +147,7 @@
 									class="d-none d-sm-block">Close</span>
 							</button>
 							<button type="button" class="btn btn-primary ml-1"
-								data-bs-dismiss="modal" onclick="selectDo()">
+								data-bs-dismiss="modal">
 								<i class="bx bx-check d-block d-sm-none"></i> <span
 									class="d-none d-sm-block">확인</span>
 							</button>
@@ -238,6 +237,47 @@
 			</div>
 		</div>
 		
+			
+	<!--inner 담당자(사원) 검색 modal  -->
+		
+		<div class="me-1 mb-1 d-inline-block">
+
+			<!--large size Modal -->
+			<div class="modal fade text-left" id="empModalInner" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+				<div
+					class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+					role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel17">사원검색</h4>
+							<button type="button" class="close" data-bs-dismiss="modal"
+								aria-label="Close">
+								<i data-feather="x"></i>
+							</button>
+						</div>
+						<div class="modal-body">
+							<!--그리드  -->
+							<div id="searchEmpInner" class="mb-3 row"></div>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light-secondary"
+								data-bs-dismiss="modal" onclick="cancelDoEmp()">
+								<i class="bx bx-x d-block d-sm-none"></i> <span
+									class="d-none d-sm-block" >Close</span>
+							</button>
+							<button type="button" class="btn btn-primary ml-1"
+								data-bs-dismiss="modal" onclick="">
+								<i class="bx bx-check d-block d-sm-none"></i> <span
+									class="d-none d-sm-block">확인</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 		
 
 	<script>
@@ -248,15 +288,17 @@
 
    		  api: {
    			  
-   		    readData  : { url: '/', method: 'GET' },
+   		    readData  : { url: '', method: 'GET' },
    		    createData: { url: '/WHInsert', method: 'POST' },
-   		    updateData: { url: '/', method: 'POST' },
+   		    updateData: { url: '/WHUpdate', method: 'POST' },
    		    deleteData : { url: '/', method: 'POST' },
    		    updateModifiy: { url: '/', method: 'POST' },
    		  }
    		};
 
-		const gird1 = new tui.Grid({
+	
+	
+	const gird1 = new tui.Grid({
 			el : document.getElementById('gird1'),
 			rowHeaders: ['checkbox'],
 			scrollX : false,
@@ -295,8 +337,8 @@
 				editor : 'datePicker'
 			}, {
 				header : '담당자',
-				name : 'whManager',
-				editor : 'text'
+				name : 'whManager'
+				
 			}, {
 				header : '비고',
 				name : 'comments',
@@ -352,11 +394,54 @@
 			}
 			]
 		});
+		
+		 //사원검색 모달/아작스
+		 
+		const searchEmp = new tui.Grid({
+				el : document.getElementById('searchEmp'),
+				rowHeaders: ['rowNum'],
+				scrollX : false,
+				scrollY : false,
+				columns : [ {
+					header : '사원번호',
+					name : 'empNum'
+				}, {
+					header : '사원이름',
+					name : 'empName'
+				}, {
+					header : '부서',
+					name : 'empDept'
+				}
+				]
+		});
+			 	//사원검색 수정 그리드
+				 
+			const modiEmpGrid = new tui.Grid({
+				el : document.getElementById('searchEmpInner'),
+				rowHeaders: ['rowNum'],
+				scrollX : false,
+				scrollY : false,
+				columns : [ {
+					header : '사원번호',
+					name : 'empNum'
+				}, {
+					header : '사원이름',
+					name : 'empName'
+				}, {
+					header : '부서',
+					name : 'empDept'
+				}
+				]
+			});
+			 
 	//grid1 클릭이벤트
 	 gird1.on('click',ev=>{
-			 	let event = gird1.getRow(ev.rowKey);
-			 	console.log(ev.columnName	)
-			if(event.whCode != null) 	{
+			if(ev.columnName != 'whManager'){
+				
+			
+			 let event = gird1.getRow(ev.rowKey);
+			 console.log(event.whCode)
+			if(event.whCode != null){
 			$.ajax({
 				 url : "/innerWH",
 	               type: "post",
@@ -365,7 +450,7 @@
 	           		xhr.setRequestHeader(header, token);
 	           	 }, */
 	               success : function(data){
-	      
+	      	console.log(123)
 	    			grid2.resetData(data)
 	                  
 	               },
@@ -373,15 +458,44 @@
 	                  console.log(err)
 	               }
 			})
-			}
-			 		   })
+		   }
+		}
+	 })
+		//grid1에서 담당자눌렀을시모달팝업	 		   
 		gird1.on('dblclick',ev=>{
-			if (ev.columnName = 'whManager'){
-				console.log('123')
-				$('empmodal').modal('show')
+			let rowget=ev.rowKey;
+			if (ev.columnName == 'whManager'){
+				  $('#empModalInner').on('shown.bs.modal', function(e) {
+					  modiEmpGrid.refreshLayout()
+				  })
+				$('#empModalInner').modal('show')
 				
+				
+				 $.ajax({
+		               url : "ajax/list",
+		               type: "post",
+		              /*  beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           	 }, */
+		               success : function(data){
+		                 modiEmpGrid.resetData(data)
+		                 
+		                 modiEmpGrid.on('click',ev=>{
+		            		 let a = modiEmpGrid.getRow(ev.rowKey).empNum
+		            		 gird1.setValue(rowget,'whManager',a)
+		            		
+		            	 }) 
+		            	 
+		               },
+		               error : err=>{
+		                  console.log(err)
+		               }
+		            })
 			}
-		})	 		   
+		})
+	//수정그리드 담당자 온클리으로 넣기
+	
+	//수정그리드 	
 	//grid2 온클릭
 	 grid2.on('click',ev=>{
 		 let proCode =grid2.getRow(ev.rowKey).proCode;
@@ -491,62 +605,24 @@
 	///버튼들///
 	//등록
 	function insertWH(){
-		
 	    gird1.request('createData');
-		
 	}
 	//리셋
 	function reset(){
 		window.location.reload();
 	}
+    //수정
+	function updateWH(){
+	    gird1.request('updateData');
+	}
 
-		 //사원검색 모달/아작스
-		 
-		 	const searchEmp = new tui.Grid({
-			el : document.getElementById('searchEmp'),
-			rowHeaders: ['rowNum'],
-			scrollX : false,
-			scrollY : false,
-			columns : [ {
-				header : '사원번호',
-				name : 'empNum'
-			}, {
-				header : '사원이름',
-				name : 'empName'
-			}, {
-				header : '부서',
-				name : 'empDept'
-			}
-			]
-		});
-		 	//사원검색 수정 그리드
-			 
-		 	const modiEmpGrid = new tui.Grid({
-			el : document.getElementById('searchEmp'),
-			rowHeaders: ['rowNum'],
-			scrollX : false,
-			scrollY : false,
-			columns : [ {
-				header : '사원번호',
-				name : 'empNum'
-			}, {
-				header : '사원이름',
-				name : 'empName'
-			}, {
-				header : '부서',
-				name : 'empDept'
-			}, {
-				header : '부서',
-				name : 'empDept'}
-			]
-		});
-		 
+		
 		 
 		 //searchEmp에 뿌려줄 정보 (창고조회)
 			 //그리드 열리시 실행될구문
-				empModal.addEventListener('shown.bs.modal', () => {
+	empModal.addEventListener('shown.bs.modal', () => {
 					//모달창 새로고침
-					   searchEmp.refreshLayout(); 
+			searchEmp.refreshLayout(); 
 				 $.ajax({
 		               url : "ajax/list",
 		               type: "post",
@@ -560,10 +636,10 @@
 		               error : err=>{
 		                  console.log(err)
 		               }
-		            })
-				  })
+		        })
+	 })
 		
-	 searchEmp.on('click',ev=>{
+	searchEmp.on('click',ev=>{
 		
 			 	let event = searchEmp.getRow(ev.rowKey);
 			 	console.log(event)
@@ -571,14 +647,13 @@
 			   $('#empname').val(event.empName)
 		
 		   })
-		function cancelDoEmp(){
+	function cancelDoEmp(){
 					 $('#empcode').val('')
 					 $('#empname').val('')
-					
 	       }
 		 
 		 //창고코드 한줄추가  {"whCode": $('#whcode').val(), "whName": $('#whname').val(),
-		 function addRow(){
+	function addRow(){
 				let data = [
 					 {"whField" : $('#whfield').val(),"whManager": $('#empcode').val()}
 									
@@ -595,12 +670,12 @@
 			}
 		 }
 		 //창고조회
-		 function getList(){
-
-			 $.ajax({
+	 function getList(){
+/* 			console.log($('#whcode').val())
+ */			 $.ajax({
 				url : '/whList' ,
 				type : 'post',
-			    data : { 'whcode': $('#whcode').val()}
+			    data : { 'whCode': $('#whcode').val()}
 				
 			 }).then((data)=>{
 				 console.log("data",data)
@@ -611,7 +686,7 @@
 			 })
 		 }
 		 
-		 
+	
 	</script>
 </div>
 </body>

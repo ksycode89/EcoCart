@@ -54,10 +54,20 @@
 				 <if test="comments != null and !comments.equals('')">
 		            ,comments = #{comments} 
 		         </if>
-				)
-	
-		
-		
+				) 
 	</insert>
+	
+	<update id="WHUpdate" parameterType="com.cart.eco.common.service.WHVO">
+		UPDATE warehouse 
+		<set>
+			 <if test="whUsed != null and !whUsed.equals('')">
+		        wh_used=#{whUsed},
+		     </if>
+		      <if test="whManager != null and !whManager.equals('')">
+		        wh_manager=#{whManager}
+		     </if>
+		</set>
+		WHERE wh_code= #{whCode}
+	</update>
 
 </mapper>

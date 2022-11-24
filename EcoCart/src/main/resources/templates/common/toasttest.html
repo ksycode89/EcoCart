@@ -1,155 +1,693 @@
 <!DOCTYPE html>
-<html>
-<head>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-	crossorigin="anonymous">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-	crossorigin="anonymous"></script>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout}">
 
+<head>
+<meta charset="UTF-8">
+<title>창고등록</title>
 
 </head>
 <body>
+	<div layout:fragment="content">
 
-	<div class="card">
-		<div class="card-header">
-			<h4 class="card-title">Disabled Backdrop</h4>
-		</div>
-		<div class="card-content">
-			<div class="card-body">
-				<p>
-					You can disable the backdrop by using
-					<code>data-bs-backdrop="false"</code>
-				</p>
-				<!-- Button trigger for Disabled Backdrop -->
-				<button type="button" class="btn btn-outline-primary block"
-					data-bs-toggle="modal" data-bs-backdrop="false"
-					data-bs-target="#backdrop">Launch Modal</button>
+		<h2>BOM</h2>
 
-				<!--Disabled Backdrop Modal -->
-				<div class="modal fade text-left" id="backdrop" tabindex="-1"
-					role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
-					<div
-						class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-						role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h4 class="modal-title" id="myModalLabel4">Disabled
-									Backdrop</h4>
-								<button type="button" class="close" data-bs-dismiss="modal"
-									aria-label="Close">
-									<i data-feather="x"></i>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div id="grid"></div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-light-secondary"
-									data-bs-dismiss="modal">
-									<i class="bx bx-x d-block d-sm-none"></i> <span
-										class="d-none d-sm-block">Close</span>
-								</button>
-								<button type="button" class="btn btn-primary ml-1"
-									data-bs-dismiss="modal">
-									<i class="bx bx-check d-block d-sm-none"></i> <span
-										class="d-none d-sm-block">Accept</span>
-								</button>
-							</div>
+
+ <div >
+	<div class="mb-3 row">
+			<div class="col-md-3 mb-1">
+				<div class="input-group mb-3">`
+					<label for="staticEmail" class="col-sm-3 col-form-label">창고코드</label>
+					<input type="text" id="whcode" class="form-control"
+						placeholder="WH code" aria-label="Recipient's username"
+						aria-describedby="button-addon2"> <span
+						class="input-group-text" data-bs-toggle="modal"
+						data-bs-target="#WHcodemodal" id="wh-code-input" style="cursor: pointer"><i
+						class="bi bi-search" ></i></span>
+				</div>
+			</div>
+			
+			<div class="col-lg-auto col-sm-12">
+			<input  id="whname" name="empName" class="form-control"placeholder="WH name">
+			</div>
+			
+			<div class="col-md-3 mb-1">
+				<div class="input-group mb-3">
+					<label for="staticEmail" class="col-sm-3 col-form-label">창고분류</label>
+				
+					<select id="whfield" class="form-control"
+						aria-label="Recipient's username"
+						aria-describedby="button-addon2" >
+						<option value="none">==선택==</option>
+						<th:block th:each="item:${CClist}">
+							
+						    <option th:value="${item.CodeId}" th:text="${item.CodeName}" th:if="${item.codeUsed eq 'Y' ? '' : 'disable'}" >
+						
+						</th:block>
+						
+
+						</select>
+				</div>
+			</div>
+			
+	</div>		
+	<div class="mb-3 row">
+			<div class="col-md-3 mb-1">
+				<div class="input-group mb-3">
+					<label for="staticEmail" class="col-sm-3 col-form-label">제품코드</label>
+					<input type="text" id="procode" class="form-control"
+						placeholder="product code" aria-label="Recipient's username"
+						aria-describedby="button-addon2"> <span
+						class="input-group-text" data-bs-toggle="modal"
+						data-bs-target="#proModal" id="basic-addon1" style="cursor: pointer" onclick=""><i
+						class="bi bi-search"></i></span>
+				</div>
+			</div>
+			<div class="col-lg-auto col-sm-12">
+			<input  id="clientName" name="clientName" class="form-control" placeholder="product name" >
+			</div>
+			<div class="col-md-3 mb-1">
+				<div class="input-group mb-3">
+					<label for="staticEmail" class="col-sm-3 col-form-label">담당자</label>
+					<input type="text" id="empcode" class="form-control"
+						placeholder="manager" aria-label="Recipient's username"
+						aria-describedby="button-addon2"> <span
+						class="input-group-text" data-bs-toggle="modal"
+						data-bs-target="#empModal" id="basic-addon1" style="cursor: pointer"><i
+						class="bi bi-search"></i></span>
+				</div>
+			</div>
+			<div class="col-lg-auto col-sm-12">
+			<input  id="empname" name="clientName" class="form-control">
+			</div>
+			
+	<div class="mb-3 row flex-right mt-3">
+			<div class="col-lg-auto col-sm-12 ">
+		        <button class="ml-5 btn btn-sm btn-primary" onclick="getList()">조회</button>
+				<button class="ml-5 btn btn-sm btn-primary">상품조회</button>
+		        <button class="ml-5 btn btn-sm btn-primary" onclick="insertWH()">등록</button>
+				<button class="ml-5 btn btn-sm btn-primary" onclick="addRow()"><svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></button>
+				<button class="ml-5 btn btn-sm btn-primary" onclick="updateWH()">수정</button>
+				<button class="ml-5 btn btn-sm btn-secondary" onclick="reset()">초기화</button>
+			</div>
+	</div>
+	</div>	
+
+ </div>
+	
+	<div id="gird1" class="mb-5 row"></div>
+<!-- 	//grid2의 인풋창 -->
+			<div class="row  flex-right ">
+			     <div class="col-md-3 mb-1">
+					<div class="input-group mb-3">
+						<label for="staticEmail" class="col-sm-3 col-form-label">총수량</label>
+						<input type="text" id="sumProCode" class="form-control"
+							placeholder="prodcut code" aria-label="Recipient's username"
+							aria-describedby="button-addon2"> 
+					</div>
+				</div>
+				<div class="col-lg-auto col-sm-12">
+					<input  id="sumProName" name="sumProName" class="form-control"placeholder="product name">
+				</div>
+				<div class="col-lg-auto col-sm-12">
+					<input  id="proTotal" name="proTotal" class="form-control"placeholder="total">
+				</div>
+			</div>	
+			
+	<div id="grid2"></div>
+
+<!--창고코드 modal  -->
+		<div class="me-1 mb-1 d-inline-block">
+
+			<!--large size Modal -->
+			<div class="modal fade text-left" id="WHcodemodal" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+				<div
+					class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+					role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel17">창고</h4>
+							<button type="button" class="close" data-bs-dismiss="modal"
+								aria-label="Close">
+								<i data-feather="x"></i>
+							</button>
+						</div>
+						<div class="modal-body">
+							<!--그리드  -->
+							<div id="gridWH" class="mb-3 row"></div>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light-secondary"
+								data-bs-dismiss="modal" onclick="cancelDo()">
+								<i class="bx bx-x d-block d-sm-none"></i> <span
+									class="d-none d-sm-block">Close</span>
+							</button>
+							<button type="button" class="btn btn-primary ml-1"
+								data-bs-dismiss="modal">
+								<i class="bx bx-check d-block d-sm-none"></i> <span
+									class="d-none d-sm-block">확인</span>
+							</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+		
+	<!--제품 검색 modal  -->
+		
+		<div class="me-1 mb-1 d-inline-block">
 
-	<!--Disabled Backdrop Modal -->
-	<div class="modal fade text-left" id="backdrop" tabindex="-1"
-		role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
-		<div
-			class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-			role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="myModalLabel4">Disabled Backdrop</h4>
-					<button type="button" class="close" data-bs-dismiss="modal"
-						aria-label="Close">
-						<i data-feather="x"></i>
-					</button>
-				</div>
-				<div class="modal-body">
-					<div id="grid"></div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-light-secondary"
-						data-bs-dismiss="modal">
-						<i class="bx bx-x d-block d-sm-none"></i> <span
-							class="d-none d-sm-block">Close</span>
-					</button>
-					<button type="button" class="btn btn-primary ml-1"
-						data-bs-dismiss="modal">
-						<i class="bx bx-check d-block d-sm-none"></i> <span
-							class="d-none d-sm-block">Accept</span>
-					</button>
+			<!--large size Modal -->
+			<div class="modal fade text-left" id="proModal" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+				<div
+					class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+					role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel17">제품검색</h4>
+							<button type="button" class="close" data-bs-dismiss="modal"
+								aria-label="Close">
+								<i data-feather="x"></i>
+							</button>
+						</div>
+						<div class="modal-body">
+							<!--그리드  -->
+							<div id="searchPro" class="mb-3 row"></div>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light-secondary"
+								data-bs-dismiss="modal" onclick="cancelDoPro()">
+								<i class="bx bx-x d-block d-sm-none"></i> <span
+									class="d-none d-sm-block">Close</span>
+							</button>
+							<button type="button" class="btn btn-primary ml-1"
+								data-bs-dismiss="modal" onclick="">
+								<i class="bx bx-check d-block d-sm-none"></i> <span
+									class="d-none d-sm-block">확인</span>
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+		
+	<!--담당자(사원) 검색 modal  -->
+		
+		<div class="me-1 mb-1 d-inline-block">
 
+			<!--large size Modal -->
+			<div class="modal fade text-left" id="empModal" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+				<div
+					class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+					role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel17">사원검색</h4>
+							<button type="button" class="close" data-bs-dismiss="modal"
+								aria-label="Close">
+								<i data-feather="x"></i>
+							</button>
+						</div>
+						<div class="modal-body">
+							<!--그리드  -->
+							<div id="searchEmp" class="mb-3 row"></div>
 
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light-secondary"
+								data-bs-dismiss="modal" onclick="cancelDoEmp()">
+								<i class="bx bx-x d-block d-sm-none"></i> <span
+									class="d-none d-sm-block" >Close</span>
+							</button>
+							<button type="button" class="btn btn-primary ml-1"
+								data-bs-dismiss="modal" onclick="">
+								<i class="bx bx-check d-block d-sm-none"></i> <span
+									class="d-none d-sm-block">확인</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+			
+	<!--inner 담당자(사원) 검색 modal  -->
+		
+		<div class="me-1 mb-1 d-inline-block">
 
-	<script type="text/javascript">
-		const grid = new tui.Grid({
-			el : document.getElementById('grid'),
-			data : [ {
-				name : 'pro_123456',
-				artist : '얇은피 김치만두 200',
-				type : 'pro_123456',
-				release : '얇은피 김치만두'
-			} ],
+			<!--large size Modal -->
+			<div class="modal fade text-left" id="empModalInner" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+				<div
+					class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+					role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel17">사원검색</h4>
+							<button type="button" class="close" data-bs-dismiss="modal"
+								aria-label="Close">
+								<i data-feather="x"></i>
+							</button>
+						</div>
+						<div class="modal-body">
+							<!--그리드  -->
+							<div id="searchEmpInner" class="mb-3 row"></div>
 
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light-secondary"
+								data-bs-dismiss="modal" onclick="cancelDoEmp()">
+								<i class="bx bx-x d-block d-sm-none"></i> <span
+									class="d-none d-sm-block" >Close</span>
+							</button>
+							<button type="button" class="btn btn-primary ml-1"
+								data-bs-dismiss="modal" onclick="">
+								<i class="bx bx-check d-block d-sm-none"></i> <span
+									class="d-none d-sm-block">확인</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+
+	<script>
+	/* data source */
+	const dataSource = {
+   		 withCredentials: false,
+   		 contentType: 'application/json',
+
+   		  api: {
+   			  
+   		    readData  : { url: '', method: 'GET' },
+   		    createData: { url: '/WHInsert', method: 'POST' },
+   		    updateData: { url: '/WHUpdate', method: 'POST' },
+   		    deleteData : { url: '/', method: 'POST' },
+   		    updateModifiy: { url: '/', method: 'POST' },
+   		  }
+   		};
+
+	
+	
+	const gird1 = new tui.Grid({
+			el : document.getElementById('gird1'),
+			rowHeaders: ['checkbox'],
 			scrollX : false,
 			scrollY : false,
 			columns : [ {
-				header : 'Name',
-				name : 'name'
+				header : '창고코드',
+				name : 'whCode',
+				editor : 'text'
 			}, {
-				header : 'Artist',
-				name : 'artist'
+				header : '창고이름',
+				name : 'whName',
+				editor : 'text'
 			}, {
-				header : 'Type',
-				name : 'type'
+				header : '창고분류',
+				name : 'whField'
 			}, {
-				header : 'Release',
-				name : 'release'
+				header : '창고설명',
+				name : 'whExplain',
+				editor : 'text'
 			}, {
-				header : 'Genre',
-				name : 'genre'
-			} ]
+				header : '사용여부',
+				name : 'whUsed',
+				editor: {
+          	      type: 'select',
+        	      options: {
+        	        listItems: [
+        	        	{ text: 'Y', value: 'Y' },
+        	        	{ text: 'N', value: 'N' }
+        	        ]
+        	        	
+        	      }
+        	    }       
+			}, {
+				header : '등록일',
+				name : 'whHire',
+				editor : 'datePicker'
+			}, {
+				header : '담당자',
+				name : 'whManager'
+				
+			}, {
+				header : '비고',
+				name : 'comments',
+				editor : 'text'
+			}
+
+			],
+			data : dataSource
 		});
 
-		var myModal = document.getElementById('myModal')
-		var myInput = document.getElementById('myInput')
-
-		myModal.addEventListener('shown.bs.modal', function() {
-			myInput.focus()
+		
+		const grid2 = new tui.Grid({
+			el : document.getElementById('grid2'),
+			rowHeaders: ['rowNum'],
+			scrollX : false,
+			scrollY : false,
+			columns : [ {
+				header : '제품코드',
+				name : 'proCode'
+			}, {
+				header : '제품이름',
+				name : 'proName'
+			}, {
+				header : '수량',
+				name : 'orderNum'
+			}, {
+				header : '상세위치',
+				name : 'empTel'
+			}, {
+				header : 'LOT',
+				name : 'lotCode'
+			}
+			]
+		});
+		//검색필터 그리드 in modal(WH)
+		const gridWH = new tui.Grid({
+			el : document.getElementById('gridWH'),
+			rowHeaders: ['rowNum'],
+			scrollX : false,
+			scrollY : false,
+			columns : [ {
+				header : '창고코드',
+				name : 'whCode'
+			}, {
+				header : '창고명',
+				name : 'whName'
+			}, {
+				header : '창고설명',
+				name : 'whExplain'
+			}, {
+				header : '담당자',
+				name : 'whManager'
+			}
+			]
+		});
+		
+		 //사원검색 모달/아작스
+		 
+		const searchEmp = new tui.Grid({
+				el : document.getElementById('searchEmp'),
+				rowHeaders: ['rowNum'],
+				scrollX : false,
+				scrollY : false,
+				columns : [ {
+					header : '사원번호',
+					name : 'empNum'
+				}, {
+					header : '사원이름',
+					name : 'empName'
+				}, {
+					header : '부서',
+					name : 'empDept'
+				}
+				]
+		});
+			 	//사원검색 수정 그리드
+				 
+			const modiEmpGrid = new tui.Grid({
+				el : document.getElementById('searchEmpInner'),
+				rowHeaders: ['rowNum'],
+				scrollX : false,
+				scrollY : false,
+				columns : [ {
+					header : '사원번호',
+					name : 'empNum'
+				}, {
+					header : '사원이름',
+					name : 'empName'
+				}, {
+					header : '부서',
+					name : 'empDept'
+				}
+				]
+			});
+			 
+	//grid1 클릭이벤트
+	 gird1.on('click',ev=>{
+			if(ev.columnName != 'whManager'){
+				
+			
+			 let event = gird1.getRow(ev.rowKey);
+			 console.log(event.whCode)
+			if(event.whCode != null){
+			$.ajax({
+				 url : "/innerWH",
+	               type: "post",
+	               data: {'whCode' : event.whCode},
+	              /*  beforeSend : function(xhr){
+	           		xhr.setRequestHeader(header, token);
+	           	 }, */
+	               success : function(data){
+	      	console.log(123)
+	    			grid2.resetData(data)
+	                  
+	               },
+	               error : err=>{
+	                  console.log(err)
+	               }
+			})
+		   }
+		}
+	 })
+		//grid1에서 담당자눌렀을시모달팝업	 		   
+		gird1.on('dblclick',ev=>{
+			let rowget=ev.rowKey;
+			if (ev.columnName == 'whManager'){
+				  $('#empModalInner').on('shown.bs.modal', function(e) {
+					  modiEmpGrid.refreshLayout()
+				  })
+				$('#empModalInner').modal('show')
+				
+				
+				 $.ajax({
+		               url : "ajax/list",
+		               type: "post",
+		              /*  beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           	 }, */
+		               success : function(data){
+		                 modiEmpGrid.resetData(data)
+		                 
+		                 modiEmpGrid.on('click',ev=>{
+		            		 let a = modiEmpGrid.getRow(ev.rowKey).empNum
+		            		 gird1.setValue(rowget,'whManager',a)
+		            		
+		            	 }) 
+		            	 
+		               },
+		               error : err=>{
+		                  console.log(err)
+		               }
+		            })
+			}
 		})
-
-		$("#gridModal").modal(toogle);
-		$("#gridModal").on('shown.bs.modal', function() {
-			modalGridDraw();
+	//수정그리드 담당자 온클리으로 넣기
+	
+	//수정그리드 	
+	//grid2 온클릭
+	 grid2.on('click',ev=>{
+		 let proCode =grid2.getRow(ev.rowKey).proCode;
+		 let proName =grid2.getRow(ev.rowKey).proName;
+		 let newOrderNum=0
+		 console.log(proName)
+	$(grid2.getData()).each((index,one)=>{
+		if(one.proCode ==proCode){
+			newOrderNum += one.orderNum
+		}
+			})
+		//총합인풋창
+	$('#sumProCode').val(proCode)
+	$('#sumProName').val(proName)
+	$('#proTotal').val(newOrderNum)
+	
+		
+	 })
+		
+	//wh그리드 ㅇ클릭이벤트
+		   gridWH.on('click',ev=>{
+			 	let event = gridWH.getRow(ev.rowKey);
+			   $('#whcode').val(event.whCode)
+			   $('#whname').val(event.whName)
+		   })
+		   function cancelDo(){
+			   $('#whcode').val("")
+			   $('#whname').val("")
+	}
+		//WHgrid에 뿌려줄 정보 (창고조회)
+		 //그리드 열리시 실행될구문
+			WHcodemodal.addEventListener('shown.bs.modal', () => {
+				//모달창 새로고침
+				   gridWH.refreshLayout(); 
+			 $.ajax({
+	               url : "/whList",
+	               type: "post",
+	              /*  beforeSend : function(xhr){
+	           		xhr.setRequestHeader(header, token);
+	           	 }, */
+	               success : function(data){
+	                  console.log(data);
+	    
+	                  gridWH.resetData(data);
+	          
+	                  
+	               },
+	               error : err=>{
+	                  console.log(err)
+	               }
+	            })
+			  })
+		
+	
+			  
+	///
+		const searchPro = new tui.Grid({
+			el : document.getElementById('searchPro'),
+			rowHeaders: ['rowNum'],
+			scrollX : false,
+			scrollY : false,
+			columns : [ {
+				header : '제품코드',
+				name : 'proCode'
+			}, {
+				header : '제품명',
+				name : 'proName'
+			}, 
+			]
 		});
+		 //WHgrid에 뿌려줄 정보 (창고조회)
+			 //그리드 열리시 실행될구문
+				proModal.addEventListener('shown.bs.modal', () => {
+					//모달창 새로고침
+					   searchPro.refreshLayout(); 
+				 $.ajax({
+		               url : "selectName",
+		               type: "get",
+		              /*  beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           	 }, */
+		               success : function(data){
+		                  console.log(data);
+		    
+		                  searchPro.resetData(data);
+		          
+		                  
+		               },
+		               error : err=>{
+		                  console.log(err)
+		               }
+		            })
+				  })
+				  
+		searchPro.on('click',ev=>{
+		
+			 	let event = searchPro.getRow(ev.rowKey);
+			 	console.log(event)
+			   $('#procode').val(event.proCode)
+			   $('#proname').val(event.proName)
+		   })
+		function cancelDoPro(){
+			   $('#procode').val("")
+			   $('#proname').val("")
+	       }
+		
+	///버튼들///
+	//등록
+	function insertWH(){
+	    gird1.request('createData');
+	}
+	//리셋
+	function reset(){
+		window.location.reload();
+	}
+    //수정
+	function updateWH(){
+	    gird1.request('updateData');
+	}
+
+		
+		 
+		 //searchEmp에 뿌려줄 정보 (창고조회)
+			 //그리드 열리시 실행될구문
+	empModal.addEventListener('shown.bs.modal', () => {
+					//모달창 새로고침
+			searchEmp.refreshLayout(); 
+				 $.ajax({
+		               url : "ajax/list",
+		               type: "post",
+		              /*  beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           	 }, */
+		               success : function(data){
+		                  console.log(data);
+		                 searchEmp.resetData(data);
+		               },
+		               error : err=>{
+		                  console.log(err)
+		               }
+		        })
+	 })
+		
+	searchEmp.on('click',ev=>{
+		
+			 	let event = searchEmp.getRow(ev.rowKey);
+			 	console.log(event)
+			   $('#empcode').val(event.empNum)
+			   $('#empname').val(event.empName)
+		
+		   })
+	function cancelDoEmp(){
+					 $('#empcode').val('')
+					 $('#empname').val('')
+	       }
+		 
+		 //창고코드 한줄추가  {"whCode": $('#whcode').val(), "whName": $('#whname').val(),
+	function addRow(){
+				let data = [
+					 {"whField" : $('#whfield').val(),"whManager": $('#empcode').val()}
+									
+					]
+				
+				console.log( $('#whcode').val())
+		     if ($('#empcode').val() ==null || $('#empcode').val() ==''){
+				alert('담당자를 선택해주세요')
+			}else if ($('#whfield').val() =='==선택==' || $('#whfield').val() ==''){
+				alert('창고분류를 ')
+			}else {
+				gird1.refreshLayout(); 
+				gird1.appendRows(data);
+			}
+		 }
+		 //창고조회
+	 function getList(){
+/* 			console.log($('#whcode').val())
+ */			 $.ajax({
+				url : '/whList' ,
+				type : 'post',
+			    data : { 'whCode': $('#whcode').val()}
+				
+			 }).then((data)=>{
+				 console.log("data",data)
+			
+				
+				 gird1.resetData(data)
+				 
+			 })
+		 }
+		 
+	
 	</script>
+</div>
 </body>
 </html>

@@ -242,7 +242,7 @@ public class CommonController {
 	@PostMapping("/whList") 
 	@ResponseBody
 	public List<WHVO>whList(WHVO vo){
-		
+		System.out.println(vo);
 		return  whService.WHList(vo);
 		
 	}
@@ -275,6 +275,20 @@ public class CommonController {
     	System.out.println("결과값 합산 : "+result);
     	 return result;
      }
+	 //창고수정
+	 @PostMapping("/WHUpdate")
+	 @ResponseBody
+	 public int WHUpdate(@RequestBody ToastGridVO<WHVO> vo) {
+		 System.out.println("update : "+vo.getUpdatedRows());
+		 int result=0;
+		 for(WHVO wh : vo.getUpdatedRows()) {
+			 
+			 
+			 result += whService.WHUpdate(wh);
+		 }
+		 System.out.println("결과값 합산 : "+result);
+		 return result;
+	 }
 	
 	
 	
