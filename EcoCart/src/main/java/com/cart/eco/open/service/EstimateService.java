@@ -7,6 +7,8 @@ import com.cart.eco.common.service.ClientVO;
 import com.cart.eco.common.service.ProductVO;
 
 public interface EstimateService {
+	//
+	
 	
 	//견적서 조회(승인X)
 	public List<EstimateVO> selectEstimateList();
@@ -25,6 +27,16 @@ public interface EstimateService {
 	public String insertEstmt(EstimateVO vo);
 
 	public int insertEstmtD(List<EstimateDVO> vo);
+
+	
+	//견적 번호 가져오기
+	public List<EstimateVO> getEstmtCode();
+	
+	//승인 업데이트
+	public int updateEstmtSt(List<EstimateVO> vo);
+	
+	
+
 
 	
 

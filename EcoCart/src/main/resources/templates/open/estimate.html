@@ -40,9 +40,9 @@
 			
            </div>
            <div>
-               <button type="button" class="btn btn-sm btn-primary" style="float:right;  margin:5px; margin-right: 30px">승인</button>   
+               <button type="button" onclick="updatBtn()" class="btn btn-sm btn-primary" style="float:right;  margin:5px; margin-right: 30px">승인</button>   
                <button id="showModal" type="button" class="btn btn-sm btn-primary" style= "float:right;  margin:5px;"
-                  data-bs-toggle="modal" data-bs-target="#staticBackdrop">견적서 등록</button>
+                  data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="getEstmtCode()">견적서 등록</button>
 			</div>
 
 			
@@ -68,7 +68,7 @@
 		      	<div class="container-fluid">
 		      			<div style="margin-bottom:5px">
 				        	<label for="row1" style="width:80px; height: 30px; text-align:center;">견적번호</label>
-				        		<input type="text" class="form-control form-control-sm" style="width:150px; display:inline" readonly>
+				        		<input type="text" class="form-control form-control-sm" style="width:150px; display:inline" id="estmtCode"  readonly>
 				        	
 				    		<label for="row1" style="width:80px; height: 30px; text-align:center; margin-left:30px;" >납기일자</label>
 								<input type="date" class="form-control" style="width: 150px; display:inline; text-align:center;" id="deDate">
@@ -256,6 +256,12 @@
             scrollY: false,
             rowHeaders: ['checkbox'],
             columns: [
+            
+                {
+                	header: '제품코드',
+                	name: 'estmtCode',
+                	
+                },
                 {
                 	header: '제품코드',
                 	name: 'proCode'
@@ -281,40 +287,26 @@
             ]
 		});
 		
+		//grid3.hideColumn('estmtCode');
 		
 		Grid.applyTheme('striped'); // Call API of static method
 		
 		
 		//모달창 선택값 리셋
 		function modalResetBtn(){
-			console.log( $("#select6").val() );
 			
-			if($("#select6").val() != '선택' ){
-				
-				$("#select6").val('선택');
-				$("#select7").attr('disabled', false)
-				$("#productNum").val('');
-				
+			grid3.clear()
+			$("#deDate").val('');
+			$("#select5").attr('disabled', false)
+			$("#select6").attr('disabled',false)
+			$("#select7").attr('disabled', false)
+			$("#select8").attr('disabled', false)
 			
-			} else if ($("#select7").val() != '선택' ){
-				
-				$("#select7").val('선택');
-				$("#select6").attr('disabled', false)
-				$("#productNum").val('');
-				
-			} else if ($("#select5").val() != '선택' ){
-				
-				$("#select5").val('선택');
-				$("#select8").attr('disabled', false)
-				$("#productNum").val('');
-				
-			}else if ($("#select8").val() != '선택' ){
-				
-				$("#select8").val('선택');
-				$("#select5").attr('disabled', false)
-				$("#productNum").val('');
-				
-			}
+			document.getElementById("select5").value = '선택';
+			document.getElementById("select8").value = '선택';
+			document.getElementById("select7").value = '선택';
+			document.getElementById("select6").value = '선택';
+			$("#productNum").val('');
 					
 		}
 		
@@ -457,6 +449,7 @@
 				 
 				const rowData = [
 					{
+						estmtCode : $('#estmtCode').val(),	
 						proCode : $('#select6 option:selected').text(),
 						proName : (a.split('-'))[0],
 						sellNum : $('#productNum').val(),
@@ -546,7 +539,7 @@
 		 		const data = [
 
 		 			{	
-		 				 
+		 				estmtCode : $("#estmtCode").val(),
 						deDate : $("#deDate").val(),
 						clientCode : $("#select8 option:selected").text()
 		 			}
@@ -564,6 +557,10 @@
 						console.log(result);
 						
 						// 견적상세 그리드에 있는 값을 insert + 견적코드 
+						//grid3.getData().push($("#estmtCode").val())
+						
+						
+						
 						$.ajax({
 							method:'POST',
 							url:'/insertEstmtD',
@@ -575,16 +572,22 @@
 								console.log(result);
 								
 								
-								
+								//합계액 다 더해서 총 합계액 update해주기
+								$.ajax({
+									
+									
+									
+									
+								})
 								
 							},
 							error : function(error){
-								console.log(error +"견적상세 er");
+								console.log("견적상세 er");
+								console.log(error);
 							}
 						})
 						 
 						//그리드에 출력된 합계액들로 총 합계액 update해주기  (getSummaryValues(columnName) 사용 )
-						//합계액 다 더해서 총 합계액 update해주기
 					
 					},
 					error : function(error){
@@ -605,8 +608,60 @@
 		 
 	 }
 	 
+		 //updateSt
+		 function updatBtn(){
+			 console.log("승인버튼 누름")
+			/* console.log(grid.getCheckedRows());
+			console.log(Object.keys(grid.getCheckedRows()).length);
+			
+			//객체를 for of로 하나하나 뽑고
+			//거거게 push,code estmtCode 해준 다음에
+			//아작스 돌리기
+			for ( co of grid.getCheckedRows() ){
+					let code = [];
+					code.push(co.estmtCode);
+					console.log(code);
+			 */
+					 $.ajax({
+						method:'POST',
+						url:'/updateEstmtSt',
+						contentType : 'application/json',
+						dataType:'JSON',
+						data: JSON.stringify(grid.getCheckedRows()),
+						success : function(result) {
+							console.log(result)
+							location.reload(result);
+						},
+						error : function(error){
+							console.log(error);
+						}
+					})
+			
+		 }
+	//모달창 눌렀을때 견적코드 있도록	
+	function getEstmtCode(){
+		
+		$.ajax({
+			url:'/getEstmtCode',
+			success : function(result) {
+				console.log(result)
+				console.log(result[0].estmtCode)
+				$("#estmtCode").val(result[0].estmtCode);
+			},
+			error : function(error){
+				console.log(error);
+			}
+		})
 		
 	
+	
+	
+	}
+	
+		
+			
+			
+			
 		
 	//조회버튼 / 리셋버튼
 
@@ -645,17 +700,18 @@
 	$("#staticBackdrop").on('hidden.bs.modal', function (e) {
 		grid3.clear()
 		$("#deDate").val('');
+		$("#select5").attr('disabled', false)
+		$("#select6").attr('disabled',false)
+		$("#select7").attr('disabled', false)
+		$("#select8").attr('disabled', false)
+		
 		document.getElementById("select5").value = '선택';
 		document.getElementById("select8").value = '선택';
 		document.getElementById("select7").value = '선택';
 		document.getElementById("select6").value = '선택';
 		$("#productNum").val('');
 		
-			/* $("#select5").attr('disabled', true)
-			$("#select6").attr('disabled',true)
-			$("#select7").attr('disabled', true)
-			$("#select8").attr('disabled', true)
-			 */
+			 
 	});
 	 
 	

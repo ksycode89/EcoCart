@@ -9,7 +9,7 @@ import com.cart.eco.open.service.EstimateDVO;
 import com.cart.eco.open.service.EstimateVO;
 
 public interface EstimateMapper {
-	
+	//
 	
 	//견적서 조회(승인X)
 	public List<EstimateVO> selectEstimateList();
@@ -27,10 +27,14 @@ public interface EstimateMapper {
 	//견적서 등록
 	public int insertEstmt(EstimateVO vo);
 
-	public int insertEstmtD(List<EstimateDVO> vo);
+	public int insertEstmtD(EstimateDVO vo);
 	
+	//승인 업데이트
+	public int updateEstmtSt(EstimateVO vo);
+
 	
-	
+	//견적 번호 가져오기
+	public List<EstimateVO> getEstmtCode();
 	
 	
 //	//견적 번호 가져오기

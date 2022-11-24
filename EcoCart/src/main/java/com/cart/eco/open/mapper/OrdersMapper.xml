@@ -7,8 +7,6 @@
 		select o.order_code, c.client_name "client_code", o.order_date, o.de_date, o.all_sum, order_st
 		from orders o, client c
 		where o.client_code = c.client_code
-		and order_st = '승인'
-		and order_st = '대기'
 		
 	</select>
 
@@ -34,12 +32,13 @@
 	</select>
 	
 	<!--//주문 마감 조회  -->
-	<select id="OrderCanList" resultType="com.cart.eco.open.service.OrdersVO">
+	<select id="OrdersCanList" resultType="com.cart.eco.open.service.OrdersVO">
 		select o.order_code, c.client_name "client_code", o.order_date, o.de_date, o.all_sum, order_st
 		from orders o, client c
 		where o.client_code = c.client_code
-		and order_st = '승인'
 		and order_st = '마감' 
+		or order_st = '승인'
+	
 	</select>
 	
 	
@@ -62,6 +61,7 @@
 		where e.client_code = c.client_code
 		
 		and e.estmt_code = #{estmtCode}
+		and e.estmt_st = '승인'
 	</select>
 	
 	
@@ -76,14 +76,54 @@
 		order by estmt_dno
 	</select>
 	
-	
-	<!--  견적 코드 가져오기 -->
+	<!--  승인된 견적서 목록 가져오기 -->
 	<select id="selectEstmtCode" resultType="com.cart.eco.open.service.EstimateVO">
 		select * from estimate
+		where estmt_st = '승인'
 	
 	</select>
 	
+	<!-- 주문서 등록 -->
+	<insert id="insertOrder" parameterType="com.cart.eco.open.service.OrdersVO" >
+		<selectKey keyProperty="orderCode" resultType="String" order="BEFORE">
+			select  concat('ord' , 
+  					concat (to_char(sysdate,'YYmmdd'), 
+        			concat ('-', nvl(max(substr(order_code, 11)),0)+1 )
+        			)) 
+        	from orders
+		</selectKey>
+		
+		<!-- 코드, 거래처, 견적일ㄹ자(sysdate), 납기일자 승인  -->
+		insert into orders  (order_code, client_code, order_date, de_date, order_st)
+			values( #{orderCode}, 
+					(  select client_code from client where client_name = #{clientCode} ), 
+					sysdate, #{deDate}, '대기')
+			
+	</insert>
 	
 	
+	<!-- 주문 상세 등록 -->
+	<insert id="insertOrderD" parameterType="com.cart.eco.open.service.OrderDVO" >
+		<selectKey keyProperty="orderDno" order="BEFORE" resultType="integer">
+			select nvl(max(order_dno),0)+1 from order_d
+		</selectKey>
+		
+		insert into order_d (order_dno, order_code, pro_code, sell_num, sum_price)
+			values ( #{orderDno}, #{orderCode},  #{proCode}, #{sellNum}, ( #{proCode} * #{sellNum} ) )
+		
+	</insert>
+	
+	
+	<!-- 주문 상태 변경 -->
+	<update id="updateOrderSt" parameterType="com.cart.eco.open.service.OrdersVO">
+		update orders set order_st = '승인' where order_code = #{orderCode}
+	
+	</update>
+	
+	<!-- 주문 마감 상태 변경 -->
+	<update id="updateOrderCanSt" parameterType="com.cart.eco.open.service.OrdersVO">
+		update orders set order_st = '마감' where order_code = #{orderCode}
+	
+	</update>
 	
 </mapper>

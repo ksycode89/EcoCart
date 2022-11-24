@@ -7,6 +7,7 @@
 		select e.estmt_code, c.client_name "client_code", e.estmt_date, e.de_date, TO_CHAR(e.all_sum,'999,999') || '원' "fall_sum",e.estmt_st
 		from estimate e, client c
 		where e.client_code = c.client_code
+		order by estmt_code
 		
 	</select>
 
@@ -32,36 +33,42 @@
    </select>
    
    <!-- 셀렉트 옵션 -->
-   <select id="selectClientName" resultType="com.cart.eco.common.service.ClientVO">
+   <select id="selectClientName" resultType="com.cart.eco.common.service.ClientVO" >
    		select client_name, client_code from client
    </select>
 	
+	<!-- 견적서 번호 가져오기 -->
+	<select id="getEstmtCode" resultType="com.cart.eco.open.service.EstimateVO" parameterType="String">
+		select  concat('est' , 
+  					concat (to_char(sysdate,'YYmmdd'), 
+        			concat ('-', nvl(max(to_number(substr(estmt_code, 11))),0)+1 )
+        			)) "estmtCode"
+        	from estimate
+	</select>
 
 	<!-- 견적서 등록 -->
 	<insert id="insertEstmt" parameterType="com.cart.eco.open.service.EstimateVO" >
-		<selectKey keyProperty="estmtCode" resultType="String" order="BEFORE">
-			select  concat('est' , 
-  					concat (to_char(sysdate,'YYmmdd'), 
-        			concat ('-', nvl(max(substr(estmt_code, 11)),0)+1 )
-        			)) 
-        	from estimate
-		</selectKey>
-		
-		<!-- 코드, 거래처, 견적일ㄹ자(sysdate), 납기일자 승인  -->
 		insert into estimate  (estmt_code, client_code, estmt_date, de_date, estmt_st)
 			values( #{estmtCode}, #{clientCode} , sysdate, sysdate, '대기')
 			
 	</insert>	
 
 	<!-- 견적서 상세 등록 -->
-	<insert id="insertEstmtD" parameterType="com.cart.eco.open.service.EstimateVO" >
-		<selectKey keyProperty="estmtDno" order="BEFORE" resultType="integer">
-			select nvl(max(estmt_dno),0)+1 from estimate_d
+	<insert id="insertEstmtD" parameterType="com.cart.eco.open.service.EstimateDVO" >
+		<selectKey keyProperty="estmtDno" order="BEFORE" resultType="int" >
+			select nvl(max(to_number(estmt_dno),0))+1 from estimate_d
 		</selectKey>
 		
-		insert into estimate_d (estmt_dno, estmt_code, pro_code, sell_num, sum_price)
-			values ( #{estmtDno}, #{estmt_code},  #{proCode}, #{sellNum}, #{sumPrice} )
+		insert into estimate_d (estmt_dno, estmt_code, pro_code, sell_num )
+			values ( #{estmtDno}, #{estmtCode},  #{proCode}, #{sellNum} )
 		
 	</insert>
+	
+	
+	<!-- 상태 변경 -->
+	<update id="updateEstmtSt" parameterType="com.cart.eco.open.service.EstimateVO">
+		update estimate set estmt_st = '승인' where estmt_code = #{estmtCode}
+	
+	</update>
 
 </mapper>
