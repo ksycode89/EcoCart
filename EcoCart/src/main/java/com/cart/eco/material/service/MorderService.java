@@ -17,9 +17,9 @@ public interface MorderService {
 	public List<MorderVO> proInfo(MorderVO morderVO);
 	
 	// 발주등록
-	public int insertOrder(List<MorderVO> morderVO);
+	public int insertOrder(ModerReqVO morderVO);
 	
-	public int insertOrder1(List<MorderVO> morderVO);
+	
 
 	// 발주삭제
 	public int deleteOrder(MorderVO morderVO);

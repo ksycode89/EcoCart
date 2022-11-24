@@ -23,7 +23,8 @@ public class MorderVO {
 	@DateTimeFormat(pattern="yyyy-MM-dd") 
 	private Date orderReceiving; //납기일
 	private int total; //합계
-	private String manager; // 담당자
+	private int empNum; // 담당자사번
+	private String empName; // 담당자이름
 	
 	private String clientName; // 거래처명 조인
 	private String proItme; // 품목군

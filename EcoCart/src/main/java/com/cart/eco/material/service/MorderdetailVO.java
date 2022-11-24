@@ -21,4 +21,7 @@ public class MorderdetailVO {
 	
 	private int checkNum; //조인검사수량
 	private String proItme;
+	private int empNum; //담당자 사번
+	private String empName; //담당자이름
+	private String clientCode; // 거래처명 조인
 }

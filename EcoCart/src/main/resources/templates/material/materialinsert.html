@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-   layout:decorate="~{layout/layout}">   
+<html xmlns:th="http://www.thymeleaf.org"  
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" 
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">   
 <head>
 <meta charset="UTF-8">
 <title>발주 등록</title>
+<meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 <div layout:fragment="content" class="page-content">
@@ -14,77 +19,86 @@
        사원 <input id="empName" type="text">     
    </div>
    
-   
-   <!-- Modal -->
-			<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
-				data-bs-keyboard="false" tabindex="-1"
-				aria-labelledby="staticBackdropLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="staticBackdropLabel">사원 목록</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<div id="modalGrid"></div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								data-bs-dismiss="modal">확인</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			   <!-- Modal -->
-			<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static"
-				data-bs-keyboard="false" tabindex="-1"
-				aria-labelledby="staticBackdropLabel2" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="staticBackdropLabel2">제품 목록</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<div id="modalGrid1"></div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								data-bs-dismiss="modal">확인</button>
-						</div>
-					</div>
-				</div>
-			</div>
-   <script>
-      
-   </script>
+ 
    <div style="margin-left: 3px;">   
-               <button id="deleteInfo" type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">삭제</button>
-               <button id="insertBtn" type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">등록</button>
-               <button id="addBtn" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">제품목록</button>
-               
-         </div>
+         <button id="insertBtn" type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">등록</button>
+   </div>
    <div id="grid"></div>   
+   
+   
+   
+   <button id="toBtn" type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">삭제</button>
+   <button id="addBtn" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">자재검색</button>
    <div id="grid2"></div>
+   
+   
+ 	<!-- Modal -->
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+		data-bs-keyboard="false" tabindex="-1"
+		aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="staticBackdropLabel">사원 목록</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div id="modalGrid"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">확인</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	   <!-- Modal -->
+	<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static"
+		data-bs-keyboard="false" tabindex="-1"
+		aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="staticBackdropLabel2">자재 목록</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div id="modalGrid1"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>   
+   
+   
    <script>
+   
+   	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
    
    $(document).ready(function() {
       $('#emplist').click(empList)
-      $('#insertBtn').click(insertInfo)
-      $('#delBtn').click(deleteInfo)
-      $('#addBtn').click()
+      $('#insertBtn').click(insertInfo)  //발주
+      $('#addBtn').click(inseto)  //자재추가
    })
+   
    
    function insertInfo() {
 	   console.log(grid.getData()[0])
 	   $.ajax({
-		   url : '/materialinsertInfo',
+		   url : '/insertOrder',
 		   type : 'POST',
+		   beforeSend : function(xhr){
+         		xhr.setRequestHeader(header, token);
+         	},
 		   contentType: 'application/json',
-		   data : JSON.stringify(grid.getData()),
+		   data : JSON.stringify({'morder' : grid.getData()[0], 'detailOrder': grid2.getData()    }),
 		   success : function(data) {
 			   console.log(data);
 			   location.reload();
@@ -96,27 +110,14 @@
 	   })
    }
    
-   function deleteInfo() {
-	   $.ajax({
-		   url : '/deleteInfo',
-		   type : 'POST',
-		   contentType: 'application/json',
-		   data: JSON.stringify(deleteInfo.getCheckedRows()),
-		   dataType: 'JSON',
-		   success : function(data) {
-			   console.log(data);
-			   location.reload();
-		   },
-		   error : function(error) {
-			   console.log(error);
-		   }
-	   })
-   }
    
    function empList() {
       $.ajax({
          url : 'ajax/list',
          type : 'POST',
+         beforeSend : function(xhr){
+        	xhr.setRequestHeader(header, token);
+         },
          data : {"empNum" : $('#empNum').val(),},
          success : function(data) {
             console.log(data);
@@ -126,6 +127,24 @@
             console.log(123);
          }
       })
+   }
+   
+   function inseto() {
+       
+       $('#addBtn').on('click', (col) =>{
+    	   $('#staticBackdrop2').modal("show");
+    	   $.ajax({
+    		   url:'/proInfo',
+    		   type : 'GET',
+    		   success : function(data) {
+    			   console.log(data);
+    			   modalGrid1.resetData(data);		
+    		   },
+    		   error :  function(reject) {
+    			   console.log(reject)
+    		   }
+    	   })
+       })
    }
    
    var gridData = [
@@ -174,7 +193,7 @@
             },
             {
               header: '담당자',
-              name: 'manager',
+              name: 'empName',
             },
             {
               header: '비고',
@@ -219,6 +238,10 @@
 	        grid2.setValue(ev.rowKey, 'sumPrice', sum)
         }
 	  },
+	  {
+    	header: '거래처코드',
+    	name: 'clientCode'
+    	 },
       {
         header: '단가',
         name: 'sellPrice',
@@ -266,6 +289,10 @@
      	            name: 'standard',
     	         },
     	         {
+    	        	  header: '거래처코드',
+    	        	  name: 'clientCode',
+    	        	 },
+    	         {
      	        	header: '단가',
       	            name: 'sellPrice',
      	         },
@@ -275,21 +302,7 @@
       	         }
     	      ]
     	   });
-       
-       $('#addBtn').on('click', (col) =>{
-    	   $('#staticBackdrop2').modal("show");
-    	   $.ajax({
-    		   url:'/proInfo',
-    		   type : 'GET',
-    		   success : function(data) {
-    			   console.log(data);
-    			   modalGrid1.resetData(data);		
-    		   },
-    		   error :  function(reject) {
-    			   console.log(reject)
-    		   }
-    	   })
-       })
+
        
        modalGrid.on("click", event => {
     	   //console.log("inner modal grd ", modalGrid.getRow(event.rowKey).empDept)
@@ -314,6 +327,7 @@
     			   "proName" : modalGrid1.getRow(event.rowKey).proName,
     			   "sellPrice" : modalGrid1.getRow(event.rowKey).sellPrice,
     			   "standard" : modalGrid1.getRow(event.rowKey).standard,
+    			   "clientCode" : modalGrid1.getRow(event.rowKey).clientCode,
     			   "unit" : modalGrid1.getRow(event.rowKey).unit
     		   }
     	   ]
@@ -324,6 +338,7 @@
     	   $('#proName').val(modalGrid1.getRow(event.rowKey)['proName']);
     	   $('#standard').val(modalGrid1.getRow(event.rowKey)['standard']);
     	   $('#sellPrice').val(modalGrid1.getRow(event.rowKey)['sellPrice']);
+    	   $('#clientCode').val(modalGrid1.getRow(event.rowKey)['clientCode']);
     	   $('#unit').val(modalGrid1.getRow(event.rowKey)['unit']);
     	   
     	   $('#large').modal('hide');

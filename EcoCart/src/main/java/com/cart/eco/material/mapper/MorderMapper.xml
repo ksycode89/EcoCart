@@ -6,31 +6,39 @@
 		resultType="com.cart.eco.material.service.MorderVO">
 		select order_no, order_date,
 		c.client_code, c.client_name,
-		e.emp_name "manager", order_receiving
+		e.emp_name, order_receiving
 		from m_order m left outer join client c
 		on
 		m.client_code = c.client_code
 		left outer join employees e
-		on m.manager = e.emp_num
+		on m.emp_num = e.emp_num
+		order by order_no DESC
 	</select>
 
 	<select id="detailList"
 		parameterType="com.cart.eco.material.service.MorderVO"
 		resultType="com.cart.eco.material.service.MorderdetailVO">
-		select d.pro_code, p.pro_name, d.order_num, i.standard
-		from m_order m join m_order_detail d
-		on m.order_no = d.order_no
+		select d.pro_code, p.pro_name, d.order_num, i.standard, c.client_code
+		from m_order m 
+        join m_order_detail d
+		  on m.order_no = d.order_no
 		join product p
-		on p.pro_code = d.pro_code
+		  on p.pro_code = d.pro_code
 		join product_option i
-		on p.pro_code = i.pro_code
+		  on p.pro_code = i.pro_code
+        join client c 
+          on d.client_code = c.client_code
 		where d.order_no = #{orderNo}
 	</select>
 	
 	<select id="proInfo" parameterType="com.cart.eco.material.service.MorderVO" resultType="com.cart.eco.material.service.MorderVO">
-		select p.pro_code, p.pro_name, o.cost, o.sell_price, o.standard, unit
-		from product p join product_option o
-		on p.pro_code = o.pro_code
+		select p.pro_code, p.pro_name, o.cost, o.sell_price, o.standard, unit, c.client_code
+		from product p 
+        left outer join product_option o
+		  on p.pro_code = o.pro_code
+        left join client c
+        on o.client_code = c.client_code
+        where p.pro_group = 'j2'
 	</select>
 	
 	<insert id="insertOrder" parameterType="com.cart.eco.material.service.MorderVO">
@@ -42,7 +50,7 @@
 					order_date,
 					comments,
 					order_receiving,
-					manager
+					emp_num
 				<!-- 	emp_dept -->
 			)
 			values (
@@ -50,41 +58,45 @@
 					,#{orderDate}
 					,#{comments}
 					,#{orderReceiving}
-					,#{manager}
+					,#{empNum}
 					<!-- ,#{empDept} -->
 			)
 	</insert>
 	
 	<insert id="insertOrder1" parameterType="com.cart.eco.material.service.MorderVO">
-		<selectKey keyProperty="no">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
 			select nvl(max(no),0)+1 from m_order_detail		
 		</selectKey>
 		insert into m_order_detail (
 					no,
+					order_no,
 					pro_code,
 					pro_name,
 					standard,
 					sell_price,
 					unit,
 					order_num,
-					
+					client_code,
 					sum_price			
 					)
 			values (
 					 #{no}
+					,#{orderNo}
 					,#{proCode}
 					,#{proName}
+					,#{standard, jdbcType=VARCHAR}
 					,#{sellPrice}
-					,#{standard}
-					,#{unit}
+					,#{unit, jdbcType=VARCHAR}
 					,#{orderNum}
-					#{sumPrice}
+					,#{clientCode}
+					,#{sumPrice}
 					)
 	</insert>
 	
-	<delete id="deleteInfo" parameterType="com.cart.eco.material.service.MorderVO">
+	<delete id="deleteOrder" parameterType="com.cart.eco.material.service.MorderVO">
 		delete from m_order
 		where order_no = #{orderNo}
+		
 	</delete>
 	
 </mapper>
