@@ -46,6 +46,12 @@ public class MfController {
 		return "manufacture/mfPlanManage";
 	}
 	
+	@GetMapping("/mfProductList")
+	@ResponseBody
+	public List<MfPlanVO> mfProductList() {
+		return mfplan.getProductList();
+	}
+	
 	@PostMapping("/mfInsertPlan")
 	@ResponseBody
 	public int mfInsertPlan(@RequestBody List<MfPlanVO> vo) {
@@ -96,6 +102,12 @@ public class MfController {
 	@ResponseBody
 	public List<MfOrderVO> mfOrderDecideAll(){
 		return mforder.getMfReadyOrderList();
+	}
+	
+	@PostMapping("/mfOrderDecideSelect")
+	@ResponseBody
+	public int mfOrderDecideSelect(@RequestBody MfOrderVO vo) {
+		return mforder.decideMfOrder(vo);
 	}
 	
 	@GetMapping("/mfOrderRegist")

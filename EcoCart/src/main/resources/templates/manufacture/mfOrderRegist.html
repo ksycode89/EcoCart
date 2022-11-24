@@ -31,7 +31,7 @@
 			<div class="col-5">
 				<div style="height:40px">
 					<h4 style="display:inline">필요자재</h4>
-					<button type="button" class="btn btn-sm btn-primary" style="float:right">자재주문</button>
+					<!-- <button type="button" id="buyMatBtn" class="btn btn-sm btn-primary" style="float:right">자재주문</button> -->
 				</div>
 				<div id="mfNeedGridId"></div>
 			</div>
@@ -45,7 +45,7 @@
 		<br>
 		<!-- 미지시 계획 조회 Modal -->
 		<div class="modal fade" id="planListModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="planListLabel" aria-hidden="true">
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="planListLabel">미지시 계획 조회</h5>
@@ -63,18 +63,17 @@
 			
 		<!-- Modal -->
 		<div class="modal fade" id="testModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="staticBackdropLabel">주문서 조회</h5>
+						<h5 class="modal-title" id="staticBackdropLabel">자재 LOT 조회</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<span>테스트입니다.</span>
+						<div id="mfLotModalGridId"></div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary">등록</button>
 					</div>
 				</div>
 			</div>
@@ -84,6 +83,7 @@
 		el: document.getElementById('mfPlanSelectGridId'),
 		scrollX: false,
 		scrollY: false,
+		bodyHeight: 160,
 		columns: [
 			{
 	          header: '생산계획코드',
@@ -108,10 +108,14 @@
 		]
 	});
 	
+	mfPlanSelectGrid.hideColumn('mfPlanCode');
+	mfPlanSelectGrid.hideColumn('proCode');
+	
 	var mfPlanListModalGrid = new tui.Grid({
 		el: document.getElementById('mfPlanListModalGridId'),
 		scrollX: false,
-		scrollY: false,
+		scrollY: true,
+		bodyHeight: 400,
 		columns: [
 			{
 	          header: '생산계획코드',
@@ -154,10 +158,11 @@
 	var mfOrderGrid = new tui.Grid({
 		el: document.getElementById('mfOrderGridId'),
 		scrollX: false,
-		scrollY: false,
+		scrollY: true,
+		bodyHeight: 160,
 		rowHeaders:['rowNum'],
 		columns: [
-	        {
+			{
 	          header: '생산지시코드',
 	          name: 'mfOrderCode'
 	        },
@@ -187,36 +192,66 @@
 		]
 	});
 	
+	mfOrderGrid.hideColumn('mfOrderCode');
+	
     var mfNeedGrid = new tui.Grid({
 		el: document.getElementById('mfNeedGridId'),
 		scrollX: false,
-		scrollY: false,
+		scrollY: true,
+		bodyHeight: 360,
 		rowHeaders:['rowNum'],
 		columns: [
 	        {
 	          header: '자재코드',
-	          name: 'proCode'
+	          name: 'PRO_CODE'
 	        },
 	        {
 	          header: '자재명',
-	          name: 'proName'
+	          name: 'PRO_NAME'
 	        },
 	        {
 	          header: '필요량',
-	          name: 'bomNeedNum'
+	          name: 'BOM_NEED_NUM'
 	        }
 		]
 	});
-		
-	mfNeedGrid.on('click',(ev) => {
-		console.log(ev.rowKey);
-		$("#testModal").modal("show");
+    
+    var mfLotModalGrid = new tui.Grid({
+		el: document.getElementById('mfLotModalGridId'),
+		scrollX: false,
+		scrollY: true,
+		bodyHeight: 400,
+		rowHeaders:['rowNum'],
+		columns: [
+	        {
+	          header: '자재코드',
+	          name: 'PRO_CODE'
+	        },
+	        {
+	          header: '자재명',
+	          name: 'PRO_NAME'
+	        },
+	        {
+	          header: '자재LOT',
+    	      name: 'lotCode'
+	        },
+	        {
+	          header: '재고량',
+	          name: 'lotNum'
+	        },
+	        {
+	          header: '사용량',
+	          name: 'useNum',
+	          editor: 'text'
+	        }
+		]
 	});
 		
 	var mfBringGrid = new tui.Grid({
 		el: document.getElementById('mfBringGridId'),
 		scrollX: false,
-		scrollY: false,
+		scrollY: true,
+		bodyHeight: 360,
 		rowHeaders:['rowNum'],
 		columns: [
 			{
@@ -267,46 +302,70 @@
     })
 	
     var today = new Date();
-	
+    
     mfPlanSelectGrid.on('click', (ev) => {
-    	console.log(mfPlanSelectGrid.getRow(0).proCode);
-    	if(ev.rowKey != null){
-    		//console.log(mfPlanSelectGrid.getRow(ev.rowKey));
-    		mfOrderGrid.appendRow({
-    			proCode : mfPlanSelectGrid.getRow(ev.rowKey).proCode,
-    			proName : mfPlanSelectGrid.getRow(ev.rowKey).proName,
-    			mfOrderDate : today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
-    		});
+    	if(mfNeedGrid.getRow(0) == null){
+    		if(mfPlanSelectGrid.getRow(0).needNum != null){
+        		mfOrderGrid.appendRow({
+           			proCode : mfPlanSelectGrid.getRow(0).proCode,
+           			proName : mfPlanSelectGrid.getRow(0).proName,
+           			mfOrderDate : today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+           		});
+        	}
     	}
-    })
+    });
     
     mfOrderGrid.on('afterChange', (ev) => {
     	let orderRowCount = 0;
     	for(i=0; i<mfOrderGrid.getRowCount(); i++){
     		if(mfOrderGrid.getRow(i).mfOrderNum != null){
     			orderRowCount += parseInt(mfOrderGrid.getRow(i).mfOrderNum);
-    			console.log(orderRowCount)
+    			//console.log(orderRowCount)
     		}
-    		if(orderRowCount > mfPlanSelectGrid.getRow(0).needNum){
-        		alert('안됨');
-        	} else if (orderRowCount = mfPlanSelectGrid.getRow(0).needNum){
-        		let a = mfPlanSelectGrid.getRow(0).proCode;
-        		$.ajax({
-        			url: '/mfOrderNeedList?proCode='+a,
-        			method: 'GET',
-        			success: function(data){
-        				console.log(data);
-        				mfNeedGrid.resetData(data);
-        			},
-        			error: function(error){
-        				console.log(error)
-        			}
-        		})
-        	}
-		}    	
-    })
+		}
+    	//console.log(mfPlanSelectGrid.getRow(0).needNum);
+    	if(orderRowCount > mfPlanSelectGrid.getRow(0).needNum){
+    		alert('필요수량을 초과하였습니다.');
+    		let proCode1 = mfOrderGrid.getRow(ev.changes[0].rowKey).proCode;
+    		let proName1 = mfOrderGrid.getRow(ev.changes[0].rowKey).proName;
+    		mfOrderGrid.setRow(ev.changes[0].rowKey, {
+    			proCode: proCode1,
+    			proName: proName1,
+    			mfOrderDate: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+    		})
+    		//console.log(ev.changes[0].rowKey);
+    	} else if (orderRowCount == mfPlanSelectGrid.getRow(0).needNum){
+    		for(i=0; i<mfOrderGrid.getRowCount(); i++){
+    			if(mfOrderGrid.getRow(i).mfOrderNum == null || mfOrderGrid.getRow(i).mfOrderNum == '' || mfOrderGrid.getRow(i).mfOrderNum == 0){
+    				mfOrderGrid.removeRow(i);
+    			}
+    		}
+    		let a = mfPlanSelectGrid.getRow(0).proCode;
+    		$.ajax({
+    			url: '/mfOrderNeedList?proCode='+a,
+    			method: 'GET',
+    			success: function(data){
+    				mfNeedGrid.resetData(data);
+    			},
+    			error: function(error){
+    				console.log(error);
+    			}
+    		})
+    	} else {
+    		mfNeedGrid.clear();
+    	}
+    });
     
-		</script>
-	</div>
+    mfNeedGrid.on('click',(ev) => {
+		if(mfNeedGrid.getRow(ev) != null){
+			$("#testModal").modal("show");
+			testModal.addEventListener('shown.bs.modal', () => {
+				mfLotModalGrid.refreshLayout();
+		    });
+		}
+	});
+    
+	</script>
+</div>
 </body>
 </html>

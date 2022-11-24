@@ -38,9 +38,9 @@
 					<div id="planDeleteGridId"></div>
 				</div>
 			</div><br>
-			<!-- Modal -->
+			<!-- 주문서 Modal -->
 			<div class="modal fade" id="orderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="orderList" aria-hidden="true">
-				<div class="modal-dialog">
+				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="orderList">주문서 조회</h5>
@@ -48,6 +48,23 @@
 						</div>
 						<div class="modal-body">
 							<div id="orderModalGridId"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">닫기</button>						
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 제품 Modal -->
+			<div class="modal fade" id="productModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="productList" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="productList">주문서 조회</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div id="productModalGridId"></div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">닫기</button>						
@@ -64,14 +81,10 @@
 	var planInsertGrid = new tui.Grid({
 		el: document.getElementById('planInsertGridId'),
 		scrollX: false,
-		scrollY: false,
+		scrollY: true,
+		bodyHeight: 560,
 		rowHeaders: ['checkbox'],
 		columns: [
-			{
-	          header: '생산계획코드',
-	          name: 'mfPlanCode',
-	          editor: 'text'
-	        },
 	        {
 	          header: '생산계획명',
 	          name: 'mfPlanName',
@@ -83,20 +96,18 @@
 	        },
 	        {
 	          header: '제품코드',
-	          name: 'proCode',
-	          editor: 'text'
+	          name: 'proCode'
 	        },
 	        {
 	          header: '제품명',
-	          name: 'proName',
-	          editor: 'text'
+	          name: 'proName'
 	        },
 	        {
 	          header: '주문수량',
 		      name: 'allsellNum'
 	        },
 	        {
-		      header: '필요수량',
+		      header: '계획수량',
 	          name: 'needNum',
 	          editor: 'text'
 	        },
@@ -111,7 +122,8 @@
 	var planDeleteGrid = new tui.Grid({
 		el: document.getElementById('planDeleteGridId'),
 		scrollX: false,
-		scrollY: false,
+		scrollY: true,
+		bodyHeight: 560,
 		rowHeaders: ['checkbox'],
 		columns: [
 			{
@@ -139,12 +151,8 @@
 	          name: 'deDate'
 	        },
 	        {
-	          header: '필요수량',
+	          header: '계획수량',
 	          name: 'needNum'
-	        },
-	        {
-	          header: '지시수량',
-	          name: 'totalOrderNum'
 	        }
 		]
 	});
@@ -158,19 +166,24 @@
     			planDeleteGrid.resetData(data);
     		},
     		error:function(error){
-    			console.log(error);
+    			console.log(error)
     		}
     	})
-    }
+    };
 	
 	var orderModalGrid = new tui.Grid({
 		el: document.getElementById('orderModalGridId'),
 		scrollX: false,
-		scrollY: false,
+		scrollY: true,
+		bodyHeight: 400,
 		columns: [
 	        {
 	          header: '주문서코드',
 	          name: 'orderCode'
+	        },
+	        {
+	          header: '제품코드',
+	          name: 'proCode'
 	        },
 	        {
 	          header: '제품명',
@@ -187,9 +200,25 @@
 		]
 	});
 	
-	orderBtn.addEventListener('click', mfPlanOrderList);
+	var productModalGrid = new tui.Grid({
+		el: document.getElementById('productModalGridId'),
+		scrollX: false,
+		scrollY: true,
+		bodyHeight: 400,
+		columns: [
+	        {
+	          header: '제품코드',
+	          name: 'proCode'
+	        },
+	        {
+	          header: '제품명',
+	          name: 'proName'
+	        }
+		]
+	});
 	
-	function mfPlanOrderList(){
+	orderBtn.addEventListener('click', () => {
+		$("orderModalGrid").modal("show");
     	$.ajax({
     		url:'/mfPlanOrderList',
     		success:function(data){
@@ -199,7 +228,7 @@
     			console.log(error);
     		}
     	})
-    }
+	});
 	
     planInsertTab.addEventListener('click', () => {
     	setInterval(()=>{planInsertGrid.refreshLayout()},1);
@@ -213,6 +242,41 @@
     	planInsertGrid.removeRows(planInsertGrid.getCheckedRowKeys());
     });
     
+    let ev1 = {};
+    
+    planInsertGrid.on('click', (ev) => {
+    	if(ev.columnName=='proCode'){
+    		$.ajax({
+        		url:'/mfProductList',
+        		success:function(data){
+        			productModalGrid.resetData(data);
+        			ev1 = ev;
+        		},
+        		error:function(error){
+        			console.log(error);
+        		}
+        	});
+    		$("#productModal").modal("show");
+    		productModal.addEventListener('shown.bs.modal', () => {
+    	    	productModalGrid.refreshLayout();
+    	    });
+    	}
+    });
+    
+    productModalGrid.on('click', (ev2) => {
+		let mfPlanName1 = planInsertGrid.getRow(ev1.rowKey).mfPlanName;
+		let needNum1 = planInsertGrid.getRow(ev1.rowKey).needNum;
+		let proCode1 = productModalGrid.getRow(ev2.rowKey).proCode;
+		let proName1 = productModalGrid.getRow(ev2.rowKey).proName;
+		planInsertGrid.setRow(ev1.rowKey, {
+			mfPlanName : mfPlanName1,
+			needNum : needNum1,
+			proCode : proCode1,
+			proName : proName1
+		});
+		$('#productModal').modal('hide');
+	});
+    
     planRegistBtn.addEventListener('click', () => {
     	$.ajax({
     		url: '/mfInsertPlan',
@@ -224,13 +288,18 @@
            		xhr.setRequestHeader(header, token);
            	},
     		success: function(data){
-    			location.reload();
+    			if(data != 0){
+        			alert('계획이 등록되었습니다.');
+        			location.reload();
+    			} else {
+    				alert('등록할 계획이 없습니다.')
+    			}
     		},
     		error: function(error){
     			console.log(error);
     		}
     	})
-    })
+    });
     
     planDeleteTab.addEventListener('click', () => {
     	setInterval(()=>{planDeleteGrid.refreshLayout()},1);
@@ -247,7 +316,12 @@
            		xhr.setRequestHeader(header, token);
            	},
     		success: function(data){
-    			location.reload();
+    			if(data != 0){
+    				alert('해당 계획이 취소되었습니다.');
+        			location.reload();
+    			} else {
+    				alert('취소할 계획을 선택하지 않았습니다.');	
+    			}
     		},
     		error: function(error){
     			console.log(error)

@@ -19,12 +19,17 @@ public class MfPlanServiceImpl implements MfPlanService {
 	public List<MfPlanVO> getMfPlanList() {
 		return mapper.getMfPlanList();
 	}
-
+	
 	@Override
 	public List<MfPlanVO> getOrderList() {
 		return mapper.getOrderList();
 	}
 
+	@Override
+	public List<MfPlanVO> getProductList() {
+		return mapper.getProductList();
+	}
+	
 	@Override
 	public int insertMfPlan(List<MfPlanVO> vo) {
 		int result = 0;
@@ -48,4 +53,5 @@ public class MfPlanServiceImpl implements MfPlanService {
 		}
 		return result;
 	}
+
 }

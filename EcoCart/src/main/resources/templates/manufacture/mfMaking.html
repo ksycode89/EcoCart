@@ -34,10 +34,27 @@
 	   		},
 	   	];
 	    
-	    class MakingButtonRenderer {
+	    class MakingButtonRenderer1 {
 			constructor(props) {
 		    	const el = document.createElement('span');
-		        el.innerHTML='<button type="button" class="btn btn-sm btn-success" id="orderBtn" style="width:60px">시작</button> <button type="button" class="btn btn-sm btn-danger" id="orderBtn" style="width:80px">긴급정지</button>';
+		        el.innerHTML='<button type="button" class="btn btn-sm btn-success" style="width:80px">시작</button>';
+		        this.el = el;
+		        this.render(props);
+		    }
+
+		    getElement() {
+		    	return this.el;
+		    }
+
+		    render(props) {
+		    	this.el.value = String(props.value);
+		    }
+		}
+	    
+	    class MakingButtonRenderer2 {
+			constructor(props) {
+		    	const el = document.createElement('span');
+		        el.innerHTML='<button type="button" class="btn btn-sm btn-danger" style="width:80px">긴급정지</button>';
 		        this.el = el;
 		        this.render(props);
 		    }
@@ -56,10 +73,12 @@
 			data: gridData,
 			scrollX: false,
 			scrollY: false,
+			bodyHeight: 160,
 			columns: [
 		        {
 		          header: '라인번호',
 		          name: 'lineNo',
+		          align: 'center'
 		        },
 		        {
 		          header: '생산지시코드',
@@ -79,18 +98,28 @@
 		        },
 		        {
 		          header: '공정가동',
+		          name: 'startProcess',
 		          align: 'center',
 				  renderer: {
-				  	type: MakingButtonRenderer
+				  	type: MakingButtonRenderer1
 				  }
-		        }
+		        },
+		        {
+		          header: '공정정지',
+		          name: 'stopProcess',
+		          align: 'center',
+				  renderer: {
+				  	type: MakingButtonRenderer2
+				  }
+		        },
 			]
 		});
 	    
 		const makingDetailGrid = new tui.Grid({
 			el: document.getElementById('makingDetailGridId'),
 			scrollX: false,
-			scrollY: false,
+			scrollY: true,
+			bodyHeight: 360,
 			rowHeaders:['rowNum'],
 			columns: [
 		        {
