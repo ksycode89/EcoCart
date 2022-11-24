@@ -46,7 +46,7 @@ public class MaterialController {
 	}
 	
 	//발주 등록
-	@PostMapping("/insertOrder")
+	@PostMapping("/insertOrderCh")
 	@ResponseBody
 	public int materialInsertInfo(@RequestBody ModerReqVO morderVO) {
 		System.out.println(morderVO);
