@@ -38,8 +38,37 @@ public class EmpServiceImpl implements EmpService {
 
 	@Override
 	public EmpVO selectEmpOne(String empNum) {
-		// TODO Auto-generated method stub
+		
 		return empMapper.selectEmpOne(empNum);
+	}
+
+	
+	// 사원 등록.
+	@Override
+	public int inEmpInfo(EmpVO vo) {
+		
+		return empMapper.insertEmpInfo(vo);
+	}
+
+	// 사원 수정.
+	@Override
+	public int upEmpInfo(EmpVO vo) {
+		
+		return empMapper.updateEmp(vo);
+	}
+
+	// 사원 삭제.
+	@Override
+	public int delEmpInfo(List<EmpVO> vo) {
+		int result = 0;
+		for(EmpVO one: vo) {
+			result += empMapper.deleteEmp(one);
+		}
+		if(vo.size() == result) {
+			return result;
+		}
+		
+		return 0 ;
 	}
 	
 
