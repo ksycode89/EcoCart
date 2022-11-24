@@ -168,19 +168,21 @@
 	
 	<div style="display: flex; justify-content: flex-end; " id="btn-div" class="mb-3">
 		<div>
-			<button type="button" onclick="selectEmp()">조회</button> 
+			<button type="button" class="btn btn-sm btn-primary" onclick="selectEmp()">조회</button> 
 			</div>
 		<div>
-			<button type="button" onclick="addEmp()"> + </button> 
+			<button type="button"  class="btn btn-sm btn-primary" onclick="addEmp()">
+				<svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
+			</button> 
 		</div>
 		<div>
-			<button type="button" onclick="insertEmp()">등록</button> 
+			<button type="button" class="btn btn-sm btn-primary" onclick="insertEmp()">등록</button> 
 		</div>
 		<div >
-			<button type="button" onclick="updateEmp()">수정</button> 
+			<button type="button" class="btn btn-sm btn-primary" onclick="updateEmp()">수정</button> 
 		</div>
 		<div >
-			<button type="button" onclick="delEmp()">삭제</button> 
+			<button type="button" class="btn btn-sm btn-secondary" onclick="delEmp()">삭제</button> 
 		</div>
 	</div>	
 
@@ -286,17 +288,32 @@
 	  <div style="display: flex; justify-content: flex-end; " id="btn-div" class="mb-3">
 		
 		<div >
-			<button type="button">추가</button> 
+			<button type="button" class="btn btn-sm btn-primary">추가</button> 
 		</div>
 		<div >
-			<button type="button">삭제</button> 
+			<button type="button" class="btn btn-sm btn-secondary">삭제</button> 
 		</div>
 	</div>
 
 	 <div id="grid2" class="mb-3 row"></div>
 
+	
 	<script>
  	
+	/* data resouce */
+	  const dataSource = {
+      		 withCredentials: false,
+      		 contentType: 'application/json',
+
+      		  api: {
+      			  
+      		    readData  : { url: '/ajax/list', method: 'POST' },
+      		    //createData: { url: '/callInsert', method: 'POST' },
+      		    updateData: { url: '/updateEmp', method: 'POST' },
+      		    //deleteData : { url: '/callDelete', method: 'POST' },
+      		    //updateModifiy: { url: '/callModi', method: 'POST' },
+      		  }
+      		};
 
         /*사원 이름 모달 */
 		const gridM = new tui.Grid({
@@ -507,7 +524,41 @@
 			}, {
 				header : '직급',
 				name : 'jobGrade',
-				editor : 'text'
+				editor: {
+				      type: 'select',
+				      options: {
+				      listItems: [
+				        {
+				          text: '선택 안함',
+				          value: '0'
+				        },
+				        {
+				          text: '사원',
+				          value: '사원'
+				        },
+				        {
+				          text: '대리',
+				          value: '대리'
+				        },
+				        {
+					      text: '주임',
+					      value: '주임'
+				        },      
+				        {
+				          text: '과장',
+				          value: '과장'
+				        },
+				        {
+				          text: '차장',
+				          value: '차장'
+				        },
+				        {
+					      text: '부장',
+					      value: '부장'
+				        }
+				        ]
+				      }
+				}
 			}, {
 				header : '입사일',
 				name : 'empHire',
@@ -525,7 +576,8 @@
 				name : 'comments',
 				editor : 'text'
 			}
-			]
+			],
+			data : dataSource
 	
 		});
 				
@@ -551,7 +603,7 @@
 			
 		})
 		
-		// 부서이름 모달 클릭시 셀에값 넣어주기.
+		// 부서이름 모달 클릭시 셀 값 넣어주기.
 		gridEmp.on("click", ev => {
 		
 		let emp = gridEmp.getRow(ev.rowKey);
@@ -565,12 +617,85 @@
 		
 		
 	
-		// 사원 등록.
+		// 사원 등록.(한 건)
 		function insertEmp(){
+			let num =0;
+			$(grid1.getData()).each((a, result )=>{
+				if (result.empNum == null) {
+					num = result.rowKey
+				}
+			})
 			
+			$.ajax({
+				url : "/insertEmp",
+				type : 'post',
+				data : grid1.getData()[num],
+				success : function(data) {
+					//console.log(data)
+					selectEmp();
+				
+				}, error : function(error) {
+					alert("등록이 완료되지 않았습니다!!!!!");
+					console.log(error);
+				}
+			})
 		}
+	
 		
 		
+		// 사원정보 수정.
+		function updateEmp() {
+			console.log(grid1.getData())
+			
+			grid1.request('updateData');
+			
+			/* $.ajax({
+				url : "updateEmp",
+				type : 'post',
+				data : {},
+				success : function(data){
+					grid1.resetData(data);
+					
+				},error : function(){
+					alert("수정 실패!!!!");
+					console.log(error)
+				}
+			}) */
+		
+		}
+			
+			
+		
+		// 사원 삭제.
+		function delEmp() {
+			let result =[];
+			let a = grid1.getCheckedRows()
+			$(a).each((a, data)=>{
+				let obj = {"empNum": data.empNum}
+				result.push(obj) 
+			})
+			console.log(result)
+
+			$.ajax({
+				url : "delEmp",
+				type : 'post',
+				contentType : "application/json",
+				data : JSON.stringify(result),
+		        success : function (data){
+		        	if(data > 0){
+		        	
+					grid1.removeCheckedRows(true);
+					alert(data + "건이 삭제되었습니다!")
+		        	}
+				}, 
+				error : function(error){
+				alert("삭제 실패!!!!!");
+				console.log(error)
+				
+				}
+			 })
+		
+		}
 
 		 /* 담당사원 */
 		const grid2 = new tui.Grid({
@@ -601,7 +726,7 @@
 			]
 		});
 		
-	// 사원조회 ajax
+	// 사원조회 필터 ajax
 		function selectEmp(){
 			 $.ajax({
 				 url : "ajax/list",

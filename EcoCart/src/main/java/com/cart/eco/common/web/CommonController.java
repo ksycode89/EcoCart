@@ -96,12 +96,55 @@ public class CommonController {
 	  }
 	
 	// 부서 모달 ajax.
-		  @GetMapping("ajax/dept")
-		  @ResponseBody
-		  public List<CommonVO> ajaxDepName() {
+	@GetMapping("ajax/dept")
+	@ResponseBody
+	public List<CommonVO> ajaxDepName() {
 			  
-			  return commonService.getDept();
-		  }
+		return commonService.getDept();
+		
+	}
+		  
+	// 사원 등록 ajax.
+	@PostMapping("/insertEmp")
+	@ResponseBody
+	public String ajaxIn( EmpVO vo) {
+		System.out.println("insertEmp : " + vo);
+		int result = empService.inEmpInfo(vo);
+		
+		String mes = result +"건 등록에 성공했습니다." ;
+		if(result == 0) {
+			mes = "등록에 실패하였습니다!!!";
+			return mes;
+		}
+		
+		return mes;
+	}
+	
+	// 사원정보 수정.
+	@PostMapping("/updateEmp")
+	@ResponseBody
+	public String updateEmp(@RequestBody ToastGridVO<EmpVO> vo) {
+		System.out.println("updaate : "+vo.getUpdatedRows());
+		int data = 0;
+		String result = "수정 실패!!!";
+		for (EmpVO res : vo.getUpdatedRows()) {
+			data += empService.upEmpInfo(res);
+		}
+		if(data > 0) {
+			return result = data + "건이 수정되었습니다.";
+		}
+		
+		return result; 
+	}
+		  
+	// 사원 삭제 ajax.
+	@PostMapping("/delEmp")
+	@ResponseBody
+	public int deleteEmp(@RequestBody List<EmpVO> vo) {
+		
+		
+		return empService.delEmpInfo(vo);
+	}
 		
 	//공통코드가져오기
 	      
