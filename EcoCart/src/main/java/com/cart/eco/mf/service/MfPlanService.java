@@ -10,6 +10,9 @@ public interface MfPlanService {
 	// 주문서목록조회
 	public List<MfPlanVO> getOrderList();
 	
+	// 완제품목록조회
+	public List<MfPlanVO> getProductList();
+	
 	// 생산계획삭제목록조회
 	public List<MfPlanVO> getMfDeletePlanList();
 	

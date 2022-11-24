@@ -13,10 +13,15 @@
 	
 	<select id="getOrderList" resultType="com.cart.eco.mf.service.MfPlanVO">
 		SELECT o.order_code, d.pro_code, d.pro_name, d.allsell_num, o.de_date
-		FROM orders o JOIN order_d d
+		FROM orders o LEFT JOIN order_d d
 		ON o.order_code = d.order_code
-		WHERE o.de_date > SYSDATE
-		AND order_st = '대기'
+		WHERE o.de_date >= TO_DATE(SYSDATE, 'yy/MM/dd')
+		AND o.order_st = '대기'
+	</select>
+	
+	<select id="getProductList" resultType="com.cart.eco.mf.service.MfPlanVO">
+		SELECT pro_code, pro_name
+		FROM product
 	</select>
 	
 	<select id="getMfDeletePlanList" resultType="com.cart.eco.mf.service.MfPlanVO">
@@ -29,8 +34,9 @@
 	</select>
 	
 	<insert id="insertMfPlan" parameterType="com.cart.eco.mf.service.MfPlanVO">
-		<selectKey>
-		
+		<selectKey keyProperty="mfPlanCode" resultType="String" order="BEFORE">
+		SELECT concat('PLAN-',concat(to_char(SYSDATE,'YYmmdd'),concat('-', nvl(max(to_number(substr(mf_plan_code, 13)),0))+1)))
+		FROM mf_plan
 		</selectKey>
 		INSERT ALL
 		INTO mf_plan(mf_plan_code

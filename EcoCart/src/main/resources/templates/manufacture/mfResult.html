@@ -30,7 +30,8 @@
 		const mfResultGrid = new tui.Grid({
 			el: document.getElementById('mfResultGridId'),
 			scrollX: false,
-			scrollY: false,
+			scrollY: true,
+			bodyHeight: 280,
 			rowHeaders: ['rowNum'],
 			columns: [
 		        {
@@ -82,7 +83,8 @@
 		const mfFaultyGrid = new tui.Grid({
 			el: document.getElementById('mfFaultyGridId'),
 			scrollX: false,
-			scrollY: false,
+			scrollY: true,
+			bodyHeight: 160,
 			rowHeaders: ['rowNum'],
 			columns: [
 		        {

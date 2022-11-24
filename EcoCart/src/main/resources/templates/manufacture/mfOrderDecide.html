@@ -5,6 +5,8 @@
       layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>생산계획확정</title>
 </head>
 <body>
@@ -14,6 +16,9 @@
 		<br>
 		<script>
 
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
 	    class TestButtonRenderer {
 			constructor(props) {
 		    	const el = document.createElement('span');
@@ -59,7 +64,7 @@
 		        },
 		        {
 				  header: '지시확정',
-				  name: 'mfOrderStatus',
+				  name: 'decide',
 				  align: 'center',
 				  renderer: {
 				  	type: TestButtonRenderer
@@ -82,8 +87,27 @@
 	    }
 		
 		orderDecideGrid.on('click', (ev) => {
-			console.log(ev)
-			
+			console.log(orderDecideGrid.getRow(ev.rowKey))
+			if(ev.columnName=='decide'){
+				//console.log(orderDecideGrid.getRow(ev.rowKey).mfOrderCode);
+				$.ajax({
+		    		url: '/mfOrderDecideSelect',
+		    		type: 'POST',
+		    		contentType: 'application/json',
+		    		data: JSON.stringify(orderDecideGrid.getRow(ev.rowKey)),
+		    		dataType: 'JSON',
+		    		beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           	},
+		    		success: function(data){
+		    			alert('확정!');
+		    			location.reload();
+		    		},
+		    		error: function(error){
+		    			console.log(error);
+		    		}
+		    	})
+			}
 		})
 		
 	    </script>

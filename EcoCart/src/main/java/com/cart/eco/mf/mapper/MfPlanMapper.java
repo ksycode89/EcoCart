@@ -6,13 +6,16 @@ import com.cart.eco.mf.service.MfPlanVO;
 
 public interface MfPlanMapper {
 	
-	// 생산계획조회
+	// 생산계획목록조회
 	public List<MfPlanVO> getMfPlanList();
 	
-	// 주문서조회
+	// 주문서목록조회
 	public List<MfPlanVO> getOrderList();
 
-	// 생산계획삭제목록
+	// 완제품목록조회
+	public List<MfPlanVO> getProductList();
+	
+	// 생산계획삭제목록조회
 	public List<MfPlanVO> getMfDeletePlanList();
 	
 	// 생산계획등록

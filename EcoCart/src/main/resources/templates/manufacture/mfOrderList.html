@@ -33,7 +33,8 @@
 		const orderListGrid = new tui.Grid({
 			el: document.getElementById('orderListId'),
 			scrollX: false,
-			scrollY: false,
+			scrollY: true,
+			bodyHeight: 600,
 			columns: [
 		        {
 		          header: '생산지시코드',
@@ -62,6 +63,7 @@
 		        {
 		          header: '진행상황',
 		          name: 'mfOrderStatus',
+		          align: 'center',
 		          filter: 'select'
 		        }
 			]

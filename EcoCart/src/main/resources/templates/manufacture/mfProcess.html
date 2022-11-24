@@ -24,11 +24,13 @@
 		const processGrid = new tui.Grid({
 			el: document.getElementById('processGridId'),
 			scrollX: false,
-			scrollY: false,
+			scrollY: true,
+			bodyHeight: 600,
 			columns: [
 		        {
 		          header: '라인번호',
 		          name: 'lineNo',
+		          align: 'center',
 		          filter: 'select'
 		        },
 		        {
