@@ -55,18 +55,44 @@ public class EstimateServiceImpl implements EstimateService {
 	public String insertEstmt(EstimateVO vo) {
 
 		
-		return String.valueOf( mapper.insertEstmt(vo)  );
+		return String.valueOf( mapper.insertEstmt(vo) );
 	}
 
 
 	@Override
 	public int insertEstmtD(List<EstimateDVO> vo) {
-		// TODO Auto-generated method stub
-		return mapper.insertEstmtD(vo);
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			
+			result  += mapper.insertEstmtD(vo.get(i));
+		}
+		
+		return result;
 	}
 
 	
-	
+	//업데이트
+	@Override
+	public int updateEstmtSt(List<EstimateVO> vo) {
+		
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			
+			result  += mapper.updateEstmtSt(vo.get(i));
+		}
+		
+		return result;
+	}
+
+
+	@Override
+	public List<EstimateVO> getEstmtCode() {
+		// TODO Auto-generated method stub
+		return mapper.getEstmtCode();
+	}
+
+
+
 
 
 	

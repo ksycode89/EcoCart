@@ -33,6 +33,17 @@ public interface OrdersService {
 	
 	//섹렉트 옵션 - 견적코드 
 	public List<EstimateVO> selectEstmtCode();
+	
+	//주문서 등록
+	public String insertOrder(OrdersVO vo);
+	
+	public int insertOrderD(List<OrderDVO> vo);
+	
+	//승인 업데이트
+	public int updateOrderSt(List<OrdersVO> vo);
+	
+	//마감 업데이트
+	public int updateOrderCanSt(List<OrdersVO> vo);
 
 
 }

@@ -42,7 +42,7 @@
 			
            </div>
            <div>
-               <button type="button" class="btn btn-sm btn-primary" style="float:right;  margin:5px; margin-right: 30px">승인</button>   
+               <button type="button" class="btn btn-sm btn-primary" style="float:right;  margin:5px; margin-right: 30px" onclick="updateOrderSt()">승인</button>   
                <button id="showModal" type="button" class="btn btn-sm btn-primary" style= "float:right;  margin:5px;"
                   data-bs-toggle="modal" data-bs-target="#staticBackdrop">주문서 등록</button>
 			</div>
@@ -90,7 +90,7 @@
 				  <div class="container-fluid">
 				
 							<label for="row2" style="width:80px; height: 30px; text-align:center;"> 견적코드</label>
-				         		<select id="select4" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white" name="no" onchange="handleOnChange4(this)">
+				         		<select id="select4" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white" name="no">
 				         			<option value="선택">----선 택----</option>
 				         			<th:block th:each="e : ${estmtCode1}">
 				         				<option th:value="${e.estmtCode}" th:text="${e.estmtCode}"></option>
@@ -105,7 +105,7 @@
 			 		<div id="grid5"></div>
 		      
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-primary">주문 등록</button>
+		        <button type="button" class="btn btn-primary" onclick="plusOrder()">주문 등록</button>
 		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 		      </div>
 		      
@@ -294,52 +294,7 @@
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		function handleOnChange(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result').value = text;
-		}
-		
-		function handleOnChange2(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result2').value = text;
-		}
-	
-		function handleOnChange3(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result3').value = text;
-		}
-		
-		function handleOnChange4(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result4').value = text;
-		}
-	
-		
-		
+
 		
 		//수량 * 단가 = 합계액
 		function add(){
@@ -372,7 +327,8 @@
 			$.ajax({
 				url:'/listOrders',
 				success : function(result) {
-					console.log(JSON.stringify(result)+"ㅇㅇㅇㅇㅇ")
+					console.log(result)
+					console.log(JSON.stringify(result))
 					grid.resetData(result);
 				},
 				error : function(error){
@@ -425,6 +381,7 @@
 				method:'GET',
 				url:'/MestmtList?estmtCode='+a,
 				success : function(result){
+					console.log(result);
 					grid4.resetData(result)
 				},
 				error: function(error){
@@ -446,6 +403,72 @@
 				}
 				
 			})
+		}
+		
+		//주문서등록
+		function plusOrder(){
+			console.log("버튼누름")
+			
+			$.ajax({
+				method:'POST',
+				url:'/insertOrder',
+				contentType : 'application/json',
+				dataType:'JSON',
+				data: JSON.stringify(grid4.getData()),
+				success : function(result) {
+					console.log("주문 insert")
+					console.log(result);
+					
+					// 주문상세 그리드에 있는 값을 insert + 주문코드 
+					$.ajax({
+						method:'POST',
+						url:'/insertOrederD',
+						contentType : "application/json",
+						dataType:"JSON",
+						data: JSON.stringify(grid5.getData()),
+						success : function(result) {
+							console.log("주문상세 insert")
+							console.log(result);
+					
+					},
+					error : function(error){
+						console.log("견적상세 er");
+						console.log(error)
+					}
+				
+					})
+					
+				},
+				error : function(error){
+					console.log("주문 er")
+					console.log(error)
+				}
+			})
+			
+			
+		}
+			
+		
+		
+		
+		//승인 상태 업데이트
+		function updateOrderSt(){
+			 $.ajax({
+					method:'POST',
+					url:'/updateOrderSt',
+					contentType : 'application/json',
+					dataType:'JSON',
+					data: JSON.stringify(grid.getCheckedRows()),
+					success : function(result) {
+						console.log(result)
+						location.reload(result);
+					},
+					error : function(error){
+						console.log(error);
+					}
+				})		
+			
+			
 		}
 		
 		

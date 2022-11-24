@@ -1,6 +1,5 @@
 package com.cart.eco.open.web;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,14 +68,26 @@ public class EstimateController {
 		
 	}
 	
-
+	//견적번호 가져오기
+	@GetMapping("/getEstmtCode")
+	@ResponseBody
+	public List<EstimateVO> getEstmtCode(EstimateVO vo, Model model) {
+		
+		System.out.println("------------------------");
+		estimateService.getEstmtCode();
+		
+		System.out.println(vo.getEstmtCode());
+		
+		
+		return estimateService.getEstmtCode();
+		
+	}
 
 	//견적서insert
 	@PostMapping("/insertEstmt") 
 	@ResponseBody
 	@JsonCreator
 	public EstimateVO insertEstmt (@RequestBody List<EstimateVO> vo) {
-		//견적서 상세 
 		
 		EstimateVO a = vo.get(0);
 		System.out.println(vo.get(0));
@@ -92,23 +103,26 @@ public class EstimateController {
 	}
 	
 
+	
+	
 	//견적서 상세 insert
 	@PostMapping("/insertEstmtD")
 	@ResponseBody
 	public int insertEstmtD( @RequestBody List<EstimateDVO> vo ) {
-		int result = 0;
 		
-		
-		
-		estimateService.insertEstmtD(vo);
-		
-		
-		return result;
+		return estimateService.insertEstmtD(vo);
 	}
-	
 
 
-	
+	//견적서 상태 update
+	@PostMapping("/updateEstmtSt")
+	@ResponseBody
+	public int updateEstmtSt (@RequestBody List<EstimateVO> vo) {
+		
+		
+		
+		return estimateService.updateEstmtSt(vo); 
+	}
 	
 	
 	

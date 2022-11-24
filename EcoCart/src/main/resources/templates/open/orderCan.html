@@ -43,6 +43,10 @@
 				<button type="button" class="btn btn-sm btn-secondary" id="estmtDateReset">초기화</button>
 			
            </div>
+           <div>
+               <button type="button" class="btn btn-sm btn-primary" style="float:right;  margin:5px; margin-right: 30px" onclick="updateOrderSt()">대기</button>   
+			</div>
+			
            <div><br></div>
 			
           </div>     
@@ -62,6 +66,7 @@
 		        el: document.getElementById('grid'), // Container element
 		        scrollX: false,
 	            scrollY: false,
+	            rowHeaders: ['checkbox'],
 	            columns: [
 		            {
 		            	header: '주문코드',
@@ -188,7 +193,27 @@
 			})
 		})
 			
+		
+		
+		//마감 상태 업데이트
+		function updateOrderSt(){
+			 $.ajax({
+					method:'POST',
+					url:'/updateOrderCanSt',
+					contentType : 'application/json',
+					dataType:'JSON',
+					data: JSON.stringify(grid.getCheckedRows()),
+					success : function(result) {
+						console.log(result)
+						location.reload(result);
+					},
+					error : function(error){
+						console.log(error);
+					}
+				})		
 			
+			
+		}	
 		// 조회버튼 / 리셋버튼
 	 	planAll.addEventListener('click', () => {
 	    	grid.unfilter('orderSt');

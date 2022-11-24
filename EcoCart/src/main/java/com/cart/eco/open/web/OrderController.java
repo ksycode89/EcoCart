@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cart.eco.common.service.ProductVO;
@@ -75,7 +77,28 @@ public class OrderController {
 	}
 	
 	
-	//////////////////////////////////////////////////////////////////////////
+	//주문서 insert
+	@PostMapping("/insertOrder")
+	@ResponseBody
+	public OrdersVO insertOrder (@RequestBody List<OrdersVO> vo) {
+		
+		OrdersVO a = vo.get(0);
+		orderService.insertOrder(a);
+		System.out.println(  vo.get(0)  );
+		return a;
+		
+	}
+	
+	//주문서 상태 변경
+	@PostMapping("/updateOrderSt")
+	@ResponseBody
+	public int updateOrderSt (@RequestBody List<OrdersVO> vo) {
+		
+		return orderService.updateOrderSt(vo);
+	}
+	
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
 	//주문마감
@@ -104,5 +127,15 @@ public class OrderController {
 		return orderService.OrdersCanDList(orderCode);
 				
 	}
+	
+	
+	//주문마감 상태 변경
+	@PostMapping("/updateOrderCanSt")
+	@ResponseBody
+	public int updateOrderCanSt (@RequestBody List<OrdersVO> vo) {
+			
+		return orderService.updateOrderCanSt(vo);
+	}
+		
 	
 }
