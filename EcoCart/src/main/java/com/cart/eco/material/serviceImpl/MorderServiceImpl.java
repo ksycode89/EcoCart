@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cart.eco.material.mapper.MorderMapper;
+import com.cart.eco.material.service.ModerReqVO;
 import com.cart.eco.material.service.MorderService;
 import com.cart.eco.material.service.MorderVO;
 import com.cart.eco.material.service.MorderdetailVO;
@@ -32,32 +33,36 @@ public class MorderServiceImpl implements MorderService {
 	
 	
 	@Override
-	public int insertOrder(List<MorderVO> morderVO) {
+	public int insertOrder(ModerReqVO morderVO) {
 		int result = 0;
-		System.out.println("inner imple"+morderVO.get(0));
-		result = moMapper.insertOrder(morderVO.get(0));
+		MorderVO moder = morderVO.getMorder();
+		System.out.println(moder);
+		//마스터
+		result = moMapper.insertOrder(moder);
+		int orderNo = moder.getOrderNo();
+		System.out.println(orderNo);
+		//디테일 반복
+		for(int i=0; i<morderVO.getDetailOrder().size(); i++) {
+			MorderdetailVO deailVO = morderVO.getDetailOrder().get(i);
+			deailVO.setOrderNo(orderNo);
+			result += moMapper.insertOrder1(deailVO);
+		}
+		
 		return result;
 	}
 	
-	@Override
-	public int insertOrder1(List<MorderVO> morderVO) {
-		int result = 0;
-		for(int i=0; i<morderVO.size(); i++) {
-			result += moMapper.insertOrder1(morderVO.get(i));
-		}
-		return result;
-	}
+	
 
 	@Override
 	public int deleteOrder(MorderVO morderVO) {
 		return moMapper.deleteOrder(morderVO);
 	}
 	
+	
+	
 	//발주현황상세조회
 	@Override
 	public List<MorderdetailVO> detailList(MorderVO morderVO) {
-		
-		
 		return moMapper.detailList(morderVO);
 	}
 	

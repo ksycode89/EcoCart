@@ -1,44 +1,62 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout}">	
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
 <head>
 <meta charset="UTF-8">
-<title>발주 취소</title>
+<title>발주 관리</title>
+<meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
-<div layout:fragment="content" class="page-content">
-	<div id="content" class="center">
-		<h2>발주취소</h2>
-		<label for="code_group" style="width:65px">부서</label>
-		<input id="empDept" type="text"> <i class="bi bi-search" id="emplist" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="cursor:pointer"></i>
-		 사원 <input id="empName" type="text">
-		<button id="DelBtn">삭제</button>
-		
-	</div>
+	<div layout:fragment="content" class="page-content">
+		<div id="content" class="center">
+			<h2>발주관리</h2>
+			<label for="code_group" style="width: 65px">부서</label> <input
+				id="empDept" type="text"> <i class="bi bi-search"
+				id="emplist" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+				style="cursor: pointer"></i> 사원 <input id="empName" type="text">
+			<button id="DelBtn">삭제</button>
+
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+			data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="staticBackdropLabel">사원 목록</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="modalGrid"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">확인</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div id="grid"></div>
+		<br>
+		<div id="grid2"></div>
+
+		<script>
 	
-	<div id="grid"></div>
+	 	var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
 	
-	<div id="grid2"></div>
-	
-	<script>
 	 $(document).ready(function() {
-	      $('#DelBtn').click(DeleteInfo)
+		 $('#emplist').click(empList)
+	     $('#DelBtn').click(DeleteInfo)
 	   })
 	   
-	   function DeleteInfo() {
-		 $.ajax({
-			 url : '',
-			 type : '',
-			 success : function(data) {
-				 console.log(data);
-			 },
-			 error : function(error) {
-				 console.log(123);
-			 }
-		 })
-	 }
-	
-	
 	   const gridData = [
 	       {
 	          name:'',
@@ -48,9 +66,9 @@
 	          release:'',
 	          genre:''
 	       }];
-	   const grid = new tui.Grid({
+	   
+	   var grid = new tui.Grid({
 		    el: document.getElementById('grid'),
-		    data: gridData,
 		    scrollX: false,
 		    scrollY: false,
 		    position : "bottom",
@@ -59,86 +77,164 @@
 		      {
 		    	
 		        header: '발주번호',
-		        name: '발주번호'
+		        name: 'orderNo'
 		      },
 		      {
 		        header: '발주일자',
-		        name: '발주일자'
+		        name: 'orderDate'
 		      },
 		      {
-		        header: '코드',
-		        name: '거래처'
+		        header: '거래처코드',
+		        name: 'clientCode'
 		      },
 		      {
 		        header: '거래처명',
-		        name: '담당자'
+		        name: 'clientName'
 		      }
 		    ]
 		  });
 	   
 	
-  const grid2 = new tui.Grid({
-    el: document.getElementById('grid2'),
-    data: gridData,
-    scrollX: false,
-    scrollY: false,
-    columns: [
-      {
-        header: 'NO',
-        name: 'NO'
-      },
-      {
-        header: '품번',
-        name: '품번'
-      },
-      {
-        header: '품명',
-        name: '품명'
-      },
-      {
-        header: '규격',
-        name: '규격'
-      },
-      {
-        header: '단위',
-        name: '단위'
-      },
-      {
-        header: '납기일',
-        name: '납기일'
-        },
-        {
-        header: '입고예정일',
-        name: '입고예정일'
-          },
-          {
-        header: '발주수량',
-        name: '발주수량'
-            },
-            {
-        header: '단가',
-        name: '단가'
-            },
-            {
-        header: '공급가',
-        name: '공급가'
-            }
-    ]
-  });
+	  var grid2 = new tui.Grid({
+	    el: document.getElementById('grid2'),
+	    scrollX: false,
+	    scrollY: false,
+	    rowHeaders : ['checkbox'],
+	    columns: [
+	      {
+	        header: 'NO',
+	        name: 'NO'
+	      },
+	      {
+	        header: '품번',
+	        name: 'proCode'
+	      },
+	      {
+	        header: '품명',
+	        name: 'proName'
+	      },
+	      {
+	        header: '규격',
+	        name: 'standard'
+	      },
+	      {
+	        header: '단위',
+	        name: 'unit'
+	      },
+	      {
+	        header: '납기일',
+	        name: 'orderReceiving'
+	        },
+	          {
+	        header: '발주수량',
+	        name: 'orderNum'
+	            },
+	            {
+	        header: '단가',
+	        name: 'sellPrice'
+	            },
+	            {
+	        header: '진행여부',
+	        name: 'order_group'
+	            }
+	    ]
+	  });
+	  
+	  grid.on('click',(ab)=>{
+		   $.ajax({
+			   url:'/detailList',
+			   data : {'orderNo' : ab.nativeEvent.target.innerText },
+			   success : function(data) {
+				   console.log(data);
+				   grid2.resetData(data);				   
+				   
+			   },
+			   error :  function(reject) {
+				   console.log(111)
+			   }
+		   })
+		   
+	   })
+	  
+	  var modalGrid = new tui.Grid({
+	      el: document.getElementById('modalGrid'),
+	      bodyHeight: 200,
+	      scrollX: true,
+	      scrollY: true,
+	      columns: [
+	         {
+	            header: '부서',
+	            name: 'empDept',
+	         },
+	         {
+	            header: '사원',
+	            name: 'empName',
+	         }
+	      ]
+	   });	
+  
+  
+	 		 function empList() {
+		      	$.ajax({
+		         url : 'ajax/list',
+		         type : 'POST',
+		         beforeSend : function(xhr){
+		        	xhr.setRequestHeader(header, token);
+		         },
+		         data : {"empNum" : $('#empNum').val()},
+		         success : function(data) {
+		            console.log(data);
+		            modalGrid.resetData(data);
+		         },
+		         error : function(erroe) {
+		            console.log(erroe);
+		         }
+		      })
+	   }
 
-	    grid.on('check', ev => {
-	      console.log('check!', ev);
-	    });
-
-	    grid.on('uncheck', ev => {
-	      console.log('uncheck!', ev);
-	    });
-
-	    grid.on('focusChange', ev => {
-	      console.log('change focused cell!', ev);
-	    });
+ 		   function DeleteInfo() {
+ 			 $.ajax({
+ 				 url : '/deleteInfo',
+ 				 type : 'POST',
+ 				 contentType: 'application/json',
+ 	    		 data: JSON.stringify(planDeleteGrid.getCheckedRows()),
+ 	    		 dataType: 'JSON',
+ 	    		 beforeSend : function(xhr){
+ 	           		xhr.setRequestHeader(header, token);
+ 	           	},
+ 				 success : function(data) {
+ 					 console.log(data);
+ 				 },
+ 				 error : function(error) {
+ 					 console.log(123);
+ 				 }
+ 			 })
+ 		 }
+ 		
+ 		
+  		
+ 		 modalGrid.on("click", event => {
+ 	    	  let managers = [
+ 	    		  {
+ 	    			  "manager" :  modalGrid.getRow(event.rowKey).empName,
+ 	    			  "empDept" :  modalGrid.getRow(event.rowKey).empDept
+ 	    		  }
+ 	    	  ] 
+ 	    	
+ 			grid.appendRows(managers)
+ 			
+ 	    	$('#orderNo').val(modalGrid.getRow(event.rowKey)['orderNo']);
+ 			$('#orderDate').val(modalGrid.getRow(event.rowKey)['orderDate']);
+ 			$('#clientCode').val(modalGrid.getRow(event.rowKey)['clientCode']);
+ 			$('#clientName').val(modalGrid.getRow(event.rowKey)['clientName']);
+ 			$('#large').modal('hide');
+ 	       })	 
+ 		 
+		staticBackdrop.addEventListener('shown.bs.modal', () => {
+       	modalGrid.refreshLayout(); 
+       })
 	  
    </script>
-   </div>
+	</div>
 </body>
 </html>

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cart.eco.material.service.ModerReqVO;
 import com.cart.eco.material.service.MorderService;
 import com.cart.eco.material.service.MorderVO;
 import com.cart.eco.material.service.MorderdetailVO;
@@ -45,12 +46,13 @@ public class MaterialController {
 	}
 	
 	//발주 등록
-	@PostMapping("/materialinsertInfo")
+	@PostMapping("/insertOrder")
 	@ResponseBody
-	public int materialInsertInfo(@RequestBody List<MorderVO> morderVO) {
+	public int materialInsertInfo(@RequestBody ModerReqVO morderVO) {
 		System.out.println(morderVO);
 		return morder.insertOrder(morderVO);
 	}
+	
 	
 	//발주등록 목록 가져오기
 	@GetMapping("/proInfo")
@@ -60,7 +62,8 @@ public class MaterialController {
 	}	
 	//삭제
 	@PostMapping("/deleteInfo")
-	public int delteInfo(MorderVO morderVO) {
+	@ResponseBody
+	public int delteInfo(@RequestBody MorderVO morderVO) {
 		return morder.deleteOrder(morderVO);
 	}	
 
