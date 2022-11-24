@@ -82,9 +82,9 @@ public class CommonController {
 	// 담당자의 담당사원 조회 ajax.
 	  @GetMapping("ajax/emplist")
 	  @ResponseBody
-	  public EmpVO ajaxEmpList(String empManager) {
-		  System.out.println("result "+empManager);
-		  return empService.selectManager(empManager);
+	  public EmpVO ajaxEmpList(String empNum) {
+		  System.out.println("result "+empNum);
+		  return empService.selectManager(empNum);
 	  }
 	  
 	// 사원 이름 모달 ajax.

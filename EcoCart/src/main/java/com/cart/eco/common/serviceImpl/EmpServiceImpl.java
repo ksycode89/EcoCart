@@ -61,7 +61,7 @@ public class EmpServiceImpl implements EmpService {
 	@Override
 	public int delEmpInfo(List<EmpVO> vo) {
 		int result = 0;
-		for(EmpVO one: vo) {
+		for(EmpVO one: vo) { // 향상된 for문
 			result += empMapper.deleteEmp(one);
 		}
 		if(vo.size() == result) {
