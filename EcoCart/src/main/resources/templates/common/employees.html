@@ -6,6 +6,8 @@
 
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>사원관리</title>
 <style type="text/css">
 #btn-div div{
@@ -122,6 +124,11 @@
 			</div>
 			<div class="col-lg-auto col-sm-12">
 			<input  id="empName" name="empName" class="form-control">
+			
+			</div>
+			<div  class="col-lg-auto col-sm-6">
+				<span style="height: 36px; line-height: 25px" class="btn btn-sm btn-primary" onclick="selectEmp()" id="select">조회</span> 
+			    <button  style="height: 36px; line-height: 25px" type="button" class="btn btn-sm btn-secondary" id="reset">초기화</button> 
 			</div>
 	</div>
 	
@@ -167,9 +174,7 @@
 	
 	
 	<div style="display: flex; justify-content: flex-end; " id="btn-div" class="mb-3">
-		<div>
-			<button type="button" class="btn btn-sm btn-primary" onclick="selectEmp()">조회</button> 
-			</div>
+		
 		<div>
 			<button type="button"  class="btn btn-sm btn-primary" onclick="addEmp()">
 				<svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
@@ -189,12 +194,12 @@
  </div>
  
  <!--사원조회 그리드  -->
-  <div id="grid" class="mb-3 row"></div>
+  <div id="grid" ></div>
  
  
  
 
-	<div>
+	<div class="mb-3 mt-3 row">
 		<h2>담당자</h2>
 	</div>
 	
@@ -281,14 +286,18 @@
 			</div>
 	</div>	
 
-
+	<!-- <div style="display: none"> -->
 	<div>
 		<h2>담당사원</h2>
 	</div>	
 	  <div style="display: flex; justify-content: flex-end; " id="btn-div" class="mb-3">
-		
+		<div>
+			<button type="button"  class="btn btn-sm btn-primary" onclick="addEmp2()">
+				<svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
+			</button> 
+		</div>
 		<div >
-			<button type="button" class="btn btn-sm btn-primary">추가</button> 
+			<button type="button" class="btn btn-sm btn-primary">등록</button> 
 		</div>
 		<div >
 			<button type="button" class="btn btn-sm btn-secondary">삭제</button> 
@@ -297,8 +306,13 @@
 
 	 <div id="grid2" class="mb-3 row"></div>
 
+	<!-- </div> -->
 	
 	<script>
+	
+	/* token */
+	 var token = $("meta[name='_csrf']").attr("content");
+	 var header = $("meta[name='_csrf_header']").attr("content");
  	
 	/* data resouce */
 	  const dataSource = {
@@ -340,7 +354,11 @@
 			$.ajax({
 				url : "ajax/list",
 				type : 'post',
-				data : {"empDept" : $('#codeId').val(), "codeName" : $('codeId').val() },
+				data : {"empDept" : $('#codeId').val(), "codeName" : $('codeId').val() 
+				 },
+				 beforeSend : function(xhr){
+             		xhr.setRequestHeader(header, token);
+             	 },
 				success : function(data){
 					console.log(data);
 					gridM.resetData(data);
@@ -411,7 +429,7 @@
 	   	 })
 	   	 
 	   	 
-	   	  /*등록시 부서 모달 */
+	   	  /*등록시 부서 모달. */
 		const gridEmp = new tui.Grid({
 			el : document.getElementById('gridEmp'),
 			rowHeaders: ['checkbox'],
@@ -494,7 +512,16 @@
 			
 		}) */
 									
-				
+		// 초기화 버튼.
+		reset.addEventListener("click", ()=>{
+			document.getElementById('codeId').value='';
+			document.getElementById('codeName').value='';
+			document.getElementById('empNum').value='';
+			document.getElementById('empName').value='';
+			grid1.clear();
+
+		})
+
 					 
 		
 	   	  
@@ -592,8 +619,19 @@
 			grid1.appendRow(data);
 		}
 		
-		let gridRow ;
+		// 담당사원 추가. (row 추가.)
+		function addEmp2() {
+			let data = { emp_num : "", emp_name : "", emp_dept : "", job_grade : ""
+						, emp_hire : "",emp_mail : "", emp_tel : "", comments : ""}
+			
+			grid2.appendRow(data);
+		}
+		
+		
+		
 		// 부서이름 셀 클릭시 모달창 띄우기.
+		
+		let gridRow ;
 		grid1.on("click", ev =>{
 			console.log(ev)
 			if(ev.columnName == 'empDept'){
@@ -609,7 +647,7 @@
 		let emp = gridEmp.getRow(ev.rowKey);
 		grid1.setValue(gridRow,"empDept",emp.codeId)
 		
-		console.log("emp",emp.codeUsed)
+		//console.log("emp",emp.codeUsed)
 		
 		
 		$('#large5').modal('hide');
@@ -629,7 +667,11 @@
 			$.ajax({
 				url : "/insertEmp",
 				type : 'post',
-				data : grid1.getData()[num],
+				data : grid1.getData()[num]
+				,
+				 beforeSend : function(xhr){
+             		xhr.setRequestHeader(header, token);
+             	 },
 				success : function(data) {
 					//console.log(data)
 					selectEmp();
@@ -663,8 +705,12 @@
 			}) */
 		
 		}
-			
-			
+		
+		 //ajax처리전에 돌아감 
+    	 grid1.on('beforeRequest', function(ev) {
+    		 ev.xhr.setRequestHeader(header, token);
+    		  console.log("aa", ev.xhr)
+		 })
 		
 		// 사원 삭제.
 		function delEmp() {
@@ -680,7 +726,11 @@
 				url : "delEmp",
 				type : 'post',
 				contentType : "application/json",
-				data : JSON.stringify(result),
+				data : JSON.stringify(result)
+				,
+				 beforeSend : function(xhr){
+             		xhr.setRequestHeader(header, token);
+             	 },
 		        success : function (data){
 		        	if(data > 0){
 		        	
@@ -700,7 +750,7 @@
 		 /* 담당사원 */
 		const grid2 = new tui.Grid({
 			el : document.getElementById('grid2'),
-			rowHeaders: ['rowNum'],
+			rowHeaders: ['checkbox'],
 			scrollX : false,
 			scrollY : false,
 			columns : [ {
@@ -708,30 +758,83 @@
 				name : 'empNum'
 			}, {
 				header : '이름',
-				name : 'empName'
-			}, {
-				header : 'mail',
-				name : 'empMail'
-			}, {
-				header : 'tel',
-				name : 'empTel'
-			}, {
-				header : '입사일',
-				name : 'empHire'
+				name : 'empName',
+				editor : 'text'
 			}, {
 				header : '부서',
-				name : 'empDept'
+				name : 'empDept',
+				editor : 'text'
+			}, {
+				header : '직급',
+				name : 'jobGrade',
+				
+				editor: {
+				      type: 'select',
+				      options: {
+				      listItems: [
+				        {
+				          text: '선택 안함',
+				          value: '0'
+				        },
+				        {
+				          text: '사원',
+				          value: '사원'
+				        },
+				        {
+				          text: '대리',
+				          value: '대리'
+				        },
+				        {
+					      text: '주임',
+					      value: '주임'
+				        },      
+				        {
+				          text: '과장',
+				          value: '과장'
+				        },
+				        {
+				          text: '차장',
+				          value: '차장'
+				        },
+				        {
+					      text: '부장',
+					      value: '부장'
+				        }
+				        ]
+				      }
+				}
+			}, {
+				header : '입사일',
+				name : 'empHire',
+				editor : 'datePicker'
+			},{
+				header : '메일',
+				name : 'empMail',
+				editor : 'text'
+			}, {
+				header : '전화번호',
+				name : 'empTel',
+				editor : 'text'
+			}, {
+				header : '비고',
+				name : 'comments',
+				editor : 'text'
 			}
+			
 
 			]
 		});
 		
-	// 사원조회 필터 ajax
+	// 사원조회 ajax
 		function selectEmp(){
 			 $.ajax({
 				 url : "ajax/list",
 				 type : 'post' ,
-				 data : {"empNum" : $('#empNum').val(),"empDept" : $('#codeId').val()},
+				 data : {"empNum" : $('#empNum').val(),"empDept" : $('#codeId').val()
+				},
+				 beforeSend : function(xhr){
+             		xhr.setRequestHeader(header, token);
+             	 },
 				 success : function(data){
 					 console.log(data);
 					 grid1.resetData(data);
@@ -742,11 +845,15 @@
 			 })
 		}
 	
-	// 담당자의 담당사원 ajax  - 없애도 될까??????
+	// 담당자의 담당사원 ajax  
 		function selectInfo(){
 		 	$.ajax({
 				url : "ajax/list",
-				type : 'post' ,
+				type : 'post' 
+				,
+				 beforeSend : function(xhr){
+             		xhr.setRequestHeader(header, token);
+             	 },
 				success : function(result){
 					grid2.resetData(result);
 					console.log(result);
@@ -760,7 +867,7 @@
 	
 	
 	// 모달 안 그리드 클릭시 input 태그에 값 넣기(그리드 내 이벤트 타겟 찾기).
-	// 사원 이름 모달 이벤트.
+	// 사원 이름 모달 이벤트.(필터)
 	gridM.on("click", event => {
 		console.log(gridM.getRow(event.rowKey))
 		console.log(event)
@@ -774,7 +881,7 @@
 		$('#large').modal('hide');
 	})
 	
-	// 부서 모달 이벤트.
+	// 부서 모달 이벤트. (필터)
 	gridD.on("click", ev => {
 		//console.log(ev.nativeEvent.target.innerText)
 		let deptT = gridD.getRow(ev.rowKey);
@@ -786,7 +893,7 @@
 	})
 	
 	// 담당자 모달 이벤트.
-	function summit() {}
+	/* function summit() {}
 	gridMN.on("click", ev => {
 		console.log(gridMN.getRow(gridMN.getFocusedCell().rowKey))
 		let manager = gridMN.getRow(gridMN.getFocusedCell().rowKey);
@@ -808,25 +915,29 @@
 				
 			}
 		})
-	})
-	
+	}) 
+	 */
 	
 	  
-	// 담당자 셀 클릭시 조회.
+	// 담당자 셀 클릭시 조회. ===> 사원번호 클릭시 담당자 정보 조회.
 	grid1.on("click", ev => {
-		/* console.log(ev)
-		if(ev.columnName == 'empDept'){
-			$('#large2').modal('show');
-		} */
-		 //console.log("row num : ", grid1.getFocusedCell().rowKey) ; 
-		 /* let emp = grid1.getRow(grid1.getFocusedCell().rowKey).empManager.split(':')[0];
 		
+		//console.log("찾아보자 : " + ev.getRow(0))
+		//if(ev.columnName == 'empDept'){
+			//$('#large2').modal('show');
+	//	} 
+		 //console.log("row num : ", grid1.getFocusedCell().rowKey) ; 
+		 // let emp = grid1.getRow(grid1.getFocusedCell().rowKey).empManager.split(':')[0];
+		 let emp = grid1.getRow(grid1.getFocusedCell().rowKey).empManager;
+		 console.log(emp)		
+		 
 		 $.ajax({
 			url : "ajax/emplist",
 			type : "get",
-			data : {"empManager":emp},
+			data : {"empNum":emp},
 			success : function(data) {
 				console.log(data)
+				if(empNum == empManager){
 
 		$('#empNum2').val(data.empNum);
 		$('#empName2').val(data.empName);
@@ -834,13 +945,17 @@
 		$('#codeName2').val(data.empManager);
 		$('#empMail2').val(data.empMail);
 		$('#empTel2').val(data.empTel); 
-				
+				}
 		
 						// 담당자의 담당사원 조회 - ajax 안에 ajax.
 						$.ajax({
 							url : "ajax/list",
 							type : "post",
-							data : {"empManager" : emp},
+							data : {"empManager" : emp}
+						, 
+						beforeSend : function(xhr){
+                    		xhr.setRequestHeader(header, token);
+                   	 		},
 							success : function(data) {
 								console.log("cccc");
 								grid2.resetData(data);
@@ -848,14 +963,14 @@
 								console.log(error);
 							}	
 						})
-			grid2.clear(); // 그리드 사라지게????  깨끗하게???? 생각해보자
+			//grid2.clear(); // 그리드 사라지게????  깨끗하게???? 생각해보자
 		
 		
 			}, error : function(error) {
 				console.log(error);
 			}
 		})
-	*/
+	
 	})
 			 
 		
@@ -863,7 +978,7 @@
 </div>
 </body>
 </html>
- 
+
  
  
 	
