@@ -19,8 +19,9 @@
 <body>
 	<div layout:fragment="content">
 
-		<h2>사원관리</h2>
+	<h2>사원관리</h2>
 
+	<!--검색 조건 시작  -->
 	<div class="mb-3 row mt-3">
 			<label  class="col-lg-1 col-sm-12 col-form-label">부 서</label>
 			<div class="col-lg-auto col-sm-6">
@@ -31,132 +32,10 @@
 			</div>
 			<div class="col-lg-auto col-sm-12">
 			<input  id="codeName" name="codeName" class="form-control">
-			</div>
-			
+			</div>	
 	</div>	
-	
-										<!--부서 필터 Modal lg size -->
-                                        <div class="me-1 mb-1 d-inline-block">
-                                           
-                                            <div class="modal fade text-left" id="large2" tabindex="-1" role="dialog"
-                                                aria-labelledby="myModalLabel17" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
-                                                    role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title" id="myModalLabel17">부서목록</h4>
-                                                            <button type="button" class="close" data-bs-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <i data-feather="x"></i>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                           <!--그리드  -->
-      														 <div id="gridD" class="mb-3 row"></div>
-       
-                                                           
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-light-secondary"
-                                                                data-bs-dismiss="modal">
-                                                                <i class="bx bx-x d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">Close</span>
-                                                            </button>
-                                                            <button type="button" class="btn btn-primary ml-1"
-                                                                data-bs-dismiss="modal">
-                                                                <i class="bx bx-check d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">확인</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-	
-									<!--등록시 부서 Modal lg size -->
-                                        <div class="me-1 mb-1 d-inline-block">
-                                           
-                                            <div class="modal fade text-left" id="large5" tabindex="-1" role="dialog"
-                                                aria-labelledby="myModalLabel17" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
-                                                    role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title" id="myModalLabel17">부서목록</h4>
-                                                            <button type="button" class="close" data-bs-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <i data-feather="x"></i>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                           <!--그리드  -->
-      													<div id="gridEmp" class="mb-3 row"></div>	
-       
-                                                           
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-light-secondary"
-                                                                data-bs-dismiss="modal">
-                                                                <i class="bx bx-x d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">Close</span>
-                                                            </button>
-                                                            <button type="button" class="btn btn-primary ml-1"
-                                                                data-bs-dismiss="modal">
-                                                                <i class="bx bx-check d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">확인</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-	
-										
-                                       
-										<!--담당자의 담당
-
-
-
-시 부서 Modal lg size -->
-                                        <div class="me-1 mb-1 d-inline-block">
-                                           
-                                            <div class="modal fade text-left" id="large6" tabindex="-1" role="dialog"
-                                                aria-labelledby="myModalLabel17" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
-                                                    role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title" id="myModalLabel17">부서목록</h4>
-                                                            <button type="button" class="close" data-bs-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <i data-feather="x"></i>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                           <!--그리드  -->
-      													<div id="gridEmp2" class="mb-3 row"></div>	
-       
-                                                           
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-light-secondary"
-                                                                data-bs-dismiss="modal">
-                                                                <i class="bx bx-x d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">Close</span>
-                                                            </button>
-                                                            <button type="button" class="btn btn-primary ml-1"
-                                                                data-bs-dismiss="modal">
-                                                                <i class="bx bx-check d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">확인</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-	
-	<div >
-	<div class="mb-3 row">
+	<div>
+		<div class="mb-3 row">
 			<label  class="col-lg-1 col-sm-12 col-form-label">이 름</label>
 			<div class="col-lg-auto col-sm-6">
 			<input  id="empNum" name="empNum" class="form-control">
@@ -172,83 +51,42 @@
 				<span style="height: 36px; line-height: 25px" class="btn btn-sm btn-primary" onclick="selectEmp()" id="select">조회</span> 
 			    <button  style="height: 36px; line-height: 25px" type="button" class="btn btn-sm btn-secondary" id="reset">초기화</button> 
 			</div>
-	</div>
-	
-									<!-- 이름 필터 Modal lg size -->
-                                        <div class="me-1 mb-1 d-inline-block">
-                                           
-                                          
-                                            <div class="modal fade text-left" id="large" tabindex="-1" role="dialog"
-                                                aria-labelledby="myModalLabel17" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
-                                                    role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title" id="myModalLabel17">사원목록</h4>
-                                                            <button type="button" class="close" data-bs-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <i data-feather="x"></i>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <!--그리드  -->
-      														 <div id="gridM" class="mb-3 row"></div>
-       
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-light-secondary"
-                                                                data-bs-dismiss="modal">
-                                                                <i class="bx bx-x d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">Close</span>
-                                                            </button>
-                                                            <button type="button" class="btn btn-primary ml-1"
-                                                                data-bs-dismiss="modal">
-                                                                <i class="bx bx-check d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">확인</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> 
-	
-	
-	
-	
-	<div style="display: flex; justify-content: flex-end; " id="btn-div" class="mb-3">
+		</div>
+		<!--검색 조건 END -->
 		
-		<div>
-			<button type="button"  class="btn btn-sm btn-primary" onclick="addEmp()">
-				<svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
-			</button> 
-		</div>
-		<div>
-			<button type="button" class="btn btn-sm btn-primary" onclick="insertEmp()">등록</button> 
-		</div>
-		<div >
-			<button type="button" class="btn btn-sm btn-primary" onclick="updateEmp()">수정</button> 
-		</div>
-		<div >
-			<button type="button" class="btn btn-sm btn-secondary" onclick="delEmp()">삭제</button> 
-		</div>
-	</div>	
-
- </div>
+		<!--버튼 시작  -->
+		<div style="display: flex; justify-content: flex-end; " id="btn-div" class="mb-3">
+			
+			<div>
+				<button type="button"  class="btn btn-sm btn-primary" onclick="addEmp()">
+					<svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
+				</button> 
+			</div>
+			<div>
+				<button type="button" class="btn btn-sm btn-primary" onclick="insertEmp()">등록</button> 
+			</div>
+			<div >
+				<button type="button" class="btn btn-sm btn-primary" onclick="updateEmp()">수정</button> 
+			</div>
+			<div >
+				<button type="button" class="btn btn-sm btn-secondary" onclick="delEmp()">삭제</button> 
+			</div>
+		</div>	
+	
+	 </div>
+ 	<!--버튼 END -->
  
- <!--사원조회 그리드  -->
-  <div id="grid" ></div>
- 
- 
- 
-
+	 <!--사원조회 그리드  -->
+	<div class="mb-3 mt-5 row">
+	 <div id="grid" ></div>
+ 	</div>
+ 	
+	<!--담당자 시작  -->
 	<div class="mb-3 mt-5 row">
 		<h2>담당자</h2>
 	</div>
-	
-		
-
-	<div >
-	<div class="mb-3 row">
+	<div>
+		<div class="mb-3 row">
 			<label  class="col-lg-1 col-sm-12 col-form-label">이 름</label>
 			<div class="col-lg-auto col-sm-6">
 			<input  id="empNum2" name="empCode" class="form-control">
@@ -259,98 +97,225 @@
 			<div class="col-lg-auto col-sm-12">
 			<input  id="empName2" name="name" class="form-control">
 			</div>
-	</div>		
-	
-									<!--담당자 이름  검색 Modal lg size -->
-                                        <div class="me-1 mb-1 d-inline-block">
-                                           
-                                            <div class="modal fade text-left" id="large3" tabindex="-1" role="dialog"
-                                                aria-labelledby="myModalLabel17" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
-                                                    role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title" id="myModalLabel17">담당자 목록</h4>
-                                                            <button type="button" class="close" data-bs-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <i data-feather="x"></i>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                           <!--그리드  -->
-      														 <div id="gridmn" class="mb-3 row"></div>
-       
-                                                           
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-light-secondary"
-                                                                data-bs-dismiss="modal">
-                                                                <i class="bx bx-x d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">취소</span>
-                                                            </button>
-                                                            <button type="button" class="btn btn-primary ml-1"
-                                                                data-bs-dismiss="modal" onclick="valueIn()">
-                                                                <i class="bx bx-check d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">확인</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-	
-	
-	
-	
-	
-	<div class="mb-3 row">
-			<label  class="col-lg-1 col-sm-12 col-form-label">부서코드</label>
-			<div class="col-lg-auto col-sm-6">
-			<input  id="codeId2" name="depCode" class="form-control">
-			</div>
-			<label  class="col-lg-1 col-sm-12 col-form-label">부서명</label>
-			<div class="col-lg-auto col-sm-12">
-			<input  id="codeName2" name="depName" class="form-control">
-			</div>
+		</div>		
+		
+		<div class="mb-3 row">
+				<label  class="col-lg-1 col-sm-12 col-form-label">부서코드</label>
+				<div class="col-lg-auto col-sm-6">
+				<input  id="codeId2" name="depCode" class="form-control">
+				</div>
+				<label  class="col-lg-1 col-sm-12 col-form-label">부서명</label>
+				<div class="col-lg-auto col-sm-12">
+				<input  id="codeName2" name="depName" class="form-control">
+				</div>
+		</div>		
 	</div>	
-
- </div>
 	
 	<div class="mb-5 row">
-			<label  class="col-lg-1 col-sm-12 col-form-label">mail</label>
-			<div class="col-lg-auto col-sm-6">
+		<label  class="col-lg-1 col-sm-12 col-form-label">mail</label>
+		<div class="col-lg-auto col-sm-6">
 			<input  id="empMail2" name="empMail" class="form-control">
-			</div>
+		</div>
 	
-			<label  class="col-lg-1 col-sm-12 col-form-label">Tel</label>
-			<div class="col-lg-auto col-sm-6">
+		<label  class="col-lg-1 col-sm-12 col-form-label">Tel</label>
+		<div class="col-lg-auto col-sm-6">
 			<input  id="empTel2" name="empTel" class="form-control">
-			</div>
+		</div>
 	</div>	
+	<!-- 담당자 END -->
 
-	<!-- <div style="display: none"> -->
-	<div>
-		<h2>담당사원</h2>
-	</div>	
-	  <div style="display: flex; justify-content: flex-end; " id="btn-div" class="mb-3">
+	<!-- 담당사원 시작 -->
+	<div style="display: none" id="showEmp" >
+		
 		<div>
-			<button type="button"  class="btn btn-sm btn-primary" onclick="addEmp2()">
-				<svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
-			</button> 
+			<h2>담당사원</h2>
+		</div>	
+		  <div style="display: flex; justify-content: flex-end; " id="btn-div" class="mb-3">
+			<div>
+				<button type="button"  class="btn btn-sm btn-primary" onclick="addEmp2()">
+					<svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
+				</button> 
+			</div>
+			<div >
+				<button type="button" class="btn btn-sm btn-primary">업데이트</button> 
+			</div>
+			
 		</div>
-		<div >
-			<button type="button" class="btn btn-sm btn-primary">등록</button> 
-		</div>
-		<div >
-			<button type="button" class="btn btn-sm btn-secondary">삭제</button> 
-		</div>
+	
+		<div id="grid2" class="mb-3 row"></div>
+		<!-- 담당사원 END -->
 	</div>
-
-	 <div id="grid2" class="mb-3 row"></div>
-
 	<!-- </div> -->
+<!-- 이름 필터 Modal lg size -->  
+    <div class="modal fade text-left" id="large" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel17" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+            role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel17">사원목록</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!--그리드  -->
+					<div id="gridM" class="mb-3 row"></div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary"
+                        data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button type="button" class="btn btn-primary ml-1"
+                        data-bs-dismiss="modal">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">확인</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 	
 	
+<!--담당자의 담당시 부서 Modal lg size -->
+                                           
+ <div class="modal fade text-left" id="large6" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel17" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+         role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h4 class="modal-title" id="myModalLabel17">부서목록</h4>
+                 <button type="button" class="close" data-bs-dismiss="modal"
+                     aria-label="Close">
+                     <i data-feather="x"></i>
+                 </button>
+             </div>
+             <div class="modal-body">
+                <!--그리드  -->
+				<div id="gridEmp2" class="mb-3 row"></div>	                     
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-light-secondary"
+                     data-bs-dismiss="modal">
+                     <i class="bx bx-x d-block d-sm-none"></i>
+                     <span class="d-none d-sm-block">Close</span>
+                 </button>
+                 <button type="button" class="btn btn-primary ml-1"
+                     data-bs-dismiss="modal">
+                     <i class="bx bx-check d-block d-sm-none"></i>
+                     <span class="d-none d-sm-block">확인</span>
+                 </button>
+             </div>
+         </div>
+     </div>
+ </div>
+         
+	
+<!--부서 필터 Modal lg size -->
+<div class="modal fade text-left" id="large2" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel17" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+        role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel17">부서목록</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                    aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--그리드  -->
+				<div id="gridD" class="mb-3 row"></div>                      
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-light-secondary"
+                      data-bs-dismiss="modal">
+                      <i class="bx bx-x d-block d-sm-none"></i>
+                      <span class="d-none d-sm-block">Close</span>
+                  </button>
+                  <button type="button" class="btn btn-primary ml-1"
+                      data-bs-dismiss="modal">
+                      <i class="bx bx-check d-block d-sm-none"></i>
+                      <span class="d-none d-sm-block">확인</span>
+                  </button>
+              </div>
+          </div>
+      </div>
+  </div>
+<!--부서 필터 Modal lg size -->
+
+<!--등록시 부서 Modal lg size -->                                           
+<div class="modal fade text-left" id="large5" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel17" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+        role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel17">부서목록</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                    aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+               <!--그리드  -->
+				<div id="gridEmp" class="mb-3 row"></div>	                                                
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-light-secondary"
+                     data-bs-dismiss="modal">
+                     <i class="bx bx-x d-block d-sm-none"></i>
+                     <span class="d-none d-sm-block">Close</span>
+                 </button>
+                 <button type="button" class="btn btn-primary ml-1"
+                     data-bs-dismiss="modal">
+                     <i class="bx bx-check d-block d-sm-none"></i>
+                     <span class="d-none d-sm-block">확인</span>
+                 </button>
+             </div>
+         </div>
+     </div>
+ </div>	
+ 
+ <!--담당자 이름  검색 Modal lg size -->                                           
+<div class="modal fade text-left" id="large3" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel17" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+        role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel17">담당자 목록</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                    aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+               <!--그리드  -->
+				<div id="gridmn" class="mb-3 row"></div>                       
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-light-secondary"
+                     data-bs-dismiss="modal">
+                     <i class="bx bx-x d-block d-sm-none"></i>
+                     <span class="d-none d-sm-block">취소</span>
+                 </button>
+                 <button type="button" class="btn btn-primary ml-1"
+                     data-bs-dismiss="modal" onclick="valueIn()">
+				    <i class="bx bx-check d-block d-sm-none"></i>
+				    <span class="d-none d-sm-block">확인</span>
+				</button>
+            </div>
+        </div>
+    </div>
+</div>
 	
 	<script>
 	
@@ -546,7 +511,7 @@
 	   	 // 담당자 이름 목록 id=gridmn, large3
 		const gridMN = new tui.Grid({
 			el : document.getElementById('gridmn'),
-			rowHeaders: ['checkbox'],
+			
 			scrollX : false,
 			scrollY : false,
 			columns : [ {
@@ -990,35 +955,6 @@
 	})  
 	 
 	
-	  
-	// 담당자 조회시 모달 안 확인 버튼 클릭시 담당자 - 담당자의 사원 정보 입력.
-	
-	function valueIn(){
-		
-		let emp;
-		console.log(emp)
-		gridMN.on('click', ev=>{
-			 emp = gridMN.getRow(ev.rowKey).empNum
-		})
-		
-			// 담당자의 담당사원 조회 - ajax 안에 ajax.
-						$.ajax({
-							url : "ajax/list",
-							type : "post",
-							data : {"empManager" : emp}
-						, 
-						beforeSend : function(xhr){
-                    		xhr.setRequestHeader(header, token);
-                   	 		},
-							success : function(data) {
-								console.log("cccc");
-								grid2.resetData(data);
-							}, error : function(error) {
-								console.log(error);
-							}	
-						})
-	
-	}
 	// 한 줄 선택시 컬러.
 	gridMN.on('click', ev=>{
 		 var record = {
@@ -1027,10 +963,56 @@
 	          }
 		            gridMN.setSelectionRange(record);
 	          });
+	  
+	// 담당자 조회시 모달 안 확인 버튼 클릭시 담당자 - 담당자의 사원 정보 입력.
+		let emp;
+	gridMN.on('click', ev=>{ 
+			 
+			emp = gridMN.getRow(ev.rowKey)
+			//emp = gridMN.getRow(ev.rowKey)
+		    console.log('ㅔㅔㅔ',emp)
+		
+		
+		})
+	function valueIn(){
+		
+			// 담당자의 담당사원 조회 - ajax 안에 ajax.
+						$.ajax({
+							url : "ajax/list",
+							type : "post",
+							data : {"empManager" : emp.empNum}
+						, 
+						beforeSend : function(xhr){
+                    		xhr.setRequestHeader(header, token);
+                   	 		},
+							success : function(data) {
+								
+								$('#showEmp').css('display','block')
+								
+								$('#empNum2').val(emp.empNum);
+								$('#empName2').val(emp.empName);
+								$('#codeId2').val(emp.empDept);
+								$('#codeName2').val(emp.comments);
+								$('#empMail2').val(emp.empMail);
+								$('#empTel2').val(emp.empTel); 
+							
+								grid2.resetData(data);
+								grid2.refreshLayout();
+								
+							}, error : function(error) {
+								console.log(error);
+							}	
+						})
+	
+	}
+	
 	
 	// 사원번호 셀 클릭시 담당자 - 담당자의 담당사원 정보 입력.
 	grid1.on("click", ev => {
-		if(ev.columnName == 'empNum'){
+		
+	if(ev.columnName == 'empNum'){
+		if(grid1.getRow(ev.rowKey).empManager != null || !grid1.getRow(ev.rowKey).empManager =='' ){
+	
 		//console.log("찾아보자 : " + ev.getRow(0))
 		//if(ev.columnName == 'empDept'){
 			//$('#large2').modal('show');
@@ -1038,8 +1020,7 @@
 		 //console.log("row num : ", grid1.getFocusedCell().rowKey) ; 
 		 //let emp = grid1.getRow(grid1.getFocusedCell().rowKey).empManager.split(':')[0];
 		 let emp = grid1.getRow(grid1.getFocusedCell().rowKey).empManager;
-		 console.log("123",emp)		
-		 
+		
 		 $.ajax({
 			url : "ajax/emplist",
 			type : "get",
@@ -1048,8 +1029,9 @@
         		xhr.setRequestHeader(header, token);
        	 	},
 			success : function(data) {
-				console.log(data)
-					
+				
+		grid2.refreshLayout();
+		$('#showEmp').css('display','block')					
 		$('#empNum2').val(data.empNum);
 		$('#empName2').val(data.empName);
 		$('#codeId2').val(data.empDept);
@@ -1080,7 +1062,16 @@
 				console.log(error);
 			}
 		})
+		} else {
+			grid2.clear()
+			$('#empNum2').val('');
+			$('#empName2').val('');
+			$('#codeId2').val('');
+			$('#codeName2').val('');
+			$('#empMail2').val('');
+			$('#empTel2').val(''); 
 		}
+	 }
 	})
 			
 	
@@ -1129,9 +1120,3 @@
 </div>
 </body>
 </html>
-
- 
- 
-	
-	
-	

@@ -10,303 +10,298 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+<style type="text/css">
+#btn-div div{
+	margin-right:20px;
+}
+</style>
 
 </head>
 <body>
+
 	<div layout:fragment="content">
+		<h2>물품등록</h2>
+	<div>
 
-		<h3>물품등록</h3>
-
-
- <div >
-	<div class="mb-3 row">
-			<label  class="col-lg-1 col-sm-12 col-form-label">품목군</label>
-			<div class="col-lg-auto col-sm-6">
-			<input  id="empNum" name="empNum" class="form-control">
-			</div>
-			 <div class="col-lg-auto col-sm-6">
-			<button type="button"><i class="bi bi-search"></i></button> 
-			</div>
-			<div class="col-lg-auto col-sm-12">
-			<input  id="clientName" name="clientName" class="form-control">
-			</div>
-			
-	</div>		
-	<div class="mb-3 row">
-			<label  class="col-lg-1 col-sm-12 col-form-label">조달구분</label>
-			<div class="col-lg-auto col-sm-6">
-				<select class="form-select form-select-sm" aria-label=".form-select-sm example">
-  					<option selected>전체</option>
-  					<option value="1">구매</option>
-  					<option value="2">생산</option>
-				</select>
-			</div>	
-	
-			<label  class="col-lg-1 col-sm-12 col-form-label">LOT 여부</label>
-			<div class="col-lg-auto col-sm-6">
-				<select class="form-select form-select-sm" aria-label=".form-select-sm example">
-  					<option selected></option>
-  					<option value="1">사용</option>
-  					<option value="2">미사용</option>
-				</select>
-			</div>	
-			
-			<label  class="col-lg-1 col-sm-12 col-form-label">검사여부</label>
-			<div class="col-lg-auto col-sm-6">
-				<select class="form-select form-select-sm" aria-label=".form-select-sm example">
-  					<option selected>전체</option>
-  					<option value="1">무검사</option>
-  					<option value="2">검사</option>
-				</select>
-			</div>	
-			
-	</div>	
-
-  <section class="section">
-
-                    <div class="row">
-                    
-                      <div class="col-md-6">
-
-                            <div class="card">
-                               
-                                <div class="card-body">
-                                    <div id="grid" class="mb-3 row"></div>
-
-	<script>
-		const gridData = [ {
-			proCode : '1000',
-			proName : '일렉',
-			proGroup : '완성품'
-		} ];
-
-		const grid = new tui.Grid({
-			el : document.getElementById('grid'),
-			data : gridData,
-			rowHeaders: ['rowNum'],
-			scrollX : false,
-			scrollY : false,
-			columns : [ {
-				header : '제품코드',
-				name : 'proCode'
-			}, {
-				header : '제품명',
-				name : 'proName'
-			}, {
-				header : '구분',
-				name : 'proGroup'
-			}
-
-			]
-		});
-	</script>
-                                    
-                                   
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                
-                                <div class="card-body">
-                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home"
-                                                role="tab" aria-controls="home" aria-selected="true">기본정보</a>
-             
-                                       
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile"
-                                                role="tab" aria-controls="profile" aria-selected="false">생산/판매정보</a>
-                                        
-                                        
-                                        </li>
-                                        
-                                    </ul>
-                                    <div class="tab-content" id="myTabContent">
-                                        <div class="tab-pane fade show active" id="home" role="tabpanel"
-                                            aria-labelledby="home-tab">
-                 <div class="mt-3 mb-3 row">
-				<label  class="col-lg-3 col-sm-12 col-form-label">제품코드</label>
+	<!--필터 시작 -->
+		<div>
+			<div class="mb-3 row">
+				<label class="col-lg-1 col-sm-12 col-form-label">품목군</label>
 				<div class="col-lg-auto col-sm-6">
-					<input  id="depCode" name="depCode" class="form-control">
+					<input id="proId" name="proId" class="form-control">
 				</div>
-			 	<div class="col-lg-auto col-sm-6">
-					<button type="button"><i class="bi bi-search"></i></button> 
-				</div>
-			 </div>	
-			 <div class="mb-3 row">
-				<label  class="col-lg-3 col-sm-12 col-form-label">제품명</label>
 				<div class="col-lg-auto col-sm-6">
-					<input  id="depCode" name="depCode" class="form-control">
+					<button type="button">
+						<i class="bi bi-search"></i>
+					</button>
 				</div>
-			 	<div class="col-lg-auto col-sm-6">
-					<button type="button"><i class="bi bi-search"></i></button> 
+				<div class="col-lg-auto col-sm-12">
+					<input id="proName" name="proName" class="form-control">
 				</div>
-			</div>	
+			</div>
+
+			<div class="mb-3 row">
+				<label class="col-lg-1 col-sm-12 col-form-label">조달구분</label>
+				<div class="col-lg-auto col-sm-6">
+					<select class="form-select form-select-sm"
+						aria-label=".form-select-sm example" id="proGet" name="proGet">
+						<option selected>전체</option>
+						<option value="1">구매</option>
+						<option value="2">생산</option>
+					</select>
+				</div>
+
+				<label class="col-lg-1 col-sm-12 col-form-label">LOT 여부</label>
+				<div class="col-lg-auto col-sm-6">
+					<select class="form-select form-select-sm"
+						aria-label=".form-select-sm example" id="lotUsed" name="lotUed">
+						<option selected></option>
+						<option value="y">사용</option>
+						<option value="n">미사용</option>
+					</select>
+				</div>
+
+				<label class="col-lg-1 col-sm-12 col-form-label">검사여부</label>
+				<div class="col-lg-auto col-sm-6">
+					<select class="form-select form-select-sm"
+						aria-label=".form-select-sm example">
+						<option selected>전체</option>
+						<option value="y">무검사</option>
+						<option value="n">검사</option>
+					</select>
+				</div>
 			
-			<div class="mb-3 row">
-			<label  class="col-lg-3 col-sm-12 col-form-label">LOT여부</label>
-				<div class=" col-lg-auto ">
-				<select class="form-select form-select-sm" aria-label=".form-select-sm example">
-  					<option selected></option>
-  					<option value="1">사용</option>
-  					<option value="2">미사용</option>
-				</select>
-				</div>
+			<!--버튼시작 -->
+			<div style="display: flex; justify-content: flex-end; " id="btn-div" class="mb-3">
+			<div>
+				<button type="button" class="btn btn-sm btn-primary" onclick="">조회</button> 
 			</div>
-				
-			<div class="mb-3 row">
-			<label  class="col-lg-3 col-sm-12 col-form-label">검사여부</label>
-				<div class="col-lg-auto">
-				<select class="form-select form-select-sm" aria-label=".form-select-sm example">
-  					<option selected></option>
-  					<option value="1">무검사</option>
-  					<option value="2">검사</option>
-				</select>
-				</div>
-			</div>	
+			<div>
+				<button type="button"  class="btn btn-sm btn-primary" onclick="addEmp()">
+					<svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
+				</button> 
+			</div>
+			<div>
+				<button type="button" class="btn btn-sm btn-primary" onclick="">등록</button> 
+			</div>
+			<div >
+				<button type="button" class="btn btn-sm btn-primary" onclick="">수정</button> 
+			</div>
+			<div >
+				<button type="button" class="btn btn-sm btn-secondary" onclick="">삭제</button> 
+			</div>
+		</div>	
 			
-			<div class="mb-3 row">
-			<label  class="col-lg-3 col-sm-12 col-form-label">등록일</label>
-			<div class="col-lg-auto col-sm-6">
-			<input  type="date" id="" name="" class="form-control">
-			</div>
-			<div class="col-lg-auto col-sm-6">
-			~
-			</div>
-			<div class="col-lg-auto col-sm-12">
-			<input  type="date" id="" name="" class="form-control">
 			</div>
 	</div>	
 			
-                                        </div>
-                                        <div class="tab-pane fade" id="profile" role="tabpanel"
-                                            aria-labelledby="profile-tab">
-                <div class="mt-3 mb-3 row">
-				 <label  class="col-lg-3 col-sm-12 col-form-label">제작소요일</label>
-				 <div class="col-lg-auto col-sm-6">
-					<input  id="depCode" name="depCode" class="form-control">
-				 </div>
-			 	
-				</div>	
-				<div class="mb-3 row">
-				 <label  class="col-lg-3 col-sm-12 col-form-label">안전재고량</label>
-				 <div class="col-lg-auto col-sm-6">
-					<input  id="depCode" name="depCode" class="form-control">
-				 </div>
-			 	
-				</div>	
-				<div class="mb-3 row">
-				 <label  class="col-lg-3 col-sm-12 col-form-label">일생산량</label>
-				 <div class="col-lg-auto col-sm-6">
-					<input  id="depCode" name="depCode" class="form-control">
-				 </div>
-			 	
-				</div>	
-				 <div class="mb-3 row">
-				<label  class="col-lg-3 col-sm-12 col-form-label">주거래처</label>
-				<div class="col-lg-3 col-sm-6">
-					<input  id="depCode" name="depCode" class="form-control">
-				</div>
-			 	<div class="col-lg-auto col-sm-6">
-					<button type="button"><i class="bi bi-search"></i></button> 
-				</div>
-				<div class="col-lg-3 col-sm-6">
-					<input  id="depCode" name="depCode" class="form-control">
-				</div>
-			</div>	
-			 <div class="mb-3 row">
-				<label  class="col-lg-3 col-sm-12 col-form-label">거래처 담당자</label>
-				<div class="col-lg-3 col-sm-6">
-					<input  id="depCode" name="depCode" class="form-control">
-				</div>
-			 	<div class="col-lg-auto col-sm-6">
-					<button type="button"><i class="bi bi-search"></i></button> 
-				</div>
-				<div class="col-lg-3 col-sm-6">
-					<input  id="depCode" name="depCode" class="form-control">
-				</div>
-			</div>	
-			<div class="mb-3 row">
-				 <label  class="col-lg-3 col-sm-12 col-form-label">원가</label>
-				 <div class="col-lg-auto col-sm-6">
-					<input  id="depCode" name="depCode" class="form-control">
-				 </div>
-			 	
-				</div>	
-				<div class="mb-3 row">
-				 <label  class="col-lg-3 col-sm-12 col-form-label">판매단가</label>
-				 <div class="col-lg-auto col-sm-6">
-					<input  id="depCode" name="depCode" class="form-control">
-				 </div>
-			 	
-				</div>	
-                                        </div>
-                                    <div class="tab-content" id="myTabContent">
-                                        <div class="tab-pane fade show active" id="home" role="tabpanel"
-                                            aria-labelledby="home-tab">
-                                          
-                                        </div>
-                                        <div class="tab-pane fade" id="profile" role="tabpanel"
-                                            aria-labelledby="profile-tab">
-                                           
-                                        </div>
-                                        <div class="tab-pane fade" id="contact" role="tabpanel"
-                                            aria-labelledby="contact-tab">
-                                           
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                      
-                    </div>
-                </section>
-
-
-
-
-
- </div>
+			
+			<!--필터  END -->
+			
+			
 	
-	<div id="grid" class="mb-3 row"></div>
+	 </div>
 
-	<script>
-		const gridData = [ {
-			proCode : '1000',
-			proName : '일렉',
-			proGroup : '완성품',
-			proItme : '1000',
-			lotUsed : '일렉',
-			testUsed : '완성품',
-			proHire : '완성품',
-			proHire : '완성품'
-		} ];
+			<section class="section">
+				<div class="row">
+					<div class="col-md-6">
 
-		const grid = new tui.Grid({
-			el : document.getElementById('grid'),
-			data : gridData,
-			rowHeaders: ['rowNum'],
-			scrollX : false,
-			scrollY : false,
-			columns : [ {
-				header : '제품코드',
-				name : 'proCode'
-			}, {
-				header : '제품명',
-				name : 'proName'
-			}, {
-				header : '구분',
-				name : 'proGroup'
-			}
+						<div class="card">
+							<div class="card-body">
+								<!--조회 & 등록 그리드  -->
+								<div id="grid" ></div>
 
-			]
-		});
-	</script>
+							</div>
+						</div>
+					</div>
 
-	
-</div>
+
+
+
+					<!--추가 정보 그리드  -->
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-body">
+								<!--기본정보 탭 헤드 -->
+								<ul class="nav nav-tabs" id="myTab" role="tablist">
+									<li class="nav-item" role="presentation"><a
+										class="nav-link active" id="home-tab" data-bs-toggle="tab"
+										href="#home" role="tab" aria-controls="home"
+										aria-selected="true">기본정보</a></li>
+
+									<!--생산/판매정보 탭 헤드 -->
+									<li class="nav-item" role="presentation"><a
+										class="nav-link" id="profile-tab" data-bs-toggle="tab"
+										href="#profile" role="tab" aria-controls="profile"
+										aria-selected="false">생산/판매정보</a></li>
+								</ul>
+
+
+								<!--기본정보 탭 내용 -->
+								<div class="tab-content" id="myTabContent">
+									<div class="tab-pane fade show active" id="home"
+										role="tabpanel" aria-labelledby="home-tab">
+										<div class="mt-3 mb-3 row">
+											<label class="col-lg-3 col-sm-12 col-form-label">제품코드</label>
+											<div class="col-lg-auto col-sm-6">
+												<input id="depCode" name="depCode" class="form-control">
+											</div>
+											
+											<div class="mt-3 mb-3 row">
+												<label class="col-lg-3 col-sm-12 col-form-label">제품명</label>
+												<div class="col-lg-auto col-sm-6">
+													<input id="depCode" name="depCode" class="form-control">
+												</div>
+											</div>
+											<div class="mb-3 row">
+												<label class="col-lg-3 col-sm-12 col-form-label">LOT여부</label>
+												<div class=" col-lg-auto ">
+													<select class="form-select form-select-sm"
+														aria-label=".form-select-sm example" id="lotUsed" name="lotUsed">
+														<option selected>사용</option>
+														<option value="1">미사용</option>
+													</select>
+												</div>
+											</div>
+
+											<div class="mb-3 row">
+												<label class="col-lg-3 col-sm-12 col-form-label">검사여부</label>
+												<div class="col-lg-auto">
+													<select class="form-select form-select-sm"
+														aria-label=".form-select-sm example" id="testUsed" name="testUsed">
+														<option selected>검사</option>
+														<option value="1">무검사</option>
+													</select>
+												</div>
+											</div>
+
+											<div class="mb-3 row">
+												<label class="col-lg-3 col-sm-12 col-form-label">등록일</label>
+												<div class="col-lg-auto col-sm-6">
+													<input type="date" id="proHire" name="proHire" class="form-control">
+												</div>
+												<div class="col-lg-auto col-sm-6"></div>
+												<div class="col-lg-auto col-sm-12">
+													
+												</div>
+											</div>
+
+										</div>
+									</div>
+								
+
+								<!--생산/판매정보 탭 내용 -->
+								<div class="tab-pane fade" id="profile" role="tabpanel"
+									aria-labelledby="profile-tab">
+									<div class="mt-3 mb-3 row">
+										<label class="col-lg-3 col-sm-12 col-form-label">제작소요일</label>
+										<div class="col-lg-auto col-sm-6">
+											<input id="bomNeedDay" name="bomNeedDay" class="form-control">
+										</div>
+									</div>
+									<div class="mb-3 row">
+										<label class="col-lg-3 col-sm-12 col-form-label">안전재고량</label>
+										<div class="col-lg-auto col-sm-6">
+											<input id="bs" name="bs" class="form-control">
+										</div>
+									</div>
+									<div class="mb-3 row">
+										<label class="col-lg-3 col-sm-12 col-form-label">일생산량</label>
+										<div class="col-lg-auto col-sm-6">
+											<input id="ppd" name="ppd" class="form-control">
+										</div>
+									</div>
+
+									<div class="mb-3 row">
+										<label class="col-lg-3 col-sm-12 col-form-label">주거래처</label>
+										<div class="col-lg-3 col-sm-6">
+											<input id="clientCode" name="clientCode" class="form-control">
+										</div>
+										<div class="col-lg-auto col-sm-6">
+											<button type="button">
+												<i class="bi bi-search"></i>
+											</button>
+										</div>
+										<div class="col-lg-3 col-sm-6">
+											<input id="clientName" name="clientName" class="form-control">
+										</div>
+									</div>
+									<div class="mb-3 row">
+										<label class="col-lg-3 col-sm-12 col-form-label">거래처 담당자</label>
+										<div class="col-lg-3 col-sm-6">
+											<input id="empNum" name="empNum" class="form-control">
+										</div>
+										<div class="col-lg-auto col-sm-6">
+											<button type="button">
+												<i class="bi bi-search"></i>
+											</button>
+										</div>
+										<div class="col-lg-3 col-sm-6">
+											<input id="empName" name="empName" class="form-control">
+										</div>
+									</div>
+									<div class="mb-3 row">
+										<label class="col-lg-3 col-sm-12 col-form-label">원가</label>
+										<div class="col-lg-auto col-sm-6">
+											<input id="cost" name="cost" class="form-control">
+										</div>
+
+									</div>
+									<div class="mb-3 row">
+										<label class="col-lg-3 col-sm-12 col-form-label">판매단가</label>
+										<div class="col-lg-auto col-sm-6">
+											<input id="sellPrice" name="sellPrice" class="form-control">
+										</div>
+									</div>
+								</div>
+						</div>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</section>
+
+		</div>
+		<!-- END -->
+
+
+
+
+
+
+
+		<div id="grid" class="mb-3 row"></div>
+
+		<script>
+			const gridData = [ {
+				proCode : '1000',
+				proName : '일렉',
+				proGroup : '완성품'
+			} ];
+
+			const grid = new tui.Grid({
+				el : document.getElementById('grid'),
+				data : gridData,
+				rowHeaders : [ 'rowNum' ],
+				scrollX : false,
+				scrollY : false,
+				columns : [ {
+					header : '제품코드',
+					name : 'proCode'
+				}, {
+					header : '제품명',
+					name : 'proName'
+				}, {
+					header : '구분',
+					name : 'proGroup'
+				}
+
+				]
+			});
+		</script>
+	</div>
 </body>
 </html>
