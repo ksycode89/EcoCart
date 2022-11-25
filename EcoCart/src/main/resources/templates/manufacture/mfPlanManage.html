@@ -245,21 +245,23 @@
     let ev1 = {};
     
     planInsertGrid.on('click', (ev) => {
-    	if(ev.columnName=='proCode'){
-    		$.ajax({
-        		url:'/mfProductList',
-        		success:function(data){
-        			productModalGrid.resetData(data);
-        			ev1 = ev;
-        		},
-        		error:function(error){
-        			console.log(error);
-        		}
-        	});
-    		$("#productModal").modal("show");
-    		productModal.addEventListener('shown.bs.modal', () => {
-    	    	productModalGrid.refreshLayout();
-    	    });
+    	if(planInsertGrid.getRow(ev.rowKey).orderCode == '' || planInsertGrid.getRow(ev.rowKey).orderCode == null){
+    		if(ev.columnName=='proCode' || ev.columnName=='proName'){
+        		$.ajax({
+            		url:'/mfProductList',
+            		success:function(data){
+            			productModalGrid.resetData(data);
+            			ev1 = ev;
+            		},
+            		error:function(error){
+            			console.log(error);
+            		}
+            	});
+        		$("#productModal").modal("show");
+        		productModal.addEventListener('shown.bs.modal', () => {
+        	    	productModalGrid.refreshLayout();
+        	    });
+        	}	
     	}
     });
     

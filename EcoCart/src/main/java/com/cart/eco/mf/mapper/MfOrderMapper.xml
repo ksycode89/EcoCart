@@ -5,15 +5,23 @@
 <mapper namespace="com.cart.eco.mf.mapper.MfOrderMapper">
 	<select id="getMfOrderList" resultType="com.cart.eco.mf.service.MfOrderVO">
 		SELECT o.mf_order_code, o.pro_code, o.pro_name, d.mf_order_num, d.mf_order_date, d.mf_order_status
-		FROM mf_order o JOIN mf_order_detail d
-		ON o.mf_order_code = d.mf_order_code
+		  FROM mf_order o 
+		  JOIN mf_order_detail d
+		    ON o.mf_order_code = d.mf_order_code
 	</select>
 
 	<select id="getMfReadyOrderList" resultType="com.cart.eco.mf.service.MfOrderVO">
-		SELECT o.mf_order_code, o.pro_code, o.pro_name, d.mf_order_num, d.mf_order_date
-		FROM mf_order o JOIN mf_order_detail d
-		ON o.mf_order_code = d.mf_order_code
-		WHERE d.mf_order_status = '대기'
+		SELECT o.mf_order_code, 
+		       o.pro_code, 
+		       o.pro_name, 
+		       d.mf_order_num, 
+		       d.mf_order_date
+		  FROM mf_order o
+		 
+		  JOIN mf_order_detail d
+		    ON o.mf_order_code = d.mf_order_code
+		
+	 	 WHERE d.mf_order_status = '대기'
 	</select>
 	
 	<select id="getMfReadyPlanList" resultType="com.cart.eco.mf.service.MfOrderVO">
@@ -26,13 +34,20 @@
 	</select>
 	
 	<select id="getMfOrderMaterialList" parameterType="String" resultType="Map">
-		SELECT c.pro_code, c.pro_name, p.need_num*c.bom_num as bom_need_num
+		SELECT c.pro_code "proCode", c.pro_name "proName", p.need_num*c.bom_num as "bomNeedNum"
 		FROM mf_plan_detail p JOIN bom b
         ON p.pro_code = b.pro_code
         JOIN bom_children c
         ON b.bom_code = c.bom_code
         WHERE p.pro_code = #{proCode}
         ORDER BY c.ch_no
+	</select>
+	
+	<select id="getMfLotList" parameterType="String" resultType="Map">
+		SELECT pro_code "proCode", pro_name "proName", lot_code "lotCode", rest_num "restNum"
+		FROM receiving_detail
+		WHERE pro_code = #{proCode}
+		AND rest_num > 0
 	</select>
 	
 	<update id="decideMfOrder" parameterType="com.cart.eco.mf.service.MfOrderVO">

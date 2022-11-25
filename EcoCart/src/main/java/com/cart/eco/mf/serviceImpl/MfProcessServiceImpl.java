@@ -20,4 +20,9 @@ public class MfProcessServiceImpl implements MfProcessService {
 		return mapper.getMfProcessList();
 	}
 
+	@Override
+	public List<MfProcessVO> getMfSystemList() {
+		return mapper.getMfSystemList();
+	}
+
 }

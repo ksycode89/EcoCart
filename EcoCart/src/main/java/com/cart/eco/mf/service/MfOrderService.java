@@ -18,10 +18,25 @@ public interface MfOrderService {
 	public List<Map<String, Object>> getMfOrderMaterialList(String proCode);
 	
 	//필요자재LOT조회
+	public List<Map<String, Object>> getMfLotList(String proCode);
+	
+	//생산지시코드조회
+	public List<MfOrderVO> getMfOrderCode();
 	
 	//생산지시등록
+	public int insertMfOrder(List<MfOrderVO> vo);
+	
+	//생산지시상세등록
+	public int insertMfOrderDetail(List<MfOrderVO> vo);
 	
 	//필요자재LOT등록
+	public int insertMfOrderLot(List<MfOrderVO> vo);
+	
+	//필요자재LOT상세등록
+	public int insertMfOrderLotDetail(List<MfOrderVO> vo);
+	
+	//자재재고변경
+	public int updateReceivingDetail(List<MfOrderVO> vo);
 	
 	//생산지시확정변경
 	public int decideMfOrder(MfOrderVO mfvo);

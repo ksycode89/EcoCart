@@ -27,7 +27,7 @@ public interface MfPlanMapper {
 	// 생산계획삭제
 	public int deleteMfPlan(MfPlanVO mfvo); 
 	
-	// 생산계획삭제 - detail
+	// 생산계획상세삭제
 	public int deleteMfPlan2(MfPlanVO mfvo); 
 	
 }
