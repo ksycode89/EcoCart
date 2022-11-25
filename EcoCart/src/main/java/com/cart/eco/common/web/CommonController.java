@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cart.eco.common.service.BomService;
+import com.cart.eco.common.service.BomVO;
 import com.cart.eco.common.service.ClientVO;
 import com.cart.eco.common.service.CommonService;
 import com.cart.eco.common.service.CommonVO;
@@ -41,6 +43,7 @@ public class CommonController {
 	@Autowired WHService whService;
 	@Autowired ProductService proService;
 	@Autowired ReDetailService reService;
+	@Autowired BomService bomService;
 	
 	//페이지 이동 
 	@GetMapping("/login")
@@ -333,7 +336,31 @@ public class CommonController {
 		 System.out.println("결과값 합산 : "+result);
 		 return result;
 	 }
-	
-	
+//	====================BOM=======================================
+	 
+	//창고등록
+		 @PostMapping("/bomInsert")
+	     @ResponseBody
+	     public BomVO bomInsert(@RequestBody ToastGridVO<BomVO> vo) {
+	    	System.out.println("create : "+vo.getCreatedRows());
+	    	
+	    	 return bomService.bomInsert(vo);
+	     } 
+	//창고조회	  bomList
+		 @PostMapping("/bomList") 
+			@ResponseBody
+			public List<BomVO>bomList(BomVO vo){
+				System.out.println(vo);
+				return  bomService.bomList(vo);
+				
+			}
+		 //자제품조회 	  bomChildren
+		 @PostMapping("/bomChildren")  
+		 @ResponseBody
+		 public List<BomVO>bomChildren(BomVO vo){
+			 System.out.println("bomChildren : "+vo);
+			 return  bomService.bomChildren(vo);
+			 
+		 }
 	
 }

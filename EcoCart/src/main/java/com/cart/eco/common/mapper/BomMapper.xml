@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cart.eco.common.mapper.BomMapper">
+	<!-- bom list -->
+	<select id="bomList" parameterType="com.cart.eco.common.service.BomVO" resultType="com.cart.eco.common.service.BomVO">
+			SELECT *
+			FROM bom
+			<where>
+				<if test="bomCode != null and !bomCode.equals('')">
+           	 	   bom_code = #{bomCode}
+        		</if>
+				<if test="proCode != null and !proCode.equals('')">
+           	 	   pro_code = #{proCode}
+        		</if>
+        		<if test="bomGroup != null and !bomGroup.equals('')">
+           	 	   bom_group = #{bomGroup}
+        		</if>
+        	
+			</where>
+	</select>
+			
+	<insert id="bomInsert" parameterType="com.cart.eco.common.service.BomVO">
+<!-- 	<selectKey keyColumn="bomCode" resultType="String" order="BEFORE">
+		select #{proCode}|| #{bomGroup}||(select subStr(to_char(sysdate,'yyyyMMdd'),1,4) from dual) "bomCode" from dual
+	</selectKey> -->
+		INSERT INTO bom 
+		VALUES (
+		(select #{proCode}||'-' ||#{bomGroup}||'-'||(select subStr(to_char(sysdate,'yyyyMMdd'),1,4) from dual)  from dual)
+		,#{proCode}
+		,#{bomHire}
+		 <if test="bomFire != null and !bomFire.equals('')">
+           , #{bomFire}
+         </if>
+          <if test="bomFire == null and bomFire.equals('')">
+            ,'9999/01/01'
+         </if>
+        	 ,null
+          <if test="totalPrice != null and !totalPrice.equals('')">
+            ,#{totalPrice}
+         </if>
+          <if test="totalPrice == null and totalPrice.equals('')">
+           , null
+         </if>
+         ,#{bomManager}
+         ,#{bomGroup}
+		)
+	</insert>
+<!-- 	bom자제품검 -->
+	<select id="bomChildren" parameterType="com.cart.eco.common.service.BomVO" resultType="com.cart.eco.common.service.BomVO">
+		SELECT * 
+		FROM bom_children 
+		WHERE bom_code = #{bomCode}
+	</select>
+</mapper>

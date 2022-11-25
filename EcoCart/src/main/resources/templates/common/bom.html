@@ -20,7 +20,7 @@
  <div >
 	<div class="mb-3 row">
 			<div class="col-md-3 mb-1">
-				<div class="input-group mb-3">`
+				<div class="input-group mb-3">
 					<label for="staticEmail" class="col-sm-3 col-form-label">모제품</label>
 					<input type="text" id="proCode" class="form-control"
 						placeholder="완제품코드" aria-label="Recipient's username"
@@ -83,7 +83,7 @@
 			<div class="col-lg-auto col-sm-12 ">
 		        <button class="ml-5 btn btn-sm btn-primary" onclick="getList()">조회</button>
 				<button class="ml-5 btn btn-sm btn-primary">상품조회</button>
-		        <button class="ml-5 btn btn-sm btn-primary" onclick="insertWH()">등록</button>
+		        <button class="ml-5 btn btn-sm btn-primary" onclick="insertBOM()">등록</button>
 				<button class="ml-5 btn btn-sm btn-primary" onclick="addRow()"><svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></button>
 				<button class="ml-5 btn btn-sm btn-primary" onclick="updateWH()">수정</button>
 				<button class="ml-5 btn btn-sm btn-secondary" onclick="reset()">초기화</button>
@@ -274,33 +274,24 @@
 				</div>
 			</div>
 		</div>
-		
-		
-
 	<script>
 	
 	/* token */
 	 var token = $("meta[name='_csrf']").attr("content");
 	 var header = $("meta[name='_csrf_header']").attr("content");
-	
 	 
 	/* data source */
 	const dataSource = {
    		 withCredentials: false,
    		 contentType: 'application/json',
-
    		  api: {
-   			  
-   		    readData  : { url: '', method: 'GET' },
-   		    createData: { url: '/WHInsert', method: 'POST' },
-   		    updateData: { url: '/WHUpdate', method: 'POST' },
-   		    deleteData : { url: '/', method: 'POST' },
-   		    updateModifiy: { url: '/', method: 'POST' },
+	   		    readData  : { url: '/', method: 'GET' },
+	   		    createData: { url: '/bomInsert', method: 'POST' },
+	   		    updateData: { url: '/WHUpdate', method: 'POST' },
+	   		    deleteData : { url: '/', method: 'POST' },
+	   		    updateModifiy: { url: '/', method: 'POST' },
    		  }
    		};
-
-	
-	
 	const gird1 = new tui.Grid({
 			el : document.getElementById('gird1'),
 			rowHeaders: ['checkbox'],
@@ -325,6 +316,7 @@
 			}, {
 				header : '제작소요일',
 				name : 'bomNeedDay',
+				editor : 'text'
 				
 			},  {
 				header : '총단가',
@@ -338,16 +330,12 @@
 			},{
 				header : '구분',
 				name : 'bomGroup',
-				
-	        	      
-				
 			}
 
 			],
 			data : dataSource
 		});
 
-		
 		const grid2 = new tui.Grid({
 			el : document.getElementById('grid2'),
 			rowHeaders: ['rowNum'],
@@ -362,17 +350,27 @@
 			}, {
 				header : '수량',
 				name : 'bomNum',
-				editor : 'text' 
+				editor : 'text' ,
+				onAfterChange : function(ev) {
+			        let row = grid2.getRow(ev.rowKey)
+			        console.log(Number(row.loss))
+			        let loss = Number(row.loss)
+			        let sum = row.bomNum*((100+loss)*0.01)
+			      //반올림하기
+			        grid2.setValue(ev.rowKey, 'needNum',Math.round(sum))
+		        }
 				
 			}, {
 				header : '로스율(%)',
 				name : 'loss',
 				editor : 'text',
 					onAfterChange : function(ev) {
-			        let row = grid2.getRow(ev.rowKey)
-			        console.log(row)
-			        let sum = ev.loss
-			        grid2.setValue(ev.rowKey, 'needNum',sum)
+					 let row = grid2.getRow(ev.rowKey)
+					 console.log(Number(row.loss))
+					 let loss = Number(row.loss)
+			         let sum = row.bomNum*((100+loss)*0.01)
+				  //반올림하기
+			         grid2.setValue(ev.rowKey, 'needNum',Math.round(sum))
 		        }
 			}, {
 				header : '필요수량',
@@ -403,9 +401,7 @@
 			}
 			]
 		});
-		
 		 //사원검색 모달/아작스
-		 
 		const searchEmp = new tui.Grid({
 				el : document.getElementById('searchEmp'),
 				rowHeaders: ['rowNum'],
@@ -424,8 +420,7 @@
 				]
 		});
 			 	//사원검색 수정 그리드
-				 
-			const modiEmpGrid = new tui.Grid({
+	const modiEmpGrid = new tui.Grid({
 				el : document.getElementById('searchEmpInner'),
 				rowHeaders: ['rowNum'],
 				scrollX : false,
@@ -445,7 +440,22 @@
 			 
 	//grid1 클릭이벤트
 	 gird1.on('click',ev=>{
-			
+		 let key = ev.rowKey
+		 console.log(gird1.getRow(key))
+		 if(ev.columnName =='bomCode' || ev.columnName =='proCode' ){
+			 $.ajax({
+					url : '/bomChildren' ,
+					type : 'post',
+				    data : { 'bomCode':gird1.getRow(key).bomCode } ,
+				    beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           	 },
+				 }).then((data)=>{
+					 console.log("data",data)
+					 grid2.resetData(data)
+				 })
+			 
+		 }
 	 })
 		
 	//수정그리드 담당자 온클리으로 넣기
@@ -471,7 +481,7 @@
 	 })
 		
 	//wh그리드 ㅇ클릭이벤트
-		   gridWH.on('click',ev=>{
+	gridWH.on('click',ev=>{
 			 	let event = gridWH.getRow(ev.rowKey);
 			   $('#proCode').val(event.proCode)
 			   $('#proName').val(event.proName)
@@ -482,7 +492,7 @@
 	}
 		//WHgrid에 뿌려줄 정보 (모제품검색)
 		 //그리드 열리시 실행될구문
-			WHcodemodal.addEventListener('shown.bs.modal', () => {
+	WHcodemodal.addEventListener('shown.bs.modal', () => {
 				//모달창 새로고침
 				   gridWH.refreshLayout(); 
 			 $.ajax({
@@ -493,24 +503,15 @@
 	           	 },
 	               success : function(data){
 	                  console.log(data);
-	    
 	                  gridWH.resetData(data);
-	          
-	                  
 	               },
 	               error : err=>{
 	                  console.log(err)
 	               }
-	               
-	               
-	             
 	            })
-			  })
-		
-	
-			  
+	 })
 	///
-		const searchPro = new tui.Grid({
+	const searchPro = new tui.Grid({
 			el : document.getElementById('searchPro'),
 			rowHeaders: ['rowNum'],
 			scrollX : false,
@@ -526,7 +527,7 @@
 		});
 		 //WHgrid에 뿌려줄 정보 (제품조회)
 			 //그리드 열리시 실행될구문
-				proModal.addEventListener('shown.bs.modal', () => {
+	proModal.addEventListener('shown.bs.modal', () => {
 					//모달창 새로고침
 					   searchPro.refreshLayout(); 
 				 $.ajax({
@@ -537,10 +538,7 @@
 		           	 },
 		               success : function(data){
 		                  console.log(data);
-		    
 		                  searchPro.resetData(data);
-		          
-		                  
 		               },
 		               error : err=>{
 		                  console.log(err)
@@ -548,8 +546,7 @@
 		            })
 				  })
 			//자제품 input에 넣기 	  
-		searchPro.on('click',ev=>{
-		
+	searchPro.on('click',ev=>{
 			 	let event = searchPro.getRow(ev.rowKey);
 			 	console.log(event)
 			   $('#chprocode').val(event.proCode)
@@ -566,15 +563,16 @@
     })
 	///버튼들///
 	//등록
-	function insertWH(){
-		console.log("get 등록 안 ",grid2.getRow(0))
-
-		
-		if(grid2.getRow(0) !=null || grid2.getRow(0) != ''){
-	 	   gird1.request('createData');
-		
+	function insertBOM(){
+		console.log("get 등록 안 ",gird1.getRow(0))
+		if(gird1.getRow(0).bomHire ==null || gird1.getRow(0).bomHire == ''){
+	 	   alert('시작일을 선택해주세요')
+		}else if(gird1.getRow(0).bomFire ==null || gird1.getRow(0).bomFire == ''){
+			 alert('종료을 선택해주세요')
+		}else if(grid2.getRow(0) ==null || grid2.getRow(0)==''){
+			 alert('적어도 하나의 자제품을 선택해주세요.')
 		}else{
-		console.log(123	)
+			gird1.request('createData');
 		}
 	}
 	//리셋
@@ -585,9 +583,6 @@
 	function updateWH(){
 	    gird1.request('updateData');
 	}
-
-		
-		 
 		 //searchEmp에 뿌려줄 정보 (창고조회)
 			 //그리드 열리시 실행될구문
 	empModal.addEventListener('shown.bs.modal', () => {
@@ -608,23 +603,20 @@
 		               }
 		        })
 	 })
-		
 	searchEmp.on('click',ev=>{
-		
 			 	let event = searchEmp.getRow(ev.rowKey);
 			 	console.log(event)
 			   $('#empcode').val(event.empNum)
 			   $('#empname').val(event.empName)
-		
 		   })
 	function cancelDoEmp(){
 					 $('#empcode').val('')
 					 $('#empname').val('')
 	       }
-		 
 			 //제품 한줄추가  {"whCode": $('#whcode').val(), "whName": $('#whname').val(),
 	function addRow(){
-			 let leadtime;
+	
+		     let leadtime;
 			 //제작소요일 가져오기
 		      $(gridWH.getData()).each((a,val)=>{   
 		    	  	if( $('#proCode').val() == val.proCode){
@@ -636,9 +628,7 @@
 		      console.log(leadtime)
 				let data = [
 					 {"bomGroup" : $('#bomGroup').val(),"bomManager": $('#empcode').val(),"proCode" : $('#proCode').val(),"bomNeedDay" :leadtime}
-									
 					]
-				
 		     if ($('#empcode').val() ==null || $('#empcode').val() ==''){
 				alert('담당자를 선택해주세요')
 			}else if ($('#bomGroup').val() =='==선택==' || $('#bomGroup').val() ==''){
@@ -647,6 +637,7 @@
 				alert('모제품을 선택해주세요  ')
 			}else {
 				gird1.refreshLayout(); 
+				
 				gird1.appendRows(data);
 			}
 		 }
@@ -655,33 +646,43 @@
 		let data = [
 			 {"proCode" : $('#chprocode').val(), "proName": $('#chproname').val()}
 			]
+		let check =true;
+		$(grid2.getData()).each((a,val)=>{
+			if(val.proCode == $('#chprocode').val() ){
+				check = false;
+			}
+		  })
+		 	console.log('no',check)
+		
+		if(check){
 			if( $('#chprocode').val() != null && $('#chprocode').val() != '' ){
 				console.log("자제품추가grid", $('#chprocode').val())
 				grid2.appendRows(data)
 			 }else {
 				 alert("추가할 자제품을 선택해주세요")
 			  }
-		 } 
-		 //창고조회
+		  }else{
+			  alert("같은 자제품이 존재합니다.")
+		  }
+		} 
+		
+		 //BOM조회 - 모제품필수 /옵션 구분/담당자
 	 function getList(){
 /* 			console.log($('#whcode').val())
  */			 $.ajax({
-				url : '/whList' ,
+				url : '/bomList' ,
 				type : 'post',
-			    data : { 'whCode': $('#whcode').val()} ,
+			    data : { 'proCode': $('#proCode').val()} ,
 			    beforeSend : function(xhr){
 	           		xhr.setRequestHeader(header, token);
 	           	 },
-				
 			 }).then((data)=>{
 				 console.log("data",data)
-			
-				
 				 gird1.resetData(data)
-				 
 			 })
+		
+		   
 		 }
-		 
 	
 	</script>
 </div>
