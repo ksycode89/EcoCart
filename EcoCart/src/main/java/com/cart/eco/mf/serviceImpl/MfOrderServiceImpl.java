@@ -37,8 +37,55 @@ public class MfOrderServiceImpl implements MfOrderService {
 	}
 
 	@Override
+	public List<Map<String, Object>> getMfLotList(String proCode) {
+		return mapper.getMfLotList(proCode);
+	}
+
+	@Override
 	public int decideMfOrder(MfOrderVO mfvo) {
 		return mapper.decideMfOrder(mfvo);
+	}
+	
+	@Override
+	public List<MfOrderVO> getMfOrderCode() {
+		return mapper.getMfOrderCode();
+	}
+	
+	@Override
+	public int insertMfOrder(List<MfOrderVO> vo) {
+		return mapper.insertMfOrder(vo.get(0));
+	}
+
+	@Override
+	public int insertMfOrderDetail(List<MfOrderVO> vo) {
+		int result = 0;
+		for(int i=0; i<vo.size(); i++) {
+			result += mapper.insertMfOrderDetail(vo.get(i));
+		}
+		return result;
+	}
+
+	@Override
+	public int insertMfOrderLot(List<MfOrderVO> vo) {
+		return mapper.insertMfOrderLot(vo.get(0));
+	}
+
+	@Override
+	public int insertMfOrderLotDetail(List<MfOrderVO> vo) {
+		int result = 0;
+		for(int i=0; i<vo.size(); i++) {
+			result += mapper.insertMfOrderLotDetail(vo.get(i));
+		}
+		return result;
+	}
+
+	@Override
+	public int updateReceivingDetail(List<MfOrderVO> vo) {
+		int result = 0;
+		for(int i=0; i<vo.size(); i++) {
+			result += mapper.updateReceivingDetail(vo.get(i));
+		}
+		return result;
 	}
 
 }

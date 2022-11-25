@@ -93,6 +93,12 @@ public class MfController {
 		return mforder.getMfOrderMaterialList(proCode);
 	}
 	
+	@GetMapping("/mfOrderLotList")
+	@ResponseBody
+	public List<Map<String,Object>> mfOrderLotList(String proCode){
+		return mforder.getMfLotList(proCode);
+	}
+	
 	@GetMapping("/mfOrderDecide")
 	public String mfOrderDecide(Model model) {
 		return "manufacture/mfOrderDecide";
@@ -136,4 +142,9 @@ public class MfController {
 		return mfprocess.getMfProcessList();
 	}
 	
+	@GetMapping("/mfSystemList")
+	@ResponseBody
+	public List<MfProcessVO> mfSystemList(){
+		return mfprocess.getMfSystemList();
+	}
 }
