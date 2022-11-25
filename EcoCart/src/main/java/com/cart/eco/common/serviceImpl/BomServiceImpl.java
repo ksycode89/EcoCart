@@ -16,15 +16,11 @@ public class BomServiceImpl  implements BomService{
 	@Autowired BomMapper mapper;
 	
 	@Override
-	public BomVO bomInsert(ToastGridVO<BomVO> vo) {
-			
-		int result=0;
-    	for(BomVO wh : vo.getCreatedRows()) {
-    		result += mapper.bomInsert(wh);
-    	}
-    	System.out.println("결과값 합산 : "+result);
+	public BomVO bomInsert(BomVO vo) {
+			mapper.bomInsert(vo);
 		
-		return vo.getCreatedRows().get(0);
+		
+		return vo;
 	}
 
 	@Override

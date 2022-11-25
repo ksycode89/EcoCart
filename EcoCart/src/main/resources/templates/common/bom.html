@@ -283,6 +283,7 @@
 	/* data source */
 	const dataSource = {
    		 withCredentials: false,
+   		initialRequest: false,
    		 contentType: 'application/json',
    		  api: {
 	   		    readData  : { url: '/', method: 'GET' },
@@ -545,7 +546,7 @@
 		               }
 		            })
 				  })
-			//자제품 input에 넣기 	  
+	//자제품 input에 넣기 	  
 	searchPro.on('click',ev=>{
 			 	let event = searchPro.getRow(ev.rowKey);
 			 	console.log(event)
@@ -564,15 +565,47 @@
 	///버튼들///
 	//등록
 	function insertBOM(){
-		console.log("get 등록 안 ",gird1.getRow(0))
+		console.log('==등록버튼==',gird1.getCheckedRows())
+		let checkNum =false;
+		$(grid2.getData()).each((a,b)=>{
+			if(b.bomNum == null || b.bomNum == ''){
+				checkNum =true;
+			}
+		})
+	
 		if(gird1.getRow(0).bomHire ==null || gird1.getRow(0).bomHire == ''){
 	 	   alert('시작일을 선택해주세요')
 		}else if(gird1.getRow(0).bomFire ==null || gird1.getRow(0).bomFire == ''){
-			 alert('종료을 선택해주세요')
+			 alert('종료일을 선택해주세요')
 		}else if(grid2.getRow(0) ==null || grid2.getRow(0)==''){
 			 alert('적어도 하나의 자제품을 선택해주세요.')
+		}else if(checkNum){
+			alert('자재품의 수량을 입력해주세요.')
 		}else{
-			gird1.request('createData');
+		 	if(gird1.getCheckedRows().length==1){
+		 		console.log(gird1.getCheckedRows()[0])
+			/*  gird1.on('afterRequest', function(ev) {  }) */
+		 		 $.ajax({
+		               url : "/bomInsert",
+		               type: "post",
+		               beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           		},
+		           		data :  gird1.getCheckedRows()[0],
+		               success : function(data){
+		                  console.log(data);
+		                
+		               },
+		               error : err=>{
+		                  console.log(err)
+		               }
+		        })
+		 	}else{
+		 		alert('등록할 BOM을 선택해주세요')
+		 	} 
+			
+			
+		
 		}
 	}
 	//리셋
@@ -613,7 +646,7 @@
 					 $('#empcode').val('')
 					 $('#empname').val('')
 	       }
-			 //제품 한줄추가  {"whCode": $('#whcode').val(), "whName": $('#whname').val(),
+			 //제품 추가  {"whCode": $('#whcode').val(), "whName": $('#whname').val(),
 	function addRow(){
 	
 		     let leadtime;
@@ -627,7 +660,7 @@
 		    	 })
 		      console.log(leadtime)
 				let data = [
-					 {"bomGroup" : $('#bomGroup').val(),"bomManager": $('#empcode').val(),"proCode" : $('#proCode').val(),"bomNeedDay" :leadtime}
+					 {"bomGroup" : $('#bomGroup').val(),"bomManager": $('#empcode').val(),"proCode" : $('#proCode').val(),"bomNeedDay" :leadtime,"totalPrice" : 0}
 					]
 		     if ($('#empcode').val() ==null || $('#empcode').val() ==''){
 				alert('담당자를 선택해주세요')
@@ -637,7 +670,7 @@
 				alert('모제품을 선택해주세요  ')
 			}else {
 				gird1.refreshLayout(); 
-				
+				gird1.clear()
 				gird1.appendRows(data);
 			}
 		 }
@@ -646,28 +679,34 @@
 		let data = [
 			 {"proCode" : $('#chprocode').val(), "proName": $('#chproname').val()}
 			]
+		
+		//같은 자제품 체크구문
 		let check =true;
 		$(grid2.getData()).each((a,val)=>{
 			if(val.proCode == $('#chprocode').val() ){
 				check = false;
 			}
 		  })
-		 	console.log('no',check)
+	 //모제품체크 
+	if(gird1.getCheckedRows().length != 0  ||  $('#chprocode').val() != null){
+				
 		
-		if(check){
-			if( $('#chprocode').val() != null && $('#chprocode').val() != '' ){
-				console.log("자제품추가grid", $('#chprocode').val())
-				grid2.appendRows(data)
-			 }else {
-				 alert("추가할 자제품을 선택해주세요")
-			  }
-		  }else{
-			  alert("같은 자제품이 존재합니다.")
-		  }
-		} 
-		
+			//실질체크
+			if(check){
+					if( $('#chprocode').val() != null && $('#chprocode').val() != '' ){
+						console.log("자제품추가grid", $('#chprocode').val())
+						grid2.appendRows(data)
+					 }else {
+						 alert("추가할 자제품을 선택해주세요")
+					  }
+			 }else{
+				  alert("같은 자제품이 존재합니다.") }
+			 
+	   }else {  alert("등록할 모제품을 선택해주세요") }
+		}		
 		 //BOM조회 - 모제품필수 /옵션 구분/담당자
 	 function getList(){
+	grid2.clear()			 
 /* 			console.log($('#whcode').val())
  */			 $.ajax({
 				url : '/bomList' ,

@@ -19,13 +19,13 @@
 			</where>
 	</select>
 			
-	<insert id="bomInsert" parameterType="com.cart.eco.common.service.BomVO">
-<!-- 	<selectKey keyColumn="bomCode" resultType="String" order="BEFORE">
-		select #{proCode}|| #{bomGroup}||(select subStr(to_char(sysdate,'yyyyMMdd'),1,4) from dual) "bomCode" from dual
-	</selectKey> -->
+	<insert id="bomInsert" parameterType="com.cart.eco.common.service.BomVO" >
+ 	<selectKey keyProperty="bomCode"  resultType="String" order="BEFORE">
+		select #{proCode}||'-' ||#{bomGroup}||'-'||(select subStr(to_char(sysdate,'yyyyMMdd'),1,4) from dual)  from dual
+	</selectKey> 
 		INSERT INTO bom 
 		VALUES (
-		(select #{proCode}||'-' ||#{bomGroup}||'-'||(select subStr(to_char(sysdate,'yyyyMMdd'),1,4) from dual)  from dual)
+	     #{bomCode}
 		,#{proCode}
 		,#{bomHire}
 		 <if test="bomFire != null and !bomFire.equals('')">

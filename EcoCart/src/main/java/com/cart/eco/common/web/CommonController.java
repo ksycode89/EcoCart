@@ -341,8 +341,8 @@ public class CommonController {
 	//창고등록
 		 @PostMapping("/bomInsert")
 	     @ResponseBody
-	     public BomVO bomInsert(@RequestBody ToastGridVO<BomVO> vo) {
-	    	System.out.println("create : "+vo.getCreatedRows());
+	     public BomVO bomInsert( BomVO vo) {
+	    	System.out.println("insert : "+vo);
 	    	
 	    	 return bomService.bomInsert(vo);
 	     } 
