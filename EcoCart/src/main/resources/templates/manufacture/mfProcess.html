@@ -14,17 +14,37 @@
 			<label for="lineSelect" style="width:100px">라인번호</label>
 			<select id="lineSelect" class="btn" style="width:200px; border:1px solid #dce7f1; background-color:white">
 				<option id="lineSelectAll" value="*" selected>전체</option>
-				<option id="lineSelect1" value="1">1번</option>
-				<option id="lineSelect2" value="2">2번</option>
-				<option id="lineSelect3" value="3">3번</option>
+				<option id="lineSelect1" value="1">LINE-1</option>
+				<option id="lineSelect2" value="2">LINE-2</option>
+				<option id="lineSelect3" value="3">LINE-3</option>
+				<option id="lineSelect3" value="4">LINE-4</option>
 			</select>
+			<button type="button" class="btn btn-sm btn-primary" id="updateBtn" style="float:right; margin-top: 5px">변경사항저장</button>
 		</div>
 		<div id="processGridId"></div><br>
+		
+		<!-- SYSTEM Modal -->
+		<div class="modal fade" id="systemModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="systemModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="systemModalLabel">미사용 설비 조회</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="systemModalGridId"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	<script>
-		const processGrid = new tui.Grid({
+		var processGrid = new tui.Grid({
 			el: document.getElementById('processGridId'),
 			scrollX: false,
-			scrollY: true,
+			scrollY: false,
 			bodyHeight: 600,
 			columns: [
 		        {
@@ -50,15 +70,35 @@
 		          name: 'sysName'
 		        },
 		        {
-		          header: '작업자',
+		          header: '담당자',
 		          name: 'empName'
 		        }
 			]
 		});
 		
-		document.addEventListener("DOMContentLoaded", mfProcessListAll)
-	    function mfProcessListAll(){
-	    	$.ajax({
+		var systemModalGrid = new tui.Grid({
+			el: document.getElementById('systemModalGridId'),
+			scrollX: false,
+			scrollY: true,
+			bodyHeight: 200,
+			columns: [
+		        {
+		          header: '설비코드',
+		          name: 'sysCode'
+		        },
+		        {
+		          header: '설비명',
+		          name: 'sysName'
+		        },
+		        {
+		          header: '담당자',
+		          name: 'empName'
+		        }
+			]
+		});
+		
+		document.addEventListener("DOMContentLoaded", () => {
+			$.ajax({
 	    		url:'/mfProcessListAll',
 	    		success:function(data){
 	    			processGrid.resetData(data);
@@ -67,20 +107,70 @@
 	    			console.log(error);
 	    		}
 	    	})
-	    }
+		});
 		
 		lineSelect.addEventListener('change', () => {
 			processGrid.showColumn('lineNo');
 			if($('#lineSelect').val()==1){
 				processGrid.filter('lineNo',[{code:'eq', value:1}]);
+				processGrid.setBodyHeight(160);
 			} else if ($('#lineSelect').val()==2){
 				processGrid.filter('lineNo',[{code:'eq', value:2}]);
+				processGrid.setBodyHeight(160);
 			} else if ($('#lineSelect').val()==3){
 				processGrid.filter('lineNo',[{code:'eq', value:3}]);
+				processGrid.setBodyHeight(160);
+			} else if ($('#lineSelect').val()==4){
+				processGrid.filter('lineNo',[{code:'eq', value:4}]);
+				processGrid.setBodyHeight(160);
 			} else {
 				processGrid.unfilter('lineNo');
+				processGrid.setBodyHeight(640);
 			}
 	    });
+		
+		let ev1 = {};
+		
+		processGrid.on('click', (ev) => {
+			if(ev.columnName=='sysCode' || ev.columnName=='sysName' || ev.columnName=='empName'){
+				$.ajax({
+		    		url:'/mfSystemList',
+		    		success:function(data){
+		    			systemModalGrid.resetData(data);
+		    			ev1 = ev;
+		    		},
+		    		error:function(error){
+		    			console.log(error);
+		    		}
+		    	});
+				$("#systemModal").modal("show");
+				systemModal.addEventListener('shown.bs.modal', () => {
+					systemModalGrid.refreshLayout();
+        	    });
+			}
+		});
+		
+		systemModalGrid.on('click', (ev2) => {
+			let lineNo1 = processGrid.getRow(ev1.rowKey).lineNo;
+			let mfProcessCode1 = processGrid.getRow(ev1.rowKey).mfProcessCode;
+			let mfProcessName1 = processGrid.getRow(ev1.rowKey).mfProcessName;
+			let sysCode1 = processGrid.getRow(ev2.rowKey).sysCode;
+			let sysName1 = processGrid.getRow(ev2.rowKey).sysName;
+			let empName1 = processGrid.getRow(ev2.rowKey).empName;
+			processGrid.setRow(ev1.rowKey, {
+				lineNo : lineNo1,
+				mfProcessCode : mfProcessCode1,
+				mfProcessName : mfProcessName1,
+				sysCode : sysCode1,
+				sysName : sysName1,
+				empName : empName1
+			});
+			$('#systemModal').modal('hide');
+		});
+		
+		updateBtn.addEventListener('click', () => {
+			
+		});
 		
     </script>
     </div>

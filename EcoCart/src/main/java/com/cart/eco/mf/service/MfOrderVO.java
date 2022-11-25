@@ -24,4 +24,13 @@ public class MfOrderVO {
 	private int bomNum; //BOM재료갯수
 	private int needNum; //필요수량
 	private int bomNeedNum; //bomNum*needNum
+	private String releaseCode; //출고코드
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date releaseDate; //출고일자
+	private int releaseNo; //출고상세번호
+	private String lotCode; //LOT번호
+	private int restNum; //LOT재고량
+	private int requestNum; //요청수량
+
 }

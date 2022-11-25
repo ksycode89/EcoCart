@@ -14,32 +14,25 @@
 			<div class="col-5">
 				<div style="height:40px">
 					<h4 style="display:inline">생산계획</h4>
-					<button type="button" id="selectPlanBtn" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#planListModal" style="float:right">미지시 계획 조회</button>
+					<button type="button" class="btn btn-sm btn-primary" id="selectPlanBtn" data-bs-toggle="modal" data-bs-target="#planListModal" style="float:right">미지시 계획 조회</button>
 				</div>
 				<div id="mfPlanSelectGridId"></div>
 			</div>
 			<div class="col-7">
 				<div style="height:40px">
 					<h4 style="display:inline">생산지시</h4>
-					<button type="button" class="btn btn-sm btn-primary" style="float:right">지시등록</button>
+					<button type="button" class="btn btn-sm btn-primary" id="insertOrderBtn" style="float:right; display:none">지시등록</button>
 				</div>
 				<div id="mfOrderGridId"></div>
 			</div>
 		</div>
 		<br>
 		<div class="row">
-			<div class="col-5">
+			<div class="col-12">
 				<div style="height:40px">
-					<h4 style="display:inline">필요자재</h4>
-					<!-- <button type="button" id="buyMatBtn" class="btn btn-sm btn-primary" style="float:right">자재주문</button> -->
+					<h4>필요자재지시</h4>
 				</div>
 				<div id="mfNeedGridId"></div>
-			</div>
-			<div class="col-7">
-				<div style="height:40px">
-					<h4>자재지시</h4>
-				</div>
-				<div id="mfBringGridId"></div>
 			</div>
 		</div>
 		<br>
@@ -61,8 +54,8 @@
 			</div>
 		</div>
 			
-		<!-- Modal -->
-		<div class="modal fade" id="testModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<!-- LOT Modal -->
+		<div class="modal fade" id="mfLotModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -73,7 +66,7 @@
 						<div id="mfLotModalGridId"></div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+						<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">닫기</button>
 					</div>
 				</div>
 			</div>
@@ -88,6 +81,11 @@
 			{
 	          header: '생산계획코드',
 	          name: 'mfPlanCode'
+	        },
+	        {
+	          header: '생산지시코드',
+	          name: 'mfOrderCode',
+	          editor: 'text'
 	        },
 	        {
 	          header: '생산계획명',
@@ -160,7 +158,7 @@
 		scrollX: false,
 		scrollY: true,
 		bodyHeight: 160,
-		rowHeaders:['rowNum'],
+		rowHeaders:['checkbox', 'rowNum'],
 		columns: [
 			{
 	          header: '생산지시코드',
@@ -192,7 +190,7 @@
 		]
 	});
 	
-	mfOrderGrid.hideColumn('mfOrderCode');
+	//mfOrderGrid.hideColumn('mfOrderCode');
 	
     var mfNeedGrid = new tui.Grid({
 		el: document.getElementById('mfNeedGridId'),
@@ -203,33 +201,15 @@
 		columns: [
 	        {
 	          header: '자재코드',
-	          name: 'PRO_CODE'
+	          name: 'proCode',
 	        },
 	        {
 	          header: '자재명',
-	          name: 'PRO_NAME'
+	          name: 'proName'
 	        },
 	        {
 	          header: '필요량',
-	          name: 'BOM_NEED_NUM'
-	        }
-		]
-	});
-    
-    var mfLotModalGrid = new tui.Grid({
-		el: document.getElementById('mfLotModalGridId'),
-		scrollX: false,
-		scrollY: true,
-		bodyHeight: 400,
-		rowHeaders:['rowNum'],
-		columns: [
-	        {
-	          header: '자재코드',
-	          name: 'PRO_CODE'
-	        },
-	        {
-	          header: '자재명',
-	          name: 'PRO_NAME'
+	          name: 'bomNeedNum'
 	        },
 	        {
 	          header: '자재LOT',
@@ -237,42 +217,43 @@
 	        },
 	        {
 	          header: '재고량',
-	          name: 'lotNum'
+	          name: 'restNum'
 	        },
 	        {
-	          header: '사용량',
-	          name: 'useNum',
-	          editor: 'text'
+	          header: '요구량',
+	          name: 'requestNum'
 	        }
 		]
 	});
-		
-	var mfBringGrid = new tui.Grid({
-		el: document.getElementById('mfBringGridId'),
+    
+    mfNeedGrid.hideColumn('requestNum');
+    
+    var mfLotModalGrid = new tui.Grid({
+		el: document.getElementById('mfLotModalGridId'),
 		scrollX: false,
 		scrollY: true,
-		bodyHeight: 360,
-		rowHeaders:['rowNum'],
+		bodyHeight: 400,
+		rowHeaders:['checkbox'],
 		columns: [
-			{
-		      header: '자재코드',
-		      name: 'matCode'
-		    },
-		    {
-		      header: '자재명',
-		      name: 'matName'
-		    },
+	        {
+	          header: '자재코드',
+	          name: 'proCode'
+	        },
+	        {
+	          header: '자재명',
+	          name: 'proName'
+	        },
 	        {
 	          header: '자재LOT',
     	      name: 'lotCode'
 	        },
 	        {
-	          header: '사용량',
-	          name: 'useNum'
+	          header: '재고량',
+	          name: 'restNum'
 	        }
 		]
 	});
-		    			
+    
 	planListModal.addEventListener('shown.bs.modal', () => {
     	mfPlanListModalGrid.refreshLayout();
     });
@@ -335,7 +316,9 @@
     		})
     		//console.log(ev.changes[0].rowKey);
     	} else if (orderRowCount == mfPlanSelectGrid.getRow(0).needNum){
-    		for(i=0; i<mfOrderGrid.getRowCount(); i++){
+    		$("#insertOrderBtn").show();
+    		let b = mfOrderGrid.getRowCount();
+    		for(i=0; i<b; i++){
     			if(mfOrderGrid.getRow(i).mfOrderNum == null || mfOrderGrid.getRow(i).mfOrderNum == '' || mfOrderGrid.getRow(i).mfOrderNum == 0){
     				mfOrderGrid.removeRow(i);
     			}
@@ -345,6 +328,7 @@
     			url: '/mfOrderNeedList?proCode='+a,
     			method: 'GET',
     			success: function(data){
+    				console.log(data);
     				mfNeedGrid.resetData(data);
     			},
     			error: function(error){
@@ -356,14 +340,62 @@
     	}
     });
     
+    let evNeed = {};
+    
     mfNeedGrid.on('click',(ev) => {
 		if(mfNeedGrid.getRow(ev) != null){
-			$("#testModal").modal("show");
-			testModal.addEventListener('shown.bs.modal', () => {
-				mfLotModalGrid.refreshLayout();
-		    });
+			if(ev.columnName=='proCode' || ev.columnName=='proName'){
+				let a = mfNeedGrid.getRow(ev.rowKey).proCode;
+				$.ajax({
+	    			url: '/mfOrderLotList?proCode='+a,
+	    			method: 'GET',
+	    			success: function(data){
+	    				mfLotModalGrid.resetData(data);
+	    				evNeed = ev;
+	    			},
+	    			error: function(error){
+	    				console.log(error);
+	    			}
+	    		});
+				$("#mfLotModal").modal("show");
+				mfLotModal.addEventListener('shown.bs.modal', () => {
+					mfLotModalGrid.refreshLayout();
+			    });
+			}
 		}
 	});
+    
+    mfLotModalGrid.on('click', (ev) => {
+    	let proCode1 = mfNeedGrid.getRow(evNeed.rowKey).proCode;
+    	let proName1 = mfNeedGrid.getRow(evNeed.rowKey).proName;
+    	let bomNeedNum1 = mfNeedGrid.getRow(evNeed.rowKey).bomNeedNum;
+    	let lotCode1 = mfLotModalGrid.getRow(ev.rowKey).lotCode;
+    	let restNum1 = mfLotModalGrid.getRow(ev.rowKey).restNum;
+    	if(bomNeedNum1 > restNum1){
+    		alert('LOT재고량이 필요량보다 부족하니 다른 LOT를 선택해주세요!');
+    	} else {
+    		mfNeedGrid.setRow(evNeed.rowKey, {
+        		proCode : proCode1,
+        		proName : proName1,
+        		bomNeedNum : bomNeedNum1,
+        		lotCode : lotCode1,
+        		restNum : restNum1,
+        		requestNum : bomNeedNum1
+        	})
+        	$('#mfLotModal').modal('hide');
+    	}
+    });
+    
+    
+    
+    insertOrderBtn.addEventListener('click', (ev) => {
+    	let count = mfNeedGrid.getRowCount()-1;
+    	if(mfNeedGrid.getRow(count).restNum != null){
+    		alert('생산지시가 등록되었습니다.\n자재출고를 요청합니다.');
+    	} else {
+    		alert('자재 LOT가 전부 지정되지 않았습니다!');
+    	}
+    });
     
 	</script>
 </div>

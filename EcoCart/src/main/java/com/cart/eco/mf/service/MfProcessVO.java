@@ -11,4 +11,5 @@ public class MfProcessVO {
 	private int lineNo; //라인번호
 	private String empNum; //작업자번호 - 작업자이름 불러오는 용도
 	private String empName; //작업자명
+	private String sysStatus; //설비사용여부
 }
