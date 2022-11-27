@@ -17,4 +17,7 @@ public class BomVO {
 	private int totalPrice;		// 총단가
 	private String bomManager;  // 담당자
 	private String bomGroup;  // 구분
+	
+	
+	
 }
