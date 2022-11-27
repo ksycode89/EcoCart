@@ -7,9 +7,9 @@ public interface ProductService {
 	public List<ProductVO> selectName();
 	
 	// 물품 등록.
-	public List<ProductVO> insertPro();
+	public List<ProAllVO> insertPro(ProAllVO vo);
 	// 물품 조회.
-	
+	public List<ProAllVO> selectPro(ProAllVO vo);
 	// 물품 수정.
 	
 	// 물품 삭제.

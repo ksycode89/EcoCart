@@ -1,8 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cart.eco.common.mapper.ProductMapper">
+
+	<!--제품검색 이름:코드만 -->
 	<select id="selectName" resultType="com.cart.eco.common.service.ProductVO">
 		SELECT *
 		FROM   product
 	</select>
+	
+	<!--물품 조회.  -->
+	<select id="selectPro" parameterType="com.cart.eco.common.service.ProAllVO" resultType="com.cart.eco.common.service.ProAllVO">
+		
+		SELECT p.pro_code, c.code_id, c.code_name, cl.client_code, 
+      		   cl.client_name, o.pro_manager, e.emp_name, p.pro_name,
+       		   p.pro_group, p.lot_used, p.test_used, p.pro_hire,p.pro_num,
+       		   o.lead_time, o.bs, o.ppd, o.cost, o.sell_price, o.standard, o.unit
+		FROM product p
+		  JOIN common_code c
+			ON p.pro_item = c.code_id
+		  JOIN product_option o
+			ON p.pro_code = o.pro_code
+		  JOIN client cl
+			ON o.client_code = cl.client_code
+		  JOIN employees e
+		  	ON e.emp_num = o.pro_manager
+		
+		 <where>
+   		 <if test="codeId != null and !codeId.equals('')">
+   		 	c.code_id = #{codeId}
+   		 </if>
+   		  <if test="codeName != null and !codeName.equals('')">
+   		 	AND c.code_name = #{codeName}
+   		 </if>
+   		 <if test="empDept != null">
+           AND p.pro_group = #{proGroup}
+         </if>
+         <if test="lotUsed != null">
+           AND p.lot_used = #{lotUsed} 
+         </if>
+         <if test="lotUsed != null">
+           AND p.test_used = #{testUsed} 
+         </if>
+   		</where> 
+   		
+   		ORDER BY pro_code
+	</select>
+	
+	
 </mapper>

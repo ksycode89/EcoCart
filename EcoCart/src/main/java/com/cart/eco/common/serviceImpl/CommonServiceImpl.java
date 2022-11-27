@@ -18,7 +18,7 @@ public class CommonServiceImpl implements CommonService {
 
 	@Autowired	CommonMapper commonMapper;
 
-	
+	// 부서코드
 	@Override
 	public List<CommonVO> getDept() {
 		
@@ -54,6 +54,13 @@ public class CommonServiceImpl implements CommonService {
 	public int callDelete(CommonVO vo) {
 		
 		return commonMapper.callDelete(vo);
+	}
+
+	// 품목군코드
+	@Override
+	public List<CommonVO> getProItem() {
+		
+		return commonMapper.selectProItem();
 	}
 
 

@@ -6,6 +6,9 @@ public interface CommonService {
 	
 	// 공통코드 - 부서코드, 부서이름 조회
 	public List<CommonVO> getDept();
+	
+	// 공통코드 - 품목군코드, 품목군명 조회.
+	public List<CommonVO> getProItem();
 
 	 
 	//거래처리스트
