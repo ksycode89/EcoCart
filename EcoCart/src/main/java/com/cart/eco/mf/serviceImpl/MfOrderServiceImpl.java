@@ -40,15 +40,15 @@ public class MfOrderServiceImpl implements MfOrderService {
 	public List<Map<String, Object>> getMfLotList(String proCode) {
 		return mapper.getMfLotList(proCode);
 	}
-
-	@Override
-	public int decideMfOrder(MfOrderVO mfvo) {
-		return mapper.decideMfOrder(mfvo);
-	}
 	
 	@Override
 	public List<MfOrderVO> getMfOrderCode() {
 		return mapper.getMfOrderCode();
+	}
+	
+	@Override
+	public List<MfOrderVO> getReleaseCode() {
+		return mapper.getReleaseCode();
 	}
 	
 	@Override
@@ -85,7 +85,21 @@ public class MfOrderServiceImpl implements MfOrderService {
 		for(int i=0; i<vo.size(); i++) {
 			result += mapper.updateReceivingDetail(vo.get(i));
 		}
+		return mapper.updateReceivingDetail(vo.get(0));
+	}
+
+	@Override
+	public int updateMfOrderLotDetail(List<MfOrderVO> vo) {
+		int result = 0;
+		for(int i=0; i<vo.size(); i++) {
+			result += mapper.updateMfOrderLotDetail(vo.get(i));
+		}
 		return result;
+	}
+	
+	@Override
+	public int decideMfOrder(MfOrderVO mfvo) {
+		return mapper.decideMfOrder(mfvo);
 	}
 
 }

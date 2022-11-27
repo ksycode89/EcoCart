@@ -5,6 +5,8 @@
       layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>생산지시등록</title>
 </head>
 <body>
@@ -72,6 +74,10 @@
 			</div>
 		</div>
 	<script>
+	
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
 	var mfPlanSelectGrid = new tui.Grid({
 		el: document.getElementById('mfPlanSelectGridId'),
 		scrollX: false,
@@ -84,8 +90,7 @@
 	        },
 	        {
 	          header: '생산지시코드',
-	          name: 'mfOrderCode',
-	          editor: 'text'
+	          name: 'mfOrderCode'
 	        },
 	        {
 	          header: '생산계획명',
@@ -106,7 +111,7 @@
 		]
 	});
 	
-	mfPlanSelectGrid.hideColumn('mfPlanCode');
+	mfPlanSelectGrid.hideColumn('mfOrderCode');
 	mfPlanSelectGrid.hideColumn('proCode');
 	
 	var mfPlanListModalGrid = new tui.Grid({
@@ -151,15 +156,17 @@
     	})
     };
 	
-
-    
 	var mfOrderGrid = new tui.Grid({
 		el: document.getElementById('mfOrderGridId'),
 		scrollX: false,
 		scrollY: true,
 		bodyHeight: 160,
-		rowHeaders:['checkbox', 'rowNum'],
+		rowHeaders:['rowNum'],
 		columns: [
+			{
+	          header: '생산계획코드',
+	          name: 'mfPlanCode'
+	        },
 			{
 	          header: '생산지시코드',
 	          name: 'mfOrderCode'
@@ -190,7 +197,7 @@
 		]
 	});
 	
-	//mfOrderGrid.hideColumn('mfOrderCode');
+	mfOrderGrid.hideColumn('mfPlanCode');
 	
     var mfNeedGrid = new tui.Grid({
 		el: document.getElementById('mfNeedGridId'),
@@ -199,6 +206,14 @@
 		bodyHeight: 360,
 		rowHeaders:['rowNum'],
 		columns: [
+			{
+	          header: '생산지시코드',
+	          name: 'mfOrderCode'
+	        },
+			{
+			  header: '자재출고코드',
+			  name: 'releaseCode'
+			},
 	        {
 	          header: '자재코드',
 	          name: 'proCode',
@@ -226,6 +241,8 @@
 		]
 	});
     
+    mfNeedGrid.hideColumn('mfOrderCode');
+    mfNeedGrid.hideColumn('releaseCode');
     mfNeedGrid.hideColumn('requestNum');
     
     var mfLotModalGrid = new tui.Grid({
@@ -258,28 +275,40 @@
     	mfPlanListModalGrid.refreshLayout();
     });
 	
+	
 	mfPlanListModalGrid.on('click', (ev) => {
-		let mfPlanCode1 = mfPlanListModalGrid.getRow(ev.rowKey).mfPlanCode;
-		let mfPlanName1 = mfPlanListModalGrid.getRow(ev.rowKey).mfPlanName;
-		let proCode1 = mfPlanListModalGrid.getRow(ev.rowKey).proCode;
-		let proName1 = mfPlanListModalGrid.getRow(ev.rowKey).proName;
-		let needNum1 = mfPlanListModalGrid.getRow(ev.rowKey).needNum;
-		let totalOrderNum1 = mfPlanListModalGrid.getRow(ev.rowKey).totalOrderNum;
-		let data1 = [{
-			mfPlanCode : mfPlanCode1,
-			mfPlanName : mfPlanName1,
-			proCode : proCode1,
-			proName : proName1,
-			needNum : needNum1,
-			totalOrderNum : totalOrderNum1
-		}]
-    	if(ev.rowKey != null){
-    		//mfPlanSelectGrid.appendRow(mfPlanListModalGrid.getRow(ev.rowKey));
-    		mfPlanSelectGrid.resetData(data1);
-    		mfOrderGrid.clear();
-    		mfNeedGrid.clear();
-    		$('#planListModal').modal('hide');
-    	}
+		$.ajax({
+			url:'/mfOrderCodeBring',
+			success: function(data){
+				//console.log(data[0]);
+				let mfOrderCode1 = data[0];
+				let mfPlanCode1 = mfPlanListModalGrid.getRow(ev.rowKey).mfPlanCode;
+				let mfPlanName1 = mfPlanListModalGrid.getRow(ev.rowKey).mfPlanName;
+				let proCode1 = mfPlanListModalGrid.getRow(ev.rowKey).proCode;
+				let proName1 = mfPlanListModalGrid.getRow(ev.rowKey).proName;
+				let needNum1 = mfPlanListModalGrid.getRow(ev.rowKey).needNum;
+				let totalOrderNum1 = mfPlanListModalGrid.getRow(ev.rowKey).totalOrderNum;
+				let data1 = [{
+					mfPlanCode : mfPlanCode1,
+					mfPlanName : mfPlanName1,
+					mfOrderCode : mfOrderCode1,
+					proCode : proCode1,
+					proName : proName1,
+					needNum : needNum1,
+					totalOrderNum : totalOrderNum1
+				}]
+		    	if(ev.rowKey != null){
+		    		//mfPlanSelectGrid.appendRow(mfPlanListModalGrid.getRow(ev.rowKey));
+		    		mfPlanSelectGrid.resetData(data1);
+		    		mfOrderGrid.clear();
+		    		mfNeedGrid.clear();
+		    		$('#planListModal').modal('hide');
+		    	}
+			},
+			error: function(error){
+				console.log(error);
+			}
+		});
     })
 	
     var today = new Date();
@@ -288,6 +317,8 @@
     	if(mfNeedGrid.getRow(0) == null){
     		if(mfPlanSelectGrid.getRow(0).needNum != null){
         		mfOrderGrid.appendRow({
+        			mfPlanCode : mfPlanSelectGrid.getRow(0).mfPlanCode,
+        			mfOrderCode : mfPlanSelectGrid.getRow(0).mfOrderCode,
            			proCode : mfPlanSelectGrid.getRow(0).proCode,
            			proName : mfPlanSelectGrid.getRow(0).proName,
            			mfOrderDate : today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
@@ -307,9 +338,13 @@
     	//console.log(mfPlanSelectGrid.getRow(0).needNum);
     	if(orderRowCount > mfPlanSelectGrid.getRow(0).needNum){
     		alert('필요수량을 초과하였습니다.');
+    		let mfPlanCode1 = mfOrderGrid.getRow(ev.changes[0].rowKey).mfPlanCode;
+    		let mfOrderCode1 = mfOrderGrid.getRow(ev.changes[0].rowKey).mfOrderCode;
     		let proCode1 = mfOrderGrid.getRow(ev.changes[0].rowKey).proCode;
     		let proName1 = mfOrderGrid.getRow(ev.changes[0].rowKey).proName;
     		mfOrderGrid.setRow(ev.changes[0].rowKey, {
+    			mfPlanCode : mfPlanCode1,
+    			mfOrderCode : mfOrderCode1,
     			proCode: proCode1,
     			proName: proName1,
     			mfOrderDate: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
@@ -323,13 +358,25 @@
     				mfOrderGrid.removeRow(i);
     			}
     		}
-    		let a = mfPlanSelectGrid.getRow(0).proCode;
+    		let a = mfPlanSelectGrid.getRow(0).mfPlanCode;
+    		console.log(a);
     		$.ajax({
-    			url: '/mfOrderNeedList?proCode='+a,
+    			url: '/mfOrderNeedList?mfPlanCode='+a,
     			method: 'GET',
     			success: function(data){
-    				console.log(data);
     				mfNeedGrid.resetData(data);
+    				for(i=0; i<data.length; i++){
+    					let mfOrderCode1 = mfPlanSelectGrid.getRow(0).mfOrderCode;
+    					let proCode1 = data[i].proCode;
+    					let proName1 = data[i].proName;
+    					let bomNeedNum1 = data[i].bomNeedNum;
+    					mfNeedGrid.setRow(i, {
+    						mfOrderCode : mfOrderCode1,
+    						proCode : proCode1,
+    						proName : proName1,
+    						bomNeedNum : bomNeedNum1
+    					});
+    				}
     			},
     			error: function(error){
     				console.log(error);
@@ -344,54 +391,152 @@
     
     mfNeedGrid.on('click',(ev) => {
 		if(mfNeedGrid.getRow(ev) != null){
-			if(ev.columnName=='proCode' || ev.columnName=='proName'){
-				let a = mfNeedGrid.getRow(ev.rowKey).proCode;
-				$.ajax({
-	    			url: '/mfOrderLotList?proCode='+a,
-	    			method: 'GET',
-	    			success: function(data){
-	    				mfLotModalGrid.resetData(data);
-	    				evNeed = ev;
-	    			},
-	    			error: function(error){
-	    				console.log(error);
-	    			}
-	    		});
-				$("#mfLotModal").modal("show");
-				mfLotModal.addEventListener('shown.bs.modal', () => {
-					mfLotModalGrid.refreshLayout();
-			    });
-			}
+			let a = mfNeedGrid.getRow(ev.rowKey).proCode;
+			$.ajax({
+    			url: '/mfOrderLotList?proCode='+a,
+    			method: 'GET',
+    			success: function(data){
+    				mfLotModalGrid.resetData(data);
+    				evNeed = ev;
+    			},
+    			error: function(error){
+    				console.log(error);
+    			}
+    		});
+			$("#mfLotModal").modal("show");
+			mfLotModal.addEventListener('shown.bs.modal', () => {
+				mfLotModalGrid.refreshLayout();
+		    });
 		}
 	});
     
     mfLotModalGrid.on('click', (ev) => {
-    	let proCode1 = mfNeedGrid.getRow(evNeed.rowKey).proCode;
-    	let proName1 = mfNeedGrid.getRow(evNeed.rowKey).proName;
-    	let bomNeedNum1 = mfNeedGrid.getRow(evNeed.rowKey).bomNeedNum;
-    	let lotCode1 = mfLotModalGrid.getRow(ev.rowKey).lotCode;
-    	let restNum1 = mfLotModalGrid.getRow(ev.rowKey).restNum;
-    	if(bomNeedNum1 > restNum1){
-    		alert('LOT재고량이 필요량보다 부족하니 다른 LOT를 선택해주세요!');
-    	} else {
-    		mfNeedGrid.setRow(evNeed.rowKey, {
-        		proCode : proCode1,
-        		proName : proName1,
-        		bomNeedNum : bomNeedNum1,
-        		lotCode : lotCode1,
-        		restNum : restNum1,
-        		requestNum : bomNeedNum1
-        	})
-        	$('#mfLotModal').modal('hide');
-    	}
+    	$.ajax({
+			url:'/releaseCodeBring',
+			success: function(data){
+				//console.log(data[0]);
+				let releaseCode1 = data[0];
+				let mfOrderCode1 = mfPlanSelectGrid.getRow(0).mfOrderCode;
+				let proCode1 = mfNeedGrid.getRow(evNeed.rowKey).proCode;
+		    	let proName1 = mfNeedGrid.getRow(evNeed.rowKey).proName;
+		    	let bomNeedNum1 = mfNeedGrid.getRow(evNeed.rowKey).bomNeedNum;
+		    	let lotCode1 = mfLotModalGrid.getRow(ev.rowKey).lotCode;
+		    	let restNum1 = mfLotModalGrid.getRow(ev.rowKey).restNum;
+		    	if(bomNeedNum1 > restNum1){
+		    		alert('LOT재고량이 필요량보다 부족하니 다른 LOT를 선택해주세요!');
+		    	} else {
+		    		mfNeedGrid.setRow(evNeed.rowKey, {
+		    			releaseCode : releaseCode1,
+		    			mfOrderCode : mfOrderCode1,
+		        		proCode : proCode1,
+		        		proName : proName1,
+		        		bomNeedNum : bomNeedNum1,
+		        		lotCode : lotCode1,
+		        		restNum : restNum1,
+		        		requestNum : bomNeedNum1
+		        	})
+		        	$('#mfLotModal').modal('hide');
+		    	}
+			},
+			error: function(error){
+				console.log(error);
+			}
+		});
     });
-    
-    
     
     insertOrderBtn.addEventListener('click', (ev) => {
     	let count = mfNeedGrid.getRowCount()-1;
     	if(mfNeedGrid.getRow(count).restNum != null){
-    		alert('생산지시가 등록되었습니다.\n자재출고를 요청합니다.');
+    		$.ajax({
+        		url: '/mfOrderInsert',
+        		method: 'POST',
+        		contentType: 'application/json',
+        		data: JSON.stringify(mfPlanSelectGrid.getData()),
+        		dataType: 'JSON',
+        		beforeSend : function(xhr){
+               		xhr.setRequestHeader(header, token);
+               	},
+        		success: function(data){
+        			if(data != 0){
+        				$.ajax({
+        		    		url: '/mfOrderDetailInsert',
+        		    		method: 'POST',
+        		    		contentType: 'application/json',
+        		    		data: JSON.stringify(mfOrderGrid.getData()),
+        		    		dataType: 'JSON',
+        		    		beforeSend : function(xhr){
+        		           		xhr.setRequestHeader(header, token);
+        		           	},
+        		    		success: function(data){
+        		    			if(data != 0){
+        		    				alert('생산지시가 등록되었습니다.\n자재출고를 요청합니다.');
+        		    			}
+        		    		},
+        		    		error: function(error){
+        		    			console.log(error);
+        		    		}
+        		    	});
+        				
+        				$.ajax({
+        	        		url: '/mfReleaseInsert',
+        	        		method: 'POST',
+        	        		contentType: 'application/json',
+        	        		data: JSON.stringify(mfNeedGrid.getData()),
+        	        		dataType: 'JSON',
+        	        		beforeSend : function(xhr){
+        	               		xhr.setRequestHeader(header, token);
+        	               	},
+        	        		success: function(data){
+        	        			if(data != 0){
+        	        				$.ajax({
+        	        		    		url: '/mfReleaseDetailInsert',
+        	        		    		method: 'POST',
+        	        		    		contentType: 'application/json',
+        	        		    		data: JSON.stringify(mfNeedGrid.getData()),
+        	        		    		dataType: 'JSON',
+        	        		    		beforeSend : function(xhr){
+        	        		           		xhr.setRequestHeader(header, token);
+        	        		           	},
+        	        		    		success: function(data){
+        	        		    			if(data != 0){
+        	        		    				alert('자재출고요청이 완료되었습니다.');
+        	        		    				$.ajax({
+        	        		    	        		url: '/mfReceivingDetailUpdate',
+        	        		    	        		method: 'POST',
+        	        		    	        		contentType: 'application/json',
+        	        		    	        		data: JSON.stringify(mfNeedGrid.getData()),
+        	        		    	        		dataType: 'JSON',
+        	        		    	        		beforeSend : function(xhr){
+        	        		    	               		xhr.setRequestHeader(header, token);
+        	        		    	               	},
+        	        		    	        		success: function(data){
+        	        		    	        			console.log(data);
+        	        		    	        		},
+        	        		    	        		error: function(error){
+        	        	        		    			console.log(error);
+        	        		    	        		}
+        	        		    	        	});
+        	        		    			}
+        	        		    		},
+        	        		    		error: function(error){
+        	        		    			console.log(error);
+        	        		    		}
+        	        		    	});
+        	        			}
+        	        		},
+        	        		error: function(error){
+        	        			console.log(error);
+        	        		}
+        	        	});
+        				
+        			}
+        		},
+        		error: function(error){
+        			console.log(error);
+        		}
+        	});
+    		
+
     	} else {
     		alert('자재 LOT가 전부 지정되지 않았습니다!');
     	}

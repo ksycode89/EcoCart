@@ -41,6 +41,10 @@
 		          name: 'mfOrderCode'
 		        },
 		        {
+		          header: '생산지시넘버링',
+		          name: 'mfOrderNo'
+		        },
+		        {
 		          header: '제품코드',
 		          name: 'proCode'
 		        },
@@ -69,11 +73,14 @@
 			]
 		});
 		
+		orderListGrid.hideColumn('mfOrderNo');
+		
 	    document.addEventListener("DOMContentLoaded", orderListAll)
 		function orderListAll(){
 	    	$.ajax({
 	    		url:'/mfOrderListAll',
 	    		success:function(data){
+	    			console.log(data[0]);
 	    			orderListGrid.resetData(data);
 	    		},
 	    		error:function(error){

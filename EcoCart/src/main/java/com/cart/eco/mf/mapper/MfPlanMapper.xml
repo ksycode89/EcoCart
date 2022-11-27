@@ -12,7 +12,7 @@
 	</select>
 	
 	<select id="getOrderList" resultType="com.cart.eco.mf.service.MfPlanVO">
-		SELECT o.order_code, d.pro_code, d.pro_name, d.allsell_num, o.de_date
+		SELECT o.order_code, d.pro_code, d.pro_name, d.sell_num, o.de_date
 		FROM orders o LEFT JOIN order_d d
 		ON o.order_code = d.order_code
 		WHERE o.de_date >= trunc(SYSDATE)
@@ -35,24 +35,24 @@
 	
 	<insert id="insertMfPlan" parameterType="com.cart.eco.mf.service.MfPlanVO">
 		<selectKey keyProperty="mfPlanCode" resultType="String" order="BEFORE">
-		SELECT concat('PLAN-',concat(to_char(SYSDATE,'YYmmdd'),concat('-', nvl(max(to_number(substr(mf_plan_code, 13))),0)+1)))
-		FROM mf_plan
+			SELECT concat('MFP-',concat(to_char(SYSDATE,'YYmmdd'),concat('-', nvl(max(to_number(substr(mf_plan_code, 12))),0)+1)))
+			FROM mf_plan
 		</selectKey>
 		INSERT ALL
 		INTO mf_plan(mf_plan_code
-					, mf_plan_name
+				   , mf_plan_name
 					<if test="orderCode != null and !orderCode.equals('')">, order_code</if>)
 		VALUES(#{mfPlanCode}
-				, #{mfPlanName}
+			 , #{mfPlanName}
 				<if test="orderCode != null and !orderCode.equals('')">, #{orderCode}</if>)
 		INTO mf_plan_detail(mf_plan_code
-							, pro_code
-							, pro_name
-							, need_num)
+						  , pro_code
+						  , pro_name
+						  , need_num)
 		VALUES(#{mfPlanCode}
-				, #{proCode}
-				, #{proName}
-				, #{needNum})
+			 , #{proCode}
+			 , #{proName}
+			 , #{needNum})
 		SELECT * FROM DUAL
 	</insert>
 	
