@@ -21,7 +21,8 @@
 			
 	<insert id="bomInsert" parameterType="com.cart.eco.common.service.BomVO" >
  	<selectKey keyProperty="bomCode"  resultType="String" order="BEFORE">
-		select #{proCode}||'-' ||#{bomGroup}||'-'||(select subStr(to_char(sysdate,'yyyyMMdd'),1,4) from dual)  from dual
+		<!-- select #{proCode}||'-' ||#{bomGroup}||'-'||(select subStr(to_char(sysdate,'yyyyMMdd'),1,4) from dual)  from dual -->
+		SELECT to_char(max(bom_code)||+1) FROM bom
 	</selectKey> 
 		INSERT INTO bom 
 		VALUES (
@@ -44,6 +45,13 @@
          ,#{bomManager}
          ,#{bomGroup}
 		)
+	</insert>
+	<!-- bom insert option -->
+	<insert id="bomInsertOP" parameterType="com.cart.eco.common.service.BomChildernVO">
+		insert into bom_children
+		values ((select max(ch_no)+1 from bom_children),#{bomCode},#{proCdoe},#{bomNum},#{loss})
+		
+		
 	</insert>
 <!-- 	bom자제품검 -->
 	<select id="bomChildren" parameterType="com.cart.eco.common.service.BomVO" resultType="com.cart.eco.common.service.BomVO">

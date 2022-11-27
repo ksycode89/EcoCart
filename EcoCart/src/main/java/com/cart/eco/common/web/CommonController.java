@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
+import org.springframework.security.authentication.jaas.DefaultLoginExceptionResolver;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cart.eco.common.service.BomChildernVO;
 import com.cart.eco.common.service.BomService;
 import com.cart.eco.common.service.BomVO;
 import com.cart.eco.common.service.ClientVO;
@@ -285,7 +287,7 @@ public class CommonController {
 		return "common/check";
 	}
 	
-//	========↓  창고  ↓  ========================================================//
+//	========↓  창고  ↓  =========================================//
 	@PostMapping("/whList") 
 	@ResponseBody
 	public List<WHVO>whList(WHVO vo){
@@ -343,7 +345,6 @@ public class CommonController {
 	     @ResponseBody
 	     public BomVO bomInsert( BomVO vo) {
 	    	System.out.println("insert : "+vo);
-	    	
 	    	 return bomService.bomInsert(vo);
 	     } 
 	//창고조회	  bomList
@@ -352,7 +353,6 @@ public class CommonController {
 			public List<BomVO>bomList(BomVO vo){
 				System.out.println(vo);
 				return  bomService.bomList(vo);
-				
 			}
 		 //자제품조회 	  bomChildren
 		 @PostMapping("/bomChildren")  
@@ -360,7 +360,14 @@ public class CommonController {
 		 public List<BomVO>bomChildren(BomVO vo){
 			 System.out.println("bomChildren : "+vo);
 			 return  bomService.bomChildren(vo);
-			 
 		 }
+		 
+		 @PostMapping("/bomInsertOP")
+	     @ResponseBody
+	     public String bomInsertOP(@RequestBody List<BomChildernVO> vo) {
+	    	System.out.println("bomInsertOP : "+vo);
+//	    	bomService.bomInsertOP(vo)
+	    	 return null ;
+	     } 
 	
 }
