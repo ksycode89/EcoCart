@@ -32,5 +32,6 @@ public class MfOrderVO {
 	private String lotCode; //LOT번호
 	private int restNum; //LOT재고량
 	private int requestNum; //요청수량
+	private String releaseStatus; //출고상태
 
 }

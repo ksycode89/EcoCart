@@ -5,23 +5,15 @@
 <mapper namespace="com.cart.eco.mf.mapper.MfOrderMapper">
 	<select id="getMfOrderList" resultType="com.cart.eco.mf.service.MfOrderVO">
 		SELECT o.mf_order_code, o.pro_code, o.pro_name, d.mf_order_num, d.mf_order_date, d.mf_order_status
-		  FROM mf_order o 
-		  JOIN mf_order_detail d
-		    ON o.mf_order_code = d.mf_order_code
+		FROM mf_order o JOIN mf_order_detail d
+		ON o.mf_order_code = d.mf_order_code
 	</select>
 
 	<select id="getMfReadyOrderList" resultType="com.cart.eco.mf.service.MfOrderVO">
-		SELECT o.mf_order_code, 
-		       o.pro_code, 
-		       o.pro_name, 
-		       d.mf_order_num, 
-		       d.mf_order_date
-		  FROM mf_order o
-		 
-		  JOIN mf_order_detail d
-		    ON o.mf_order_code = d.mf_order_code
-		
-	 	 WHERE d.mf_order_status = '대기'
+		SELECT o.mf_order_code, d.mf_order_no, o.pro_code, o.pro_name, d.mf_order_num, d.mf_order_date
+		FROM mf_order o JOIN mf_order_detail d
+		ON o.mf_order_code = d.mf_order_code
+		WHERE d.mf_order_status = '대기'
 	</select>
 	
 	<select id="getMfReadyPlanList" resultType="com.cart.eco.mf.service.MfOrderVO">
@@ -39,7 +31,7 @@
         ON p.pro_code = b.pro_code
         JOIN bom_children c
         ON b.bom_code = c.bom_code
-        WHERE p.pro_code = #{proCode}
+        WHERE p.mf_plan_code = #{mfPlanCode}
         ORDER BY c.ch_no
 	</select>
 	
@@ -50,9 +42,86 @@
 		AND rest_num > 0
 	</select>
 	
+	<select id="getMfOrderCode" resultType="String">
+		SELECT concat('MFO-',concat(to_char(SYSDATE,'YYmmdd'),concat('-', nvl(max(to_number(substr(mf_order_code, 12))),0)+1)))
+		FROM mf_order
+	</select>
+	
+	<select id="getReleaseCode" resultType="String">
+		SELECT concat('REL-',concat(to_char(SYSDATE,'YYmmdd'),concat('-', nvl(max(to_number(substr(release_code, 12))),0)+1)))
+		FROM m_release
+	</select>
+	
+	<insert id="insertMfOrder" parameterType="com.cart.eco.mf.service.MfOrderVO">
+		INSERT INTO mf_order(mf_order_code
+						   , mf_plan_code
+						   , pro_code
+						   , pro_name)
+		VALUES(#{mfOrderCode}
+			 , #{mfPlanCode}
+			 , #{proCode}
+			 , #{proName})
+	</insert>
+	
+	<insert id="insertMfOrderDetail" parameterType="com.cart.eco.mf.service.MfOrderVO">
+		<selectKey keyProperty="mfOrderNo" resultType="Integer" order="BEFORE">
+			SELECT nvl(max(mf_order_no),0)+1
+			FROM mf_order_detail
+		</selectKey>
+			INSERT INTO mf_order_detail(mf_order_no
+									  , mf_order_code
+									  , mf_order_date
+									  , mf_order_num)
+			VALUES(#{mfOrderNo}
+				 , #{mfOrderCode}
+				 , #{mfOrderDate}
+				 , #{mfOrderNum}) 
+	</insert>
+	
+	<insert id="insertMfOrderLot" parameterType="com.cart.eco.mf.service.MfOrderVO">
+		INSERT INTO m_release(release_code
+							, mf_order_code)
+		VALUES(#{releaseCode}
+			 , #{mfOrderCode})
+	</insert>
+	
+	<insert id="insertMfOrderLotDetail" parameterType="com.cart.eco.mf.service.MfOrderVO">
+		<selectKey keyProperty="releaseNo" resultType="Integer" order="BEFORE">
+			SELECT nvl(max(release_no),0)+1
+			FROM m_release_detail
+		</selectKey>
+			INSERT INTO m_release_detail(release_no
+									   , release_code
+									   , pro_code
+									   , pro_name
+									   , request_num
+									   , lot_code)
+			VALUES(#{releaseNo}
+				 , #{releaseCode}
+				 , #{proCode}
+				 , #{proName}
+				 , #{requestNum}
+				 , #{lotCode}) 
+	</insert>
+	
+	<update id="updateReceivingDetail" parameterType="com.cart.eco.mf.service.MfOrderVO">
+		MERGE INTO receiving_detail rd
+		USING m_release_detail mrd
+		ON (rd.lot_code = mrd.lot_code)
+		WHEN MATCHED THEN
+		UPDATE SET rd.rest_num = rd.rest_num - mrd.request_num
+        WHERE mrd.release_code = #{releaseCode}
+	</update>
+	
+	<update id="updateMfOrderLotDetail" parameterType="com.cart.eco.mf.service.MfOrderVO">
+		UPDATE receiving_detail
+		SET release_status = '승인'
+		WHERE release_no = '대기'
+	</update>
+	
 	<update id="decideMfOrder" parameterType="com.cart.eco.mf.service.MfOrderVO">
 		UPDATE mf_order_detail
 		SET mf_order_status = '확정'
-		WHERE mf_order_code = #{mfOrderCode}
+		WHERE mf_order_no = #{mfOrderNo}
 	</update>
 </mapper>
