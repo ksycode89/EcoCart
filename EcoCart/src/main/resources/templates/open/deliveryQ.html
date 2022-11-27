@@ -42,7 +42,7 @@
             </div>
             
            <div>
-               <button type="button" style="float:right; margin:5px; margin-right: 30px"  class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">출고 요청</button>
+				<button type="button" style="float:right; margin:5px; margin-right: 10px"  class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="getCode()">출고 요청</button>
 			</div>
 
 			
@@ -67,40 +67,16 @@
 				  <div class="container-fluid">
 				  		<div style="margin-bottom:5px">
 							<label for="row1" style="width:100px; height: 30px; text-align:center;">출고요청코드</label>
-								<input type="text" class="form-control form-control-sm" style="width:150px; display:inline" readonly >
-							
-							
-							<label for="row1" style="width:100px; height: 30px; text-align:center; margin-left:30px">출고요청일자</label>
-								<input type="date" class="form-control" style="width: 150px; display:inline; text-align:center;">
-							
+								<input type="text" class="form-control form-control-sm" style="width:150px; display:inline" id="dlivyCode" readonly >
 				  		</div>
 
-						<div style="margin-bottom:5px">
-							<label for="row2" style="width:100px; height: 30px; text-align:center; " >거래처코드 </label>
-				         		<select id="select8" name="no"  onchange="handleOnChange8(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white">
-				         			<option value="선택">----선 택----</option>
-				         			<th:block th:each="v : ${clientName}">
-				         				<option th:value="${v.clientCode}" th:text="${v.clientCode}"></option>
-				         			</th:block>		
-				         		</select>
-				   		
-				   			
-				   			<label for="row2" style="width:100px; height: 30px; text-align:center; margin-left:30px;" >거래처명</label>
-				         		<select id="select5" name="no"  onchange="handleOnChange5(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white; display:inline; text-align:center;">
-				         			<option value="선택">----선 택----</option>
-				         			<th:block th:each="v : ${clientName}">
-				         				<option th:value="${v.clientName}" th:text="${v.clientName}"></option>
-				         			</th:block>		
-				         		</select>
-				         		
-						</div>	
 				   		
 				   		<div style="margin-bottom:5px; margin-top:5px;">
 				   			<label for="row3" style="width:100px; height: 30px; text-align:center; " >제품코드</label>
 				         		<select id="select6" name="no" onchange="handleOnChange6(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white; display:inline; text-align:center;">
 				         			<option value="선택">----선 택----</option>
 				         			<th:block th:each="v : ${proCode}">
-				         				<option th:value="${v.proCode}" th:text="${v.proCode}"></option>
+				         				<option th:value="${v.proName}" th:text="${v.proCode}"></option>
 				         			</th:block>		
 				         		</select>
 
@@ -109,14 +85,14 @@
 				         		<select id="select7" name="no" onchange="handleOnChange7(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white; display:inline; text-align:center;">
 				         			<option value="선택">----선 택----</option>
 				         			<th:block th:each="v: ${proCode}">
-				         				<option th:value="${v.proName}" th:text="${v.proName}"></option>
+				         				<option th:value="${v.proCode}" th:text="${v.proName}"></option>
 				         			</th:block>  			
 				         		</select>
 						</div>		
 						
 						<div >		         		
 				         	<label for="row3" style="width:100px; height: 30px; text-align:center;" >수량</label>	
-				         		<input stype="text" class="form-control"style="width:150px; display:inline" >
+				         		<input type="number" min="1" class="form-control"style="width:150px; display:inline" >
 				         
 					         	<button onclick="modalResetBtn()" type="button"  class="btn-sm btn-secondary" style="float:right;" >초기화</button></td>
 					         	<button onclick="plusPro()" type="button" class="btn-sm btn-primary" style="float:right; margin-right:5px" >제품추가</button></td>
@@ -127,6 +103,9 @@
 			</div>
 			
 			
+					<div id="grid4"></div>
+					<div id="grid5"></div>
+					<div><br></div>
 					<div id="grid3"></div>
 	
 					
@@ -223,11 +202,16 @@
 			const grid3 = new Grid({
 		        el: document.getElementById('grid3'), // Container element
 		        scrollX: false,
-	            scrollY: false,
+		        scrollY: false,
+	            bodyHeight : 240,
 		        columns: [
 		        	{
 		        		header: 'no',
 		            	name: 'dliverQno'
+		        	},
+		        	{
+		        		header: '주문코드',
+		            	name: 'orderCode'
 		        	},
 		        	{
 		            	header: '제품코드',
@@ -240,27 +224,81 @@
 		            {	
 		            	header: '수량',
 		                name: 'sellNum'
-		             },
-		             {
-		             	header: '단가',
-		                name: 'sellPrice'
-		             },
-		             {	
-			             header: '합계액',
-			             name: 'sumPrice'
-			         }
+		             }
 		            
 		        ]
 			});
       
 
-      
+			//주문목록 
+			const grid4 = new Grid({
+		        el: document.getElementById('grid4'), // Container element
+		        scrollX: false,
+	            scrollY: false,
+	            bodyHeight : 240,
+		        columns: [
+		            {
+		            	header: '주문코드',
+		            	name: 'orderCode',
+		            	filter : 'text'
+		            },
+		            {
+		            	header: '거래처',
+		            	name: 'clientCode',
+		            	filter : 'text'
+		            },
+		            {
+		            	header: '주문등록일자',
+		                name: 'orderDate',
+		                filter : 'date'
+		                
+		             },
+		             {
+		             	header: '납기일자',
+		                name: 'deDate',
+		                filter : 'select'
+		             }
+		        ]
+			});
+			
+			Grid.applyTheme('striped'); // Call API of static method
+		
+			
+			
+			
+			//상세조회
+			const grid5 = new Grid({
+		        el: document.getElementById('grid5'), // Container element
+		        scrollX: false,
+		        scrollY: false,
+		        columns: [
+		        	{
+		            	header: '제품코드',
+		            	name: 'PRO_CODE',
+		            	
+		            },
+		            {
+		            	header: '제품명',
+		                name: 'PRO_NAME'
+		             },
+		             {
+		             	header: '수량',
+		                name: 'SELL_NUM'
+		             },
+		             {
+			             header: '남품수량',
+			             name: 'SOLD_NUM'
+			          }
+		        ]
+			});
       
       
       
 			//모달창
 		   	staticBackdrop.addEventListener('shown.bs.modal', () => {
 		   	      grid3.refreshLayout(); //모달창 새로고침
+		   	   	  grid4.refreshLayout(); //모달창 새로고침
+		   	      grid5.refreshLayout(); //모달창 새로고침
 		   	 })
       
       
@@ -332,7 +370,7 @@
 		
 		
 	     document.addEventListener("DOMContentLoaded", DeliveryList)
-	     
+	     //
 	     function DeliveryList(){
 	    	 $.ajax({
 					url:'/listDeliveryQ',
@@ -365,11 +403,134 @@
 			})
 	     })
 	     
-	      
+	    document.addEventListener("DOMContentLoaded",ordersList)
+	    
+	    //모달창 주문 조회 
+	    function ordersList(){
+			console.log("연결성공")
+			$.ajax({
+				url:'/listOrders',
+				success : function(result) {
+					
+					grid4.resetData(result);
+					
+				},
+				error : function(error){
+					console.log(error);
+				}
+			})			
+		}
+   	 
 		
-      	//조회버튼 / 리셋버튼
+		
+		//모달창 tr click
+		grid4.on('click', (event)=>{
+			console.log(event.nativeEvent.target.textContent);
+			var a = event.nativeEvent.target.textContent;
+			
+			$.ajax({
+				method:'GET',
+				url:'/listOrderd?orderCode='+a,
+				success : function(result){
+					grid5.resetData(result)
+				},
+				error: function(error){
+					console.log(error);
+				}
+				
+			})
+		})
+	    
+	    
+	    
+	 //모달창 눌렀을때 코드 있도록	
+	function getCode(){
+		
+		$.ajax({
+			url:'/getDlivyQCode',
+			success : function(result) {
+				console.log(result[0].dlivyQCode)
+				$("#dlivyCode").val(result[0].dlivyQCode);
+			},
+			error : function(error){
+				console.log(error);
+			}
+		})
+	}
+	    
+	    
+   function plusPro(){
+	   console.log($("#select6").val());	// 명
+	   console.log($("#select6 option:selected").text());		//코드
+		
+		if( $("#select6").val() != '선택' && $("#productNum").val() !=''){	
+		
+			let a = $('#select6').val();
+			
+			let sumA = parseInt($('#productNum').val());
+			let sumB = parseInt((a.split('-'))[1]);
+			let result = sumA * sumB;
+			 
+			const rowData = [
+				{
+					estmtCode : $('#estmtCode').val(),	
+					proCode : $('#select6 option:selected').text(),
+					proName : (a.split('-'))[0],
+					sellNum : $('#productNum').val(),
+					sellPrice : (a.split('-'))[1],
+					sumPrice : result
+				}	
+			];
+			 
+			
+			rowData.forEach(row => {
+			  grid3.appendRow(row);
+			});
+		
+			
+		  }else if ( $("#select7").val() != '선택'  && $("#productNum").val() !=''){		
+			  console.log("제품명 입력 + 수량")
+			  
+			 let a = $('#select7').val();
+				
+			for (let b of a.split('-')){
+				console.log(b)
+			}
+			
+			let sumA = parseInt($('#productNum').val());
+			let sumB = parseInt((a.split('-'))[1]);
+			let result = sumA * sumB;
+			console.log( result)
+			 
+			const rowData = [
+				{
+					proCode : (a.split('-'))[0],
+					proName : $('#select7 option:selected').text(),
+					sellNum : $('#productNum').val(),
+					sellPrice : (a.split('-'))[1],
+					sumPrice : result
+				}	
+			];
+			 
+			
+			rowData.forEach(row => {
+			  grid3.appendRow(row);
+			});
+	  
+		  
+			$("#input7").val ($("#select7").val()) ;		
+			console.log($("#input7").val());			//제품명 출력
+			
+				  
+		  }else{
+			  //제품코드만 입력
+			  console.log("값을 다 넣어")
+		  }
+		 
+	 }//function   
 
-	
+	 
+	//조회버튼 / 리셋버튼
  	Searchbtn.addEventListener('click', () => {
 		grid.filter('dlivyQCode' , [{code:'contain', value:$('#CodeSearch').val()}])
 		grid.filter('clientCode' , [{code:'contain', value:$('#ClientSearch').val()}])

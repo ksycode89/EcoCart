@@ -27,11 +27,6 @@ public interface OrdersMapper {
 	//승인 견적서 상세 조회 모달창
 	public List<Map<String,Object>> MestmtListD(String estmtCode);
 	
-	// 주문 마감 조회
-	public List<OrdersVO> OrdersCanList();
-	
-	//주문 마감 상세 조회
-	public List<Map<String,Object>> OrdersCanDList(String orderCode);
 
 	
 	//셀렉트옵션 
@@ -40,13 +35,26 @@ public interface OrdersMapper {
 	//주문서 등록
 	public int insertOrder(OrdersVO vo);
 
-	public int insertOrderD(List<OrderDVO> vo);
+	public int insertOrderD(OrderDVO vo);
+	
+	
+	
+	
+	//주문서 등록시 견적서 승인 업데이트
+	public int updateEstmtSt(EstimateVO vo);
+
+	//주문 번호 가져오기
+	public List<OrdersVO> getOrderCode();
+	
 	
 	//승인 업데이트
 	public int updateOrderSt(OrdersVO vo);
 	
 	// 주문 마감 업데이트
 	public int updateOrderCanSt(OrdersVO vo);
+	
+	// 주문 마감 업데이트
+	public int updateCanNum(OrderDVO vo);
 	
 	
 }

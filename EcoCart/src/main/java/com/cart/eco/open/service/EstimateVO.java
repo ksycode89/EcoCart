@@ -1,9 +1,5 @@
 package com.cart.eco.open.service;
 
-
-
-
-
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,7 +13,7 @@ public class EstimateVO {
 	//견적
 	private String estmtCode;	//견적코드
 	private String clientCode;	//거래처코드 FK 
-	
+	private String clientName;	//거래처코드 FK 
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date estmtDate; 	//견적일자	
@@ -31,7 +27,6 @@ public class EstimateVO {
 	
 	private String fallSum;
 	private int sellPrice;
-	
 	
 	
 }

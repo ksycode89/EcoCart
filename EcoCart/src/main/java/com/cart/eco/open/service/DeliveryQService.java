@@ -19,7 +19,9 @@ public interface DeliveryQService {
 	//출고요청1 상세 조회
 	public List<Map<String,Object>> DeliveryQDList(String dlivyCode);
 	
-	
+	//출고요청번호 가져오기
+	public List<DeliveryQVO> getDlivyQCode();
+
 	
 	
 	
@@ -40,7 +42,8 @@ public interface DeliveryQService {
 	//모달창 출고요청 코드 조회
 	public List<Map<String,Object>> MdeliveryQListD(String dlivyCode);
 	
-	
+	//출고등록 번호 가져오기
+	public List<DeliveryGVO> getDlivyGCode();
 	
 	
 	////////////////////////////////////////////////////////////////////////////
@@ -58,6 +61,9 @@ public interface DeliveryQService {
 			
 	//모달창 출고등록 코드 상세 조회
 	public List<Map<String,Object>> MdeliveryGListD(String dlivyCode);
+	
+	//출고처리 번호 가져오기
+	public List<DeliveryProVO> getDlivytPCode();
 	
 	
 	/////////////////////////////////////////////////////////////////////////////

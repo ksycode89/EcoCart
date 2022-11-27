@@ -29,22 +29,13 @@ public interface EstimateMapper {
 
 	public int insertEstmtD(EstimateDVO vo);
 	
-	//승인 업데이트
-	public int updateEstmtSt(EstimateVO vo);
+	
 
 	
 	//견적 번호 가져오기
 	public List<EstimateVO> getEstmtCode();
 	
 	
-//	//견적 번호 가져오기
-//	public int getEstimateNo();
-//	
-//	
-//	//견적서 등록(등록버튼)
-//	public int insertEstimate(EstimateVO vo);
 
-//	//승인 버튼 누르면 estmt_st update 
-//	public int updateEstimate(EstimateVO vo);
-//	
+
 }

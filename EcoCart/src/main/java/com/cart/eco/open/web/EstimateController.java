@@ -71,7 +71,7 @@ public class EstimateController {
 	//견적번호 가져오기
 	@GetMapping("/getEstmtCode")
 	@ResponseBody
-	public List<EstimateVO> getEstmtCode(EstimateVO vo, Model model) {
+	public List<EstimateVO> getEstmtCode(EstimateVO vo) {
 		
 		System.out.println("------------------------");
 		estimateService.getEstmtCode();
@@ -114,15 +114,7 @@ public class EstimateController {
 	}
 
 
-	//견적서 상태 update
-	@PostMapping("/updateEstmtSt")
-	@ResponseBody
-	public int updateEstmtSt (@RequestBody List<EstimateVO> vo) {
-		
-		
-		
-		return estimateService.updateEstmtSt(vo); 
-	}
+	
 	
 	
 	

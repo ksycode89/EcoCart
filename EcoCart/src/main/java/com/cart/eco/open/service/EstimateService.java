@@ -32,9 +32,11 @@ public interface EstimateService {
 	//견적 번호 가져오기
 	public List<EstimateVO> getEstmtCode();
 	
-	//승인 업데이트
-	public int updateEstmtSt(List<EstimateVO> vo);
 	
+
+
+
+
 	
 
 

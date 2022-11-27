@@ -71,18 +71,7 @@ public class EstimateServiceImpl implements EstimateService {
 	}
 
 	
-	//업데이트
-	@Override
-	public int updateEstmtSt(List<EstimateVO> vo) {
-		
-		int result = 0;
-		for(int i = 0; i< vo.size(); i++) {
-			
-			result  += mapper.updateEstmtSt(vo.get(i));
-		}
-		
-		return result;
-	}
+	
 
 
 	@Override
@@ -90,6 +79,8 @@ public class EstimateServiceImpl implements EstimateService {
 		// TODO Auto-generated method stub
 		return mapper.getEstmtCode();
 	}
+
+
 
 
 

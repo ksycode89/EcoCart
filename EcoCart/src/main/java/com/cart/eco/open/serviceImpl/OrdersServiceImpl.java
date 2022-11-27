@@ -37,12 +37,7 @@ public class OrdersServiceImpl implements OrdersService {
 		return mapper.proList();
 	}
 
-	@Override
-	public List<Map<String, Object>> OrdersCanDList(String orderCode) {
-		// TODO Auto-generated method stub
-		return mapper.OrdersCanDList(orderCode);	
-	
-	}
+
 	
 	
 	@Override
@@ -63,11 +58,7 @@ public class OrdersServiceImpl implements OrdersService {
 		return mapper.MestmtListD(estmtCode);
 	}
 
-	@Override
-	public List<OrdersVO> OrdersCanList() {
-		// TODO Auto-generated method stub
-		return mapper.OrdersCanList();
-	}
+
 
 	@Override
 	public String insertOrder(OrdersVO vo) {
@@ -77,10 +68,18 @@ public class OrdersServiceImpl implements OrdersService {
 
 	@Override
 	public int insertOrderD(List<OrderDVO> vo) {
-		// TODO Auto-generated method stub
-		return mapper.insertOrderD(vo);
+		int result = 0;
+		
+		for(int i = 0; i< vo.size(); i++) {
+			System.out.println("asd" + vo.get(i));
+			result  += mapper.insertOrderD(vo.get(i));
+		}
+		
+		return result;
+		
 	}
 
+	
 	@Override
 	public int updateOrderSt(List<OrdersVO> vo) {
 		
@@ -103,6 +102,35 @@ public class OrdersServiceImpl implements OrdersService {
 		
 		
 		return result;
+	}
+
+	@Override
+	public int updateEstmtSt(List<EstimateVO> vo) {
+			
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			result  += mapper.updateEstmtSt(vo.get(i));
+		}
+			
+		return 0;
+	}
+
+	@Override
+	public List<OrdersVO> getOrderCode() {
+		// TODO Auto-generated method stub
+		return mapper.getOrderCode();
+	}
+
+	@Override
+	public int updateCanNum(List<OrderDVO> vo) {
+		int result = 0;
+		for(int i = 0; i < vo.size(); i++ ) {
+			result += mapper.updateCanNum(vo.get(i));
+		}
+		
+		
+		return result;
+		
 	}
 
 

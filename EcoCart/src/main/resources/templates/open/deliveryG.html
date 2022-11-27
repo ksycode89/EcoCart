@@ -44,7 +44,7 @@
             </div>
             
            <div>
-               <button type="button" style="float:right; margin:5px; margin-right: 30px"  class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">출고 등록</button>
+               <button type="button" style="float:right; margin:5px; margin-right: 10px"  class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="getCode()">출고 등록</button>
 			</div>
 
 			
@@ -69,7 +69,10 @@
 					
 					  <div class="modal-body">
 				  			<div class="container-fluid">
-					
+				  			
+							<label for="row1" style="width:100px; height: 30px; text-align:center;">출고등록코드</label>
+										<input type="text" class="form-control form-control-sm" style="width:150px; display:inline" id="getdlivyCode" readonly >
+									
 							<label for="row2" style="width:150px; height: 30px; text-align:center;">출고요청코드</label>
 				         		<select id="select8" name="no" onchange="handleOnChange8(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white">
 				         			<option value="선택">-선택-</option>
@@ -388,7 +391,20 @@
 				})
 	     }
 	     
-	     
+	   //모달창 눌렀을때 코드 있도록	
+	 	function getCode(){
+	 		
+	 		$.ajax({
+	 			url:'/getDlivyGCode',
+	 			success : function(result) {
+	 				$("#getdlivyCode").val(result[0].dlivyGCode);
+	 			},
+	 			error : function(error){
+	 				console.log(error);
+	 			}
+	 		})
+	 		
+	   }
 
 	     //조회버튼 / 리셋버튼
 		
