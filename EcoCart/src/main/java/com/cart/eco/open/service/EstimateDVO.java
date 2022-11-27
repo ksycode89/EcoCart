@@ -13,5 +13,5 @@ public class EstimateDVO {
 	
 	private String fsumPrice;
 	private String fsellNum;
-
+	private int sellPrice;
 }

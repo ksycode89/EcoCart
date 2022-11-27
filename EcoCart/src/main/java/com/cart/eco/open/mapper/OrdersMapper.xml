@@ -7,13 +7,22 @@
 		select o.order_code, c.client_name "client_code", o.order_date, o.de_date, o.all_sum, order_st
 		from orders o, client c
 		where o.client_code = c.client_code
+		order by order_code
 		
 	</select>
 
 
 	<!-- //주문서 상세 조회 -->
 	<select id="OrdersDList" resultType="Map" parameterType="String">
-		select d.order_dno, o.pro_code, p.pro_name, d.sell_num, o.sell_price,(d.sell_num *o.sell_price) as sum_price
+		select d.order_dno, 
+			   o.pro_code, 
+			   p.pro_name, 
+			   d.sell_num, 
+			   o.sell_price,
+			    d.sold_num,
+				(d.sell_num *o.sell_price) as sum_price,
+				d.can_num "canNum",
+				o.order_code "orderCode"
 		from orders o, order_d d, product p, product_option o
 		where o.order_code = d.order_code
 		and d.pro_code = p.pro_code
@@ -44,7 +53,13 @@
 	
 	<!-- 주문 마감 상세 조회 -->
 	<select id="OrdersCanDList" resultType="Map" parameterType="String">
-		select d.order_dno, o.pro_code, p.pro_name, d.allsell_num, d.sell_num, d.can_num
+		select d.order_dno "oderDno", 
+			o.pro_code "proCode",
+			 p.pro_name "proName", 
+			 d.sold_num "soldNum", 
+			 d.sell_num "sellNum", 
+			 d.can_num "canNum"
+			 o.order_code "orderCode"
 		from orders o, order_d d, product p, product_option o
 		where o.order_code = d.order_code
 		and d.pro_code = p.pro_code
@@ -54,20 +69,30 @@
 	
 	</select>
 	
+	<!--  승인된 견적서 목록 가져오기 -->
+	<select id="selectEstmtCode" resultType="com.cart.eco.open.service.EstimateVO">
+		select * from estimate
+		where estmt_st = '대기'
+	
+	</select>
+	
 	<!-- 모달창 승인 견적서 조회 -->
 	<select id="MestmtList" resultType="com.cart.eco.open.service.EstimateVO" parameterType="String">
-		select e.estmt_code, c.client_name "client_code", e.estmt_date, e.de_date, TO_CHAR(e.all_sum,'999,999') || '원' "fall_sum",e.estmt_st
+		select e.estmt_code, c.client_name ,e.client_code, e.estmt_date, e.de_date, all_sum, e.estmt_st
 		from estimate e, client c
 		where e.client_code = c.client_code
-		
 		and e.estmt_code = #{estmtCode}
-		and e.estmt_st = '승인'
+		
 	</select>
 	
 	
 	<!-- 모달창 승인 견적서 상세 조회 -->
 	<select id="MestmtListD" resultType="Map" parameterType="String">
-		select  d.pro_code, p.pro_name, d.sell_num, TO_CHAR(o.sell_price,'999,999') || '원' "fsell_price", TO_CHAR( (d.sell_num * o.sell_price),'999,999,999') || '원'  fsum_price
+		select  d.pro_code  "proCode", 
+		        p.pro_name "proName",
+		        d.sell_num "sellNum", 
+		        o.sell_price "sellPrice",	 
+		        (d.sell_num * o.sell_price)  "sumPrice"
 		from estimate e, estimate_D d, product p, product_option o
 		where e.estmt_code = d.estmt_code 
 		and d.pro_code = p.pro_code
@@ -76,42 +101,42 @@
 		order by estmt_dno
 	</select>
 	
-	<!--  승인된 견적서 목록 가져오기 -->
-	<select id="selectEstmtCode" resultType="com.cart.eco.open.service.EstimateVO">
-		select * from estimate
-		where estmt_st = '승인'
 	
+	<!-- 주문서 번호 가져오기 -->
+	<select id="getOrderCode" resultType="com.cart.eco.open.service.OrdersVO" parameterType="String">
+		select  concat('ord' , 
+  					concat (to_char(sysdate,'YYmmdd'), 
+        			concat ('-', nvl(max(to_number(substr(order_code, 11))),0)+1 )
+        			)) "orderCode"
+        	from orders
 	</select>
+	
+	
 	
 	<!-- 주문서 등록 -->
 	<insert id="insertOrder" parameterType="com.cart.eco.open.service.OrdersVO" >
-		<selectKey keyProperty="orderCode" resultType="String" order="BEFORE">
-			select  concat('ord' , 
-  					concat (to_char(sysdate,'YYmmdd'), 
-        			concat ('-', nvl(max(substr(order_code, 11)),0)+1 )
-        			)) 
-        	from orders
-		</selectKey>
+		insert into orders (order_code, client_code, order_date, de_date, order_st,all_sum)
+			values( #{orderCode}, #{clientCode}, sysdate, #{deDate}, '진행',#{allSum} )
 		
-		<!-- 코드, 거래처, 견적일ㄹ자(sysdate), 납기일자 승인  -->
-		insert into orders  (order_code, client_code, order_date, de_date, order_st)
-			values( #{orderCode}, 
-					(  select client_code from client where client_name = #{clientCode} ), 
-					sysdate, #{deDate}, '대기')
-			
 	</insert>
 	
 	
 	<!-- 주문 상세 등록 -->
-	<insert id="insertOrderD" parameterType="com.cart.eco.open.service.OrderDVO" >
-		<selectKey keyProperty="orderDno" order="BEFORE" resultType="integer">
-			select nvl(max(order_dno),0)+1 from order_d
+	<insert id="insertOrderD" parameterType="com.cart.eco.open.service.OrderDVO">
+		<selectKey keyProperty="orderDno" order="BEFORE" resultType="int">
+			select nvl(max(to_number(order_dno)),0)+1 from order_d
 		</selectKey>
 		
-		insert into order_d (order_dno, order_code, pro_code, sell_num, sum_price)
-			values ( #{orderDno}, #{orderCode},  #{proCode}, #{sellNum}, ( #{proCode} * #{sellNum} ) )
+		insert into order_d (order_dno, order_code, pro_code, sell_num, sum_price,sold_num)
+			values ( #{orderDno}, #{orderCode}, #{proCode}, #{sellNum}, #{sumPrice},'0' )
 		
 	</insert>
+	
+	<!-- 주문 등록시 견적서 상태 변경 -->
+	<update id="updateEstmtSt" parameterType="com.cart.eco.open.service.EstimateVO">
+		update estimate set estmt_st = '승인' where estmt_code = #{estmtCode}
+	
+	</update>
 	
 	
 	<!-- 주문 상태 변경 -->
@@ -124,6 +149,15 @@
 	<update id="updateOrderCanSt" parameterType="com.cart.eco.open.service.OrdersVO">
 		update orders set order_st = '마감' where order_code = #{orderCode}
 	
+	</update>
+	
+	<!-- 주문 마감 취소 수량 변경 -->
+	<update id="updateCanNum" parameterType="com.cart.eco.open.service.OrderDVO"> 
+		update order_d set can_num = 
+            (select sell_num - sold_num
+            from order_d
+            where order_dno = #{orderDno} )
+        where order_dno = #{orderDno}
 	</update>
 	
 </mapper>

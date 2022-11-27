@@ -26,6 +26,19 @@
 	
 	</select>
 
+	<!-- 출고 요청1 번호 가져오기 -->
+	<select id="getDlivyQCode" resultType="com.cart.eco.open.service.DeliveryQVO" parameterType="String">
+		select  concat('dlq' , 
+  					concat (to_char(sysdate,'YYmmdd'), 
+        			concat ('-', nvl(max(to_number(substr(dlivy_q_code, 11))),0)+1 )
+        			)) "dlivyQCode"
+        	from delivery_Q
+	</select>
+	
+	
+	
+	
+	
 
 	<!-- 출고 등록2 -->
 	
@@ -74,7 +87,14 @@
 	
 	</select>
 	
-	
+	<!-- 출고 등록2 번호 가져오기 -->
+	<select id="getDlivyGCode" resultType="com.cart.eco.open.service.DeliveryGVO" parameterType="String">
+		select  concat('dlg' , 
+  					concat (to_char(sysdate,'YYmmdd'), 
+        			concat ('-', nvl(max(to_number(substr(dlivy_g_code, 11))),0)+1 )
+        			)) "dlivyGCode"
+        	from delivery_G
+	</select>
 	
 	
 	
@@ -115,7 +135,14 @@
 	
 	</select>
 	
-	
+	<!-- 출고 처리 번호 가져오기 -->
+	<select id="getDlivyPCode" resultType="com.cart.eco.open.service.DeliveryProVO" parameterType="String">
+		select  concat('dlp' , 
+  					concat (to_char(sysdate,'YYmmdd'), 
+        			concat ('-', nvl(max(to_number(substr(dlivy_pro_code, 11))),0)+1 )
+        			)) "dlivyProCode"
+        	from delivery_Pro
+	</select>
 	
 	
 	
@@ -157,6 +184,13 @@
 		and p.pro_code = #{proCode}
 		
 	</select>
+
+
+
+
+
+
+
 
 
 

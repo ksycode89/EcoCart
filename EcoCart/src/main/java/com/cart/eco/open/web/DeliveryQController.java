@@ -15,6 +15,7 @@ import com.cart.eco.open.service.DeliveryProVO;
 import com.cart.eco.open.service.DeliveryQService;
 import com.cart.eco.open.service.DeliveryQVO;
 import com.cart.eco.open.service.EstimateVO;
+import com.cart.eco.open.service.OrdersVO;
 
 @Controller
 public class DeliveryQController {
@@ -51,6 +52,20 @@ public class DeliveryQController {
 		return deliverQService.DeliveryQDList(dlivyCode);
 				
 	}
+	
+	//출고요청번호 가져오기
+	@GetMapping("/getDlivyQCode")
+	@ResponseBody
+	public List<DeliveryQVO> getDelivyQCode(DeliveryQVO vo) {
+			
+		deliverQService.getDlivyQCode();
+			
+			
+		return deliverQService.getDlivyQCode();
+			
+	}
+	
+	
 	
 	
 	/////////////////////////////////////////////////////////////////////////
@@ -98,6 +113,18 @@ public class DeliveryQController {
 		return deliverQService.MdeliveryQListD(dlivyCode);
 	}
 		
+	
+	//출고등록번호 가져오기
+	@GetMapping("/getDlivyGCode")
+	@ResponseBody
+	public List<DeliveryGVO> getDelivyGCode(DeliveryGVO vo) {
+			
+		deliverQService.getDlivyGCode();
+			
+			
+		return deliverQService.getDlivyGCode();
+			
+	}
 		
 	/////////////////////////////////////////////////////////////////////////////
 	
@@ -133,6 +160,18 @@ public class DeliveryQController {
 		
 		return deliverQService.MdeliveryGListD(dlivyCode);
 	}
+	
+	//출고처리번호 가져오기
+	@GetMapping("/getDlivyPCode")
+	@ResponseBody
+	public List<DeliveryProVO> getDelivyPCode(DeliveryProVO vo) {
+			
+		deliverQService.getDlivytPCode();
+			
+			
+		return deliverQService.getDlivytPCode();
+			
+		}
 	
 	///////////////////////////////////////////////////////////////////////////////
 	

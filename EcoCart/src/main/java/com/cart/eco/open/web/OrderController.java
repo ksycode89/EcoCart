@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cart.eco.common.service.ProductVO;
 import com.cart.eco.open.service.EstimateVO;
+import com.cart.eco.open.service.OrderDVO;
 import com.cart.eco.open.service.OrdersService;
 import com.cart.eco.open.service.OrdersVO;
 
@@ -77,17 +78,51 @@ public class OrderController {
 	}
 	
 	
+	
+	//주문번호 가져오기
+	@GetMapping("/getOrderCode")
+	@ResponseBody
+	public List<OrdersVO> getOrderCode(OrdersVO vo) {
+			
+		System.out.println("------------------------");
+		orderService.getOrderCode();
+			
+		System.out.println(vo.getOrderCode());
+			
+			
+		return orderService.getOrderCode();
+			
+		}
+	
 	//주문서 insert
 	@PostMapping("/insertOrder")
 	@ResponseBody
-	public OrdersVO insertOrder (@RequestBody List<OrdersVO> vo) {
+	public OrdersVO insertOrder (@RequestBody OrdersVO vo) {
 		
-		OrdersVO a = vo.get(0);
-		orderService.insertOrder(a);
-		System.out.println(  vo.get(0)  );
-		return a;
+		orderService.insertOrder(vo);
+		System.out.println(  vo );
+		return vo;
 		
 	}
+	
+	//주문서 상세 insert
+	@PostMapping("/insertOrderD")
+	@ResponseBody
+	public int insertOrderD(@RequestBody List<OrderDVO> vo ) {
+	
+		
+		return orderService.insertOrderD(vo);
+	}
+	
+	//주문 등록시 견적서 승인으로 업데이트
+	//견적서 상태 update
+		@PostMapping("/updateEstmtSt")
+		@ResponseBody
+		public int updateEstmtSt (@RequestBody List<EstimateVO> vo) {
+			
+			return orderService.updateEstmtSt(vo); 
+		}
+	
 	
 	//주문서 상태 변경
 	@PostMapping("/updateOrderSt")
@@ -107,34 +142,21 @@ public class OrderController {
 		return "open/orderCan";
 	}
 	
-	
-	
-	//주문 마감 전체 조회
-	@GetMapping("/listorderCan")
-	@ResponseBody
-	public List<OrdersVO> listOrderCan(OrdersVO vo){
-		
-		return orderService.OrdersCanList();
-		
-	}
-	
-	
-	//주문 마감 tr조회
-	@GetMapping("/listOrderCanD")
-	@ResponseBody
-	public List<Map<String,Object>> listOrderCanD(String orderCode){
-		
-		return orderService.OrdersCanDList(orderCode);
-				
-	}
-	
-	
+
 	//주문마감 상태 변경
 	@PostMapping("/updateOrderCanSt")
 	@ResponseBody
 	public int updateOrderCanSt (@RequestBody List<OrdersVO> vo) {
 			
 		return orderService.updateOrderCanSt(vo);
+	}
+	
+	//주문마감 상태 변경
+	@PostMapping("/updateCanNum")
+	@ResponseBody
+	public int updateCanNum (@RequestBody List<OrderDVO> vo) {
+			
+		return orderService.updateCanNum(vo);
 	}
 		
 	

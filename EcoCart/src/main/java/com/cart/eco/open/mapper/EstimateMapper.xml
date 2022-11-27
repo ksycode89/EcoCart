@@ -4,8 +4,13 @@
 
 	<!-- 견적서 전체 조회 -->
 	<select id="selectEstimateList" resultType="com.cart.eco.open.service.EstimateVO">
-		select e.estmt_code, c.client_name "client_code", e.estmt_date, e.de_date, TO_CHAR(e.all_sum,'999,999') || '원' "fall_sum",e.estmt_st
-		from estimate e, client c
+		select e.estmt_code, 
+		       c.client_name "client_code", 
+		       e.estmt_date, 
+		       e.de_date, 
+		       e.all_sum,
+		       e.estmt_st
+		 from estimate e, client c
 		where e.client_code = c.client_code
 		order by estmt_code
 		
@@ -14,12 +19,23 @@
 	
 	<!--  견적서 상세 조회 -->
 	<select id="EstimateDList" resultType="Map" parameterType="String">
-		select d.estmt_dno, d.pro_code, p.pro_name, d.sell_num, TO_CHAR(o.sell_price,'999,999') || '원' "fsell_price", TO_CHAR( (d.sell_num * o.sell_price),'999,999,999') || '원'  fsum_price
-		from estimate e, estimate_D d, product p, product_option o
+		select d.estmt_dno "estmtDno", 
+		       d.pro_code "proCode", 
+		       p.pro_name "proName", 
+		       d.sell_num "sellNum", 
+		       o.sell_price "sellPrice",
+		       d.sum_price "sumPrice"
+		
+		from estimate e, 
+		     estimate_D d, 
+		     product p, 
+		     product_option o
+		     
 		where e.estmt_code = d.estmt_code 
-		and d.pro_code = p.pro_code
-		and p.pro_code = o.pro_code
-		and e.estmt_code = #{estmtCode}
+		  and d.pro_code = p.pro_code
+		  and p.pro_code = o.pro_code
+		  and e.estmt_code = #{estmtCode}
+		  
 		order by estmt_dno
 	
 	</select>
@@ -34,7 +50,10 @@
    
    <!-- 셀렉트 옵션 -->
    <select id="selectClientName" resultType="com.cart.eco.common.service.ClientVO" >
-   		select client_name, client_code from client
+   		select client_name, client_code 
+   		from client 
+   		where client_code like 'EEC%'
+   		order by client_code
    </select>
 	
 	<!-- 견적서 번호 가져오기 -->
@@ -48,27 +67,23 @@
 
 	<!-- 견적서 등록 -->
 	<insert id="insertEstmt" parameterType="com.cart.eco.open.service.EstimateVO" >
-		insert into estimate  (estmt_code, client_code, estmt_date, de_date, estmt_st)
-			values( #{estmtCode}, #{clientCode} , sysdate, sysdate, '대기')
+		insert into estimate  (estmt_code, client_code, estmt_date, de_date, estmt_st, all_sum)
+			values( #{estmtCode}, #{clientCode} , sysdate, #{deDate}, '대기',#{allSum} )
 			
 	</insert>	
 
 	<!-- 견적서 상세 등록 -->
 	<insert id="insertEstmtD" parameterType="com.cart.eco.open.service.EstimateDVO" >
 		<selectKey keyProperty="estmtDno" order="BEFORE" resultType="int" >
-			select nvl(max(to_number(estmt_dno),0))+1 from estimate_d
+			select nvl(max(to_number(estmt_dno)),0)+1 from estimate_d
 		</selectKey>
 		
-		insert into estimate_d (estmt_dno, estmt_code, pro_code, sell_num )
-			values ( #{estmtDno}, #{estmtCode},  #{proCode}, #{sellNum} )
+		insert into estimate_d (estmt_dno, estmt_code, pro_code, sell_num, sum_price)
+			values ( #{estmtDno}, #{estmtCode},  #{proCode}, #{sellNum}, #{sumPrice}  )
 		
 	</insert>
 	
 	
-	<!-- 상태 변경 -->
-	<update id="updateEstmtSt" parameterType="com.cart.eco.open.service.EstimateVO">
-		update estimate set estmt_st = '승인' where estmt_code = #{estmtCode}
 	
-	</update>
 
 </mapper>

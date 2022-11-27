@@ -9,6 +9,7 @@ import com.cart.eco.common.service.ProductVO;
 import com.cart.eco.open.service.DeliveryGVO;
 import com.cart.eco.open.service.DeliveryProVO;
 import com.cart.eco.open.service.DeliveryQVO;
+import com.cart.eco.open.service.OrdersVO;
 
 public interface DeliveryQMapper {
 	
@@ -20,7 +21,8 @@ public interface DeliveryQMapper {
 	//출고요청1 상세 조회
 	public List<Map<String,Object>> DeliveryQDList(String dlivyCode);
 	
-	
+	//출고요청 번호 가져오기
+	public List<DeliveryQVO> getDlivyQCode();
 	
 	
 	
@@ -41,7 +43,8 @@ public interface DeliveryQMapper {
 	//모달창 출고요청 코드 조회
 	public List<Map<String,Object>> MdeliveryQListD(String dlivyCode);
 	
-	
+	//출고등록 번호 가져오기
+	public List<DeliveryGVO> getDlivyGCode();
 	
 	////////////////////////////////////////////////////////////////////////////
 	
@@ -58,6 +61,9 @@ public interface DeliveryQMapper {
 				
 	//모달창 출고등록 코드 상세 조회
 	public List<Map<String,Object>> MdeliveryGListD(String dlivyCode);
+	
+	//출고처리 번호 가져오기
+	public List<DeliveryProVO> getDlivyPCode();
 	
 	
 	/////////////////////////////////////////////////////////////////////////////

@@ -38,10 +38,6 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 
 	
 	
-
-	
-	
-	
 	////////////////////////////////////////////////////////////////////////
 	
 	//출고등록 G
@@ -71,8 +67,6 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 	}
 	
 	
-	
-	
 	//////////////////////////////////////////////////////////////////////////
 	
 	//출고처리 Pro
@@ -100,6 +94,8 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 		// TODO Auto-generated method stub
 		return mapper.MdeliveryGListD(dlivyCode);
 	}
+	
+	
 	
 	/////////////////////////////////////////////////////////////////////////////
 	
@@ -174,6 +170,41 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 		// TODO Auto-generated method stub
 		return mapper.selectBom();
 	}
+
+	
+	
+	
+	
+	//////////번호 가져오기
+	
+	
+	
+	@Override
+	public List<DeliveryQVO> getDlivyQCode() {
+		// TODO Auto-generated method stub
+		return mapper.getDlivyQCode();
+	}
+
+	@Override
+	public List<DeliveryGVO> getDlivyGCode() {
+		// TODO Auto-generated method stub
+		return mapper.getDlivyGCode();
+	}
+
+	@Override
+	public List<DeliveryProVO> getDlivytPCode() {
+		// TODO Auto-generated method stub
+		return mapper.getDlivyPCode();
+	}
+
+	
+	/////////////////////////////////////////////////
+	
+
+
+	
+
+	
 
 
 	

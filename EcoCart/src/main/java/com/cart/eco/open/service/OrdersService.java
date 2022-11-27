@@ -17,11 +17,7 @@ public interface OrdersService {
 	//제품코드 조회
 	public List<ProductVO> proList();
 	
-	// 주문 마감 조회
-	public List<OrdersVO> OrdersCanList();
-	
-	//주문 마감 상세 조회
-	public List<Map<String,Object>> OrdersCanDList(String orderCode);
+
 	
 	//모달 승인 견적서 조회
 	public List<EstimateVO> MestmtList(String estmtCode);
@@ -39,11 +35,30 @@ public interface OrdersService {
 	
 	public int insertOrderD(List<OrderDVO> vo);
 	
+	
+	
+	
+	//주문서 등록시 견적서 승인 업데이트
+	public int updateEstmtSt(List<EstimateVO> vo);
+	
+	//주문 번호 가져오기
+	public List<OrdersVO> getOrderCode();
+
+	
+	
+	
+	
+	
+	
 	//승인 업데이트
 	public int updateOrderSt(List<OrdersVO> vo);
 	
 	//마감 업데이트
 	public int updateOrderCanSt(List<OrdersVO> vo);
+	
+	public int updateCanNum(List<OrderDVO> vo);
+
+
 
 
 }

@@ -3,12 +3,10 @@
 	layout:decorate="~{layout/layout}">
 
 <head>
-   <meta charset="UTF-8">
+    <meta charset="UTF-8">
+   <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+   <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
    <title>orderCan</title>
-	<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-	<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-	 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-	 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 	
    
 </head>
@@ -44,7 +42,7 @@
 			
            </div>
            <div>
-               <button type="button" class="btn btn-sm btn-primary" style="float:right;  margin:5px; margin-right: 30px" onclick="updateOrderSt()">대기</button>   
+               <button type="button" class="btn btn-sm btn-primary" style="float:right;  margin:5px; margin-right: 10px" onclick="updateOrderSt()">주문 마감</button>   
 			</div>
 			
            <div><br></div>
@@ -59,13 +57,20 @@
 	
 		
       <script>
+      
+      
+      var token = $("meta[name='_csrf']").attr("content");
+	  var header = $("meta[name='_csrf_header']").attr("content");
+		
+		
 	      const Grid = tui.Grid;
 			
 			//주문목록 
 			const grid = new Grid({
 		        el: document.getElementById('grid'), // Container element
 		        scrollX: false,
-	            scrollY: false,
+		        scrollY: true,
+	            bodyHeight : 240,
 	            rowHeaders: ['checkbox'],
 	            columns: [
 		            {
@@ -91,10 +96,13 @@
 		             },
 		             {
 		                 header: '총합계액',
-		                 name: 'allSum'
+		                 name: 'allSum',
+		                 formatter : function (ev){
+		                   	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                    }
 		             },
 		             {
-		               	header:'마감',
+		               	header:'상태',
 		           	  	name: 'orderSt',
 		           	 	filter : 'text'
 		              }
@@ -102,16 +110,25 @@
 		        ]
 			});
 			
+			grid.on('check', () => {
+				 grid2.checkAll
+				});
+			
 			
 			const grid2 = new Grid({
 		        el: document.getElementById('grid2'), // Container element
 		        scrollX: false,
 	            scrollY: false,
+	            rowHeaders: ['checkbox'],
 		        columns: [
-		            {
-		            	header: 'no',
+		        	{
+		        		header: '주문코드',
+		            	name: 'orderCode'
+		        	},
+		        	{
+		        		header: 'no',
 		            	name: 'ORDER_DNO'
-		            },
+		        	},
 		            {
 		            	header: '제품코드',
 		            	name: 'PRO_CODE'
@@ -122,15 +139,18 @@
 		            },
 		            {
 		            	header: '총수량',
-		                name: 'ALLSELL_NUM'
+		                name: 'SELL_NUM',
+		                formatter : function (ev){
+		                   	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                    }
 		             },
 		             {
 		             	header: '남품수량',
-		                name: 'SELL_NUM'
+		                name: 'SOLD_NUM',
 		             },
 		             {
 			             header: '취소수량',
-			             name: 'CAN_NUM'
+			             name: 'canNum',
 			         }
 		            
 		        ]
@@ -155,63 +175,90 @@
 	      
 	      
 			
-		//실행시 조회
-		document.addEventListener("DOMContentLoaded",listOrderCan)
-	   	
-		function listOrderCan(){
-			console.log("연결성공")
-			$.ajax({
-				url:'/listorderCan',
-				success : function(result) {
-					console.log(result);
-					grid.resetData(result);
-				},
-				error : function(error){
-					console.log(error);
-				}
-			})
-			
-		}
-		
-		//tr click
-		grid.on('click', (event)=>{
-			console.log(event.nativeEvent.target.textContent);
-			var a = event.nativeEvent.target.textContent;
-			
-			$.ajax({
-				method:'GET',
-				url:'/listOrderCanD?orderCode='+a,
-				success : function(result){
-					console.log("상세tr")
-					console.log(result);
-					grid2.resetData(result)
-				},
-				error: function(error){
-					console.log(error);
-				}
+	    //실행시 조회
+			document.addEventListener("DOMContentLoaded",ordersList)
+		   	
+			function ordersList(){
+				console.log("연결성공")
+				$.ajax({
+					url:'/listOrders',
+					success : function(result) {
+						grid.resetData(result);
+					},
+					error : function(error){
+						console.log(error);
+					}
+				})
 				
+			}
+	   	 
+			
+			
+			//tr click
+			grid.on('click', (event)=>{
+				console.log(event.nativeEvent.target.textContent);
+				
+				var a = event.nativeEvent.target.textContent;
+				
+				$.ajax({
+					method:'GET',
+					url:'/listOrderd?orderCode='+a,
+					success : function(result){
+						grid2.resetData(result)
+						grid.check();
+						grid2.checkAll();
+					},
+					error: function(error){
+						console.log(error);
+					}
+					
+				})
 			})
-		})
 			
 		
 		
-		//마감 상태 업데이트
+		//마감 상태 업데이트 
 		function updateOrderSt(){
-			 $.ajax({
+			console.log(grid.getCheckedRows())	
+			//for (let i = 0; i < )
+				
+			 /* $.ajax({
 					method:'POST',
 					url:'/updateOrderCanSt',
 					contentType : 'application/json',
 					dataType:'JSON',
-					data: JSON.stringify(grid.getCheckedRows()),
+					data: JSON.stringify(grid2.getCheckedRows()),
+					beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           	 },
 					success : function(result) {
 						console.log(result)
-						location.reload(result);
+						//location.reload(result);
 					},
 					error : function(error){
 						console.log(error);
 					}
 				})		
 			
+				
+			 $.ajax({
+					method:'POST',
+					url:'/updateCanNum',
+					contentType : 'application/json',
+					dataType:'JSON',
+					data: JSON.stringify(grid.getCheckedRows()),
+					beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           	 },
+					success : function(result) {
+						console.log(result)
+						//location.reload(result);
+					},
+					error : function(error){
+						console.log(error);
+					}
+				})	 */
+				
 			
 		}	
 		// 조회버튼 / 리셋버튼
@@ -224,7 +271,7 @@
 	    })
 	    
 	    planStart.addEventListener('click', () => {
-	    	grid.filter('orderSt', [{code:'eq', value:'승인'}]);
+	    	grid.filter('orderSt', [{code:'eq', value:'진행'}]);
 	    })
 	
 	
