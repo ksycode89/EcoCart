@@ -23,6 +23,7 @@ import com.cart.eco.common.service.CommonService;
 import com.cart.eco.common.service.CommonVO;
 import com.cart.eco.common.service.EmpService;
 import com.cart.eco.common.service.EmpVO;
+import com.cart.eco.common.service.ProAllVO;
 import com.cart.eco.common.service.ProductService;
 import com.cart.eco.common.service.ProductVO;
 import com.cart.eco.common.service.ToastGridVO;
@@ -150,6 +151,15 @@ public class CommonController {
 		
 		return empService.delEmpInfo(vo);
 	}
+	
+	// 물품 조회 ajax.
+	@PostMapping("ajax/selectPro")
+	@ResponseBody
+	public List<ProAllVO> selectPro(ProAllVO vo){
+		
+		return proService.selectPro(vo);
+	}
+	
 		
 	//공통코드가져오기
 	      
@@ -224,6 +234,13 @@ public class CommonController {
 	        	 return result;
 	         }
 	         
+	         // 품목군 코드, 이름 가져오기.
+	         @GetMapping("/callProItem")
+	         @ResponseBody
+	         public List<CommonVO> proItem(){
+	        	 
+	        	 return commonService.getProItem();
+	         }
 	         
 	//===================== ↓ 이동 페이지↓=====================================//
 	
