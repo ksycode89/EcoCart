@@ -600,14 +600,14 @@
 		                let dataOP = grid2.getData()
 		                   dataOP.push(data)
 				                //상세인서트
-				                 $.ajax({
+				            $.ajax({
 				               url : "/bomInsertOP",
 				               type: "post",
 				            	contentType : "application/json",
 				               data  : JSON.stringify(dataOP),
 				               beforeSend : function(xhr){
 				           		xhr.setRequestHeader(header, token);
-				           	 }, 
+				             	 }, 
 				               success : function(data){
 				                swap('suc')
 				               },
