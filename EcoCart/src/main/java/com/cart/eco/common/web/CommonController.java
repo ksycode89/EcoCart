@@ -383,7 +383,7 @@ public class CommonController {
 	     @ResponseBody
 	     public String bomInsertOP(@RequestBody List<BomChildernVO> vo) {
 	    	System.out.println("bomInsertOP : "+vo);
-//	    	bomService.bomInsertOP(vo)
+	    	bomService.bomInsertOP(vo);
 	    	 return null ;
 	     } 
 	

@@ -40,9 +40,9 @@ public class BomServiceImpl  implements BomService{
 	public String bomInsertOP(List<BomChildernVO> vo) {
 		String result = "입력에 실패했습니다.";
 		int reSum = 0 ;
-		
+		 String bomCode = vo.get(0).getBomCode();
 		for(int i=0; i <vo.size()-1; i++) {
-			
+			vo.get(i).setBomCode(bomCode);
 			reSum += mapper.bomInsertOP(vo.get(i));
 		}
 		if (reSum == vo.size()) {
