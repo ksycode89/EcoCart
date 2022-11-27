@@ -85,7 +85,7 @@ public class MfOrderServiceImpl implements MfOrderService {
 		for(int i=0; i<vo.size(); i++) {
 			result += mapper.updateReceivingDetail(vo.get(i));
 		}
-		return mapper.updateReceivingDetail(vo.get(0));
+		return result;
 	}
 
 	@Override
