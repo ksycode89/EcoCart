@@ -54,8 +54,23 @@ public class MorderServiceImpl implements MorderService {
 	
 
 	@Override
-	public int deleteOrder(MorderVO morderVO) {
-		return moMapper.deleteOrder(morderVO);
+	public String deleteOrder(List<MorderVO> morderVO) {
+		int result = 0;
+		String ab = "삭제가 실패했습니다.";
+		for (int a=0; a<morderVO.size(); a++) {
+			result += moMapper.deleteOrder(morderVO.get(a));
+			
+		}
+		if(result == morderVO.size()) {
+			ab = "삭제가 성공했습니다.";
+			
+		}
+//		for ( MorderVO a : morderVO) {
+//			moMapper.deleteOrder(a);
+//		}
+		
+		
+		return  ab;
 	}
 	
 	

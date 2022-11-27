@@ -27,7 +27,7 @@
    
    
    
-   <button id="toBtn" type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">삭제</button>
+   
    <button id="addBtn" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">자재검색</button>
    <div id="grid2"></div>
    
@@ -92,7 +92,7 @@
    function insertInfo() {
 	   console.log(grid.getData()[0])
 	   $.ajax({
-		   url : '/insertOrder',
+		   url : '/insertOrderCh',
 		   type : 'POST',
 		   beforeSend : function(xhr){
          		xhr.setRequestHeader(header, token);
@@ -308,7 +308,7 @@
     	   //console.log("inner modal grd ", modalGrid.getRow(event.rowKey).empDept)
     	  let managers = [
     		  {
-    			  "manager" :  modalGrid.getRow(event.rowKey).empName,
+    			  "empName" :  modalGrid.getRow(event.rowKey).empName,
     			  "empDept" :  modalGrid.getRow(event.rowKey).empDept
     		  }
     	  ] 

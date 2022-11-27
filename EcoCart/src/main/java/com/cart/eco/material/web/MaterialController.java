@@ -13,12 +13,15 @@ import com.cart.eco.material.service.ModerReqVO;
 import com.cart.eco.material.service.MorderService;
 import com.cart.eco.material.service.MorderVO;
 import com.cart.eco.material.service.MorderdetailVO;
+import com.cart.eco.material.service.OrderCheckVO;
+import com.cart.eco.material.service.OrderService;
 
 @Controller
 public class MaterialController {
 	
 	@Autowired
 	MorderService morder;
+	OrderService order;
 	
 	@GetMapping("/materialList")
 	public String materialList() {
@@ -63,7 +66,7 @@ public class MaterialController {
 	//삭제
 	@PostMapping("/deleteInfo")
 	@ResponseBody
-	public int delteInfo(@RequestBody MorderVO morderVO) {
+	public String delteInfo(@RequestBody List<MorderVO> morderVO) {
 		return morder.deleteOrder(morderVO);
 	}	
 
@@ -82,8 +85,9 @@ public class MaterialController {
 		return "material/Wearingprocess";
 	}
 
-	@GetMapping("/WearingList")
-	public String WearingList() {
+	@GetMapping("/selectOrList")
+	@ResponseBody
+	public String selectOrList(List<OrderCheckVO> ordervo) {
 		return "material/WearingList";
 	}
 
