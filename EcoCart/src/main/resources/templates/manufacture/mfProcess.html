@@ -5,6 +5,8 @@
       layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>생산공정관리</title>
 </head>
 <body>
@@ -41,6 +43,10 @@
 			</div>
 		</div>
 	<script>
+	
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
 		var processGrid = new tui.Grid({
 			el: document.getElementById('processGridId'),
 			scrollX: false,
@@ -70,11 +76,17 @@
 		          name: 'sysName'
 		        },
 		        {
-		          header: '담당자',
+		          header: '담당자사번',
+		          name: 'empNum'
+		        },		        
+		        {
+		          header: '관리자',
 		          name: 'empName'
 		        }
 			]
 		});
+		
+		processGrid.hideColumn('empNum');
 		
 		var systemModalGrid = new tui.Grid({
 			el: document.getElementById('systemModalGridId'),
@@ -91,11 +103,17 @@
 		          name: 'sysName'
 		        },
 		        {
-		          header: '담당자',
+		          header: '담당자사번',
+		          name: 'empNum'
+		        },		  
+		        {
+		          header: '관리자',
 		          name: 'empName'
 		        }
 			]
 		});
+		
+		systemModalGrid.hideColumn('empNum');
 		
 		document.addEventListener("DOMContentLoaded", () => {
 			$.ajax({
@@ -154,22 +172,40 @@
 			let lineNo1 = processGrid.getRow(ev1.rowKey).lineNo;
 			let mfProcessCode1 = processGrid.getRow(ev1.rowKey).mfProcessCode;
 			let mfProcessName1 = processGrid.getRow(ev1.rowKey).mfProcessName;
-			let sysCode1 = processGrid.getRow(ev2.rowKey).sysCode;
-			let sysName1 = processGrid.getRow(ev2.rowKey).sysName;
-			let empName1 = processGrid.getRow(ev2.rowKey).empName;
+			let sysCode1 = systemModalGrid.getRow(ev2.rowKey).sysCode;
+			let sysName1 = systemModalGrid.getRow(ev2.rowKey).sysName;
+			let empNum1 = systemModalGrid.getRow(ev2.rowKey).empNum;
+			let empName1 = systemModalGrid.getRow(ev2.rowKey).empName;
 			processGrid.setRow(ev1.rowKey, {
 				lineNo : lineNo1,
 				mfProcessCode : mfProcessCode1,
 				mfProcessName : mfProcessName1,
 				sysCode : sysCode1,
 				sysName : sysName1,
+				empNum : empNum1,
 				empName : empName1
 			});
 			$('#systemModal').modal('hide');
 		});
 		
 		updateBtn.addEventListener('click', () => {
-			
+			$.ajax({
+        		url: '/mfSystemUpdate',
+        		method: 'POST',
+        		contentType: 'application/json',
+        		data: JSON.stringify(processGrid.getData()),
+        		dataType: 'JSON',
+        		beforeSend : function(xhr){
+               		xhr.setRequestHeader(header, token);
+               	},
+        		success: function(data){
+        			console.log(data);
+        			alert('공정의 설비가 변경되었습니다.')
+        		},
+        		error: function(error){
+	    			console.log(error);
+        		}
+        	});
 		});
 		
     </script>

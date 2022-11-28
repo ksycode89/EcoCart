@@ -5,6 +5,8 @@
       layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>생산계획조회</title>
 </head>
 <body>
@@ -33,12 +35,20 @@
 		<div id="planListGridId"></div><br>
 			
 		<script>
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
 	    var planListGrid = new tui.Grid({
 			el: document.getElementById('planListGridId'),
 			scrollX: false,
-			scrollY: true,
-			bodyHeight: 520,
+			scrollY: false,
+			bodyHeight: 400,
 			rowHeaders: ['rowNum'],
+			pageOptions: {
+		        useClient: true,
+		        perPage: 10
+		    },
 			columns: [
 		        {
 		          header: '생산계획코드',

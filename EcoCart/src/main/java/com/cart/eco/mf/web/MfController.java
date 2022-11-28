@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cart.eco.mf.service.MfMakingService;
+import com.cart.eco.mf.service.MfMakingVO;
 import com.cart.eco.mf.service.MfOrderService;
 import com.cart.eco.mf.service.MfOrderVO;
 import com.cart.eco.mf.service.MfPlanService;
@@ -28,7 +30,11 @@ public class MfController {
 	MfPlanService mfplan;
 	
 	@Autowired
+	MfMakingService mfmaking;
+	
+	@Autowired
 	MfProcessService mfprocess;
+	
 	
 	//생산계획현황 페이지
 	@GetMapping("/mfPlanList")
@@ -199,10 +205,24 @@ public class MfController {
 		return "manufacture/mfMaking";
 	}
 	
+	//생산관리 - 모달창 확정생산지시목록
+	@GetMapping("/mfOrderDecideList")
+	@ResponseBody
+	public List<MfMakingVO> mfOrderDecideList(){
+		return mfmaking.getMfOrderDecideList();
+	}
+	
 	//공정실적조회 페이지
 	@GetMapping("/mfResult")
 	public String mfResult(Model model) {
 		return "manufacture/mfResult";
+	}
+	
+	//공정실적조회 - 전체목록조회
+	@GetMapping("/mfResultListAll")
+	@ResponseBody
+	public List<MfMakingVO> mfResultListAll(){
+		return mfmaking.getMfResultList();
 	}
 	
 	//생산공정관리 페이지
@@ -223,5 +243,12 @@ public class MfController {
 	@ResponseBody
 	public List<MfProcessVO> mfSystemList(){
 		return mfprocess.getMfSystemList();
+	}
+	
+	//생산공정관리 - 설비변경
+	@PostMapping("/mfSystemUpdate")
+	@ResponseBody
+	public int mfSystemUpdate(@RequestBody List<MfProcessVO> vo){
+		return mfprocess.updateMfSystem(vo);
 	}
 }

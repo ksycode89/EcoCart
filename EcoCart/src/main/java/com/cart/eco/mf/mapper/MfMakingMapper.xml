@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cart.eco.mf.mapper.MfMakingMapper">
+	<select id="getMfResultList" resultType="com.cart.eco.mf.service.MfMakingVO">
+		SELECT *
+		FROM mf_making
+		ORDER BY mf_making_code
+	</select>
+			
+	<select id="getMfFaultyList" parameterType="String" resultType="Map">
+		SELECT d.mf_process_code, p.mf_process_name, d.faulty_code, f.faulty_content
+		FROM mf_making_detail d JOIN mf_making m
+		ON d.mf_making_code = m.mf_making_code
+		JOIN mf_process p
+		ON d.mf_process_code = p.mf_process_code
+		JOIN faulty_code f
+		ON d.faulty_code = f.faulty_code
+		WHERE mf_making_code = #{mfMakingCode}
+		ORDER BY d.mf_making_no
+	</select>
+	
+	<select id="getMfOrderDecideList" resultType="com.cart.eco.mf.service.MfMakingVO">
+		SELECT d.mf_order_code, d.mf_order_no, o.pro_code, o.pro_name, d.mf_order_num, d.mf_order_date
+		FROM mf_order_detail d JOIN mf_order o
+		ON d.mf_order_code = o.mf_order_code
+		WHERE d.mf_order_status = '확정'
+		AND trunc(d.mf_order_date) = trunc(SYSDATE)
+	</select>
+</mapper>

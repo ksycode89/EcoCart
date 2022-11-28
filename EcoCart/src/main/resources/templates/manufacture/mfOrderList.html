@@ -5,6 +5,8 @@
       layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>생산지시등록</title>
 </head>
 <body>
@@ -30,11 +32,19 @@
 		
 		<script>
 		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
 		const orderListGrid = new tui.Grid({
 			el: document.getElementById('orderListId'),
 			scrollX: false,
-			scrollY: true,
-			bodyHeight: 600,
+			scrollY: false,
+			bodyHeight: 400,
+			rowHeaders : ['rowNum'],
+			pageOptions: {
+		        useClient: true,
+		        perPage: 10
+		    },
 			columns: [
 		        {
 		          header: '생산지시코드',

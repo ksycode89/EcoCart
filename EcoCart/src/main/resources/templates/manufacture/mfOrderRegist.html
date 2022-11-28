@@ -203,7 +203,7 @@
 		el: document.getElementById('mfNeedGridId'),
 		scrollX: false,
 		scrollY: true,
-		bodyHeight: 360,
+		bodyHeight: 320,
 		rowHeaders:['rowNum'],
 		columns: [
 			{
@@ -522,6 +522,7 @@
                 	        		    	               	},
                 	        		    	        		success: function(data){
                 	        		    	        			console.log(data);
+                	        		    	        			location.reload();
                 	        		    	        		},
                 	        		    	        		error: function(error){
                 	        	        		    			console.log(error);
@@ -552,7 +553,6 @@
         		}
         	});
     		
-
     	} else {
     		alert('자재 LOT가 전부 지정되지 않았습니다!');
     	}

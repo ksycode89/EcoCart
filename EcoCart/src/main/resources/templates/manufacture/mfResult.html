@@ -5,6 +5,8 @@
       layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>공정실적조회</title>
 </head>
 <body>
@@ -27,12 +29,19 @@
 		
 		<script>
 	    
-		const mfResultGrid = new tui.Grid({
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+		var mfResultGrid = new tui.Grid({
 			el: document.getElementById('mfResultGridId'),
 			scrollX: false,
-			scrollY: true,
-			bodyHeight: 280,
+			scrollY: false,
+			bodyHeight: 160,
 			rowHeaders: ['rowNum'],
+			pageOptions: {
+		        useClient: true,
+		        perPage: 4
+		    },
 			columns: [
 		        {
 		          header: '생산코드',
@@ -74,38 +83,28 @@
 			]
 		});
 		
-		selectBtn.addEventListener('click', () => {
-	    	if($('#mfOrderDate').val()!=''){
-	    		mfResultGrid.filter('mfOrderDate', [{code:'eq', value:$('#mfOrderDate').val()}]);
-			}
-	    })
-		
-		const mfFaultyGrid = new tui.Grid({
+		var mfFaultyGrid = new tui.Grid({
 			el: document.getElementById('mfFaultyGridId'),
 			scrollX: false,
 			scrollY: true,
-			bodyHeight: 160,
+			bodyHeight: 200,
 			rowHeaders: ['rowNum'],
 			columns: [
+				{
+				  header: '생산코드넘버링',
+			      name: 'mfMakingNo'	
+				},
 		        {
 		          header: '생산코드',
 		          name: 'mfMakingCode'
 		        },
 		        {
-		          header: '프레임용접공정',
-		          name: 'mfMaking1'
+		          header: '공정코드',
+		          name: 'mfProcessCode'
 		        },
 		        {
-		          header: '엔진조립공정',
-		          name: 'mfMaking2'
-		        },
-		        {
-		          header: '최종조립공정',
-		          name: 'mfMaking3'
-		        },
-		        {
-		          header: '테스트공정',
-		          name: 'mfMaking4'
+		          header: '공정이름',
+		          name: 'mfProcessName'
 		        },
 		        {
 		          header: '불량코드',
@@ -117,6 +116,26 @@
 		        }
 			]
 		});
+		
+		mfFaultyGrid.hideColumn('mfMakingNo');
+		mfFaultyGrid.hideColumn('mfMakingCode');
+		
+		$.ajax({
+    		url:'/mfResultListAll',
+    		success:function(data){
+    			mfResultGrid.resetData(data);
+    		},
+    		error:function(error){
+    			console.log(error);
+    		}
+    	})
+    	
+		selectBtn.addEventListener('click', () => {
+	    	if($('#mfOrderDate').val()!=''){
+	    		mfResultGrid.filter('mfOrderDate', [{code:'eq', value:$('#mfOrderDate').val()}]);
+			}
+	    })
+		
 	    </script>
 	</div>
 </body>

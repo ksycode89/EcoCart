@@ -19,10 +19,20 @@ public class MfProcessServiceImpl implements MfProcessService {
 	public List<MfProcessVO> getMfProcessList() {
 		return mapper.getMfProcessList();
 	}
-
+	
 	@Override
 	public List<MfProcessVO> getMfSystemList() {
 		return mapper.getMfSystemList();
 	}
+
+	@Override
+	public int updateMfSystem(List<MfProcessVO> vo) {
+		int result = 0;
+		for(int i=0; i<vo.size(); i++) {
+			result += mapper.updateMfSystem(vo.get(i));
+		}
+		return result;
+	}
+
 
 }

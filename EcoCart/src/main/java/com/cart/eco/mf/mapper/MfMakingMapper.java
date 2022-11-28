@@ -1,9 +1,11 @@
-package com.cart.eco.mf.service;
+package com.cart.eco.mf.mapper;
 
 import java.util.List;
 import java.util.Map;
 
-public interface MfMakingService {
+import com.cart.eco.mf.service.MfMakingVO;
+
+public interface MfMakingMapper {
 	
 	//생산목록전체조회
 	public List<MfMakingVO> getMfResultList();
@@ -13,8 +15,4 @@ public interface MfMakingService {
 	
 	//생산지시목록(확정)조회
 	public List<MfMakingVO> getMfOrderDecideList();
-	
-	//생산공정기본틀입력
-	
-	//생산공정수치변경
 }
