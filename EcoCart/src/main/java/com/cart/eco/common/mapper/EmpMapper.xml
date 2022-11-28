@@ -19,13 +19,13 @@
 
    		<where>
    		 <if test="empNum != null and !empNum.equals('')">
-   		 	e.emp_num = #{empNum}
+   		 	e.emp_num = #{empNum},
    		 </if>
    		  <if test="empName != null and !empName.equals('')">
-   		 	AND e.emp_name = #{empName}
+   		 	AND e.emp_name = #{empName},
    		 </if>
    		 <if test="empDept != null and !empDept.equals('')">
-           AND e.emp_dept = #{empDept}
+           AND e.emp_dept = #{empDept},
          </if>
          <if test="empManager != null and !empManager.equals('')">
            AND e.emp_manager = #{empManager} 
