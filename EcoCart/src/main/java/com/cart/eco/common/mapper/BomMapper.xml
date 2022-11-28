@@ -22,7 +22,10 @@
 	<insert id="bomInsert" parameterType="com.cart.eco.common.service.BomVO" >
  	<selectKey keyProperty="bomCode"  resultType="String" order="BEFORE">
 		<!-- select #{proCode}||'-' ||#{bomGroup}||'-'||(select subStr(to_char(sysdate,'yyyyMMdd'),1,4) from dual)  from dual -->
-		SELECT to_char(max(bom_code)||+1) FROM bom
+	select case                        
+        when tset01(#{proCode} ||'-' || to_char(sysdate,'yyyy') ) = 'n' then (select  #{proCode} ||'-' ||to_char(sysdate,'yyyy')||'001' from dual)
+        else tset01(#{proCode} ||'-' || to_char(sysdate,'yyyy') )||(select lpad((select max(to_number(substr(bom_code,-2))) from bom where bom_code like  '%' ||  #{proCode} || '%'),2,0) from dual )   end "bomCode"
+        from dual
 	</selectKey> 
 		INSERT INTO bom 
 		VALUES (

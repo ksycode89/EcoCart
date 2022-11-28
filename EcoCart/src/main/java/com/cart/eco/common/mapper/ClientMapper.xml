@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cart.eco.common.mapper.ClientMapper">
+
+	<select id="clientList" parameterType="com.cart.eco.common.service.ClientVO" resultType="com.cart.eco.common.service.ClientVO">
+			SELECT client_code,client_name,reg_num,work_type,code_name "sellingType",
+				   client_addr,client_tel,client_fax,client_hire,client_grade,comments
+			FROM client c join common_code cc
+			  ON c.work_type = cc.code_id
+		  <where>
+			<if test="clientCode != null and !clientCode.equals('') ">
+	         	 	   client_code = #{clientCode}
+	      	</if>
+			<if test="workType != null and !workType.equals('') and !workType.equals('==선택==')">
+	         	 	 AND  work_type = #{workType}
+      		</if>
+      		<if test="clientGrade != null and !clientGrade.equals('') and !clientGrade.equals('==선택==')">
+         	 	  AND client_grade = #{clientGrade}
+      		</if>
+      		<if test='clientHire != null and clientHire != "" and clientTel != null and clientTel != ""'>
+  			 AND  client_hire BETWEEN TO_DATE(#{clientHire}) AND TO_DATE(#{clientTel})
+			</if>
+	      	
+		  </where>
+	</select>
+
+
+</mapper>
