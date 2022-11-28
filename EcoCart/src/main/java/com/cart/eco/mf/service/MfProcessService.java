@@ -15,6 +15,7 @@ public interface MfProcessService {
 	
 	//설비상태변경(사용->미사용)
 	
+	
 	//설비상태변경(미사용->사용)
 	
 }
