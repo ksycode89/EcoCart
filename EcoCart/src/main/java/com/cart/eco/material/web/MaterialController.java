@@ -13,7 +13,9 @@ import com.cart.eco.material.service.ModerReqVO;
 import com.cart.eco.material.service.MorderService;
 import com.cart.eco.material.service.MorderVO;
 import com.cart.eco.material.service.MorderdetailVO;
-import com.cart.eco.material.service.OrderCheckVO;
+import com.cart.eco.material.service.MreleDetailVO;
+import com.cart.eco.material.service.MreleService;
+import com.cart.eco.material.service.MreleaseVO;
 import com.cart.eco.material.service.OrderService;
 
 @Controller
@@ -21,7 +23,10 @@ public class MaterialController {
 	
 	@Autowired
 	MorderService morder;
-	OrderService order;
+	@Autowired
+	OrderService orderSe;
+	@Autowired
+	MreleService mrele;
 	
 	@GetMapping("/materialList")
 	public String materialList() {
@@ -56,7 +61,6 @@ public class MaterialController {
 		return morder.insertOrder(morderVO);
 	}
 	
-	
 	//발주등록 목록 가져오기
 	@GetMapping("/proInfo")
 	@ResponseBody
@@ -74,32 +78,43 @@ public class MaterialController {
 	public String materialReta() {
 		return "material/materialreta";
 	}
-
+	
+	//입고검사페이지
 	@GetMapping("/Wearingtest")
 	public String WearingTest() {
 		return "material/Wearingtest";
 	}
-
-	@GetMapping("/Wearingprocess")
-	public String WearingProcess() {
-		return "material/Wearingprocess";
-	}
-
-	@GetMapping("/selectOrList")
-	@ResponseBody
-	public String selectOrList(List<OrderCheckVO> ordervo) {
+	
+	//입고현황
+	@GetMapping("/WearingList")
+	public String selectOrList() {
 		return "material/WearingList";
 	}
-
+	
+	@GetMapping("/releaseList")
+	public String ReleaseList() {
+		return "/material/releaseList";
+	}
+	
+	//출고현황
+	@GetMapping("/selectMrList")
+	@ResponseBody
+	public List<MreleaseVO> selectMrList() {
+		return mrele.selectMrList();
+	}
+	
+	//출고상세
+	@GetMapping("/dataList")
+	@ResponseBody
+	public List<MreleDetailVO> dataList(MreleaseVO mrelea) {
+		return mrele.dataList(mrelea);
+	}
+	
 	@GetMapping("/release")
 	public String Release() {
 		return "material/release";
 	}
 
-	@GetMapping("/releaseList")
-	public String ReleaseList() {
-		return "material/releaseList";
-	}
 	
 	@GetMapping("/receivingList")
 	public String ReceivingList() {

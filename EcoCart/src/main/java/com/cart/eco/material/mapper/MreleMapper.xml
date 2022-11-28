@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cart.eco.material.mapper.MreleMapper">
+
+	<select id="selectMrList" resultType="com.cart.eco.material.service.MreleaseVO">
+	select *
+	from m_release 
+	</select>
+	
+	
+	<select id="dataList" parameterType="com.cart.eco.material.service.MreleaseVO" resultType="com.cart.eco.material.service.MreleaseVO">
+		select m.release_no, m.release_code, m.release_status, m.pro_code, m.pro_name, m.request_num, r.lot_code
+		from m_release_detail m
+		join receiving_detail r
+		on m.lot_code = r.lot_code
+		where release_code= #{releaseCode}
+		ORDER BY release_no DESC
+	</select>
+	
+</mapper>
