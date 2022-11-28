@@ -11,5 +11,5 @@ public class BomChildernVO {
 	private String proName; // 자재명
 	private int bomNum;   // 정미수량 (로스율 감안 x)
 	private int loss;		// 로스율
-	private int needNum;	// 필요수량
+	private String needNum;	// 필요수량
 }
