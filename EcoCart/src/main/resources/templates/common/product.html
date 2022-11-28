@@ -6,10 +6,10 @@
 
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>물품</title>
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
 <style type="text/css">
 #btn-div div{
 	margin-right:20px;
@@ -28,7 +28,7 @@
 			<div class="mb-3 row">
 				<label class="col-lg-1 col-sm-12 col-form-label">품목군</label>
 				<div class="col-lg-auto col-sm-6">
-					<input id="proId" name="proId" class="form-control">
+					<input id="codeId" name="codeId" placeholder="품목군코드" class="form-control">
 				</div>
 				<div class="col-lg-auto col-sm-6">
 					<button type="button">
@@ -37,7 +37,7 @@
 					</button>
 				</div>
 				<div class="col-lg-auto col-sm-12">
-					<input id="proName" name="proName" class="form-control">
+					<input id="proName" name="proName" placeholder="품목군명" class="form-control">
 				</div>
 			</div>
 
@@ -139,31 +139,36 @@
 											<div class="mt-3 mb-3 row">
 												<label class="col-lg-3 col-sm-12 col-form-label">품목군</label>
 												<div class="col-lg-auto col-sm-6">
-												<input id="proItem" name="proItem" class="form-control">
+												<input id="proItem2" name="proItem2" class="form-control">
 												</div>
 											</div>	
 											<label class="col-lg-3 col-sm-12 col-form-label">제품코드</label>
 											<div class="col-lg-auto col-sm-6">
-												<input id="proCode" name="proCode" class="form-control">
+												<input id="proCode2" name="proCode2" class="form-control">
 											</div>
 											
 											<div class="mt-3 mb-3 row">
 												<label class="col-lg-3 col-sm-12 col-form-label">제품명</label>
 												<div class="col-lg-auto col-sm-6">
-													<input id="proName" name="proName" class="form-control">
+													<input id="proName2" name="proName2" class="form-control">
 												</div>
 											</div>
 											<div class="mt-1 mb-3 row">
 												<label class="col-lg-3 col-sm-12 col-form-label">구분</label>
 												<div class="col-lg-auto col-sm-6">
-													<input id="progroup" name="progroup" class="form-control">
+													<select class="form-select form-select-sm"
+														aria-label=".form-select-sm example" id="proGroup2" name="proGroup2">
+														<option selected>선택</option>
+														<option value="완제품">완제품</option>
+														<option value="반제품">반제품</option>
+													</select>
 												</div>
 											</div>
 											<div class="mb-3 row">
 												<label class="col-lg-3 col-sm-12 col-form-label">LOT여부</label>
 												<div class=" col-lg-auto ">
 													<select class="form-select form-select-sm"
-														aria-label=".form-select-sm example" id="lotUsed" name="lotUsed">
+														aria-label=".form-select-sm example" id="lotUsed2" name="lotUsed2">
 														<option selected></option>
 														<option value="y">사용</option>
 														<option value="n">미사용</option>
@@ -175,9 +180,10 @@
 												<label class="col-lg-3 col-sm-12 col-form-label">검사여부</label>
 												<div class="col-lg-auto">
 													<select class="form-select form-select-sm"
-														aria-label=".form-select-sm example" id="testUsed" name="testUsed">
-														<option selected>검사</option>
-														<option value="1">무검사</option>
+														aria-label=".form-select-sm example" id="testUsed2" name="testUsed2">
+														<option selected></option>
+														<option value="y">검사</option>
+														<option value="n">무검사</option>
 													</select>
 												</div>
 											</div>
@@ -222,7 +228,7 @@
 									<div class="mb-3 row">
 										<label class="col-lg-3 col-sm-12 col-form-label">주거래처</label>
 										<div class="col-lg-3 col-sm-6">
-											<input id="clientCode" name="clientCode" class="form-control">
+											<input id="clientCode" name="clientCode" placeholder="거래처코드" class="form-control">
 										</div>
 										<div class="col-lg-auto col-sm-6">
 											<button type="button">
@@ -231,13 +237,13 @@
 											</button>
 										</div>
 										<div class="col-lg-3 col-sm-6">
-											<input id="clientName" name="clientName" class="form-control">
+											<input id="clientName" name="clientName" placeholder="거래처명" class="form-control">
 										</div>
 									</div>
 									<div class="mb-3 row">
 										<label class="col-lg-3 col-sm-12 col-form-label">거래처 담당자</label>
 										<div class="col-lg-3 col-sm-6">
-											<input id="empNum" name="empNum" class="form-control">
+											<input id="empNum" name="empNum" placeholder="담당자코드" class="form-control">
 										</div>
 										<div class="col-lg-auto col-sm-6">
 											<button type="button">
@@ -246,7 +252,7 @@
 											</button>
 										</div>
 										<div class="col-lg-3 col-sm-6">
-											<input id="empName" name="empName" class="form-control">
+											<input id="empName" name="empName" placeholder="담당자이름" class="form-control">
 										</div>
 									</div>
 									<div class="mb-3 row">
@@ -381,6 +387,10 @@
 
 
 		<script>
+		/* token */
+		 var token = $("meta[name='_csrf']").attr("content");
+		 var header = $("meta[name='_csrf_header']").attr("content");
+	 	
 			
 			// 물품 등록 리스트 & 등록창.
 			const grid = new tui.Grid({
@@ -390,7 +400,7 @@
 				scrollY : false,
 				columns : [ {
 					header : '품목군',
-					name : 'proItem'
+					name : 'codeId'
 				}, {
 					header : '제품코드',
 					name : 'proCode',
@@ -412,11 +422,11 @@
 					        },
 					        {
 					          text: '완제품',
-					          value: '완제품'
+					          value: 'CP'
 					        },
 					        {
 					          text: '반제품',
-					          value: '반제품'
+					          value: 'HCP'
 					        }
 					        ]
 					      }
@@ -466,6 +476,16 @@
 			
 		})	
 		
+		// 품목군 그리드 클릭시 값 넣기.
+		grid2.on("click", ev =>{
+			console.log(grid2.getRow(ev.rowKey))
+			
+			$('#codeId').val(grid2.getRow(ev.rowKey).codeId);
+			$('#proName').val(grid2.getRow(ev.rowKey).codeName);
+			
+			$('#large').modal('hide');
+		})
+		
 		// 주거래처목록 모달안 그리드.
 			const grid3 = new tui.Grid({
 				el : document.getElementById('grid3'),
@@ -497,6 +517,15 @@
 			
 		})	
 		
+		// 주거래처 그리드 클릭시 값 넣기.
+		grid3.on("click", ev =>{
+			console.log(grid3.getRow(ev.rowKey))
+			
+			$('#clientCode').val(grid3.getRow(ev.rowKey).clientCode);
+			$('#clientName').val(grid3.getRow(ev.rowKey).clientName);
+			
+			$('#large2').modal('hide');
+		})
 		
 		// 거래처담당자 목록 모달안 그리드.
 			const grid4 = new tui.Grid({
@@ -530,24 +559,51 @@
 				
 			})	
 			
+			// 거래처담당자 목록 그리드 클릭시 값 넣기.
+			grid4.on("click", ev =>{
+				console.log(grid4.getRow(ev.rowKey))
+				
+				$('#empNum').val(grid4.getRow(ev.rowKey).empNum);
+				$('#empName').val(grid4.getRow(ev.rowKey).empName);
+				
+				$('#large3').modal('hide');
+			})
+			
 			// 물품 조회 ajax.
 			function selectPro() {
+					 console.log( $('codeId').val() )
 				$.ajax({
 					url : "ajax/selectPro",
 					type : "post",
-					data : {"proItem" : $('codeId').val()  ,"proGet" : $('#proGet').val(),"lotUsed" : $('#lotUsed').val(),"testUsed" : $('#testUsed').val()
+					data : {"codeId" : $('#codeId').val()  ,"proGet" : $('#proGet').val(),"lotUsed" : $('#lotUsed').val(),"testUsed" : $('#testUsed').val()
 					},
 					 beforeSend : function(xhr){
 		             		xhr.setRequestHeader(header, token);
 		             },
 		             success : function(data){
-		            	 grid.resetDate(data);
+		            	 console.log(data)
+		            	 grid.resetData(data);
+		            	
 		             },
 		             error : function(error){
 		            	 console.log(error)
 		             }
 				})
 			}
+			
+			// 물품조회 그리드 클릭시 왼쪽에 값 넣기.
+			grid.on("click", ev =>{
+				//console.log(grid.getRow(ev.rowKey).proName)
+				console.log("A",$('#proGroup2').val())
+				
+				$('#proItem2').val(grid.getRow(ev.rowKey).codeId);
+				$('#proCode2').val(grid.getRow(ev.rowKey).proCode);
+				$('#proName2').val(grid.getRow(ev.rowKey).proName);
+				$('#proGroup2').val(grid.getRow(ev.rowKey).proGroup).prop("selected",true);
+
+				//$("#셀렉트박스ID option:selected").val();
+				
+			})
 			
 		</script>
 

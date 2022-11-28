@@ -156,7 +156,7 @@ public class CommonController {
 	@PostMapping("ajax/selectPro")
 	@ResponseBody
 	public List<ProAllVO> selectPro(ProAllVO vo){
-		
+		System.out.println(vo);
 		return proService.selectPro(vo);
 	}
 	

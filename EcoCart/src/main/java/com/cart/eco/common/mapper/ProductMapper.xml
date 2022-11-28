@@ -11,34 +11,39 @@
 	<!--물품 조회.  -->
 	<select id="selectPro" parameterType="com.cart.eco.common.service.ProAllVO" resultType="com.cart.eco.common.service.ProAllVO">
 		
-		SELECT p.pro_code, c.code_id, c.code_name, cl.client_code, 
-      		   cl.client_name, o.pro_manager, e.emp_name, p.pro_name,
-       		   p.pro_group, p.lot_used, p.test_used, p.pro_hire,p.pro_num,
-       		   o.lead_time, o.bs, o.ppd, o.cost, o.sell_price, o.standard, o.unit
-		FROM product p
-		  JOIN common_code c
-			ON p.pro_item = c.code_id
-		  JOIN product_option o
-			ON p.pro_code = o.pro_code
-		  JOIN client cl
-			ON o.client_code = cl.client_code
-		  JOIN employees e
-		  	ON e.emp_num = o.pro_manager
+		select p.pro_code, c.code_id, c.code_name, cl.client_code, 
+       cl.client_name, o.pro_manager, e.emp_name, p.pro_name,
+       c2.code_name "pro_group", p.lot_used, p.test_used, p.pro_hire,p.pro_num,
+       o.lead_time, o.bs, o.ppd, o.cost, o.sell_price, o.standard, o.unit
+		from product p
+    join common_code c
+     on p.pro_item = c.code_id
+    join product_option o
+     on p.pro_code = o.pro_code
+    join client cl
+     on o.client_code = cl.client_code
+    join employees e
+     on e.emp_num = o.pro_manager
+    join common_code c2
+     on p.pro_group = c2.code_id
 		
 		 <where>
+		<!--  <if test="proItem != null and !proItem.equals('')">
+		 	 pro_item = #{proItem},
+		 </if> -->
    		 <if test="codeId != null and !codeId.equals('')">
    		 	c.code_id = #{codeId}
    		 </if>
    		  <if test="codeName != null and !codeName.equals('')">
    		 	AND c.code_name = #{codeName}
    		 </if>
-   		 <if test="empDept != null">
-           AND p.pro_group = #{proGroup}
+   		 <if test="proGroup != null and !proGroup.equals('')">
+           AND p.pro_group = #{codeContent}
          </if>
-         <if test="lotUsed != null">
+         <if test="lotUsed != null and !lotUsed.equals('')">
            AND p.lot_used = #{lotUsed} 
          </if>
-         <if test="lotUsed != null">
+         <if test="testUsed != null and !testUsed.equals('')">
            AND p.test_used = #{testUsed} 
          </if>
    		</where> 
