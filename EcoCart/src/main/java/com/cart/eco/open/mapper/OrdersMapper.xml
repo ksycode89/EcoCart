@@ -4,9 +4,19 @@
 
 	<!--//주문서 조회  -->
 	<select id="OrdersList" resultType="com.cart.eco.open.service.OrdersVO">
-		select o.order_code, c.client_name "client_code", o.order_date, o.de_date, o.all_sum, order_st
+		select o.order_code, c.client_name, c.client_code, o.order_date, o.de_date, o.all_sum, order_st
 		from orders o, client c
 		where o.client_code = c.client_code
+		order by order_code
+		
+	</select>
+	
+	<!--//주문서 조회 진행중인 -->
+	<select id="OrdersListOk" resultType="com.cart.eco.open.service.OrdersVO">
+		select o.order_code, c.client_name, c.client_code, o.order_date, o.de_date, o.all_sum, order_st
+		from orders o, client c
+		where o.client_code = c.client_code
+		and order_st ='진행'
 		order by order_code
 		
 	</select>
@@ -14,15 +24,16 @@
 
 	<!-- //주문서 상세 조회 -->
 	<select id="OrdersDList" resultType="Map" parameterType="String">
-		select d.order_dno, 
-			   o.pro_code, 
-			   p.pro_name, 
-			   d.sell_num, 
-			   o.sell_price,
-			    d.sold_num,
-				(d.sell_num *o.sell_price) as sum_price,
+		select d.order_dno "orderDno", 
+			   o.pro_code "proCode", 
+			   p.pro_name "proName", 
+			   d.sell_num "sellNum", 
+			   o.sell_price "sellPrice",
+			    d.sold_num "soldNum",
+				(d.sell_num *o.sell_price) as "sumPrice",
 				d.can_num "canNum",
-				o.order_code "orderCode"
+				o.order_code "orderCode",
+				( d.sell_num -  d.sold_num  ) "doDlivyNum"
 		from orders o, order_d d, product p, product_option o
 		where o.order_code = d.order_code
 		and d.pro_code = p.pro_code
@@ -153,10 +164,11 @@
 	
 	<!-- 주문 마감 취소 수량 변경 -->
 	<update id="updateCanNum" parameterType="com.cart.eco.open.service.OrderDVO"> 
-		update order_d set can_num = 
+		update order_d set can_num =
             (select sell_num - sold_num
             from order_d
             where order_dno = #{orderDno} )
+    
         where order_dno = #{orderDno}
 	</update>
 	

@@ -71,7 +71,6 @@
 		        scrollX: false,
 		        scrollY: true,
 	            bodyHeight : 240,
-	            rowHeaders: ['checkbox'],
 	            columns: [
 		            {
 		            	header: '주문코드',
@@ -127,26 +126,26 @@
 		        	},
 		        	{
 		        		header: 'no',
-		            	name: 'ORDER_DNO'
+		            	name: 'orderDno'
 		        	},
 		            {
 		            	header: '제품코드',
-		            	name: 'PRO_CODE'
+		            	name: 'proCode'
 		            },
 		            {
 		            	header: '제품명',
-		            	name: 'PRO_NAME'
+		            	name: 'proName'
 		            },
 		            {
 		            	header: '총수량',
-		                name: 'SELL_NUM',
+		                name: 'sellNum',
 		                formatter : function (ev){
 		                   	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                    }
 		             },
 		             {
 		             	header: '남품수량',
-		                name: 'SOLD_NUM',
+		                name: 'soldNum',
 		             },
 		             {
 			             header: '취소수량',
@@ -157,14 +156,6 @@
 			
 			});
 			
-			Grid.applyTheme('striped'); // Call API of static method
-      
-      
-
-      
-      
-      
-      	
 	      function handleOnChange(e){
 				//선택된 데이터의 텍스트값 가져오기
 				const text = e.value;
@@ -222,7 +213,7 @@
 			console.log(grid.getCheckedRows())	
 			//for (let i = 0; i < )
 				
-			 /* $.ajax({
+			  $.ajax({
 					method:'POST',
 					url:'/updateOrderCanSt',
 					contentType : 'application/json',
@@ -233,6 +224,25 @@
 		           	 },
 					success : function(result) {
 						console.log(result)
+						
+						 $.ajax({
+								method:'POST',
+								url:'/updateCanNum',
+								contentType : 'application/json',
+								dataType:'JSON',
+								data: JSON.stringify(grid2.getCheckedRows()),
+								beforeSend : function(xhr){
+					           		xhr.setRequestHeader(header, token);
+					           	 },
+								success : function(result) {
+									console.log(result)
+									location.reload();
+									alert("주문마감 되었습니다.")
+								},
+								error : function(error){
+									console.log(error);
+								}
+							})
 						//location.reload(result);
 					},
 					error : function(error){
@@ -241,23 +251,6 @@
 				})		
 			
 				
-			 $.ajax({
-					method:'POST',
-					url:'/updateCanNum',
-					contentType : 'application/json',
-					dataType:'JSON',
-					data: JSON.stringify(grid.getCheckedRows()),
-					beforeSend : function(xhr){
-		           		xhr.setRequestHeader(header, token);
-		           	 },
-					success : function(result) {
-						console.log(result)
-						//location.reload(result);
-					},
-					error : function(error){
-						console.log(error);
-					}
-				})	 */
 				
 			
 		}	

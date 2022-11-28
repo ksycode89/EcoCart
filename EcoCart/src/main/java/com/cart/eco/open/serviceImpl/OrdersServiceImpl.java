@@ -24,6 +24,12 @@ public class OrdersServiceImpl implements OrdersService {
 		// TODO Auto-generated method stub
 		return mapper.OrdersList();
 	}
+	
+	@Override
+	public List<OrdersVO> OrdersListOk() {
+		// TODO Auto-generated method stub
+		return mapper.OrdersListOk();
+	}
 
 	@Override
 	public List<Map<String, Object>> OrdersDList(String orderCode) {
@@ -121,6 +127,7 @@ public class OrdersServiceImpl implements OrdersService {
 		return mapper.getOrderCode();
 	}
 
+	
 	@Override
 	public int updateCanNum(List<OrderDVO> vo) {
 		int result = 0;
