@@ -4,16 +4,25 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cart.eco.mf.mapper.MfProcessMapper">
 	<select id="getMfProcessList" resultType="com.cart.eco.mf.service.MfProcessVO">
-		SELECT p.line_no, p.mf_process_code, p.mf_process_name, p.sys_code, f.sys_name, e.emp_name
+		SELECT p.line_no, p.mf_process_code, p.mf_process_name, p.sys_code, f.sys_name, e.emp_num, e.emp_name
 		FROM mf_process p LEFT OUTER JOIN facilities f
 		ON p.sys_code = f.sys_code
 		LEFT OUTER JOIN employees e
 		ON f.emp_num = e.emp_num
+		ORDER BY p.mf_process_num
 	</select>
+	
 	<select id="getMfSystemList" resultType="com.cart.eco.mf.service.MfProcessVO">
-		SELECT f.sys_code, f.sys_name, e.emp_name
+		SELECT f.sys_code, f.sys_name, e.emp_num, e.emp_name
 		FROM facilities f JOIN employees e
 		ON f.emp_num = e.emp_num
 		WHERE f.sys_status = '미사용'
 	</select>
+	
+	<update id="updateMfSystem" parameterType="com.cart.eco.mf.service.MfProcessVO">
+		UPDATE mf_process
+		SET sys_code = #{sysCode}
+		  , emp_num = #{empNum}
+		WHERE mf_process_code = #{mfProcessCode}
+	</update>
 </mapper>

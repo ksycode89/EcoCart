@@ -12,4 +12,6 @@ public interface MfProcessMapper {
 	//미사용설비목록
 	public List<MfProcessVO> getMfSystemList();
 	
+	//설비변경
+	public int updateMfSystem(MfProcessVO vo);
 }
