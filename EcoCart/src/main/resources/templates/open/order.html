@@ -134,7 +134,6 @@
 	        scrollX: false,
 	        scrollY: true,
             bodyHeight : 240,
-            rowHeaders: ['checkbox'],
 	        columns: [
 	            {
 	            	header: '주문코드',
@@ -143,7 +142,7 @@
 	            },
 	            {
 	            	header: '거래처',
-	            	name: 'clientCode',
+	            	name: 'clientName',
 	            	filter : 'text'
 	            },
 	            {
@@ -176,11 +175,6 @@
 	        ]
 		});
 		
-		Grid.applyTheme('striped'); // Call API of static method
-	
-		
-		
-		
 		//상세조회
 		const grid2 = new Grid({
 	        el: document.getElementById('grid2'), // Container element
@@ -190,16 +184,16 @@
 	           
 	        	{
 	            	header: '제품코드',
-	            	name: 'PRO_CODE',
+	            	name: 'proCode',
 	            	
 	            },
 	            {
 	            	header: '제품명',
-	                name: 'PRO_NAME'
+	                name: 'proName'
 	             },
 	             {
 	             	header: '수량',
-	                name: 'SELL_NUM',
+	                name: 'sellNum',
 	                formatter : function (ev){
 	                   	 console.log(ev)
 	                   	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -207,7 +201,7 @@
 	             },
 	             {
 	              	header: '단가',
-	                 name: 'SELL_PRICE',
+	                 name: 'sellPrice',
 	                 formatter : function (ev){
 	                   	 console.log(ev)
 	                   	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -216,7 +210,7 @@
 	             
 	             {
 	              	header: '합계액',
-	                 name: 'SUM_PRICE',
+	                 name: 'sumPrice',
 	                 formatter : function (ev){
 	                   	 console.log(ev)
 	                   	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -258,7 +252,6 @@
 	        el: document.getElementById('grid4'), // Container element
 	        scrollX: false,
             scrollY: false,
-            rowHeaders : ['checkbox'],
 	        columns: [
 	        
 	        	{
@@ -283,7 +276,11 @@
                  },
                  {
                   	header: '총합계액',
-                     name: 'allSum'
+                     name: 'allSum',
+                     formatter : function (ev){
+	                   	 console.log(ev)
+	                 return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                    }
                   },
 	        ]
 		});
@@ -312,7 +309,6 @@
                  	header: '수량',
                     name: 'sellNum',
                     formatter : function (ev){
-                   	 console.log(ev)
                    	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                     }
                  },
@@ -320,7 +316,6 @@
                 	header: '단가',
                     name: 'sellPrice',
                     formatter : function (ev){
-                   	 console.log(ev)
                    	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                     }
                  },
@@ -328,7 +323,6 @@
                   	header: '합계액',
                      name: 'sumPrice',
                      formatter : function (ev){
-                    	 console.log(ev)
                     	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                      }
                      
@@ -337,21 +331,7 @@
 		});
 		
 		
-		
 
-		
-/* 		//수량 * 단가 = 합계액
-		function add(){
-			if(document.getElementById("sellNum").value && document.getElementById("sellPrice").value){
-				
-			}
-				  document.getElementById('sumPrice').value =
-					  parseInt(document.getElementById('sellNum').value) * parseInt(document.getElementById('sellPrice').value);
-		} */
-		
-		
-		
-		
 		//모달창
 	   	staticBackdrop.addEventListener('shown.bs.modal', () => {
 	   	      grid4.refreshLayout(); //모달창 새로고침

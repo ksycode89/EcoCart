@@ -6,15 +6,19 @@ import java.util.Map;
 import com.cart.eco.common.service.ClientVO;
 import com.cart.eco.common.service.EmpVO;
 import com.cart.eco.common.service.ProductVO;
+import com.cart.eco.open.service.DeliveryGDVO;
 import com.cart.eco.open.service.DeliveryGVO;
 import com.cart.eco.open.service.DeliveryProVO;
+import com.cart.eco.open.service.DeliveryQDVO;
 import com.cart.eco.open.service.DeliveryQVO;
+import com.cart.eco.open.service.OrderDVO;
 import com.cart.eco.open.service.OrdersVO;
 
 public interface DeliveryQMapper {
 	
 	//출고 요청1
 	
+
 	//출고요청1 조회
 	public List<DeliveryQVO> DeliveryQList();
 	
@@ -24,7 +28,15 @@ public interface DeliveryQMapper {
 	//출고요청 번호 가져오기
 	public List<DeliveryQVO> getDlivyQCode();
 	
+	//충고요청 등록
+	public int insertDlivyQ(DeliveryQVO vo);
 	
+	//충고요청 상세 등록
+	public int insertDlivyQD(DeliveryQDVO vo);
+	
+	//요청 시 주문서 남품수량 +
+	public int updateOrderNum(OrderDVO vo);
+	//
 	
 	//////////////////////////////////////////////////////////////////////////
 	
@@ -38,7 +50,7 @@ public interface DeliveryQMapper {
 	
 	
 	//모달창 출고요청 코드 조회
-	public List<DeliveryQVO> MdeliveryQList(String dlivyCode);
+	public List<DeliveryQVO> MdeliveryQList();
 		
 	//모달창 출고요청 코드 조회
 	public List<Map<String,Object>> MdeliveryQListD(String dlivyCode);
@@ -46,6 +58,15 @@ public interface DeliveryQMapper {
 	//출고등록 번호 가져오기
 	public List<DeliveryGVO> getDlivyGCode();
 	
+	//충고등록 등록
+	public int insertDlivyG(DeliveryGVO vo);
+	
+	//충고등록 상세 등록
+	public int insertDlivyGD(DeliveryGDVO vo);
+	
+	//요청 상태 업에이트
+	public int updateQst(DeliveryQVO vo);
+
 	////////////////////////////////////////////////////////////////////////////
 	
 	//출고 처리3
@@ -65,12 +86,21 @@ public interface DeliveryQMapper {
 	//출고처리 번호 가져오기
 	public List<DeliveryProVO> getDlivyPCode();
 	
+	//출고처리 번호 가져오기
+	public List<DeliveryProVO> getDlivytPCode();
+	
+	//충고처리 등록
+	public int insertDlivyP(DeliveryProVO vo);
+
 	
 	/////////////////////////////////////////////////////////////////////////////
 	
 	//배송 정보 조회
 	
 	public List<DeliveryProVO> DeliveryInfoList();	
+	
+	//충고처리 등록
+	public int updateInfo(DeliveryProVO vo);
 	
 	
 	
@@ -93,6 +123,8 @@ public interface DeliveryQMapper {
 	public List<DeliveryQVO> selectDeliveryG();
 	public List<DeliveryProVO> selectDeliveryP();
 	public List<DeliveryProVO> selectBom();
+	public List<OrdersVO> selectOrderCode();
+	
 
 
 	

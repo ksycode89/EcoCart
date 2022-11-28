@@ -1,6 +1,10 @@
 package com.cart.eco.open.service;
 
-import java.sql.Date;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
@@ -8,7 +12,8 @@ import lombok.Data;
 public class DeliveryProVO {
 	//출고처리(배송처리)
 	private String dlivyProCode;	//출고처리코드
-	
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date dlivyDate;	//출고처리일자
 	private String orderCode;	//주문코드 FK
 	private String clientCode;	//거래처코드 FK

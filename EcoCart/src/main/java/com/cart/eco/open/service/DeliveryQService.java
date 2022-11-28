@@ -22,8 +22,14 @@ public interface DeliveryQService {
 	//출고요청번호 가져오기
 	public List<DeliveryQVO> getDlivyQCode();
 
+	//충고요청 등록
+	public int insertDlivyQ(List<DeliveryQVO> vo);
 	
+	//충고요청 상세 등록
+	public int insertDlivyQD(List<DeliveryQDVO> vo);
 	
+	//요청 시 주문서 남품수량 +
+	public int updateOrderNum(List<OrderDVO> vo);
 	
 	////////////////////////////////////////////////////////////////////////////
 	
@@ -37,7 +43,7 @@ public interface DeliveryQService {
 	
 	
 	//모달창 출고요청 코드 조회
-	public List<DeliveryQVO> MdeliveryQList(String dlivyCode);
+	public List<DeliveryQVO> MdeliveryQList();
 		
 	//모달창 출고요청 코드 조회
 	public List<Map<String,Object>> MdeliveryQListD(String dlivyCode);
@@ -45,6 +51,14 @@ public interface DeliveryQService {
 	//출고등록 번호 가져오기
 	public List<DeliveryGVO> getDlivyGCode();
 	
+	//충고등록 등록
+	public int insertDlivyG(List<DeliveryGVO> vo);
+	
+	//충고등록 상세 등록
+	public int insertDlivyGD(List<DeliveryGDVO> vo);
+	
+	//요청 상태 업데디트
+	public int updateQst(List<DeliveryQVO> vo);
 	
 	////////////////////////////////////////////////////////////////////////////
 	
@@ -65,6 +79,9 @@ public interface DeliveryQService {
 	//출고처리 번호 가져오기
 	public List<DeliveryProVO> getDlivytPCode();
 	
+	//충고처리 등록
+	public int insertDlivyP(List<DeliveryProVO> vo);
+	
 	
 	/////////////////////////////////////////////////////////////////////////////
 	
@@ -73,7 +90,8 @@ public interface DeliveryQService {
 	public List<DeliveryProVO> DeliveryInfoList();
 
 	
-	
+	//배송정보 업데이트
+	public int updateInfo(DeliveryProVO vo);
 	
 	
 	/////////////////////////////////////////////////////////////////////////////
@@ -95,6 +113,8 @@ public interface DeliveryQService {
 	public List<DeliveryQVO> selectDeliveryG();
 	public List<DeliveryProVO> selectDeliveryP();
 	public List<DeliveryProVO> selectBom();
+	public List<OrdersVO> selectOrderCode();
+
 	
 	
 	

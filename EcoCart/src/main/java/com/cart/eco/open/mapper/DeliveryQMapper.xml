@@ -6,7 +6,7 @@
 	
 	<!-- 출고 요청 1 전제 조회 -->
 	<select id="DeliveryQList" resultType="com.cart.eco.open.service.DeliveryQVO">
-		select d.dlivy_date, d.dlivy_q_code, c.client_name "client_code", e.emp_name "emp_num", d.all_sum
+		select d.dlivy_date, d.dlivy_q_code, c.client_name "client_code", e.emp_name "emp_num", d.all_sum, d.dlivy_q_st
 		from delivery_q d, client c, employees e
 		where d.client_code = c.client_code
 		and e.emp_num = d.emp_num
@@ -16,7 +16,14 @@
 	
 	<!-- 출고 요청1 상세 조회 -->
 	<select id="DeliveryQDList" resultType="Map"  parameterType="String">
-		select d.dlivy_qno, o.pro_code, p.pro_name, d.sell_num, o.sell_price, (d.sell_num * o.sell_price) || '원' "fsum_price", p.pro_num
+		select 
+			d.dlivy_qno "dlivyQno", 
+			o.pro_code "proCode", 
+			p.pro_name "proName", 
+			d.dsell_num "dsellNum", 
+			o.sell_price "sellPrice", 
+			p.pro_num "proNum",
+			q.order_code "orderCode"
 		from delivery_q q, delivery_qd d, product p, product_option o
 		where q.dlivy_q_code = d.dlivy_q_code
 		and d.pro_code = p.pro_code
@@ -35,9 +42,36 @@
         	from delivery_Q
 	</select>
 	
+	<!--  출고요청 등록하기 -->
+	<insert id="insertDlivyQ" parameterType="com.cart.eco.open.service.DeliveryQVO">
+		insert into delivery_q 
+			(dlivy_q_code, order_code,dlivy_date, client_code, emp_num, dlivy_q_st)
+			
+		values ( #{dlivyQCode}, #{orderCode}, sysdate , #{clientCode}, 2020110205, '요청' ) 
 	
+	</insert>
 	
+	<!--  출고요청 상세 등록하기 -->
+	<insert id="insertDlivyQD" parameterType="com.cart.eco.open.service.DeliveryQDVO">
+		<selectKey keyProperty="dlivyQno" order="BEFORE" resultType="int" >
+			select nvl(max(to_number(dlivy_Qno)),0)+1 from delivery_qd
+		</selectKey>
 	
+		insert into delivery_qd 
+			( dlivy_qno, dlivy_q_code, pro_code, dsell_num )
+			
+		values ( #{dlivyQno}, #{dlivyQCode}, #{proCode}, #{dsellNum} )
+	
+	</insert>
+		
+
+	<update id="updateOrderNum" parameterType="com.cart.eco.open.service.OrderDVO">
+		update order_d
+		set sold_num = sold_num + #{soldNum}
+		where order_code = #{orderCode}
+		and pro_code = #{proCode}
+
+	</update>
 	
 
 	<!-- 출고 등록2 -->
@@ -54,7 +88,13 @@
 	
 	<!-- 출고 등록2 상세 조회 -->
 	<select id="DeliveryGDList" resultType="Map"  parameterType="String">
-		select d.dlivy_gno, o.pro_code, p.pro_name, d.sell_num, o.sell_price, (d.sell_num * o.sell_price) as sum_price
+		select 
+			d.dlivy_gno "dlivyGno", 
+			o.pro_code "proCode", 
+			p.pro_name "proName", 
+			d.dsell_num "dsellNum", 
+			p.pro_num "proNum"
+
 		from delivery_g g, delivery_gd d, product p, product_option o
 		where g.dlivy_g_code = d.dlivy_g_code
 		and d.pro_code = p.pro_code
@@ -67,17 +107,33 @@
 	
 	<!-- 모달창 출고 요청 조회 -->
 	<select id="MdeliveryQList" resultType="com.cart.eco.open.service.DeliveryQVO">
-		select d.dlivy_date, d.dlivy_q_code, c.client_name "client_code", e.emp_name "emp_num", TO_CHAR(d.all_sum,'999,999') || '원' "fall_sum"
-		from delivery_q d, client c, employees e
+		select 
+			d.dlivy_q_code "dlivyQCode", 
+			d.client_code "clientCode",
+			c.client_name "clientName", 
+			d.dlivy_date "dlivyDate",
+			o.de_date "deDate",
+            q.dsell_num "dsellNum"
+	
+		from delivery_q d, client c, orders o, delivery_qd q
 		where d.client_code = c.client_code
-		and e.emp_num = d.emp_num
-		and d.dlivy_q_code= #{dlivyCode}
+        and o.order_code = d.order_code
+        and q.dlivy_q_code = d.dlivy_q_code
+		and dlivy_q_st = '요청'
+		and q.dsell_num != '0'
 	
 	</select>
 	
 	<!-- 모달창 출고 요청 상세 조회 -->
 	<select id="MdeliveryQListD" resultType="Map"  parameterType="String">
-		select d.dlivy_qno, o.pro_code, p.pro_name, d.sell_num, TO_CHAR(o.sell_price,'999,999') || '원' "fsell_price",TO_CHAR( (d.sell_num * o.sell_price),'999,999,999') || '원'  "fsum_price",p.pro_num
+		select 
+			d.dlivy_qno "dlivyQno", 
+			o.pro_code "proCode", 
+			p.pro_name "proName", 
+			d.dsell_num "dsellNum", 
+			p.pro_num "proNum"
+			
+		
 		from delivery_q q, delivery_qd d, product p, product_option o
 		where q.dlivy_q_code = d.dlivy_q_code
 		and d.pro_code = p.pro_code
@@ -96,9 +152,31 @@
         	from delivery_G
 	</select>
 	
+	<!--  출고등록 등록하기 -->
+	<insert id="insertDlivyG" parameterType="com.cart.eco.open.service.DeliveryGVO">
+		insert into 
+			delivery_g (dlivy_g_code, order_code,dlivy_date, client_code, emp_num,dlivy_g_st)
+		values ( #{dlivyGCode}, #{orderCode}, sysdate , #{client_code}, '2020110205', '등록' )  
 	
+	</insert>
 	
+	<!--  출고등록 상세 등록하기 -->
+	<insert id="insertDlivyGD" parameterType="com.cart.eco.open.service.DeliveryQVO">
+		<selectKey keyProperty="dlivyGno" order="BEFORE" resultType="int" >
+			select nvl(max(to_number(dlivy_gno)),0)+1 from delivery_gd
+		</selectKey>
 	
+		insert into delivery_gd 
+			(dlivy_gno, dlivy_g_code, pro_code, dsell_num)
+		values ( #{dlivyGno}, #{dlivyGCode}, #{proCode}, #{dsellNum}	
+	
+	</insert>
+	
+	<!-- 출고요청 상태 업데이트 하기 -->
+	<update id="updateQst" parameterType="com.cart.eco.open.service.DeliveryQVO">
+		update delivery_q set dlivy_q_st = '등록'
+		where dlivy_q_code = #{dlivyQCode}
+	</update>
 	
 	<!-- 출고 처리3 -->
 	
@@ -114,7 +192,10 @@
 	
 	<!-- 모달창 출고등록 조회 -->
 	<select id="MdeliveryGList" resultType="com.cart.eco.open.service.DeliveryGVO">
-		select d.dlivy_date, d.dlivy_g_code, c.client_name "client_code", e.emp_name "emp_num", TO_CHAR(d.all_sum,'999,999') || '원' "fall_sum"
+		select d.dlivy_date, 
+				d.dlivy_g_code, 
+				c.client_name "client_code", 
+				e.emp_name "emp_num", 
 		from delivery_g d, client c, employees e
 		where d.client_code = c.client_code
 		and e.emp_num = d.emp_num
@@ -124,7 +205,11 @@
 	
 	<!-- 모달창 출고등록 상세 조회 -->
 	<select id="MdeliveryGListD" resultType="Map"  parameterType="String">
-		select d.dlivy_gno, p.pro_code, p.pro_num, p.pro_name, d.sell_num, TO_CHAR(o.sell_price,'999,999') || '원' "fsell_price",TO_CHAR( (d.sell_num * o.sell_price),'999,999,999') || '원' "fsum_price"
+		select 
+			d.dlivy_gno "dlivyQno", 
+			p.pro_code "proCode", 
+			p.pro_num "proNum", 
+			p.pro_name "proName", 
 		from delivery_g g, delivery_gd d, product p, product_option o
 		where g.dlivy_g_code = d.dlivy_g_code
 		and d.pro_code = p.pro_code
@@ -161,7 +246,12 @@
 	
 	</select>
 	
+	<update id="updateInfo" parameterType="com.cart.eco.open.service.DeliveryProVO">
+		update delivery_pro
+        set dlivy_mth = #{dlivyMth} , dlivy_code = #{dlivyCode}, dlivy_name = #{dlivyName}, dlivy_pnum = {dlivyPnum}
+        where dlivy_pro_code = #{dlivyProCode}
 	
+	</update>
 	
 	
 	
@@ -223,6 +313,10 @@
 
 	<select id="selectBom" resultType="com.cart.eco.common.service.BomVO">
  		select * from bom
+	</select>
+	
+	<select id="selectOrderCode" resultType="com.cart.eco.open.service.OrdersVO">
+ 		select * from orders
 	</select>
 	
 	

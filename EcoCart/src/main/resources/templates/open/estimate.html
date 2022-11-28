@@ -196,7 +196,7 @@
                      
                   },
                   {
-                	  header:'승인',
+                	  header:'상태',
                 	  name: 'estmtSt',
                 	  filter : 'select'
                   }
@@ -304,73 +304,71 @@
 		
 		//grid3.hideColumn('estmtCode');
 		
-		Grid.applyTheme('striped'); // Call API of static method
 		
+	//모달창 선택값 리셋
+	function modalResetBtn(){
 		
-		//모달창 선택값 리셋
-		function modalResetBtn(){
-			
-			$("#deDate").val('');
-			$("#select5").attr('disabled', false)
-			$("#select6").attr('disabled',false)
-			$("#select7").attr('disabled', false)
-			$("#select8").attr('disabled', false)
-			
-			document.getElementById("select5").value = '선택';
-			document.getElementById("select8").value = '선택';
-			document.getElementById("select7").value = '선택';
-			document.getElementById("select6").value = '선택';
-			$("#productNum").val('');
-					
-		}
+		$("#deDate").val('');
+		$("#select5").attr('disabled', false)
+		$("#select6").attr('disabled',false)
+		$("#select7").attr('disabled', false)
+		$("#select8").attr('disabled', false)
 		
-		
-		// 모달창 둘중에 하나만 선택 되도록 58거래처     67제품
-		
-		function handleOnChange5(e){
-			if($("#select5").val() != '선택'){
+		document.getElementById("select5").value = '선택';
+		document.getElementById("select8").value = '선택';
+		document.getElementById("select7").value = '선택';
+		document.getElementById("select6").value = '선택';
+		$("#productNum").val('');
 				
-				$("#select8").attr('disabled', true)
-			}
-		} 
+	}
+	
+	
+	// 모달창 둘중에 하나만 선택 되도록 58거래처     67제품
+	
+	function handleOnChange5(e){
+		if($("#select5").val() != '선택'){
+			
+			$("#select8").attr('disabled', true)
+		}
+	} 
 
-		
-		function handleOnChange8(e){
-			if($("#select8").val() != '선택'){
-				$("#select5").attr('disabled', true)
-			}
-		
+	
+	function handleOnChange8(e){
+		if($("#select8").val() != '선택'){
+			$("#select5").attr('disabled', true)
+		}
+	
+	}
+	
+	
+	
+	function handleOnChange6(e){
+		if($("#select6").val() != '선택'){
+			$("#select7").attr('disabled', true)
 		}
 		
-		
-		
-		function handleOnChange6(e){
-			if($("#select6").val() != '선택'){
-				$("#select7").attr('disabled', true)
-			}
+	}
+	
+	
+	 function handleOnChange7(e){
+		 if($("#select7").val() != '선택'){
+				$("#select6").attr('disabled', true)
+		 }
+	}
+	
+	
+	//수량 * 단가 = 합계액
+	function add(){
+		if(document.getElementById("num").value && document.getElementById("price").value){
 			
 		}
-		
-		
-		 function handleOnChange7(e){
-			 if($("#select7").val() != '선택'){
-					$("#select6").attr('disabled', true)
-			 }
-		}
-		
-		
-		//수량 * 단가 = 합계액
-		function add(){
-			if(document.getElementById("num").value && document.getElementById("price").value){
-				
-			}
-				  document.getElementById('allsum').value =
-					  parseInt(document.getElementById('num').value) * parseInt(document.getElementById('price').value);
-		}
-		
-		
-		
-		
+			  document.getElementById('allsum').value =
+				  parseInt(document.getElementById('num').value) * parseInt(document.getElementById('price').value);
+	}
+	
+	
+	
+	
 	//모달창
    	staticBackdrop.addEventListener('shown.bs.modal', () => {
    	      grid3.refreshLayout(); //모달창 새로고침
