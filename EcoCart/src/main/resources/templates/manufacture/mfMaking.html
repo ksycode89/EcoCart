@@ -260,6 +260,112 @@
 			})
 			$("#decideOrderModal").modal("hide");
 		})
+		
+/* 		var n = 0;
+   var interval ;
+   function sweetC(){
+   
+      // 첫번째 설비 시작
+      startEqp(n,getTimeStr());
+      interval = setInterval(viewProgress,1000);  // 변수를 선언해줄경우 1번 실행
+      //setTimeout(()=>{Swal.fire('완료되었습니다');},6000);
+   
+      function viewProgress(){
+         
+         // 설비상태 : 가동으로 업데이트 ajax : update
+         // 설비 가동 -> 시작시간
+         let time = getTimeStr();
+         stopEqp(n,time)
+         n++;
+         
+         if(n>=6){   // 공정이 끝나면 interval끝
+            clearInterval(interval);
+         }
+         
+         startEqp(n,time);
+         
+      }
+      
+      
+      // 설비 시작
+      function startEqp(n,time){
+         // 처음이면
+         let pG = pOrderGrid.getFocusedCell().rowKey;
+   
+         let pproInAmt;
+         if(n==0){
+            pproInAmt = pOrderGrid.getValue(pG,'poddAmt');
+            
+         }else {
+            pproInAmt = proGrid.getValue(n-1,'pproOtAmt');
+         }
+         // 중지 -> 다음꺼 시작
+         
+         let pproSTime = time;
+         
+         let eqpCd = proGrid.getValue(n,'eqpCd');
+         let plineCd = proGrid.getValue(n,'plineCd');
+         let pproCd = proGrid.getValue(n,'pproCd');   
+         let eqpSts = proGrid.getValue(n,'eqpSts'); // 0번째 설비 상태 (현재 가동중)
+       
+         if(eqpSts == '대기'){
+            console.log(pproInAmt);
+            // 대기 -> 가동
+             $.ajax({
+               url : '/eqpUpdate',
+               method: 'POST',
+               async : false,
+               data :  {"eqpCd" : eqpCd, "plineCd" : plineCd, "pproCd" : pproCd, "pproInAmt": pproInAmt, "pproSTime" : pproSTime},
+               dataType : 'json',
+               success : function(data){
+                     // grid에서 수정
+                     proGrid.resetData(data);
+                     proGrid.refreshLayout();
+                     },
+               error : function(reject){
+                     console.log(reject);
+                     // 실패
+               }                  
+            });
+         }
+      }
+      
+      // 설비 중지
+      function stopEqp(n,time){
+         let eqpCd = proGrid.getValue(n,'eqpCd');
+         let plineCd = proGrid.getValue(n,'plineCd');
+         let eqpSts = proGrid.getValue(n,'eqpSts');
+         let pproCd = proGrid.getValue(n,'pproCd');
+         let pproInAmt = proGrid.getValue(n,'pproInAmt');
+         
+         let pproETime = time;
+         let pproErAmt = 0;   
+         let pproOtAmt = pproInAmt - pproErAmt; 
+         
+         if(eqpSts == "가동"){
+            // 설비상태 업데이트
+            $.ajax({
+               url : '/eqpUpdate',
+               method: 'POST',
+               data : {"eqpCd" : eqpCd, "plineCd" : plineCd, "pproETime" : pproETime, "pproCd" : pproCd, "pproErAmt" : pproErAmt, "pproOtAmt" : pproOtAmt},
+               dataType : 'json',
+               async : false,
+               success : function(data){
+                     // grid에서 수정
+                     proGrid.resetData(data);
+                     proGrid.refreshLayout();
+                     },
+               error : function(reject){
+                     console.log(reject);
+                     // 실패
+               }                  
+            });   // end of ajax 
+         }
+
+      } 
+      
+      
+   } */
 	    </script>
 	</div>
 </body>
