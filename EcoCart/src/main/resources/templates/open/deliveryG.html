@@ -3,14 +3,10 @@
 	layout:decorate="~{layout/layout}">
 
 <head>
-<meta charset="UTF-8">
-<title>deliveryG 출고등록2</title>
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+	<meta charset="UTF-8">
+   <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+   <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+   <title>deliveryG 출고등록2</title>
 
 </head>
 
@@ -19,6 +15,13 @@
 	<div layout:fragment="content" class="page-content">
 				
 		<div class="mb-1">
+		
+			<div class="filters" style="height:35px">
+				<label for="planStatus" style="width:100px">진행구분</label>
+				<label><input type="radio" id="planAll"  name="plan"value="all" checked>전체</label>&nbsp;
+				<label><input type="radio" id="planStart"  name="plan" value="start">등록</label>&nbsp;
+				<label><input type="radio" id="planWait"  name="plan" value="wait">처리</label>
+			</div>
 				
 			<div style="height:50px;">
 				<label for="planName" style="width:100px">출고등록코드</label>
@@ -73,14 +76,6 @@
 							<label for="row1" style="width:100px; height: 30px; text-align:center;">출고등록코드</label>
 										<input type="text" class="form-control form-control-sm" style="width:150px; display:inline" id="getdlivyCode" readonly >
 									
-							<label for="row2" style="width:150px; height: 30px; text-align:center;">출고요청코드</label>
-				         		<select id="select8" name="no" onchange="handleOnChange8(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white">
-				         			<option value="선택">-선택-</option>
-				         			<th:block th:each="e : ${deliveryQ}">
-				         				<option th:value="${e.dlivyQCode}" th:text="${e.dlivyQCode}"></option>
-				         			</th:block>  			
-				         		</select>
-				         		<button class="btn-sm btn-primary" onclick="searchQ()" type="button" >조 회</button>
 		         			</div>
 		         		</div>
 		         				
@@ -88,349 +83,342 @@
 					<div id="grid4"></div>
 
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary">출고등록</button>
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" onclick="goDeliveryG()">출고등록</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 					</div>
-
-
-
 
 				</div>
 			</div>
 		</div>
 
-		<!--  모달창 끝 -->
+	<!--  모달창 끝 -->
 
 
+	<script>
+	
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
 
+    const Grid = tui.Grid;
+	
+	const grid = new Grid({
+        el: document.getElementById('grid'), // Container element
+        scrollX: false,
+        scrollY: true,
+        bodyHeight : 240,
+        columns: [
+            {
+            	header: '출고등록코드',
+            	name: 'dlivyGCode',
+            	filter : 'text'
+            },
+            {
+            	header: '출고등록일자',
+            	name: 'dlivyDate',
+            	filter : 'date'
+            },
+            {
+            	header: '거래처',
+                name: 'clientCode',
+                filter : 'text'
+             },
+             {
+             	header: '담당자',
+                name: 'empNum',
+                filter : 'text'
+             },
+             {
+            	 header:'상태',
+            	 name : 'dlivyGSt',
+            	 filter : 'text'
+	          }
+        ]
+	});
+	
+	const grid2 = new Grid({
+        el: document.getElementById('grid2'), // Container element
+        scrollX: false,
+           scrollY: false,
+        columns: [
+            {
+            	header: 'no',
+            	name: 'dlivyGno'
+            },
+            {
+            	header: '제품코드',
+            	name: 'proCode'
+            },
+            {
+            	header: '제품명',
+            	name: 'proName'
+            },
+            {
+            	header: '출고수량',
+                name: 'dsellNum'
+             }
+            
+            
+        ]
+	});
+	
+    
+    
+	const grid3 = new Grid({
+        el: document.getElementById('grid3'), // Container element
+        scrollX: false,
+        scrollY: true	,
+        bodyHeight : 200,
+        rowHeaders : ['checkbox'],
+        columns: [
+        	{
+            	header: '출고등록코드-h',
+            	name: 'dlivyGCode'
+            },
+            {
+            	header: '출고요청코드',
+            	name: 'dlivyQCode'
+            },
+            {	
+            	header: '거래처코드',
+                name: 'clientCode'
+             },
+            {	
+            	header: '거래처이름',
+                name: 'clientName'
+             },
+        	{
+            	header: '출고요청일자',
+            	name: 'dlivyDate'
+            }
+        ]
+	});
+    
 
-
-		<script>
-	      const Grid = tui.Grid;
-			
-			 
-			const grid = new Grid({
-		        el: document.getElementById('grid'), // Container element
-		        scrollX: false,
-	            scrollY: false,
-		        columns: [
-		            {
-		            	header: '출고등록코드',
-		            	name: 'dlivyGCode',
-		            	filter : 'text'
-		            },
-		            {
-		            	header: '출고등록일자',
-		            	name: 'dlivyDate',
-		            	filter : 'date'
-		            },
-		            {
-		            	header: '거래처',
-		                name: 'clientCode',
-		                filter : 'text'
-		             },
-		             {
-		             	header: '담당자',
-		                name: 'empNum',
-		                filter : 'text'
-		             },
-		             {
-			            header: '총합계액',
-			            name: 'allSum'
-			          }
-		            
-		        ]
-			});
-			
-			const grid2 = new Grid({
-		        el: document.getElementById('grid2'), // Container element
-		        scrollX: false,
-	            scrollY: false,
-		        columns: [
-		            {
-		            	header: 'no',
-		            	name: 'DLIVY_GNO'
-		            },
-		            {
-		            	header: '제품코드',
-		            	name: 'PRO_CODE'
-		            },
-		            {
-		            	header: '제품명',
-		            	name: 'PRO_NAME'
-		            },
-		            {
-		            	header: '수량',
-		                name: 'SELL_NUM'
-		             },
-		             {
-		             	header: '단가',
-		                name: 'fsell_price'
-		             },
-		             {
-			             header: '합계액',
-			             name: 'fsum_price'
-			         }
-		            
-		        ]
-			});
-			
-			Grid.applyTheme('striped'); // Call API of static method
-      
-      
-			const grid3 = new Grid({
-		        el: document.getElementById('grid3'), // Container element
-		        scrollX: false,
-	            scrollY: false,
-	            rowHeaders : ['checkbox'],
-		        columns: [
-		            {
-		            	header: '출고요청코드',
-		            	name: 'dlivyQCode'
-		            },
-		        	{
-		            	header: '출고요청일자',
-		            	name: 'dlivyDate'
-		            },
-		            {	
-		            	header: '거래처',
-		                name: 'clientCode'
-		             },
-		             {
-		             	header: '담당자',
-		                name: 'empNum'
-		             },
-		             {	
-			             header: '총합계액',
-			             name: 'fallSum'
-			         }
-		            
-		        ]
-			});
-      
-
-			const grid4 = new Grid({
-		        el: document.getElementById('grid3'), // Container element
-		        scrollX: false,
-	            scrollY: false,
-		        columns: [
-		        	 
-			            {
-			            	header: '제품코드',
-			            	name: 'PRO_CODE'
-			            },
-			            {
-			            	header: '제품명',
-			            	name: 'PRO_NAME'
-			            },
-			            {
-			            	header: '수량',
-			                name: 'SELL_NUM'
-			             },
-			             {
-			             	header: '단가',
-			                name: 'fsell_price'
-			             },
-			             {
-			            	 header: '총합계액',
-				             name: 'fsum_price'
-			             }
-			            
-			        ]
-			});
-      
-      
-      
-			//모달창
-		   	staticBackdrop.addEventListener('shown.bs.modal', () => {
-		   	      grid3.refreshLayout(); //모달창 새로고침
-		   	 })
-      
- 			//모달창
-		   	staticBackdrop.addEventListener('shown.bs.modal', () => {
-		   	      grid4.refreshLayout(); //모달창 새로고침
-		   	 })     
-			
-			
-      
-      	
-	    function handleOnChange(e){
-				//선택된 데이터의 텍스트값 가져오기
-				const text = e.value;
-				
-				//선택한 텍스트 출력
-				document.getElementById('result').value = text;
+	const grid4 = new Grid({
+        el: document.getElementById('grid3'), // Container element
+        scrollX: false,
+           scrollY: false,
+        columns: [
+        	 
+	            {
+	            	header: '제품코드',
+	            	name: 'proCode'
+	            },
+	            {
+	            	header: '제품명',
+	            	name: 'proName'
+	            },
+	            {
+	            	header: '요청수량',
+	                name: 'dsellNum'
+	            },
+	            {
+	            	header: '재고수량',
+	                name: 'proNum'
+	            }
+	        ]
+	});
+    
+    
+	//모달창
+   	staticBackdrop.addEventListener('shown.bs.modal', () => {
+   	    grid3.refreshLayout(); //모달창 새로고침
+   	   	grid4.refreshLayout(); //모달창 새로고침
+   	 	
+   	   	//모달창 그리드3
+   	 	$.ajax({
+			method:'GET',
+			url:'/MdeliveryQList',
+			success : function(result){
+				for(let i =0; i< result.length; i++){
+					result[i].dlivyGCode= $("#getdlivyCode").val()
+				}
+				grid3.resetData(result);
+				console.log(result)
+			},
+			error: function(error){
+				console.log(error);
+			}
+		})
+   	})
+    
+	document.addEventListener("DOMContentLoaded", DeliveryList)
+	
+	function DeliveryList(){
+		$.ajax({
+			url:'/listDeliveryG',
+			success : function(result) {
+				console.log(result);
+				grid.resetData(result);
+			},
+			error : function(error){
+				console.log(error);
+			}
+		})
+		
+    	}
+    
+     //tr 
+     grid.on('click',(event)=>{
+    	 console.log(event.nativeEvent.target.textContent);
+		var a = event.nativeEvent.target.textContent;
+		
+		$.ajax({
+			method:'GET',
+			url:'/listDeliveryGd?dlivyCode='+a,
+			success : function(result){
+				grid2.resetData(result)
+			},
+			error: function(error){
+				console.log(error);
 			}
 			
-			
-		function handleOnChange2(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result2').value = text;
-		}
+		})
+     })
 		
+	
+   //모달창 눌렀을때 코드 있도록	
+ 	function getCode(){
+	
+		$.ajax({
+			url:'/getDlivyGCode',
+			success : function(result) {
+				$("#getdlivyCode").val(result[0].dlivyGCode);
+			},
+			error : function(error){
+				console.log(error);
+			}
+		})
+     }
+ 		
+	//모달창 tr click		
+	grid3.on('click', (event)=> {
 		
-		function handleOnChange3(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result3').value = text;
-		}
+		if(event.columnName != "_checked" ){
 		
-		function handleOnChange4(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result4').value = text;
-		}
+		console.log(event.nativeEvent.target.textContent);	
+		var a = event.nativeEvent.target.textContent;
 		
-		function handleOnChange5(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result5').value = text;
-		}
-		
-		function handleOnChange6(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result6').value = text;
-		}
-		
-		function handleOnChange7(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result7').value = text;
-		}
-		
-		function handleOnChange8(e){
-			//선택된 데이터의 텍스트값 가져오기
-			const text = e.value;
-			
-			//선택한 텍스트 출력
-			document.getElementById('result8').value = text;
-		}
-		
-		
-	      
-		document.addEventListener("DOMContentLoaded", DeliveryList)
-		
-		function DeliveryList(){
-			$.ajax({
-				url:'/listDeliveryG',
-				success : function(result) {
-					console.log(result);
-					grid.resetData(result);
-				},
-				error : function(error){
-					console.log(error);
-				}
-			})
-			
-     	}
-     
-	     //tr 
-	     grid.on('click',(event)=>{
-	    	 console.log(event.nativeEvent.target.textContent);
-			var a = event.nativeEvent.target.textContent;
-			
 			$.ajax({
 				method:'GET',
-				url:'/listDeliveryGd?dlivyCode='+a,
+				url:'/MdeliveryQListD?dlivyCode='+a,
 				success : function(result){
-					grid2.resetData(result)
+					for(let i =0; i< result.length; i++){
+						console.log($("#getdlivyCode").val())
+						result[i].dlivyQCode = $("#getdlivyCode").val()
+					}
+					grid4.resetData(result)
 				},
 				error: function(error){
 					console.log(error);
 				}
-				
 			})
-	     })
-			
-		
-      	function searchQ(){
-	    	 
-	    	 console.log(document.getElementById('select8').value);
-				var a = document.getElementById('select8').value  
-				
+		}
+	})
+
+	
+	//모달창 출고등록
+	function goDeliveryG(){
+		//출고등록
+		$.ajax({
+			method:'POST',
+			url:'/insertDlivyG',
+			contentType : 'application/json',
+			dataType:'JSON',
+			data: JSON.stringify(grid4.getCheckedRows()),
+			beforeSend : function(xhr){
+           		xhr.setRequestHeader(header, token);
+           	 },
+			success : function(result) {
+				console.log(result);
+				grid5.blur();
+				//출고등록상세 등록 여러번
 				$.ajax({
-					method:'GET',
-					url:'/MdeliveryQList?dlivyCode='+a,
-					success : function(result){
-						console.log(JSON.stringify(result) + "a");
-						grid3.resetData(result)
+					method:'POST',
+					url:'/insertDlivyGD',
+					contentType : 'application/json',
+					dataType:'JSON',
+					data: JSON.stringify(grid5.getData()), //+ 출고요청코드,
+					beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           	 },
+					success : function(result) {
+						console.log(result);
+						
+						//출고요청 상태 변경
+						$.ajax({
+						method:'POST',
+						url:'/updateQst',
+						contentType : 'application/json',
+						dataType:'JSON',
+						data: JSON.stringify(grid4.getData()), //+ 출고요청코드,
+						beforeSend : function(xhr){
+			           		xhr.setRequestHeader(header, token);
+			           	 },
+						success : function(result) {
+							console.log(result);
+						},
+						error : function(error){
+							console.log(error);
+						}
+						
+						})
+						
 					},
-					error: function(error){
-						console.log(error+"k");
+					error : function(error){
+						console.log(error);
 					}
-					
-				}),
-				
-				$.ajax({
-					method:'GET',
-					url:'/MdeliveryQListD?dlivyCode='+a,
-					success : function(result){
-						console.log(JSON.stringify(result) + "dddd");
-						console.log(result+"d");	
-						grid4.resetData(result)
-					},
-					error: function(error){
-						console.log(error+"mm");
-					}
-					
 				})
-	     }
-	     
-	   //모달창 눌렀을때 코드 있도록	
-	 	function getCode(){
-	 		
-	 		$.ajax({
-	 			url:'/getDlivyGCode',
-	 			success : function(result) {
-	 				$("#getdlivyCode").val(result[0].dlivyGCode);
-	 			},
-	 			error : function(error){
-	 				console.log(error);
-	 			}
-	 		})
-	 		
-	   }
-
-	     //조회버튼 / 리셋버튼
-		
-	 	Searchbtn.addEventListener('click', () => {
-			grid.filter('dlivyGCode' , [{code:'contain', value:$('#CodeSearch').val()}])
-			grid.filter('clientCode' , [{code:'contain', value:$('#ClientSearch').val()}])
-			grid.filter('empNum' , [{code:'contain', value:$('#EmpSearch').val()}])
-			
-			if($('#DateSearch').val() != '' ){
-				grid.filter('dlivyDate' , [{code:'beforeEq', value:$('#DateSearch').val()}])
-				
+			},
+			error : function(error){
+				console.log(error);
 			}
-		});
-
-			
-		Resetbtn.addEventListener('click', () => {
-			document.getElementById('CodeSearch').value = '';
-			grid.unfilter('dlivyGCode');
-			document.getElementById('ClientSearch').value = '';
-			grid.unfilter('clientCode');
-			document.getElementById('EmpSearch').value = '';
-			grid.unfilter('empNum');
-			document.getElementById('DateSearch').value = '';
-			grid.unfilter('dlivyDate');
-		})	 
+		})	
 		
+		
+		
+	}
+	
+    //조회버튼 / 리셋버튼
+   	planAll.addEventListener('click', () => {
+    	grid.unfilter('dlivyGSt');
+    })
+    planWait.addEventListener('click', () => {
+    	grid.filter('dlivyGSt', [{code:'eq', value:'처리'}]);
+    })
+    planStart.addEventListener('click', () => {
+    	grid.filter('dlivyGSt', [{code:'eq', value:'등록'}]);
+    })
+    
+ 	Searchbtn.addEventListener('click', () => {
+		grid.filter('dlivyGCode' , [{code:'contain', value:$('#CodeSearch').val()}])
+		grid.filter('clientCode' , [{code:'contain', value:$('#ClientSearch').val()}])
+		grid.filter('empNum' , [{code:'contain', value:$('#EmpSearch').val()}])
+		
+		if($('#DateSearch').val() != '' ){
+			grid.filter('dlivyDate' , [{code:'beforeEq', value:$('#DateSearch').val()}])
+			
+		}
+	});
+		
+	Resetbtn.addEventListener('click', () => {
+		document.getElementById('CodeSearch').value = '';
+		grid.unfilter('dlivyGCode');
+		document.getElementById('ClientSearch').value = '';
+		grid.unfilter('clientCode');
+		document.getElementById('EmpSearch').value = '';
+		grid.unfilter('empNum');
+		document.getElementById('DateSearch').value = '';
+		grid.unfilter('dlivyDate');
+	})	 
+		
+	//모달창 끌때 reset되도록
+	$("#staticBackdrop").on('hidden.bs.modal', function (e) {
+		grid3.clear()
+		grid4.clear()
+		document.getElementById("select8").value = '선택';
+		
+	});
       
       </script>
 	</div>

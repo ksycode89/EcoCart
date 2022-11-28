@@ -10,11 +10,14 @@ import com.cart.eco.common.service.ClientVO;
 import com.cart.eco.common.service.EmpVO;
 import com.cart.eco.common.service.ProductVO;
 import com.cart.eco.open.mapper.DeliveryQMapper;
+import com.cart.eco.open.service.DeliveryGDVO;
 import com.cart.eco.open.service.DeliveryGVO;
 import com.cart.eco.open.service.DeliveryProVO;
+import com.cart.eco.open.service.DeliveryQDVO;
 import com.cart.eco.open.service.DeliveryQService;
 import com.cart.eco.open.service.DeliveryQVO;
-import com.cart.eco.open.service.EstimateVO;
+import com.cart.eco.open.service.OrderDVO;
+import com.cart.eco.open.service.OrdersVO;
 
 @Service
 public class DeliveryQServiceImpl implements DeliveryQService{
@@ -35,9 +38,50 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 		// TODO Auto-generated method stub
 		return mapper.DeliveryQDList(dlivyCode);
 	}
+	
+	
+	@Override
+	public int insertDlivyQ(List<DeliveryQVO> vo) {
+		// TODO Auto-generated method stub
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			
+			result  += mapper.insertDlivyQ(vo.get(i));
+		}
+		
+		return result;
+		
+	}
+
+	@Override
+	public int insertDlivyQD(List<DeliveryQDVO> list) {
+		// TODO Auto-generated method stub
+		int result = 0;
+		OrderDVO a = new OrderDVO();
+		for(int i = 0; i< list.size(); i++) {
+			DeliveryQDVO dvo = list.get(i);
+			a.setOrderCode(dvo.getOrderCode());
+			a.setSoldNum(dvo.getDsellNum());
+			a.setProCode(dvo.getProCode());
+			mapper.updateOrderNum(a);
+			result  += mapper.insertDlivyQD(dvo);
+		}
+		
+		return result;
+	}
 
 	
-	
+	@Override
+	public int updateOrderNum(List<OrderDVO> vo) {
+		// TODO Auto-generated method stub
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			
+			result  += mapper.updateOrderNum(vo.get(i));
+		}
+		
+		return result;
+	}
 	////////////////////////////////////////////////////////////////////////
 	
 	//출고등록 G
@@ -55,9 +99,9 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 	}
 
 	@Override
-	public List<DeliveryQVO> MdeliveryQList(String dlivyCode) {
+	public List<DeliveryQVO> MdeliveryQList() {
 		// TODO Auto-generated method stub
-		return mapper.MdeliveryQList(dlivyCode);
+		return mapper.MdeliveryQList();
 	}
 	
 	@Override
@@ -66,6 +110,38 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 		return mapper.MdeliveryQListD(dlivyCode);
 	}
 	
+	@Override
+	public int insertDlivyG(List<DeliveryGVO> vo) {
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			
+			result  += mapper.insertDlivyG(vo.get(i));
+		}
+		return result;
+	}
+
+	@Override
+	public int insertDlivyGD(List<DeliveryGDVO> vo) {
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			
+			result  += mapper.insertDlivyGD(vo.get(i));
+		}
+		return result;
+	}
+	
+
+	@Override
+	public int updateQst(List<DeliveryQVO> vo) {
+		// TODO Auto-generated method stub
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			
+			result  += mapper.updateQst(vo.get(i));
+		}
+		return result;
+	}			
+		
 	
 	//////////////////////////////////////////////////////////////////////////
 	
@@ -95,6 +171,16 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 		return mapper.MdeliveryGListD(dlivyCode);
 	}
 	
+	@Override
+	public int insertDlivyP(List<DeliveryProVO> vo) {
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			
+			result  += mapper.insertDlivyP(vo.get(i));
+		}
+		return result;
+	}
+
 	
 	
 	/////////////////////////////////////////////////////////////////////////////
@@ -107,7 +193,11 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 		return mapper.DeliveryInfoList();
 	}
 	
-	
+	@Override
+	public int updateInfo(DeliveryProVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.updateInfo(vo);
+	}
 	
 	////////////////////////////////////////////////////////////////////////
 	
@@ -171,6 +261,11 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 		return mapper.selectBom();
 	}
 
+	@Override
+	public List<OrdersVO> selectOrderCode() {
+		// TODO Auto-generated method stub
+		return mapper.selectOrderCode();
+	}
 	
 	
 	
@@ -196,6 +291,14 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 		// TODO Auto-generated method stub
 		return mapper.getDlivyPCode();
 	}
+
+
+	
+
+	
+
+	
+
 
 	
 	/////////////////////////////////////////////////

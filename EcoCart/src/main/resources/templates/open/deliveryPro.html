@@ -146,10 +146,6 @@
 			});
 			
 			
-			
-			Grid.applyTheme('striped'); // Call API of static method
-      
-      
 			const grid3 = new Grid({
 		        el: document.getElementById('grid3'), // Container element
 		        scrollX: false,
@@ -216,15 +212,15 @@
       
       
       
+		//모달창
+	   	staticBackdrop.addEventListener('shown.bs.modal', () => {
+	   	      grid3.refreshLayout(); //모달창 새로고침
+	   	 })
+     
 			//모달창
-		   	staticBackdrop.addEventListener('shown.bs.modal', () => {
-		   	      grid3.refreshLayout(); //모달창 새로고침
-		   	 })
-      
- 			//모달창
-		   	staticBackdrop.addEventListener('shown.bs.modal', () => {
-		   	      grid4.refreshLayout(); //모달창 새로고침
-		   	 })     
+	   	staticBackdrop.addEventListener('shown.bs.modal', () => {
+	   	      grid4.refreshLayout(); //모달창 새로고침
+	   	 })     
 			
 			
       
@@ -298,17 +294,17 @@
 		
 		document.addEventListener("DOMContentLoaded", DeliveryList)
 		
-		function DeliveryList(){
-			$.ajax({
-				url:'/listDeliveryPro',
-				success : function(result) {
-					console.log(result);
-					grid.resetData(result);
-				},
-				error : function(error){
-					console.log(error);
-				}
-			})
+	function DeliveryList(){
+		$.ajax({
+			url:'/listDeliveryPro',
+			success : function(result) {
+				console.log(result);
+				grid.resetData(result);
+			},
+			error : function(error){
+				console.log(error);
+			}
+		})
 			
      }
 	    //모댤창 

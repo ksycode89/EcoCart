@@ -18,7 +18,7 @@
 	<select id="detailList"
 		parameterType="com.cart.eco.material.service.MorderVO"
 		resultType="com.cart.eco.material.service.MorderdetailVO">
-		select d.pro_code, p.pro_name, d.order_num, i.standard, c.client_code
+		select d.pro_code, p.pro_name, d.order_num, i.standard, c.client_code, unit, m.comments 
 		from m_order m 
         join m_order_detail d
 		  on m.order_no = d.order_no
@@ -41,15 +41,6 @@
         where p.pro_group = 'j2'
 	</select>
 	
-	<select id="selectOrList" parameterType="com.cart.eco.material.service.OrderCheckVO" resultType="com.cart.eco.material.service.OrderCheckVO">
-		select e.emp_name, e.emp_dept, c.client_name, order_group, order_date, order_receiving
-		from m_order m
-		left outer join employees e
-		on m.emp_num = e.emp_num
-		left outer join client c
-		on m.client_code = c.client_code
-	</select>
-	
 	<insert id="insertOrder" parameterType="com.cart.eco.material.service.MorderVO">
 		<selectKey keyProperty="orderNo" resultType="int" order="BEFORE">
 			select nvl(max(order_no),0)+1 from m_order		
@@ -57,7 +48,9 @@
 		insert into m_order(
 					order_no,
 					order_date,
+					<if test="comments != null and !comments.equals('')">
 					comments,
+					</if>
 					order_receiving,
 					emp_num
 				<!-- 	emp_dept -->
@@ -65,7 +58,9 @@
 			values (
 					#{orderNo}
 					,#{orderDate}
+					<if test="comments != null and !comments.equals('')">
 					,#{comments}
+					</if>
 					,#{orderReceiving}
 					,#{empNum}
 					<!-- ,#{empDept} -->

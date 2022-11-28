@@ -14,4 +14,5 @@ public class OrderDVO {
  	
 	private int canNum;	//취소수량
 	private int sumPrice;	//합계액
+	private int dlivyQno;
 }

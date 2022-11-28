@@ -40,6 +40,15 @@ public class OrderController {
 		return orderService.OrdersList();
 	}
 	
+
+	//전체조회 진행중인 주문서 조회
+	@GetMapping("listOrdersOk")
+	@ResponseBody
+	public List<OrdersVO> listOrdersOk(OrdersVO vo){
+		
+		return orderService.OrdersListOk();
+	}
+	
 	
 	
 	//tr누르면 상세 조회
@@ -155,7 +164,7 @@ public class OrderController {
 	@PostMapping("/updateCanNum")
 	@ResponseBody
 	public int updateCanNum (@RequestBody List<OrderDVO> vo) {
-			
+			System.out.println("ddd");
 		return orderService.updateCanNum(vo);
 	}
 		

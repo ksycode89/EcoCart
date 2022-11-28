@@ -12,8 +12,7 @@
 <body>
 	<div layout:fragment="header" class="page-heading"><h2>생산지시확정</h2></div>
 	<div layout:fragment="content" class="page-content">
-		<div id="orderDecideGridId"></div>
-		<br>
+		<div id="orderDecideGridId"></div><br>
 		<script>
 
 		var token = $("meta[name='_csrf']").attr("content");
@@ -39,9 +38,13 @@
 		const orderDecideGrid = new tui.Grid({
 			el: document.getElementById('orderDecideGridId'),
 			scrollX: false,
-			scrollY: true,
-			bodyHeight: 600,
+			scrollY: false,
+			bodyHeight: 400,
 			rowHeaders : ['rowNum'],
+			pageOptions: {
+		        useClient: true,
+		        perPage: 10
+		    },
 			columns: [
 		        {
 		          header: '생산지시코드',
@@ -86,6 +89,7 @@
 	    		url:'/mfOrderDecideAll',
 	    		success:function(data){
 	    			orderDecideGrid.resetData(data);
+	    			orderDecideGrid.refreshLayout();
 	    		},
 	    		error:function(error){
 	    			console.log(error);
@@ -108,7 +112,16 @@
 		           	},
 		    		success: function(data){
 		    			alert('해당 생산지시가 활성화됩니다.');
-		    			location.reload();
+		    			$.ajax({
+		    	    		url:'/mfOrderDecideAll',
+		    	    		success:function(data){
+		    	    			orderDecideGrid.resetData(data);
+		    	    			orderDecideGrid.refreshLayout();
+		    	    		},
+		    	    		error:function(error){
+		    	    			console.log(error);
+		    	    		}
+		    	    	})
 		    		},
 		    		error: function(error){
 		    			console.log(error);

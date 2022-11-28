@@ -113,7 +113,6 @@
         WHERE rd.lot_code = #{lotCode}
         AND rd.pro_code = #{proCode}
         AND mrd.release_code = #{releaseCode}
-
 	</update>
 	
 	<update id="updateMfOrderLotDetail" parameterType="com.cart.eco.mf.service.MfOrderVO">

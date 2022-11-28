@@ -5,6 +5,8 @@
       layout:decorate="~{/layout/layout}">
 <head>
 <meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>생산관리</title>
 </head>
 <body>
@@ -18,7 +20,29 @@
 			<h4 style="height:40px">생산가동상세</h4>
 			<div id="makingDetailGridId"></div>
 		</div><br>
+		
+		<!-- 확정지시 Modal -->
+			<div class="modal fade" id="decideOrderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="decideOrderList" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="decideOrderList">확정지시조회</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div id="orderDecideModalGridId"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">닫기</button>						
+						</div>
+					</div>
+				</div>
+			</div>
 		<script>
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
 	    const gridData = [
 	   		{
 	   			lineNo:'1'
@@ -68,7 +92,7 @@
 		    }
 		}
 	    
-	    const makingGrid = new tui.Grid({
+	    var makingGrid = new tui.Grid({
 			el: document.getElementById('makingGridId'),
 			data: gridData,
 			scrollX: false,
@@ -83,6 +107,10 @@
 		        {
 		          header: '생산지시코드',
 		          name: 'mfOrderCode'
+		        },
+		        {
+		          header: '생산지시넘버링',
+		          name: 'mfOrderNo'
 		        },
 		        {
 		          header: '제품코드',
@@ -115,7 +143,9 @@
 			]
 		});
 	    
-		const makingDetailGrid = new tui.Grid({
+	    makingGrid.hideColumn('mfOrderNo');
+	    
+		var makingDetailGrid = new tui.Grid({
 			el: document.getElementById('makingDetailGridId'),
 			scrollX: false,
 			scrollY: true,
@@ -152,6 +182,84 @@
 		        }
 			]
 		});
+		
+		var orderDecideModalGrid = new tui.Grid({
+			el: document.getElementById('orderDecideModalGridId'),
+			scrollX: false,
+			scrollY: true,
+			bodyHeight: 360,
+			rowHeaders:['rowNum'],
+			columns: [
+		        {
+		          header: '생산지시코드',
+		          name: 'mfOrderCode'
+		        },
+		        {
+		          header: '생산지시넘버링',
+		          name: 'mfOrderNo'
+		        },
+		        {
+		          header: '제품코드',
+		          name: 'proCode'
+		        },
+		        {
+		          header: '제품명',
+		          name: 'proName'
+		        },
+		        {
+		          header: '지시수량',
+		          name: 'mfOrderNum'
+		        },
+		        {
+		          header: '지시일자',
+		          name: 'mfOrderDate',
+		          type: 'datePicker',
+					options: {
+	                	format: 'yyyy-MM-dd'
+		            }
+		        }
+			]
+		});
+		
+		orderDecideModalGrid.hideColumn('mfOrderNo');
+		
+		makingEv = {};
+		
+		makingGrid.on('click', (ev) => {
+			if(ev.columnName == 'mfOrderCode'){
+				$.ajax({
+	    			url: '/mfOrderDecideList',
+	    			method: 'GET',
+	    			success: function(data){
+	    				orderDecideModalGrid.resetData(data);
+	    				makingEv = ev;
+	    			},
+	    			error: function(error){
+	    				console.log(error);
+	    			}
+	    		});
+				$("#decideOrderModal").modal("show");
+				decideOrderModal.addEventListener('shown.bs.modal', () => {
+					orderDecideModalGrid.refreshLayout();
+			    });	
+			}
+		});
+		
+		orderDecideModalGrid.on('click', (ev) => {
+			makingGrid.setRow(makingEv.rowKey, {
+				lineNo : makingEv.rowKey+1,
+				mfOrderCode : orderDecideModalGrid.getRow(ev.rowKey).mfOrderCode,
+				mfOrderNo : orderDecideModalGrid.getRow(ev.rowKey).mfOrderNo,
+				proCode : orderDecideModalGrid.getRow(ev.rowKey).proCode,
+				proName : orderDecideModalGrid.getRow(ev.rowKey).proName,
+				mfOrderNum : orderDecideModalGrid.getRow(ev.rowKey).mfOrderNum
+			})
+			
+			makingDetailGrid.appendRow({
+				
+			})
+			$("#decideOrderModal").modal("hide");
+		})
 	    </script>
 	</div>
 </body>

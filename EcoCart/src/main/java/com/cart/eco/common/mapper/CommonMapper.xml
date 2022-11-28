@@ -29,6 +29,8 @@
       FROM client
    </select>
    
+   
+   
    <!--공통코드 - 전체조회  -->
    <select id="callCommon" resultType="com.cart.eco.common.service.CommonVO" parameterType="com.cart.eco.common.service.CommonVO">
       select * 
