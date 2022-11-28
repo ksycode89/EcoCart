@@ -18,7 +18,6 @@ public class MorderdetailVO {
 	private int orderRemNum; //발주잔량
 	private int sumPrice; // 공급가액
 	
-	
 	private int checkNum; //조인검사수량
 	private String proItme;
 	private int empNum; //담당자 사번
