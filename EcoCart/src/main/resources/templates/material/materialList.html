@@ -16,8 +16,6 @@
 			<h2>발주현황</h2>
 			<label for="code_group" style="width:80px;">담당자</label>
 			<input type="text" id="codeGroup" name="code_group" class="form-control" style="width:150px; display:inline"><br>
-			<label for="client_code" style="width:80px;">거래처명</label>
-			<input type="text" id="clientCode" name="client_code"  class="form-control" style="width:150px; display:inline"><br>
 			<label for="code_group" style="width:80px;">발주날짜</label>
 			<input type="date"  id="searchDate" class="form-control" style="width:150px; display:inline">
 			<button type="button" id="SelectBtn">검색</button>
@@ -40,162 +38,155 @@
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 		
-   var gridData = [
-       {
-          name:'',
-          artist:'',
-          type:'',
-          release:'',
-          genre:''
-       }];
-   
-   var grid = new tui.Grid({
-	    el: document.getElementById('grid'),
+	   var gridData = [
+	       {
+	          name:'',
+	          artist:'',
+	          type:'',
+	          release:'',
+	          genre:''
+	       }];
+	   
+	   var grid = new tui.Grid({
+		    el: document.getElementById('grid'),
+		    data: gridData,
+		    scrollX: false,
+		    scrollY: false,
+		    rowHeaders : ['checkbox'],
+		    columns: [
+		      {
+		        header: '발주번호',
+		        name: 'orderNo'
+		      },
+		      {
+		        header: '발주일자',
+		        name: 'orderDate',
+		        filter: 'date',
+		        option:{
+		        	format:'yyyy-MM-dd'
+		        }
+		      },
+		      {
+		        header: '납기일',
+		        name: 'orderReceiving'
+		      },
+		        {
+		        header: '담당자',
+		        name: 'empName',
+		        filter: 'text'
+		          }
+		    ],
+		    pageOptions: {
+		        useClient: true,
+		        perPage: 5
+		      },
+		      
+		  });
+	   
+	   
+	   grid.on('click',(ab)=>{
+		   console.log(ab.nativeEvent.target.innerText)
+		   $.ajax({
+			   url:'/detailList',
+			   data : {'orderNo' : ab.nativeEvent.target.innerText },
+			   success : function(data) {
+				   console.log(data);
+				   grid2.resetData(data);				   
+				   
+			   },
+			   error :  function(reject) {
+				   console.log(111)
+			   }
+		   })
+		   
+	   })
+	   
+	   //상세조회
+	  var grid2 = new tui.Grid({
+	    el: document.getElementById('grid2'),
+	    rowHeders : ['rowNum'], 
 	    data: gridData,
 	    scrollX: false,
 	    scrollY: false,
-	    rowHeaders : ['checkbox'],
+	    
 	    columns: [
 	      {
-	        header: '발주번호',
-	        name: 'orderNo'
+	        header: '품번',
+	        name: 'proCode'
 	      },
 	      {
-	        header: '발주일자',
-	        name: 'orderDate',
-	        filter: 'date',
-	        option:{
-	        	format:'yyyy-MM-dd'
-	        }
+	        header: '품명',
+	        name: 'proName'
 	      },
 	      {
-	        header: '납기일',
-	        name: 'orderReceiving'
+	        header: '규격',
+	        name: 'standard'
 	      },
+	      {
+	        header: '단위',
+	        name: 'unit'
+	      },
+	      {
+	        header: '발주수량',
+	        name: 'orderNum'
+	        },
 	        {
-	        header: '담당자',
-	        name: 'empName',
-	        filter: 'text'
+	        header: '검사수량',
+	        name: 'checkNum'
 	          }
-	    ],
-	    pageOptions: {
-	        useClient: true,
-	        perPage: 5
-	      },
-	      
-	  });
-   
-   
-   grid.on('click',(ab)=>{
-	   console.log(ab.nativeEvent.target.innerText)
-	   $.ajax({
-		   url:'/detailList',
-		   data : {'orderNo' : ab.nativeEvent.target.innerText },
-		   success : function(data) {
-			   console.log(data);
-			   grid2.resetData(data);				   
-			   
-		   },
-		   error :  function(reject) {
-			   console.log(111)
-		   }
+	    ]
+	  });	  
+	   
+	   document.addEventListener("DOMContentLoaded", selectList)
+	   
+	   SelectBtn.addEventListener('click',()=>{
+	   		grid.filter('empName',[{code:'contain', value:$('#codeGroup').val()}]);
+	   		if($('#searchDate').val()!= ''){
+	   	   		grid.filter('orderDate',[{code:'eq', value:$('#searchDate').val()}]);
+	   		} 
 	   })
 	   
-   })
-   
-   //상세조회
-  var grid2 = new tui.Grid({
-    el: document.getElementById('grid2'),
-    rowHeders : ['rowNum'], 
-    data: gridData,
-    scrollX: false,
-    scrollY: false,
-    
-    columns: [
-      {
-        header: '품번',
-        name: 'proCode'
-      },
-      {
-        header: '품명',
-        name: 'proName'
-      },
-      {
-        header: '규격',
-        name: 'standard'
-      },
-      {
-        header: '단위',
-        name: 'unit'
-      },
-      {
-        header: '발주수량',
-        name: 'orderNum'
-        },
-        {
-        header: '검사수량',
-        name: 'checkNum'
-          },
-          {
-        header: '구분',
-        name: 'orderGroup'
-            }
-    ]
-  });	  
-   
-   document.addEventListener("DOMContentLoaded", selectList)
-   
-   SelectBtn.addEventListener('click',()=>{
-   		grid.filter('manager',[{code:'contain', value:$('#codeGroup').val()}]);
-   		grid.filter('clientName',[{code:'contain', value:$('#clientCode').val()}]);
-   		if($('#searchDate').val()!= ''){
-   	   		grid.filter('orderDate',[{code:'eq', value:$('#searchDate').val()}]);
-   		} 
-   })
-   
-   ResetBtn.addEventListener("click", ()=> {
-	   document.getElementById('codeGroup').value='';
-	   document.getElementById('clientCode').value='';
-	   document.getElementById('searchDate').value='';
-	   grid.unfilter('manager')
-	   grid.unfilter('clientName')
-	   grid.unfilter('orderDate')
-   })
-	
-	function selectList() {
-		$.ajax({
-			url : '/materialListInfo',
-			success : function(data) {
-				grid.resetData(data)
-				console.log(data);
-			},
-			error : function(reject) {
-				console.log(reject);
-			}
-		})
-	}
-   
-   orderDelete.addEventListener("click", () => {
-	   console.log(grid.getCheckedRows())
-		  $.ajax({
-		   url : '/deleteInfo',
-		   type : 'POST',
-		   contentType: 'application/json',
-   		data: JSON.stringify(grid.getCheckedRows()),
-   	
-   		beforeSend : function(xhr){
-          		xhr.setRequestHeader(header, token);
-       },
-       success : function(data) {
-    	   console.log(data);
-    	   location.reload();
-       },
-       error : function(error) {
-    	   console.log(error);
-       }
-	   }) 
-   })
-   
+	   ResetBtn.addEventListener("click", ()=> {
+		   document.getElementById('codeGroup').value='';
+		   document.getElementById('searchDate').value='';
+		   grid.unfilter('empName')
+		   grid.unfilter('clientName')
+		   grid.unfilter('orderDate')
+	   })
+		
+		function selectList() {
+			$.ajax({
+				url : '/materialListInfo',
+				success : function(data) {
+					grid.resetData(data)
+					console.log(data);
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			})
+		}
+	   
+	   orderDelete.addEventListener("click", () => {
+		   console.log(grid.getCheckedRows())
+			  $.ajax({
+			   url : '/deleteInfo',
+			   type : 'POST',
+			   contentType: 'application/json',
+	   		data: JSON.stringify(grid.getCheckedRows()),
+	   		beforeSend : function(xhr){
+	          		xhr.setRequestHeader(header, token);
+	       },
+	       success : function(data) {
+	    	   console.log(data);
+	    	   location.reload();
+	       },
+	       error : function(error) {
+	    	   console.log(error);
+	       }
+		   }) 
+	   })
+	   
    </script>
 	</div>
 </body>

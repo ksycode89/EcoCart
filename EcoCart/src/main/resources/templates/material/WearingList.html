@@ -19,9 +19,6 @@
 		<tr>
 			<td> 부서 <input type="text" id="empDept"> <i class="bi bi-search" id="emplist" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="cursor:pointer"> </i> 사원 <input type="text" id="empName"> </td>
 		</tr>
-		<tr>
-			<td> 거래처 <input type="text" id="clientCode"></td>
-		</tr>
 		</table>
 	</div>
 	<br>
@@ -71,16 +68,12 @@
 	    columns: [
 	      {
 	    	
-	        header: '발주번호',
+	        header: '입고번호',
 	        name: 'orderNo'
 	      },
 	      {
-	        header: '발주일자',
-	        name: 'orderDate'
-	      },
-	      {
-	        header: '납기일',
-	        name: 'orderReceiving',
+	        header: '입고일자',
+	        name: 'receiving_date'
 	      },
 	      {
 	        header: '담당자',
@@ -169,11 +162,22 @@
       })
 	  
 	  
+	  modalGrid.on("click", event => {
+		
+		  let managers = [
+			  {
+				  "empName" :  modalGrid.getRow(event.rowKey).empName,
+    			  "empDept" :  modalGrid.getRow(event.rowKey).empDept,
+    			  "empNum" :  modalGrid.getRow(event.rowKey).empNum
+				  
+			  }
+		  ]
+	  })
 	  
   
   	emplist.addEventListener("click", () => {
   		  $.ajax({
-         url : 'selectOrList',
+         url : 'ajax/list',
          type : 'POST',
          beforeSend : function(xhr){
         	xhr.setRequestHeader(header, token);

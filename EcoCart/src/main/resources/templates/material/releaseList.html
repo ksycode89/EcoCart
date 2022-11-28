@@ -10,65 +10,18 @@
 <body>
 	<div layout:fragment="content" class="page-content">
 		<div id="content" class="center">
-			<h3>출고현황</h3>
+			<h2>출고현황</h2>
 			&nbsp;
-			<table class="mb-5">
-				<tr>
-					<td>출고기간 <input type="date"> ~ <input type="date"></td>
-				</tr>
-				<tr>
-					<td>출고창고 <input type="text"> <i class="bi bi-search"></i>
-						<input type="text"></td>
-				</tr>
-				<tr>
-					<td>공정 <input type="text"> <i class="bi bi-search"></i>
-						<input type="text"> <button id="list">조회</button> </td>
-				</tr>
-			</table>
 		</div>
-
-		<div id="grid"></div>
-
 		<div style="margin-left: 3px;">
-			<!-- Button trigger modal -->
-		<!--  <button id="selectCno" type="button" class="btn btn-primary"
-				data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-				style="width: 140px; background-color: black; color: white; float: right; margin: 5px;">출고요청현황
-			</button>-->
-
-
-			<!-- Modal -->
-			<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
-				data-bs-keyboard="false" tabindex="-1"
-				aria-labelledby="staticBackdropLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="staticBackdropLabel">출고요청현황</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-						<table>
-							<tr>
-								<td>출고번호 <input type="text">
-								 </td>
-							</tr>
-							</table>
-							<div id="modalGrid"></div>
-							<div id="modalGrid1"></div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								data-bs-dismiss="modal">확인</button>
-							<button type="button" class="btn btn-secondary"
-								data-bs-dismiss="modal">조회</button>
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
+		
+		<div id="grid"></div>
+		<br>
+		<br>
+		<br>
 		<div id="grid2"></div>
+		
 		<script>
 	   const gridData = [
 	       {
@@ -79,7 +32,8 @@
 	          release:'',
 	          genre:''
 	       }];
-	   const grid = new tui.Grid({
+	   
+	   var grid = new tui.Grid({
 		    el: document.getElementById('grid'),
 		    data: gridData,
 		    scrollX: false,
@@ -88,121 +42,79 @@
 		    columns: [
 		      {
 		    	
-		        header: '출고번호',
-		        name: '발주번호'
+		        header: '출고코드',
+		        name: 'releaseCode'
 		      },
 		      {
 		        header: '출고일자',
-		        name: '거래처'
+		        name: 'releaseDate'
 		      },
 		      {
-		        header: '출고창고',
-		        name: '담당자'
-		      },
-		      {
-			    header: '입고공정',
-			    name: '담당자'
-			  },
-		      {
-			    header: '출고장소',
-			    name: '담당자'
-			  },
-		      {
-			    header: '비고',
-			    name: '담당자'
+			    header: '지시코드',
+			    name: 'mfOrderCode'
 			  }
 		    ]
 		  });
+		
+	  var grid2 = new tui.Grid({
+	    el: document.getElementById('grid2'),
+	    scrollX: false,
+	    scrollY: false,
+	    columns: [
+		  {
+		    header: 'NO',
+		    name: 'releaseNo'
+		  },
+	      {
+	        header: '자재코드',
+	        name: 'proCode'
+	      },
+	      {
+	        header: '자재명',
+	        name: 'proName'
+	      },
+	       {
+	        header: '출고상태',
+	        name: 'releaseStatus'
+	       },
+	      {
+	        header: 'LOT NO',
+	        name: 'lotCode'
+	       }
+	    ]
+	  });
+	  
+	  document.addEventListener("DOMContentLoaded", mrselectList)
+	  
+	  function mrselectList(ev) {
+			$.ajax({
+				url : '/selectMrList',
+				success : function(data) {
+					grid.resetData(data)
+					console.log(data);
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			})
+		}
+	  
+	  grid.on('click', (ab) => {
+		  console.log(ab.nativeEvent.target.innerText);
+		  $.ajax({
+			  url : '/dataList',
+			  data : {'releaseCode' : ab.nativeEvent.target.innerText},
+			  success : function(data) {
+				  console.log(data)
+				  grid2.resetData(data);
+			  },
+			  error : function(error) {
+				  console.log(error)
+			  }
+		  })
+	  })
 	   
-	</script>
-
-		<script>
-   
-	
-  const grid2 = new tui.Grid({
-    el: document.getElementById('grid2'),
-    data: gridData,
-    scrollX: false,
-    scrollY: false,
-    columns: [
-	  {
-	    header: 'NO',
-	    name: '발주일자'
-	  },
-      {
-        header: '품번',
-        name: '품번'
-      },
-      {
-        header: '품명',
-        name: '품명'
-      },
-      {
-        header: '규격',
-        name: '규격'
-      },
-      {
-        header: '단위',
-        name: '단위'
-      },
-      {
-        header: '요청수량',
-        name: '납기일'
-        },
-        {
-        header: '출고수량',
-        name: '입고예정일'
-          },
-          {
-        header: 'LOT NO',
-        name: '발주수량'
-            }
-    ]
-  });
-  
-  var modalGrid = new tui.Grid({
-      el: document.getElementById('modalGrid'),
-      bodyHeight: 200,
-      data: [{
-         planCode: 'pro12309',
-         planName: '20221115',
-         planDCode: 'hello123',
-         productName: 'oS'
-      }],
-      rowHeaders: ['checkbox'],
-      scrollX: true,
-      scrollY: true,
-      columns: [
-         {
-            header: '청구일자',
-            name: 'planCode',
-         },
-         {
-            header: '지시번호',
-            name: 'planName',
-         },
-         {
-            header: 'NO',
-            name: 'planDCode'
-         },
-         {
-            header: '품번',
-            name: 'productName'
-         },
-         {
-            header: '품명',
-            name: 'productName'
-         },
-         {
-            header: '규격',
-            name: 'productName'
-         }
-      ]
-   });
-  
-    staticBackdrop.addEventListener('shown.bs.modal', () => {
-    	modalGrid.refreshLayout(); 
-    })
+    
 	    
    </script>
 

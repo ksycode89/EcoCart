@@ -196,6 +196,10 @@
               name: 'empName',
             },
             {
+                header: '담당자사번',
+                name: 'empNum',
+            },
+            {
               header: '비고',
               name: 'comments',
               editor: 'text'
@@ -309,7 +313,8 @@
     	  let managers = [
     		  {
     			  "empName" :  modalGrid.getRow(event.rowKey).empName,
-    			  "empDept" :  modalGrid.getRow(event.rowKey).empDept
+    			  "empDept" :  modalGrid.getRow(event.rowKey).empDept,
+    			  "empNum" :  modalGrid.getRow(event.rowKey).empNum
     		  }
     	  ] 
     	
