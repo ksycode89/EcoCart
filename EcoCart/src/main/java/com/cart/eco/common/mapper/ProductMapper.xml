@@ -11,21 +11,22 @@
 	<!--물품 조회.  -->
 	<select id="selectPro" parameterType="com.cart.eco.common.service.ProAllVO" resultType="com.cart.eco.common.service.ProAllVO">
 		
-		select p.pro_code, c.code_id, c.code_name, cl.client_code, 
-       cl.client_name, o.pro_manager, e.emp_name, p.pro_name,
-       c2.code_name "pro_group", p.lot_used, p.test_used, p.pro_hire,p.pro_num,
-       o.lead_time, o.bs, o.ppd, o.cost, o.sell_price, o.standard, o.unit
-		from product p
-    join common_code c
-     on p.pro_item = c.code_id
-    join product_option o
-     on p.pro_code = o.pro_code
-    join client cl
-     on o.client_code = cl.client_code
-    join employees e
-     on e.emp_num = o.pro_manager
-    join common_code c2
-     on p.pro_group = c2.code_id
+		SELECT p.pro_code, c.code_id, c.code_name, cl.client_code, 
+       		   cl.client_name, o.pro_manager, e.emp_name, p.pro_name,
+               c2.code_name "pro_group", p.lot_used, p.test_used, p.pro_hire,p.pro_num,
+               o.lead_time, o.bs, o.ppd, o.cost, o.sell_price, o.standard, o.unit,p.pro_get
+               ,p.pro_group "code_content"
+		FROM product p
+		   LEFT JOIN common_code c
+		    ON p.pro_item = c.code_id
+		   LEFT JOIN product_option o
+		    ON p.pro_code = o.pro_code
+		   LEFT JOIN client cl
+		    ON o.client_code = cl.client_code
+		   LEFT JOIN employees e
+		    ON e.emp_num = o.pro_manager
+		   JOIN common_code c2
+		    ON p.pro_group = c2.code_id
 		
 		 <where>
 		<!--  <if test="proItem != null and !proItem.equals('')">
@@ -46,10 +47,40 @@
          <if test="testUsed != null and !testUsed.equals('')">
            AND p.test_used = #{testUsed} 
          </if>
+         <if test="proGet != null and !proGet.equals('')">
+           AND p.pro_get = #{proGet} 
+         </if>
    		</where> 
    		
    		ORDER BY pro_code
 	</select>
 	
+	<!--물품 등록.-->
+	<insert id="insertPro" parameterType="com.cart.eco.common.service.ProAllVO">
+		       
+		INSERT INTO product (pro_code, pro_name, pro_group,pro_item, pro_get,lot_used, test_used,
+							pro_hire,pro_num)
+		VALUES(#{proCode},#{proName},#{proGroup},#{proItem},null,#{lotUsed},#{testUsed},#{proHire},0)
+	</insert>
+		
+		 
+	
+	 <!--물품 옵션 등록.-->
+	<insert id="insertProOption" parameterType="com.cart.eco.common.service.ProAllVO">
+	
+		INSERT INTO product_option (pro_code,lead_time, bs, ppd, client_code, pro_manager, cost, sell_price)
+		VALUES(#{proCode},#{leadTime},#{bs},#{ppd},#{clientCode},#{proManager},#{cost},#{sellPrice})
+		
+	</insert>
+	
+	<!--물품 수정.-->
+	<update id="updatePro" parameterType="com.cart.eco.common.service.ProAllVO">
+	
+	</update>
+	
+	<!--물품 삭제.-->
+	<delete id="deletePro" parameterType="com.cart.eco.common.service.ProAllVO">
+	
+	</delete>
 	
 </mapper>

@@ -10,12 +10,14 @@ public interface ProductMapper {
 	//제품검색 이름:코드만
 	public List<ProductVO> selectName();
 	
-	// 물품 등록.
-	public List<ProAllVO> insertPro(ProAllVO vo);
 	// 물품 조회.
 	public List<ProAllVO> selectPro(ProAllVO vo);
+	// 물품 등록.
+	public int insertPro(ProAllVO vo);
+	// 물품 옵션 등록.
+	public int insertProOption(ProAllVO vo);
 	// 물품 수정.
-	
+	public int updatePro(ProAllVO vo);
 	// 물품 삭제.
-
+	public int deletePro(ProAllVO vo);
 }

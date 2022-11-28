@@ -19,7 +19,7 @@ public class ProAllVO {
 	private String proGroup; 		// 구분
 	private String lotUsed;			// LOT 여부
 	private String testUsed; 		// 검사 여부
-	private Date proHire;			// 등록일
+	private String proHire;			// 등록일
 	private int leadTime; 			// 제작소요일
 	private int bs; 				// 안전재고량
 	private int ppd; 				// 일생산량
@@ -29,5 +29,7 @@ public class ProAllVO {
 	private String standard; 		// 규격
 	private String unit; 			// 단위
 	private String codeContent;		// 반제품 완제품
+	
+	private String proGet;			// 조달구분
 	
 }

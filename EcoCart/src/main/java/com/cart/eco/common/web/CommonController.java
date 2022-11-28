@@ -160,6 +160,13 @@ public class CommonController {
 		return proService.selectPro(vo);
 	}
 	
+	// 물품 등록 ajax.
+	@PostMapping("ajax/insertPro")
+	@ResponseBody
+	public int insertPro(ProAllVO vo){
+		System.out.println("insertPro" +vo);
+		return proService.insertPro(vo);
+	}
 		
 	//공통코드가져오기
 	      
