@@ -32,13 +32,22 @@
 	</select>
 	
 	<select id="proInfo" parameterType="com.cart.eco.material.service.MorderVO" resultType="com.cart.eco.material.service.MorderVO">
-		select p.pro_code, p.pro_name, o.cost, o.sell_price, o.standard, unit, c.client_code
+		select p.pro_code, p.pro_name, o.cost, o.sell_price, o.standard, o.unit, c.client_code
 		from product p 
         left outer join product_option o
 		  on p.pro_code = o.pro_code
         left join client c
         on o.client_code = c.client_code
         where p.pro_group = 'j2'
+	</select>
+	
+	<select id="selectOrList" parameterType="com.cart.eco.material.service.OrderCheckVO" resultType="com.cart.eco.material.service.OrderCheckVO">
+		select e.emp_name, e.emp_dept, c.client_name, order_group, order_date, order_receiving
+		from m_order m
+		left outer join employees e
+		on m.emp_num = e.emp_num
+		left outer join client c
+		on m.client_code = c.client_code
 	</select>
 	
 	<insert id="insertOrder" parameterType="com.cart.eco.material.service.MorderVO">

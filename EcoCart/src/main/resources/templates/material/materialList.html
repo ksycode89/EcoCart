@@ -176,12 +176,13 @@
 	}
    
    orderDelete.addEventListener("click", () => {
-	   $.ajax({
+	   console.log(grid.getCheckedRows())
+		  $.ajax({
 		   url : '/deleteInfo',
 		   type : 'POST',
 		   contentType: 'application/json',
    		data: JSON.stringify(grid.getCheckedRows()),
-   		dataType: 'JSON',
+   	
    		beforeSend : function(xhr){
           		xhr.setRequestHeader(header, token);
        },
@@ -192,7 +193,7 @@
        error : function(error) {
     	   console.log(error);
        }
-	   })
+	   }) 
    })
    
    </script>

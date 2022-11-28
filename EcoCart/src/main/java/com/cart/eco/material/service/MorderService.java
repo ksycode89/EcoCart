@@ -18,10 +18,8 @@ public interface MorderService {
 	
 	// 발주등록
 	public int insertOrder(ModerReqVO morderVO);
-	
-	
 
 	// 발주삭제
-	public int deleteOrder(MorderVO morderVO);
+	public String deleteOrder(List<MorderVO> morderVO);
 	
 }
