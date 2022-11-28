@@ -511,6 +511,22 @@
         	        		    	               	},
         	        		    	        		success: function(data){
         	        		    	        			console.log(data);
+                	        		    				$.ajax({
+                	        		    	        		url: '/mfReleaseDetailUpdate',
+                	        		    	        		method: 'POST',
+                	        		    	        		contentType: 'application/json',
+                	        		    	        		data: JSON.stringify(mfNeedGrid.getData()),
+                	        		    	        		dataType: 'JSON',
+                	        		    	        		beforeSend : function(xhr){
+                	        		    	               		xhr.setRequestHeader(header, token);
+                	        		    	               	},
+                	        		    	        		success: function(data){
+                	        		    	        			console.log(data);
+                	        		    	        		},
+                	        		    	        		error: function(error){
+                	        	        		    			console.log(error);
+                	        		    	        		}
+                	        		    	        	});
         	        		    	        		},
         	        		    	        		error: function(error){
         	        	        		    			console.log(error);

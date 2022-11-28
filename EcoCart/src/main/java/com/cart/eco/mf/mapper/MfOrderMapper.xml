@@ -110,13 +110,17 @@
 		ON (rd.lot_code = mrd.lot_code)
 		WHEN MATCHED THEN
 		UPDATE SET rd.rest_num = rd.rest_num - mrd.request_num
-        WHERE mrd.release_code = #{releaseCode}
+        WHERE rd.lot_code = #{lotCode}
+        AND rd.pro_code = #{proCode}
+        AND mrd.release_code = #{releaseCode}
+
 	</update>
 	
 	<update id="updateMfOrderLotDetail" parameterType="com.cart.eco.mf.service.MfOrderVO">
-		UPDATE receiving_detail
+		UPDATE m_release_detail
 		SET release_status = '승인'
-		WHERE release_no = '대기'
+		WHERE release_code = #{releaseCode}
+		AND pro_code = #{proCode}
 	</update>
 	
 	<update id="decideMfOrder" parameterType="com.cart.eco.mf.service.MfOrderVO">
