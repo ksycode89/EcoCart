@@ -9,7 +9,6 @@ import com.cart.eco.common.mapper.BomMapper;
 import com.cart.eco.common.service.BomChildernVO;
 import com.cart.eco.common.service.BomService;
 import com.cart.eco.common.service.BomVO;
-import com.cart.eco.common.service.ToastGridVO;
 
 @Service
 public class BomServiceImpl  implements BomService{
@@ -40,12 +39,18 @@ public class BomServiceImpl  implements BomService{
 	public String bomInsertOP(List<BomChildernVO> vo) {
 		String result = "입력에 실패했습니다.";
 		int reSum = 0 ;
-		 String bomCode = vo.get(0).getBomCode();
+		 String bomCode = vo.get(vo.size()-1).getBomCode();
+		 
+		System.out.println("bomCode"+bomCode);
+		
 		for(int i=0; i <vo.size()-1; i++) {
 			vo.get(i).setBomCode(bomCode);
+			
+			System.out.println("inner imple"+vo.get(i));
+			
 			reSum += mapper.bomInsertOP(vo.get(i));
 		}
-		if (reSum == vo.size()) {
+		if (reSum == vo.size()-1) {
 			result = reSum+"건 입력되었습니다.";
 		}
 		return result;

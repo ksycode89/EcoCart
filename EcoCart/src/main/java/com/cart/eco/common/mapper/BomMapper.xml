@@ -35,11 +35,17 @@
           <if test="bomFire == null and bomFire.equals('')">
             ,'9999/01/01'
          </if>
-        	 ,null
-          <if test="totalPrice != null and !totalPrice.equals('')">
+        	 
+          <if test="bomNeedDay != 0 ">
+            ,#{bomNeedDay}
+         </if>
+          <if test="bomNeedDay == 0 ">
+           , null
+         </if>
+          <if test="totalPrice != 0 ">
             ,#{totalPrice}
          </if>
-          <if test="totalPrice == null and totalPrice.equals('')">
+          <if test="totalPrice == 0">
            , null
          </if>
          ,#{bomManager}
@@ -49,7 +55,15 @@
 	<!-- bom insert option -->
 	<insert id="bomInsertOP" parameterType="com.cart.eco.common.service.BomChildernVO">
 		insert into bom_children
-		values ((select max(ch_no)+1 from bom_children),#{bomCode},#{proCdoe},#{bomNum},#{loss})
+		values ((select max(ch_no)+1 from bom_children),#{bomCode},#{proCode}
+			 ,null	,#{bomNum}
+          <if test="loss != 0  ">
+           ,#{loss}
+         </if>
+          <if test="loss == 0 ">
+           ,0
+         </if>
+		,#{needNum})
 		
 		
 	</insert>
