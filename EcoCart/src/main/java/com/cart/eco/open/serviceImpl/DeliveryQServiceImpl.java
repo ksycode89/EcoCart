@@ -142,7 +142,15 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 		return result;
 	}			
 		
-	
+	@Override
+	public int updateProduct(List<ProductVO> vo) {
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			
+			result  += mapper.updateProduct(vo.get(i));
+		}
+		return result;
+	}
 	//////////////////////////////////////////////////////////////////////////
 	
 	//출고처리 Pro
@@ -194,11 +202,36 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 	}
 	
 	@Override
-	public int updateInfo(DeliveryProVO vo) {
+	public int updateInfo(List<DeliveryProVO> vo) {
 		// TODO Auto-generated method stub
-		return mapper.updateInfo(vo);
+			int result = 0;
+			for(int i = 0; i< vo.size(); i++) {
+				
+				result  += mapper.updateInfo(vo.get(i));
+			}
+			return result;
+		
+	}
+
+	
+	//배솓 등록 조회 (등록만)
+	@Override
+	public List<DeliveryGVO> deliveryGst() {
+		// TODO Auto-generated method stub
+		return mapper.deliveryGst();
 	}
 	
+	
+	@Override
+	public int updateGst(List<DeliveryGVO> vo) {
+		// TODO Auto-generated method stub
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			
+			result  += mapper.updateGst(vo.get(i));
+		}
+		return result;
+	}
 	////////////////////////////////////////////////////////////////////////
 	
 	//제품 재고/BOM수급 현황
@@ -291,6 +324,10 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 		// TODO Auto-generated method stub
 		return mapper.getDlivyPCode();
 	}
+
+	
+
+	
 
 
 	

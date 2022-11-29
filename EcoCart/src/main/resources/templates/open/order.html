@@ -162,13 +162,15 @@
 	                 formatter : function (ev){
 	                   	 console.log(ev)
 	                 return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                    }
+	                    },
+	                  align : 'right'
 	                 
 	             },
 	             {
                	  	header:'상태',
                	  	name: 'orderSt',
-               	 	filter : 'text'
+               	 	filter : 'text',
+               	 	align : 'center'
                  }
                  
 	            
@@ -192,7 +194,7 @@
 	                name: 'proName'
 	             },
 	             {
-	             	header: '수량',
+	             	header: '총수량',
 	                name: 'sellNum',
 	                formatter : function (ev){
 	                   	 console.log(ev)
@@ -200,12 +202,21 @@
 	                    }
 	             },
 	             {
+	            	header: '남품수량',
+		            name: 'soldNum',
+	                formatter : function (ev){
+	                   	 console.log(ev)
+	                   	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                    }
+		             },
+	             {
 	              	header: '단가',
 	                 name: 'sellPrice',
 	                 formatter : function (ev){
 	                   	 console.log(ev)
 	                   	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                    }
+	                    },
+	                    align : 'right'
 	              },
 	             
 	             {
@@ -214,7 +225,8 @@
 	                 formatter : function (ev){
 	                   	 console.log(ev)
 	                   	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                    }
+	                    },
+	                 align : 'right'
 	              }
 	              
 	        ]
@@ -259,8 +271,10 @@
                 	name: 'estmtCode'
                 },
                 {
-                	header: '거래처코드',
-                	name: 'clientCode'
+                	header: '거래처코드-h',
+                	name: 'clientCode',
+                	hidden : 1
+                	
                 },
                 {
                 	header: '거래처',
@@ -280,7 +294,8 @@
                      formatter : function (ev){
 	                   	 console.log(ev)
 	                 return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                    }
+	                    },
+	                align : 'right'
                   },
 	        ]
 		});
@@ -294,8 +309,9 @@
             scrollY: false,
 	        columns: [
 	        	{
-                	header: '주문코드',
-                	name: 'orderCode'
+                	header: '주문코드-h',
+                	name: 'orderCode',
+                	hidden : 1
                 },
 	        	{
                 	header: '제품코드',
@@ -317,14 +333,16 @@
                     name: 'sellPrice',
                     formatter : function (ev){
                    	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                    }
+                    },
+                    align : 'right'
                  },
                  {
                   	header: '합계액',
                      name: 'sumPrice',
                      formatter : function (ev){
                     	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                     }
+                     },
+                     align : 'right'
                      
                   },
 	        ]
@@ -469,10 +487,10 @@
 						url:'/insertOrderD',
 						dataType:'JSON',
 						contentType : 'application/json',
+						data: JSON.stringify(grid5.getData()),
 						beforeSend : function(xhr){
 			           		xhr.setRequestHeader(header, token);
 			           	 },
-						data: JSON.stringify(grid5.getData()),
 						success : function(result) {
 							console.log(result);
 						
@@ -489,6 +507,7 @@
 								success : function(result) {
 									console.log(result)
 									location.reload(result);
+									swal("주문 등록 완료")
 								},
 								error : function(error){
 									console.log(error);

@@ -15,7 +15,6 @@
 	<div layout:fragment="content" class="page-content">
 				
 		<div class="mb-1">
-			
 			<div class="filters" style="height:35px">
 				<label for="planStatus" style="width:100px">진행구분</label>
 				<label><input type="radio" id="planAll"  name="plan"value="all" checked>전체</label>&nbsp;
@@ -149,7 +148,8 @@
         columns: [
             {
             	header: 'no',
-            	name: 'dlivyQno'
+            	name: 'dlivyQno',
+            	hidden : 1
             },
         	{
         		header: '주문코드',
@@ -164,7 +164,7 @@
             	name: 'proName'
             },
             {
-            	header: '출고수량',
+            	header: '출고요청',
                 name: 'dsellNum'
              }
         ]
@@ -183,15 +183,17 @@
         columns: [
         	{
             	header: '출고요청코드-h',
-            	name: 'dlivyQCode'
+            	name: 'dlivyQCode',
+		        hidden : 1
             },
             {
             	header: '주문코드',
             	name: 'orderCode',
             },
             {
-            	header: '거래처코드',
+            	header: '거래처코드-h',
             	name: 'clientCode',
+            	hidden : 1
             },
             {
             	header: '거래처이름',
@@ -216,12 +218,15 @@
         scrollY: false,
         columns: [
         	{
-            	header: '출고요청코드',
-            	name: 'dlivyQCode'
+            	header: '출고요청코드-h',
+            	name: 'dlivyQCode',
+		        hidden : 1
+            	
             },
         	{
             	header: '번호',
-            	name: 'orderDno'
+            	name: 'orderDno',
+		        hidden : 1
             	
             },
         	{
@@ -254,14 +259,16 @@
 		        	  console.log(grid5.getValue(ev.rowKey, "doDlivyNum"))
 		        	  let a = grid5.getValue(ev.rowKey, "doDlivyNum")
 		        	  if(ev.nextValue > a){
-		        		  alert("적은수량을 입력하세요.")
+		        		  swal("적은수량을 입력하세요.")
 		        		  ev.stop()
 		        	  }
 		          }  
 		      },
 		      {
 		          header: '주문코드-h',
-		          name: 'orderCode'
+		          name: 'orderCode',
+		          hidden : 1
+		          
 		      },
         ]
 	});
@@ -340,7 +347,6 @@
 			url:'/listOrderd?orderCode='+a,
 			success : function(result){
 				for(let i =0; i< result.length; i++){
-					console.log($("#dlivyCode").val())
 					result[i].dlivyQCode = $("#dlivyCode").val()
 				}
 				grid5.resetData(result)
@@ -438,7 +444,7 @@
 							})
 							
 						},
-						error : function(error){
+						error : function(error){s
 							console.log(error);
 						}
 					})
@@ -448,11 +454,12 @@
 				}
 			})	
 			DeliveryList();
+			swal("출고요청 완료")
 			//등록버튼 누르면 모달창 닫고 화면
 			 $('#staticBackdrop').modal('hide');
 			
 		}else{
-			alert("다시 입력해주세요.")
+			swal("다시 입력해주세요.")
 			getCode();
 		}	
 				

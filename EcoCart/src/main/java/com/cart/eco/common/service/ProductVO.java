@@ -21,4 +21,5 @@ public class ProductVO {
 
 	
 	private int sellPrice;
+	private int dsellNum;
 }

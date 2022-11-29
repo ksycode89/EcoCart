@@ -18,16 +18,22 @@
 		
 			<div class="col-md-3 mb-1">
 				<div class="input-group mb-3">
-					<label for="staticEmail" class="col-form-label" style="margin-right:10px">출고처리코드</label>
-					<input type="text" id="dlivyProCode"  readonly class="form-control" placeholder="출고처리코드" aria-label="Recipient's username" aria-describedby="button-addon2"> 
+					<label for="planName" style="margin-right:10px">출고등록코드</label>
+					<input type="text" id="dlivyProCode"  style="width:100px;" readonly class="form-control" placeholder="출고등록코드" > 
 					<span class="input-group-text"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="basic-addon1" style="cursor: pointer"><i
 						class="bi bi-search"></i></span>
 				</div>
 			</div>
 			
-			
-            <div style="height:50px;">
-				<label for="planName" style="width:100px">출고처리일자</label>
+           <div style="height:50px;">
+				<label for="planName" style="width:100px">배송코드</label>
+				<input type="text" class="form-control" style="width:200px; display:inline" id="getdlivyCode">&nbsp;
+          
+				<input type="hidden" class="form-control" style="width:200px; display:inline" id="getorderCode" readonly>&nbsp;
+           </div>
+           
+           <div style="height:50px;">
+				<label for="planName" style="width:100px">출고등록일자</label>
 				<input type="date" class="form-control" style="width:200px; display:inline" id="DateSearch">&nbsp;
            </div>
            
@@ -44,8 +50,8 @@
             </div>
             
             <div>
-            	<button type="button" class="btn btn-sm btn-primary" style="float:right; margin:5px; margin-right: 10px"
-		               data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="plusInfo()">정보 등록</button>   
+            	<button type="button" class="btn btn-sm btn-primary" style="float:right; margin:5px; margin-right: 5px" onclick="plusInfo()">배송정보등록</button>   
+            	<button onclick="deletePro()" type="button" class="btn-sm btn-primary" style="float:right; margin-right:5px; margin:5px;" >행삭제</button>
 				<button type="button"  style="float:right; margin:5px;" class="btn btn-sm btn-primary" onclick="addRow()">
 					<svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
 						<path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
@@ -64,7 +70,7 @@
 		    <div class="modal-content">
 		    
 		      <div class="modal-header">
-		        <h5 class="modal-title" id="staticBackdropLabel">출고처리</h5>
+		        <h5 class="modal-title" id="staticBackdropLabel">출고 등록 목록</h5>
 		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      </div>
 		      
@@ -91,15 +97,25 @@
 	const grid = new Grid({
         el: document.getElementById('grid'), // Container element
         scrollX: false,
-           scrollY: false,
+        scrollY: false,
+        rowHeaders : ['checkbox'],
         columns: [
             {
-            	header: '출고처리코드',
+            	header: '배송코드',
             	name: 'dlivyProCode',
             	filter : 'text'
             },
             {
-            	header: '출고처리일자',
+            	header: '출고등록코드-h',
+            	name: 'dlivyGCode',
+            	filter : 'text'
+            },
+            {
+            	header: '주문코드-h',
+            	name : 'orderCode',
+            },
+            {
+            	header: '배송일자',
             	name: 'dlivyDate',
             	filter : 'date'
             },
@@ -111,9 +127,26 @@
              {
              	header: '출고방법',
                 name: 'dlivyMth',
-                filter : 'text',
-                editor : 'text'
-               
+                formatter: 'listItemText',
+                editor: {
+                    type: 'select',
+                    options: {
+                      listItems: [
+	                      {
+	                        text: '챠량',
+	                        value: '차량'
+	                      },
+	                      {
+	                        text: '선박',
+	                        value: '선박'
+	                      },
+	                      {
+	                        text: '비행기',
+	                        value: '비행기'
+	                      }
+                	]
+             	   }
+                }
              },
              {
 		         header: '운송코드',
@@ -140,32 +173,32 @@
         el: document.getElementById('grid2'), // Container element
         scrollX: false,
         scrollY: false,
-        rowHeaders: ['checkbox'],
         columns: [
             {
-            	header: '출고처리코드',
-            	name: 'dlivyProCode',
-            	filter : 'text'
+            	header: '출고등록코드',
+            	name: 'dlivyGCode',
 
             },
             {
-            	header: '출고처리일자',
-            	name: 'dlivyDate',
-            	filter : 'date'
-          
+            	header: '주문코드',
+            	name: 'orderCode',
+
             },
             {
             	header: '거래처',
                 name: 'clientCode',
-                filter : 'text'
 
              },
              {
              	header: '담당자',
                 name: 'empNum',
-                filter : 'text'
 
-             }
+             },
+            {
+            	header: '출고등록일자',
+            	name: 'dlivyDate',
+          
+            },
         ]
 	});
     
@@ -186,17 +219,28 @@
 			success : function(result) {
 				console.log(result);
 				grid.resetData(result);
+				
+				//번호 가져오기
+				$.ajax({
+					url:'/getDlivyPCode',
+					success : function(result) {
+						$("#getdlivyCode").val(result[0].dlivyProCode);
+					},
+					error : function(error){
+						console.log(error);
+					}
+				})
 			},
 			error : function(error){
 				console.log(error);
 			}
 		})
-		
     }
-	
-	//모달창 출고처리 완료된 목록  (일단 모두)
+		
+   		
+	//모달창 출고 등록된 (등록만)
 	$.ajax({
-		url:'/listDeliveryPro',
+		url:'/deliveryGst',
 		success : function(result) {
 			console.log(result);
 			grid2.resetData(result);
@@ -214,9 +258,10 @@
 
 		console.log(grid2.getRow(event.rowKey))   //rowKey : 인덱스 번호  
 		// input 태그에 값 넣어주기.
-		$('#dlivyProCode').val(grid2.getRow(event.rowKey).dlivyProCode);
-		$('#DateSearch').val(grid2.getRow(event.rowKey).dlivyDate);
+		$('#dlivyProCode').val(grid2.getRow(event.rowKey).dlivyGCode);
+		$('#getorderCode').val(grid2.getRow(event.rowKey).orderCode);
 		$('#ClientSearch').val(grid2.getRow(event.rowKey).clientCode);
+		
 		// 모달창 숨기기.
 		$('#staticBackdrop').modal('hide');
 	})
@@ -224,33 +269,81 @@
 	// 그리드 행 추가
 	function addRow() {
 		
-		let data = { dlivyProCode :  $("#dlivyProCode").val(), dlivyDate : $('#DateSearch').val() , clientCode : $('#ClientSearch').val(), dlivyMth : ""
+		let data = { dlivyProCode :  $("#getdlivyCode").val(), dlivyGCode : $("#dlivyProCode").val() , orderCode : $("#getorderCode").val(), dlivyDate : "" , clientCode : $('#ClientSearch').val(), dlivyMth : ""
 					, dlivyCode : "", dlivyName : "", dlivyName : "", dlivyPnum : ""}
 		
 		grid.appendRow(data);
+		grid.check(grid.getRowCount()-1);
+		
 		
 	}
 	
+	//행삭제
+	function deletePro(){
+		grid.removeCheckedRows(true)
+	}
 	
 	//정보등록 
 	function plusInfo(){
-		$.ajax({
-			method:'POST',
-			url:'/updateInfo',
-			contentType : 'application/json',
-			dataType:'JSON',
-			data: grid5.getModifiedRows(updateRows), //+ 출고요청코드,
-			beforeSend : function(xhr){
-           		xhr.setRequestHeader(header, token);
-           	 },
-			success : function(result) {
-				console.log(result);
-				grid.restData()
-			},
-			error : function(error){
-				console.log(error);
-			}
-		})
+		
+		//빈값 없도록
+		if(grid.getValue(grid.getRowCount()-1, "dlivyMth") == ''){
+			swal("출고방법을 입력하세요.")
+		}else if(grid.getValue(grid.getRowCount()-1, "dlivyCode") == ''){
+			swal("운송코드를 입력하세요.")
+		}else if(grid.getValue(grid.getRowCount()-1, "dlivyName") == ''){
+			swal("출고기사를 입력하세요.")
+		}else if(grid.getValue(grid.getRowCount()-1, "dlivyPnum") == ''){
+			swal("출고기사 전화번호를 입력하세요.")		
+		}else{
+			//다 입력되어있으몀 ajax
+			$.ajax({
+				method:'POST',
+				url:'/updateInfo',
+				contentType : 'application/json',
+				dataType:'JSON',
+				data: JSON.stringify(grid.getCheckedRows()),
+				beforeSend : function(xhr){
+	           		xhr.setRequestHeader(header, token);
+	           	 },
+				success : function(result) {
+					
+					//출고등록 상태 변경 등록 -> 배송
+					$.ajax({
+					method:'POST',
+					url:'/updateGst',
+					contentType : 'application/json',
+					dataType:'JSON',
+					data: JSON.stringify(grid.getCheckedRows()),
+					beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           	 },
+					success : function(result) {
+						console.log(result);
+					},
+					error : function(error){
+						swal("출고등록 상태 변경 실패")
+					}
+					
+					})
+
+					grid.resetData()
+					swal("배송정보등록 완료")
+				},
+				error : function(error){
+					swal("배송정보등록 실패")
+				}
+			})
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
 
 	}
 	
@@ -270,10 +363,11 @@
 
 		
 	Resetbtn.addEventListener('click', () => {
-		document.getElementById('CodeSearch').value = '';
-		grid.unfilter('dlivyQCode');
+		console.log("dsf")
+		document.getElementById('getDlivyCode').value ='';
+		grid.unfilter('dlivyProCode');
 		document.getElementById('ClientSearch').value = '';
-		grid.unfilter('clientCode');
+		grid.unfilter('clientName');
 		document.getElementById('MthSearch').value = '';
 		grid.unfilter('dlivyMth');
 		document.getElementById('DateSearch').value = '';
