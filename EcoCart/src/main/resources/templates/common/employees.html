@@ -10,7 +10,8 @@
 <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>사원관리</title>
 <style type="text/css">
-#btn-div div{
+#btn-div div
+{
 	margin-right:20px;
 }
 </style>
@@ -755,8 +756,8 @@
 		// 사원 삭제.
 		function delEmp() {
 			let result =[];
-			let a = grid1.getCheckedRows()
-			$(a).each((a, data)=>{
+			let checkedRow = grid1.getCheckedRows()
+			$(checkedRow).each((a, data)=>{
 				let obj = {"empNum": data.empNum}
 				result.push(obj) 
 			})

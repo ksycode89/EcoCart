@@ -18,6 +18,10 @@ public interface ProductMapper {
 	public int insertProOption(ProAllVO vo);
 	// 물품 수정.
 	public int updatePro(ProAllVO vo);
+	// 물품 옵션 수정.
+	public int updateProInfo(ProAllVO vo);
 	// 물품 삭제.
 	public int deletePro(ProAllVO vo);
+	// 물품 옵션 삭제.
+	public int deleteProInfo(ProAllVO vo);
 }
