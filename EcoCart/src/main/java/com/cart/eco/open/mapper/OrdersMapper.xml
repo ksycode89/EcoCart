@@ -33,7 +33,8 @@
 				(d.sell_num *o.sell_price) as "sumPrice",
 				d.can_num "canNum",
 				o.order_code "orderCode",
-				( d.sell_num -  d.sold_num  ) "doDlivyNum"
+				( d.sell_num -  d.sold_num  ) "doDlivyNum",
+				d.sold_num "soldNum"
 		from orders o, order_d d, product p, product_option o
 		where o.order_code = d.order_code
 		and d.pro_code = p.pro_code
@@ -145,7 +146,8 @@
 	
 	<!-- 주문 등록시 견적서 상태 변경 -->
 	<update id="updateEstmtSt" parameterType="com.cart.eco.open.service.EstimateVO">
-		update estimate set estmt_st = '승인' where estmt_code = #{estmtCode}
+		update estimate set estmt_st = '승인' 
+			where estmt_code = #{estmtCode}
 	
 	</update>
 	

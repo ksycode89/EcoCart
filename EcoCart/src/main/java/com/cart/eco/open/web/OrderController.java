@@ -41,7 +41,7 @@ public class OrderController {
 	}
 	
 
-	//전체조회 진행중인 주문서 조회
+	//전체조회 진행중인 주문서 조회 출고요청M
 	@GetMapping("listOrdersOk")
 	@ResponseBody
 	public List<OrdersVO> listOrdersOk(OrdersVO vo){

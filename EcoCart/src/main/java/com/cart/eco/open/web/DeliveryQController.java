@@ -180,6 +180,15 @@ public class DeliveryQController {
 		
 	}
 	
+	@PostMapping("/updateProduct")
+	@ResponseBody
+	public int updateProduct(@RequestBody List<ProductVO> vo) {
+		
+		return deliverQService.updateProduct(vo);
+	}
+	
+	
+	
 	/////////////////////////////////////////////////////////////////////////////
 	
 	//출고처리
@@ -250,20 +259,44 @@ public class DeliveryQController {
 	}	
 	
 	//배송정보 전체 조회
-	@GetMapping("listDeliveryProInfo")
+	@GetMapping("/listDeliveryProInfo")
 	@ResponseBody
 	public List<DeliveryProVO> listDeliverInfo(DeliveryProVO vo){
 		
 		return deliverQService.DeliveryInfoList();
 	}		
 	
+	//출고등록 조회하기 ( 등록만)
+	@GetMapping("/deliveryGst")
+	@ResponseBody
+	public List<DeliveryGVO> deliveryGst(DeliveryGVO vo){
+		
+		return deliverQService.deliveryGst();
+	}
+	
+	
+	
 	//배송정보 등록하기
 	@PostMapping("/updateInfo")
 	@ResponseBody
-	public int updateInfo(@RequestBody DeliveryProVO vo) {
+	public int updateInfo(@RequestBody List<DeliveryProVO> vo) {
 		
 		return deliverQService.updateInfo(vo);
 	}
+	
+	
+	//출고요청 상태 없데이트 하기
+	@PostMapping("/updateGst")
+	@ResponseBody
+	public int updateGst(@RequestBody List<DeliveryGVO> vo) {
+		
+		return deliverQService.updateGst(vo);
+		
+	}
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	
 	
 	//재고/bom현황

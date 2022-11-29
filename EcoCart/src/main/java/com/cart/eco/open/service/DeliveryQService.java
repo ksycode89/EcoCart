@@ -60,6 +60,9 @@ public interface DeliveryQService {
 	//요청 상태 업데디트
 	public int updateQst(List<DeliveryQVO> vo);
 	
+	//재고 수량 -
+	public int updateProduct(List<ProductVO> vo);
+	
 	////////////////////////////////////////////////////////////////////////////
 	
 	//출고 처리3
@@ -91,8 +94,14 @@ public interface DeliveryQService {
 
 	
 	//배송정보 업데이트
-	public int updateInfo(DeliveryProVO vo);
+	public int updateInfo(List<DeliveryProVO> vo);
 	
+	//출고 등록 조호 (등록만)
+	public List<DeliveryGVO> deliveryGst();
+	
+	
+	// 상태 업데디트
+	public int updateGst(List<DeliveryGVO> vo);
 	
 	/////////////////////////////////////////////////////////////////////////////
 	
