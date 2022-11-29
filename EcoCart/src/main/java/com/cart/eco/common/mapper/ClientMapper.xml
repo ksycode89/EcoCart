@@ -48,6 +48,45 @@
 	
 	</insert>
 	
+	<update id="updateClient"  parameterType="com.cart.eco.common.service.ClientVO">
+		UPDATE client
+		 SET
+		<if test="clientCode != null and !clientCode.equals('') ">
+	       client_code = #{clientCode},
+      	</if>
+      	<if test="clientName != null and !clientName.equals('') ">
+	         client_name =#{clientName},
+      	</if>
+      	<if test="workType != null and !workType.equals('') ">
+	         work_type = #{workType},
+      	</if>
+      	<if test="clientAddr != null and !clientAddr.equals('') ">
+	         client_addr = #{clientAddr},
+      	</if>
+      	<if test="clientFax != null and !clientFax.equals('') ">
+	         client_tel = #{clientTel},
+      	</if>
+      	<if test="clientFax != null and !clientFax.equals('') ">
+	         client_fax = #{clientFax},
+      	</if>
+      	<if test="comments != null and !comments.equals('') ">
+	         comments = #{comments},
+      	</if>
+      	<if test="clientGrade != null and !clientGrade.equals('') ">
+	         client_grade =#{clientGrade},
+      	</if>
+      	
+      	<if test="clientHire != null and !clientHire.equals('') ">
+	         client_hire =	#{clientHire}
+      	</if>
+      	where client_code = #{clientCode}
+		
+		
+		
+		
+		
+	</update>
+	
 	<delete id="deleteClient"  parameterType="com.cart.eco.common.service.ClientVO">
 		DELETE 
 		FROM client

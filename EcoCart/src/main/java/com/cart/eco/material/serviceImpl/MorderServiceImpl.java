@@ -35,18 +35,30 @@ public class MorderServiceImpl implements MorderService {
 	@Override
 	public int insertOrder(ModerReqVO morderVO) {
 		int result = 0;
+		
+		MorderVO reOrder = new MorderVO();
+		int totalSum = 0;
+		
 		MorderVO moder = morderVO.getMorder();
-		System.out.println(moder);
+
+		
 		//마스터
 		result = moMapper.insertOrder(moder);
 		int orderNo = moder.getOrderNo();
-		System.out.println(orderNo);
+		System.out.println("orderNo" +orderNo);
+		
 		//디테일 반복
 		for(int i=0; i<morderVO.getDetailOrder().size(); i++) {
 			MorderdetailVO deailVO = morderVO.getDetailOrder().get(i);
+			//마스터용 합계
+			totalSum +=deailVO.getSumPrice();
 			deailVO.setOrderNo(orderNo);
 			result += moMapper.insertOrder1(deailVO);
 		}
+		reOrder.setTotal(totalSum);
+		reOrder.setOrderNo(orderNo);
+		//수량++
+		moMapper.updateNum(reOrder);
 		
 		return result;
 	}

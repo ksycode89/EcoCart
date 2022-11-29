@@ -59,9 +59,9 @@
 						<div class="logo">
 							<a href="layout.html">
 <!-- --------------------------sec------------------- -->			
-<!-- <div sec:authorize="isAuthenticated()">
+ <div sec:authorize="isAuthenticated()">
 	<i class="bi bi-stack"></i>
-	<span th:text="${session.infos.empHire}"> USER_ID </span>
+	<!-- <span th:text="${session.infos.empName}"> USER_ID </span>  -->
 		Logged user: <span sec:authentication="name">Bob</span><br>
 		omg : <span>[[${name}]]</span>
 	  	Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
@@ -69,7 +69,7 @@
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 			<button>로그아웃</button>
 		</form>
-	</div> -->
+	</div> 
  <!-- --------------------sec end-------------------- -->			
 	</a>
 						</div>

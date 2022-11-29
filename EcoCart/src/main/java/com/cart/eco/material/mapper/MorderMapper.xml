@@ -5,8 +5,8 @@
 	<select id="selectOrderList"
 		resultType="com.cart.eco.material.service.MorderVO">
 		select order_no, order_date,
-		c.client_code, c.client_name,
-		e.emp_name, order_receiving
+		c.client_code, c.client_name,m.order_group,m.order_receiving,m.total,
+		e.emp_name,e.emp_num 
 		from m_order m left outer join client c
 		on
 		m.client_code = c.client_code
@@ -52,7 +52,8 @@
 					comments,
 					</if>
 					order_receiving,
-					emp_num
+					emp_num,
+					client_code
 				<!-- 	emp_dept -->
 			)
 			values (
@@ -63,6 +64,7 @@
 					</if>
 					,#{orderReceiving}
 					,#{empNum}
+					,#{clientCode}
 					<!-- ,#{empDept} -->
 			)
 	</insert>
@@ -96,6 +98,12 @@
 					,#{sumPrice}
 					)
 	</insert>
+	
+	<update id="updateNum" parameterType="com.cart.eco.material.service.MorderVO">
+			UPDATE  m_order 
+			SET total = #{total} where order_no = #{orderNo}
+			
+	</update>
 	
 	<delete id="deleteOrder" parameterType="com.cart.eco.material.service.MorderVO">
 		delete from m_order

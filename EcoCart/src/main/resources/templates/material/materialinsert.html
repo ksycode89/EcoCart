@@ -12,22 +12,49 @@
 </head>
 <body>
 <div layout:fragment="content" class="page-content">
-   <div id="content">
-      <h2>발주등록</h2>
-      <label for="code_group" style="width:65px;" >부서</label>
-      <input id="empDept" type="text"> <i class="bi bi-search" id="emplist" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="cursor:pointer"></i>
-       사원 <input id="empName" type="text">     
-   </div>
-   
+	<div  class="mb-10 ">
+		<h2>발주등록</h2>
+	</div>
+
+   <div class="mb-3 row">
+			<div class="col-md-auto mb-1">
+				<div class="input-group mb-3">
+					<label for="staticEmail" class="col-sm-3 col-form-label">담당자</label>
+					<input type="text" id="empDept" class="form-control"
+						placeholder="담당자코드" aria-label="Recipient's username"
+						aria-describedby="button-addon2"> <span
+						class="input-group-text" data-bs-toggle="modal"
+						data-bs-target="#staticBackdrop" id="emplist" style="cursor: pointer"><i
+						class="bi bi-search" ></i></span>
+				</div>
+			</div>
+			
+			<div class="col-lg-auto col-sm-12">
+				<input  id="empName" name="clientName" class="form-control"placeholder="담당자명">
+			</div>
+			
+			<!-- <div class="col-md-auto mb-1" style="margin-left: 50px">
+				<div class="input-group mb-3">
+					<label for="staticEmail" class="col-sm-3 col-form-label">거래처</label>
+					<input type="text" id="clientCode" class="form-control"
+						placeholder="거래처코드" aria-label="Recipient's username"
+						aria-describedby="button-addon2"><span
+						class="input-group-text" data-bs-toggle="modal"
+						data-bs-target="#searchClient" id="searchClientSpan" style="cursor: pointer"><i
+						class="bi bi-search" ></i></span>
+				</div> 
+			</div>
+			
+			<div class="col-lg-auto col-sm-12">
+				<input  id="clientName" name="clientName" class="form-control"placeholder="거래처명">
+			</div> -->
+	</div>		
  
    <div style="margin-left: 3px;">   
          <button id="insertBtn" type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">등록</button>
    </div>
    <div id="grid"></div>   
-   
-   
-   
-   
+         
    <button id="addBtn" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">자재검색</button>
    <div id="grid2"></div>
    
@@ -75,6 +102,28 @@
 			</div>
 		</div>
 	</div>   
+	
+	<!-- Modal for search client  -->
+	<div class="modal fade" id="searchClient" data-bs-backdrop="static"
+		data-bs-keyboard="false" tabindex="-1"
+		aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="staticBackdropLabel2">거래처목록</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div id="modalClient"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">확인</button>
+				</div>
+			</div>
+		</div>
+	</div>   
    
    
    <script>
@@ -84,6 +133,7 @@
    
    $(document).ready(function() {
       $('#emplist').click(empList)
+      $('#searchClientSpan').click(clientList)
       $('#insertBtn').click(insertInfo)  //발주
       $('#addBtn').click(inseto)  //자재추가
    })
@@ -100,12 +150,12 @@
 		   contentType: 'application/json',
 		   data : JSON.stringify({'morder' : grid.getData()[0], 'detailOrder': grid2.getData()    }),
 		   success : function(data) {
-			   console.log(data);
+			  swal(data)
 			   location.reload();
 		   },
 		   error : function(error) {
 			   console.log(error);
-			   alert('실패')
+			   swal('실패')
 		   }
 	   })
    }
@@ -129,6 +179,23 @@
       })
    }
    
+   function clientList (){
+	   $.ajax({
+	         url : '/callClient',
+	         type : 'GET',
+	         beforeSend : function(xhr){
+	        	xhr.setRequestHeader(header, token);
+	         },
+	          success : function(data) {
+	            console.log(data);
+	            gridClient.resetData(data);
+	         },
+	         error : function(rejcet) {
+	            console.log(123);
+	         }
+	      })
+	   
+   }
    function inseto() {
        
        $('#addBtn').on('click', (col) =>{
@@ -188,8 +255,9 @@
              }
             },
             {
-              header: '부서',
-              name: 'empDept',
+            	header: '거래처',
+            	name: 'clientCode'
+            	
             },
             {
               header: '담당자',
@@ -242,10 +310,7 @@
 	        grid2.setValue(ev.rowKey, 'sumPrice', sum)
         }
 	  },
-	  {
-    	header: '거래처코드',
-    	name: 'clientCode'
-    	 },
+	 
       {
         header: '단가',
         name: 'sellPrice',
@@ -270,6 +335,23 @@
     	         {
     	            header: '사원',
     	            name: 'empName',
+    	         }
+    	      ]
+    	   });
+       
+       var gridClient = new tui.Grid({
+    	      el: document.getElementById('modalClient'),
+    	      bodyHeight: 200,
+    	      scrollX: true,
+    	      scrollY: true,
+    	      columns: [
+    	         {
+    	            header: '거래처코드',
+    	            name: 'clientCode',
+    	         },
+    	         {
+    	            header: '거래처명',
+    	            name: 'clientName',
     	         }
     	      ]
     	   });
@@ -349,6 +431,20 @@
     	   $('#large').modal('hide');
        })
        
+        gridClient.on('click', ev=>{
+        	console.log(gridClient.getRow(ev.rowKey))
+        	grid.setValue(getRowClient,'clientCode',gridClient.getRow(ev.rowKey).clientCode)
+       })  
+       //거래처등록
+       let getRowClient;
+      	grid.on('click',ev=>{
+      		getRowClient= ev.rowKey
+      		if(ev.columnName == 'clientCode'){
+      			clientList();
+      			$('#searchClient').modal('show');
+      			
+      		}
+      	})
        
        staticBackdrop.addEventListener('shown.bs.modal', () => {
        	modalGrid.refreshLayout(); 
@@ -357,7 +453,9 @@
       staticBackdrop2.addEventListener('shown.bs.modal', () => {
        	modalGrid1.refreshLayout(); 
        })
-       
+      searchClient.addEventListener('shown.bs.modal', () => {
+    	  gridClient.refreshLayout(); 
+       })
        
      
    </script>
