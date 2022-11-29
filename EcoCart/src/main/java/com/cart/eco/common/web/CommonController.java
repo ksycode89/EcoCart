@@ -137,6 +137,8 @@ public class CommonController {
 
 	// 사원정보 수정.
 	@PostMapping("/updateEmp")
+	
+	
 	@ResponseBody
 	public String updateEmp(@RequestBody ToastGridVO<EmpVO> vo) {
 		System.out.println("updaate : " + vo.getUpdatedRows());
@@ -444,7 +446,16 @@ public class CommonController {
 		return clientServcie.insertClinet(vo);
 		
 	}
-	//거래처 석제 
+	//거래처 수정 
+	@PostMapping("/updateClient")
+	@ResponseBody
+	public int updateClient(@RequestBody ToastGridVO<ClientVO> vo) {
+		System.out.println("updateClient : " + vo.getUpdatedRows());
+		
+		return clientServcie.updateClient(vo.getUpdatedRows());
+		
+	}
+	//거래처 삭제  
 	@PostMapping("/deleteClient")
 	@ResponseBody
 	public String deleteClient(@RequestBody List<ClientVO> vo) {

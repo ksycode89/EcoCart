@@ -157,7 +157,17 @@
 	/* token */
 	 var token =  $("meta[name='_csrf']").attr("content");
 	 var header = $("meta[name='_csrf_header']").attr("content");
-
+	
+	 /* data resouce */
+   const dataSource = {
+      		 withCredentials: false,
+      		 contentType: 'application/json',
+      		  api: {
+      		    readData  : { url: '/callRead', method: 'GET' },
+      		    updateData: { url: '/updateClient', method: 'POST' },
+      		  }
+      }; 
+//======================그리드======================//
 	const grid = new tui.Grid({
 			el : document.getElementById('grid'),
 			rowHeaders: ['checkbox'],
@@ -168,18 +178,21 @@
 				header : '거래처코드',
 				name : 'clientCode',
 				editor : 'text',
-				 width: 'auto'
+				 width: 'auto',
+				 minWidth: 130
 				},
 				{
 				header : '거래처명',
 				name : 'clientName',
 				editor : 'text',
-				 width: 'auto'
+				 width: 'auto',
+				 minWidth: 130
 			}, {
 				header : '사업자번호',
 				name : 'regNum',
 				editor : 'text'
-				, width: 'auto'
+				, width: 'auto',
+				 minWidth: 130
 			}, {
 				header : '업종',
 				name : 'workType',
@@ -187,22 +200,26 @@
 			}, {
 				header : '주소',
 				name : 'clientAddr',
-				 width: 'auto'
+				 width: 'auto',
+				 minWidth: 250
 			}, {
 				header : 'tel',
 				name : 'clientTel',
 				editor : 'text',
-				 width: 'auto'
+				 width: 'auto',
+				 minWidth: 130
 			}, {
 				header : 'fax',
 				name : 'clientFax',
 				editor : 'text',
-				 width: 'auto'
+				 width: 'auto',
+				 minWidth: 130
 			}, {
 				header : '등록일',
 				name : 'clientHire',
 				editor : 'datePicker',
-				 width: 'auto'
+				 width: 'auto',
+				 minWidth: 130
 			}, {
 				header : '등급',
 				name : 'clientGrade'
@@ -210,10 +227,11 @@
 				header : '비고',
 				name : 'comments',
 				editor : 'text',
-				 width: 'auto'
+				 width: 'auto',
+				 minWidth: 130
 			}
-
-			]
+		   ],
+		  data : dataSource
 		});
 		
 		const gridClient = new tui.Grid({
@@ -247,17 +265,26 @@
 			addAddr(addrev);
 			$('#clientadrrM').modal('hide');
 		}) 
-		
-		//한줄선택시키기
+		//한줄선택시키기[메인그리드]
+	/*  	 grid.on('click', function(ev) {
+         var record = {
+         start : [ev.rowKey,0],
+         end   : [ev.rowKey,grid.getColumns().length]
+         }
+           getrow = ev.rowKey
+           grid.setSelectionRange(record);
+         }); */
+		//한줄선택시키기[모달]
 		let getrow ;
         gridClient.on('click', function(ev) {
           var record = {
           start : [ev.rowKey,0],
-          end : [ev.rowKey,3]
+          end : [ev.rowKey,gridClient.getColumns().length]
          }
            getrow = ev.rowKey
            gridClient.setSelectionRange(record);
          });
+        
         //input에 거래처 입력
         function insertClient (){
         	let data = gridClient.getRow(getrow);
@@ -330,7 +357,7 @@
 			}
 		}
 		
-		
+
 	/* ===============기능모음=================*/
 		//거래처 부르는 함수
 	function ClientListAjax(methods,param){
@@ -342,7 +369,12 @@
 	           	 },
 	           	 data : param,
 	               success : function(data){
-	                  console.log(data);
+	                  let newData =[]
+	                  //날짜 변경yyyy/mm/dd
+	                  $(data).each((a,val)=>{
+	                	 val.clientHire= val.clientHire.substr(0,10);
+	                  newData.push(val)
+	                  })
 	                  methods.resetData(data);
 	               },
 	               error : err=>{
@@ -350,30 +382,6 @@
 	               }
 	            })
 		}
-	//삭제
-	function deleteClient(){
-		let checkRowKeys = grid.getCheckedRowKeys();
-		 $.ajax({
-             url : "/deleteClient",
-             type: "post",
-         	contentType : "application/json",
-             beforeSend : function(xhr){
-         		xhr.setRequestHeader(header, token);
-         	 },
-         	 data : JSON.stringify(grid.getCheckedRows()),
-             success : function(data){
-               let checked = data,exp=/삭제/;
-               if(exp.test(checked)){
-               swal(data)
-               grid.removeRows(checkRowKeys);
-               }
-             },error : err=>{
-                console.log(err)
-             }
-          }) 
-		
-		
-	}
 	//dblclick grid에 주소넣기
 	function addAddr(ev){
 		//$('sample4_postcode').val() //우편번
@@ -402,6 +410,41 @@
                 console.log(err)
              }
           }) 
+	}
+	//거래처 수정 
+	function updateClient(){
+		grid.request('updateData')
+		grid.on('response', function(ev) {
+	   console.log( ev.response)
+	   let mess = ev.xhr.response +'건 수정되었습니다.'
+	   console.log(mess)
+		 swal(mess)
+   })
+	
+		
+	}
+	//거래처삭제
+	function deleteClient(){
+		let checkRowKeys = grid.getCheckedRowKeys();
+		 $.ajax({
+             url : "/deleteClient",
+             type: "post",
+         	contentType : "application/json",
+             beforeSend : function(xhr){
+         		xhr.setRequestHeader(header, token);
+         	 },
+         	 data : JSON.stringify(grid.getCheckedRows()),
+             success : function(data){
+               let checked = data,exp=/삭제/;
+               if(exp.test(checked)){
+               swal(data)
+               grid.removeRows(checkRowKeys);
+               }
+             },error : err=>{
+                console.log(err)
+             }
+          }) 
+		
 		
 	}
 		/*다음api */
@@ -460,10 +503,13 @@
             }
         }).open();
     }
+	//토큰관련 //
+	//grid api 토큰처리
+     grid.on('beforeRequest', function(ev) {
+        ev.xhr.setRequestHeader(header, token);
+       })
+ 
 	</script>
-	
-
-
 
 
 </div>

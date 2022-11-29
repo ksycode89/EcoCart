@@ -51,5 +51,19 @@ public class ClientServiceImpl implements ClientService {
 		
 		return mes;
 	}
+	@Override
+	public int updateClient(List<ClientVO> vo) {
+		int result = 0;
+		
+		for(ClientVO one : vo) {
+	
+	
+		
+			result += Cmapper.updateClient(one);
+		}
+		
+		
+		return result;
+	}
 
 }

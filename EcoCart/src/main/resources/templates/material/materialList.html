@@ -14,22 +14,36 @@
 	
 		<div id="content">
 			<h2>발주현황</h2>
+			
+			<div class="filters mt-4" style="height:35px" >
+				<label for="planStatus" style="width:100px">진행구분</label>
+				<label><input type="radio" id="planAll"  name="plan"value="all" checked>전체</label>&nbsp;
+				<label><input type="radio" id="planStart"  name="plan" value="start">대기</label>&nbsp;
+				<label><input type="radio" id="planWait"  name="plan" value="wait">승인</label>
+			</div>
+			
 			<label for="code_group" style="width:80px;">담당자</label>
 			<input type="text" id="codeGroup" name="code_group" class="form-control" style="width:150px; display:inline"><br>
 			<label for="code_group" style="width:80px;">발주날짜</label>
 			<input type="date"  id="searchDate" class="form-control" style="width:150px; display:inline">
-			<button type="button" id="SelectBtn">검색</button>
-			<button type="button" id="ResetBtn">초기화</button>
-			<button type="button" id="orderDelete">삭제</button>
+			
+		<div class="mb-3 row flex-right mt-3">
+				<div class="col-lg-auto col-sm-12 ">
+			        <button class="ml-5 btn btn-sm btn-primary" onclick="getList()">조회</button>
+					<button class="ml-5 btn btn-sm btn-secondary" onclick="window.location.reload()">초기화</button>
+					<button class="ml-5 btn btn-sm btn-secondary" onclick="cancel()">발주취소</button>
+				</div>
+		</div>
+		
 		</div>
 		<div class="row">
-			<div class="col-4" >
+			<div>
 				<div id="grid"></div>
 			</div>
-			<div class="col-8">
-				<div id="grid2"></div>
-			</div>
 		</div>
+			<div class="col-8" >
+				<div id="grid2" style="width: 1450px" ></div>
+			</div>
 		<br>
 		
 		
@@ -38,77 +52,69 @@
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 		
-	   var gridData = [
-	       {
-	          name:'',
-	          artist:'',
-	          type:'',
-	          release:'',
-	          genre:''
-	       }];
-	   
-	   var grid = new tui.Grid({
-		    el: document.getElementById('grid'),
-		    data: gridData,
-		    scrollX: false,
-		    scrollY: false,
-		    rowHeaders : ['checkbox'],
-		    columns: [
-		      {
-		        header: '발주번호',
-		        name: 'orderNo'
-		      },
-		      {
-		        header: '발주일자',
-		        name: 'orderDate',
-		        filter: 'date',
-		        option:{
-		        	format:'yyyy-MM-dd'
-		        }
-		      },
-		      {
-		        header: '납기일',
-		        name: 'orderReceiving'
-		      },
-		        {
-		        header: '담당자',
-		        name: 'empName',
-		        filter: 'text'
-		          }
-		    ],
-		    pageOptions: {
-		        useClient: true,
-		        perPage: 5
-		      },
-		      
-		  });
-	   
-	   
-	   grid.on('click',(ab)=>{
-		   console.log(ab.nativeEvent.target.innerText)
-		   $.ajax({
-			   url:'/detailList',
-			   data : {'orderNo' : ab.nativeEvent.target.innerText },
-			   success : function(data) {
-				   console.log(data);
-				   grid2.resetData(data);				   
-				   
-			   },
-			   error :  function(reject) {
-				   console.log(111)
-			   }
-		   })
-		   
-	   })
-	   
-	   //상세조회
+	   const grid = new tui.Grid({
+	          el: document.getElementById('grid'),
+	          scrollX: false,
+	          scrollY: false,
+	          rowHeaders : ['checkbox'],
+	          columns: [
+	            {
+	              header: '발주번호',
+	              name: 'orderNo',
+	            },
+	            {
+	              header: '발주일자',
+	              name: 'orderDate',
+	              editor: {
+	                  type: 'datePicker', 
+	              option : {
+	            	  format:'yyyy-MM-dd',
+	              }
+	             }
+	              },
+	              {
+	              header: '납기일',
+	              name: 'orderReceiving',
+	              editor: {
+	              type: 'datePicker',
+	              options: {
+	              format: 'yyyy-MM-dd'
+	             }
+	             }
+	            },
+	            {
+	            	header: '거래처코드',
+	            	name: 'clientName'
+	            	
+	            },
+	            {
+	              header: '담당자',
+	              name: 'empName',
+	            },
+	            {
+	                header: '담당자사번',
+	                name: 'empNum',
+	            },
+	            {
+	              header: '진행상황',
+	              name: 'orderGroup',
+	              editor: 'text'
+	            }
+	           
+	          ] ,pageOptions: {
+	    	        useClient: true,
+	    	        perPage:20
+	    	      }
+	   	
+	      
+	  });
+		    
+   //상세조회
 	  var grid2 = new tui.Grid({
 	    el: document.getElementById('grid2'),
 	    rowHeders : ['rowNum'], 
-	    data: gridData,
 	    scrollX: false,
 	    scrollY: false,
-	    
 	    columns: [
 	      {
 	        header: '품번',
@@ -137,25 +143,28 @@
 	    ]
 	  });	  
 	   
-	   document.addEventListener("DOMContentLoaded", selectList)
-	   
-	   SelectBtn.addEventListener('click',()=>{
-	   		grid.filter('empName',[{code:'contain', value:$('#codeGroup').val()}]);
-	   		if($('#searchDate').val()!= ''){
-	   	   		grid.filter('orderDate',[{code:'eq', value:$('#searchDate').val()}]);
-	   		} 
+   
+	   grid.on('click',(ab)=>{
+		   //console.log(ab.nativeEvent.target.innerText)
+		   $.ajax({
+			   url:'/detailList',
+			   data : {'orderNo' : grid.getRow(ab.rowKey).orderNo},
+			   success : function(data) {
+				   //console.log(data);
+				   grid2.resetData(data);				   
+				   
+			   },
+			   error :  function(reject) {
+				   console.log(111)
+			   }
+		   })
+		   
 	   })
 	   
-	   ResetBtn.addEventListener("click", ()=> {
-		   document.getElementById('codeGroup').value='';
-		   document.getElementById('searchDate').value='';
-		   grid.unfilter('empName')
-		   grid.unfilter('clientName')
-		   grid.unfilter('orderDate')
-	   })
-		
-		function selectList() {
-			$.ajax({
+	  
+	/* =================기=능===================== */
+	function getList (){
+		   $.ajax({
 				url : '/materialListInfo',
 				success : function(data) {
 					grid.resetData(data)
@@ -165,27 +174,10 @@
 					console.log(reject);
 				}
 			})
-		}
-	   
-	   orderDelete.addEventListener("click", () => {
-		   console.log(grid.getCheckedRows())
-			  $.ajax({
-			   url : '/deleteInfo',
-			   type : 'POST',
-			   contentType: 'application/json',
-	   		data: JSON.stringify(grid.getCheckedRows()),
-	   		beforeSend : function(xhr){
-	          		xhr.setRequestHeader(header, token);
-	       },
-	       success : function(data) {
-	    	   console.log(data);
-	    	   location.reload();
-	       },
-	       error : function(error) {
-	    	   console.log(error);
-	       }
-		   }) 
-	   })
+		   
+	   }
+
+	
 	   
    </script>
 	</div>

@@ -7,6 +7,8 @@ public interface ClientService {
 	public List<ClientVO> clientList(ClientVO vo);
 	//거래처등록
 	public String  insertClinet(List<ClientVO> vo );
+	//거래처수정 
+	public int updateClient(List<ClientVO> vo );
 	//거래처삭제 
 	public String deleteClient(List<ClientVO> vo );
 }

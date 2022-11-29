@@ -10,6 +10,8 @@ public interface ClientMapper {
 	//거래처 등록
 	public int insertClinet(ClientVO vo);
 	//거래처 삭제
+	public int updateClient(ClientVO vo);
+	//거래처 삭제
 	public int deleteClient(ClientVO vo);
 	
 }
