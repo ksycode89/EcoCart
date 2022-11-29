@@ -191,14 +191,16 @@
                      formatter : function (ev){
                     	 console.log(ev)
                     	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                     }
+                     },
+                     align : 'right'
                      
                      
                   },
                   {
                 	  header:'상태',
                 	  name: 'estmtSt',
-                	  filter : 'select'
+                	  filter : 'select',
+                	  align : 'center'
                   }
 
             ]
@@ -237,7 +239,8 @@
                      formatter : function (ev){
                     	 console.log(ev)
                     	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                     }
+                     },
+                     align : 'right'
                   },
                  
                  {
@@ -246,7 +249,8 @@
                      formatter : function (ev){
                     	 console.log(ev)
                     	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                     }
+                     },
+                     align : 'right'
                   },
             ]
           
@@ -261,8 +265,9 @@
             columns: [
             
                 {
-                	header: '견적코드',
+                	header: '견적코드-h',
                 	name: 'estmtCode',
+                	hidden : 1
                 	
                 },
                 {
@@ -287,7 +292,8 @@
                      formatter : function (ev){
                     	 console.log(ev)
                     	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                     }
+                     },
+                     align : 'right'
                   },
                  
                  {
@@ -296,7 +302,8 @@
                      formatter : function (ev){
                     	 console.log(ev)
                     	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                     }
+                     },
+                     align : 'right'
                   }
                   
             ]
@@ -481,7 +488,8 @@
 				  
 		  }else{
 			  //제품코드만 입력
-			alert("값을 다 넣어주세요.")
+			swal("값을 다 넣어주세요.")
+			
 			  
 		  }
 		
@@ -507,7 +515,6 @@
 	 
 	//견적서 등록버튼 눌렀을때
 	function insertEstmt(){
-	 console.log("버튼클릭")
 	 if( $("#select5").val() != '선택'  && $("#deDate").val() !=''){
 		 
 		let allSum = plusSum();
@@ -538,13 +545,19 @@
 	 		
 			// 견적서 input에 있는 값들 insert 
 	 		masterinsert(data);
+	 		//등록버튼 누르면 모달창 닫고 화면 gridreload
+	 		 $('#staticBackdrop').modal('hide');
+	 			 grid.refreshLayout();
+	 			 grid2.refreshLayout();
+	 		 
 		
 	}else{
 	 	alert("값을 다 넣어주세여");
  	}
 	
 	
-	 
+	
+	}
 	 
 	 function masterinsert(data){	
 	 		
@@ -563,7 +576,6 @@
 					deinsert();
 				},
 				error : function(error){
-					console.log("견적 er");
 					console.log(error);
 				}
 			})
@@ -588,13 +600,11 @@
             		xhr.setRequestHeader(header, token);
             	 },
 				success : function(result) {
-					console.log("견적서상세 insert")
-					console.log(result);
+					alert("견적서 등록 완료")
 					estmtList();
 					
 				},
 				error : function(error){
-					console.log("견적상세 er");
 					console.log(error);
 				}
 			})
@@ -610,28 +620,6 @@
 			}
 			return b;
 	 }
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 //등록버튼 누르면 모달창 닫고 화면 gridreload
-	 $('#staticBackdrop').modal('hide');
-	 grid.refreshLayout();
-	 grid2.refreshLayout();
-	 //grid2.refreshLayout();
-	 
- }
-	 
-		 
-	
-		
 			
 			
 			

@@ -28,7 +28,7 @@ public class ProAllVO {
 	private int sellPrice; 			// 판매단가
 	private String standard; 		// 규격
 	private String unit; 			// 단위
-	private String codeContent;		// 반제품 완제품
+	private String codeContent;		// 
 	
 	private String proGet;			// 조달구분
 	

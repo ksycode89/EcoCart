@@ -66,6 +66,9 @@ public interface DeliveryQMapper {
 	
 	//요청 상태 업에이트
 	public int updateQst(DeliveryQVO vo);
+	
+	//재고 수량 -
+	public int updateProduct(ProductVO vo);
 
 	////////////////////////////////////////////////////////////////////////////
 	
@@ -103,7 +106,12 @@ public interface DeliveryQMapper {
 	public int updateInfo(DeliveryProVO vo);
 	
 	
+	//출도 등록 조회 ( 등록만)
+	public List<DeliveryGVO> deliveryGst();
 	
+	
+	//요청 상태 업에이트
+	public int updateGst(DeliveryGVO vo);
 	
 	/////////////////////////////////////////////////////////////////////////////
 	

@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cart.eco.common.mapper.ProductMapper;
-import com.cart.eco.common.service.EmpVO;
+
 import com.cart.eco.common.service.ProAllVO;
 import com.cart.eco.common.service.ProductService;
 import com.cart.eco.common.service.ProductVO;
+
 @Service
 public class ProductServcieImple implements ProductService {
 	
@@ -31,9 +32,9 @@ public class ProductServcieImple implements ProductService {
 	@Override
 	public int insertPro(ProAllVO vo) {
 		int res = proMapper.insertPro(vo);
-		int data =0;
+		int data = 0;
 		if(res == 1) {
-			data=proMapper.insertProOption(vo);
+			data = proMapper.insertProOption(vo);
 		}
 		
 		return data;
@@ -42,22 +43,34 @@ public class ProductServcieImple implements ProductService {
 	// 물품 수정.
 	@Override
 	public int updateProInfo(ProAllVO vo) {
+		int result = proMapper.updateProInfo(vo);
+		int result2 = 0;
+		if(result == 1) {
+		 result2 = proMapper.updatePro(vo);
 		
-		return proMapper.updatePro(vo);
+		}
+		return result2;
 	}
 
 	// 물품 삭제.
 	@Override
-	public int deletePro(List<ProAllVO> vo) {
-		int result = 0;
-		for(ProAllVO one: vo) { // 향상된 for문
-			result += proMapper.deletePro(one);
-		}
-		if(vo.size() == result) {
-			return result;
-		}
+	public String deletePro(List<ProAllVO> vo) {
+		int result2 = 0;
 		
-		return 0 ;
+		for(ProAllVO one : vo ) {
+		int result =0;	
+		 result = proMapper.deleteProInfo(one);
+		if(result == 1) {
+			result2 = proMapper.deletePro(one);
+		 	}
+		}
+		String mes = "삭제 실패!!! ("+ result2+"/"+ vo.size()+")" ;
+		
+		if(result2 == vo.size()) {
+			mes = result2 + "건이 삭제되었습니다.";
+		}
+			
+		return mes;
 	}
 
 

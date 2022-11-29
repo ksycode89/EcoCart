@@ -59,7 +59,7 @@
 						<div class="logo">
 							<a href="layout.html">
 <!-- --------------------------sec------------------- -->			
- <div sec:authorize="isAuthenticated()">
+<div sec:authorize="isAuthenticated()">
 	<i class="bi bi-stack"></i>
 	<!-- <span th:text="${session.infos.empName}"> USER_ID </span>  -->
 		Logged user: <span sec:authentication="name">Bob</span><br>
@@ -219,6 +219,13 @@
 								<li class="submenu-item "><a href="mfProcess">생산공정관리</a></li>
 							</ul>
 						</li>
+						
+						<li class="sidebar-title ">설비관리</li>
+						
+						<li class="sidebar-item  "><a href="/facilities" class='sidebar-link'>
+							<i class="bi bi-hammer"></i><span>설비관리</span>
+						</a></li>
+						
 					</ul>
 				</div>
 				<button class="sidebar-toggler btn x">

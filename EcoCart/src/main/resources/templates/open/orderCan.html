@@ -79,7 +79,7 @@
 		            },
 		            {
 		            	header: '거래처',
-		            	name: 'clientCode',
+		            	name: 'clientName',
 		            	filter : 'text'
 		            },
 		            {
@@ -98,12 +98,14 @@
 		                 name: 'allSum',
 		                 formatter : function (ev){
 		                   	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		                    }
+		                    },
+		                  align : 'right'
 		             },
 		             {
 		               	header:'상태',
 		           	  	name: 'orderSt',
-		           	 	filter : 'text'
+		           	 	filter : 'text',
+		           	 	align : 'center'
 		              }
 		            
 		        ]
@@ -125,8 +127,9 @@
 		            	name: 'orderCode'
 		        	},
 		        	{
-		        		header: 'no',
-		            	name: 'orderDno'
+		        		header: 'no-h',
+		            	name: 'orderDno',
+		            	hidden : 1
 		        	},
 		            {
 		            	header: '제품코드',
@@ -141,15 +144,21 @@
 		                name: 'sellNum',
 		                formatter : function (ev){
 		                   	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		                    }
+		                }
 		             },
 		             {
 		             	header: '남품수량',
 		                name: 'soldNum',
+		                formatter : function (ev){
+		                   	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                }
 		             },
 		             {
 			             header: '취소수량',
 			             name: 'canNum',
+			             formatter : function (ev){
+			                   	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+			             }
 			         }
 		            
 		        ]
@@ -237,7 +246,7 @@
 								success : function(result) {
 									console.log(result)
 									location.reload();
-									alert("주문마감 되었습니다.")
+									swal("주문마감 되었습니다.")
 								},
 								error : function(error){
 									console.log(error);
@@ -270,7 +279,7 @@
 	
 	estmtDateSearch.addEventListener('click', () => {
 		grid.filter('orderCode' , [{code:'contain', value:$('#InEstmtCodeSearch').val()}])
-		grid.filter('clientCode' , [{code:'contain', value:$('#InClientCodeSearch').val()}])
+		grid.filter('clientName' , [{code:'contain', value:$('#InClientCodeSearch').val()}])
 		if($('#InEstmtDateSearch').val() != '' ){
 			grid.filter('orderDate' , [{code:'beforeEq', value:$('#InEstmtDateSearch').val()}])
 			
@@ -282,7 +291,7 @@
 		document.getElementById('InEstmtCodeSearch').value = '';
 		grid.unfilter('orderCode');
 		document.getElementById('InClientCodeSearch').value = '';
-		grid.unfilter('clientCode');
+		grid.unfilter('clientName');
 		document.getElementById('InEstmtDateSearch').value = '';
 		grid.unfilter('orderDate');
 	})		

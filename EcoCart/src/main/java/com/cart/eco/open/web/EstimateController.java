@@ -115,7 +115,11 @@ public class EstimateController {
 
 
 	
-	
+	//설비
+	@GetMapping("/facilities")
+	public String facilities(){
+		return "open/facilities";
+	}
 	
 	
 

@@ -10,6 +10,7 @@
 		from delivery_q d, client c, employees e
 		where d.client_code = c.client_code
 		and e.emp_num = d.emp_num
+		order by dlivy_q_code
 	
 	</select>
 	
@@ -47,7 +48,7 @@
 		insert into delivery_q 
 			(dlivy_q_code, order_code,dlivy_date, client_code, emp_num, dlivy_q_st)
 			
-		values ( #{dlivyQCode}, #{orderCode}, sysdate , #{clientCode}, 2020110205, '요청' ) 
+		values ( #{dlivyQCode}, #{orderCode}, sysdate , #{clientCode}, '2020110205', '요청' ) 
 	
 	</insert>
 	
@@ -78,10 +79,17 @@
 	
 	<!-- 출고 등록2 전제 조회 -->
 	<select id="DeliveryGList" resultType="com.cart.eco.open.service.DeliveryGVO">
-		select d.dlivy_date, d.dlivy_g_code, c.client_name "client_code", e.emp_name "emp_num", d.all_sum
+		select 
+			d.dlivy_date, 
+			d.dlivy_g_code, 
+			c.client_name "client_code", 
+			e.emp_name "emp_num", 
+			d.dlivy_g_st "dlivyGSt"
+		
 		from delivery_g d, client c, employees e
 		where d.client_code = c.client_code
 		and e.emp_num = d.emp_num
+		order by dlivy_g_code
 	
 	</select>
 	
@@ -107,21 +115,11 @@
 	
 	<!-- 모달창 출고 요청 조회 -->
 	<select id="MdeliveryQList" resultType="com.cart.eco.open.service.DeliveryQVO">
-		select 
-			d.dlivy_q_code "dlivyQCode", 
-			d.client_code "clientCode",
-			c.client_name "clientName", 
-			d.dlivy_date "dlivyDate",
-			o.de_date "deDate",
-            q.dsell_num "dsellNum"
-	
-		from delivery_q d, client c, orders o, delivery_qd q
-		where d.client_code = c.client_code
-        and o.order_code = d.order_code
-        and q.dlivy_q_code = d.dlivy_q_code
-		and dlivy_q_st = '요청'
-		and q.dsell_num != '0'
-	
+		select q.dlivy_q_code, q.order_code, q.client_code, c.client_name, q.dlivy_date
+        from delivery_q q, client c
+        where q.client_code = c.client_code
+        and dlivy_q_st = '요청'	
+        
 	</select>
 	
 	<!-- 모달창 출고 요청 상세 조회 -->
@@ -156,7 +154,7 @@
 	<insert id="insertDlivyG" parameterType="com.cart.eco.open.service.DeliveryGVO">
 		insert into 
 			delivery_g (dlivy_g_code, order_code,dlivy_date, client_code, emp_num,dlivy_g_st)
-		values ( #{dlivyGCode}, #{orderCode}, sysdate , #{client_code}, '2020110205', '등록' )  
+		values ( #{dlivyGCode}, #{orderCode}, sysdate , #{clientCode}, '2020110205', '등록' )  
 	
 	</insert>
 	
@@ -168,7 +166,7 @@
 	
 		insert into delivery_gd 
 			(dlivy_gno, dlivy_g_code, pro_code, dsell_num)
-		values ( #{dlivyGno}, #{dlivyGCode}, #{proCode}, #{dsellNum}	
+		values ( #{dlivyGno}, #{dlivyGCode}, #{proCode}, #{dsellNum}	)
 	
 	</insert>
 	
@@ -177,6 +175,16 @@
 		update delivery_q set dlivy_q_st = '등록'
 		where dlivy_q_code = #{dlivyQCode}
 	</update>
+	
+	
+	<update id="updateProduct" parameterType="com.cart.eco.common.service.ProductVO">
+		update product set pro_num =
+				(select pro_num - #{dsellNum}
+	        		from product
+	        		where pro_code = #{proCode})
+    	where pro_code = #{proCode}
+	</update>
+	
 	
 	<!-- 출고 처리3 -->
 	
@@ -200,6 +208,7 @@
 		where d.client_code = c.client_code
 		and e.emp_num = d.emp_num
 		and d.dlivy_g_code= #{dlivyCode}
+		
 	
 	</select>
 	
@@ -220,6 +229,47 @@
 	
 	</select>
 	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 배송 정보 조회 -->
+	
+	
+	<!-- 모달창 출고 등록2 전제 조회 (등록만)  -->
+	<select id="deliveryGst" resultType="com.cart.eco.open.service.DeliveryGVO">
+		select 
+			d.dlivy_date, 
+			d.dlivy_g_code, 
+			d.order_code,
+			c.client_name "client_code", 
+			e.emp_name "emp_num", 
+			d.dlivy_g_st "dlivyGSt"
+		
+		from delivery_g d, client c, employees e
+		where d.client_code = c.client_code
+		and e.emp_num = d.emp_num
+		and dlivy_g_st = '등록' 
+		order by dlivy_g_code
+		
+	</select>
+	
+	
+	
+	
+	<!-- 배송 정보 전체 조회 -->
+	<select id="DeliveryInfoList" resultType="com.cart.eco.open.service.DeliveryProVO">
+		
+		select d.dlivy_pro_code, d.dlivy_date, c.client_name, d.dlivy_mth, d.dlivy_code, d.dlivy_name, d.dlivy_pnum
+		from delivery_pro d, client c
+		where d.client_code = c.client_code
+	
+	</select>
+	
+	
 	<!-- 출고 처리 번호 가져오기 -->
 	<select id="getDlivyPCode" resultType="com.cart.eco.open.service.DeliveryProVO" parameterType="String">
 		select  concat('dlp' , 
@@ -231,27 +281,22 @@
 	
 	
 	
+	<!-- 배송정보 등록 -->
+	<insert id="updateInfo" parameterType="com.cart.eco.open.service.DeliveryProVO">
 	
+		insert into
+			delivery_pro ( dlivy_pro_code, dlivy_date, order_code, client_code, emp_num, dlivy_mth, dlivy_code, dlivy_name, dlivy_pnum)
+			values ( #{dlivyProCode}, sysdate, #{orderCode}, #{clientCode}, '2020110205',#{dlivyMth}, #{dlivyCode}, #{dlivyName}, #{dlivyPnum} )
+		
+		
+	</insert>
 	
-	
-	
-	<!-- 배송 정보 조회 -->
-	
-	<!-- 배송 정보 전체 조회 -->
-	<select id="DeliveryInfoList" resultType="com.cart.eco.open.service.DeliveryProVO">
-		select d.dlivy_pro_code, d.dlivy_date, c.client_name "client_code", d.dlivy_mth, d.dlivy_code, d.dlivy_name, d.dlivy_pnum,e.emp_name "emp_num"
-		from delivery_pro d, client c, employees e
-		where d.client_code = c.client_code
-		and e.emp_num = d.emp_num
-	
-	</select>
-	
-	<update id="updateInfo" parameterType="com.cart.eco.open.service.DeliveryProVO">
-		update delivery_pro
-        set dlivy_mth = #{dlivyMth} , dlivy_code = #{dlivyCode}, dlivy_name = #{dlivyName}, dlivy_pnum = {dlivyPnum}
-        where dlivy_pro_code = #{dlivyProCode}
-	
+	<!-- 베송등록 할때 출고등록 상태 업데이트 하기  등록 -> 배송 -->
+	<update id="updateGst" parameterType="com.cart.eco.open.service.DeliveryGVO">
+		update delivery_g set dlivy_g_st = '배송'
+		where dlivy_g_code = #{dlivyGCode}
 	</update>
+	
 	
 	
 	

@@ -52,14 +52,13 @@
          </if>
    		</where> 
    		
-   		ORDER BY pro_code
+   		
 	</select>
 	
 	<!--물품 등록.-->
 	<insert id="insertPro" parameterType="com.cart.eco.common.service.ProAllVO">
 		       
-		INSERT INTO product (pro_code, pro_name, pro_group,pro_item, pro_get,lot_used, test_used,
-							pro_hire,pro_num)
+		INSERT INTO product (pro_code, pro_name, pro_group,pro_item, pro_get,lot_used, test_used, pro_hire,pro_num)
 		VALUES(#{proCode},#{proName},#{proGroup},#{proItem},null,#{lotUsed},#{testUsed},#{proHire},0)
 	</insert>
 		
@@ -75,12 +74,80 @@
 	
 	<!--물품 수정.-->
 	<update id="updatePro" parameterType="com.cart.eco.common.service.ProAllVO">
+		update product
+		<set>
+   				<if test="proCode != null and !proCode.equals('')">
+   					pro_code = #{proCode},
+   				</if>
+   				<if test="proItem != null and !proItem.equals('')">
+   					pro_item = #{proItem},
+   				</if>
+   				<if test="proName != null and !proName.equals('')">
+   					pro_name = #{proName},
+   				</if>
+   				<if test="proGroup != null and !proGroup.equals('')">
+   					pro_group = #{proGroup},
+   				</if>
+   				<if test="proGet != null and !proGet.equals('')">
+   					pro_get = #{proGet},
+   				</if>
+   				<if test="lotUsed != null and !lotUsed.equals('')">
+   					lot_used = #{lotUsed},
+   				</if>
+   				<if test="testUsed != null and !testUsed.equals('')">
+   					test_used = #{testUsed},
+   				</if>
+   				<if test="proHire != null and !proHire.equals('')">
+   					pro_hire = #{proHire}
+   				</if>
+   			</set>
+		WHERE pro_code = #{proCode}
+	</update>
 	
+	<!--물품 옵션 수정.-->
+	<update id="updateProInfo" parameterType="com.cart.eco.common.service.ProAllVO">
+		update product_option
+		<set>
+   				<if test="leadTime != null and !leadTime.equals('')">
+   					lead_time = #{leadTime},
+   				</if>
+   				<if test="bs != null and !bs.equals('')">
+   					bs = #{bs},
+   				</if>
+   				<if test="ppd != null and !ppd.equals('')">
+   					ppd = #{ppd},
+   				</if>
+   				<if test="clientCode != null and !clientCode.equals('')">
+   					client_code = #{clientCode},
+   				</if>
+   				
+   				<if test="cost != null and !cost.equals('')">
+   					cost = #{cost},
+   				</if>
+   				<if test="sellPrice != null and !sellPrice.equals('')">
+   					 sell_price = #{sellPrice},
+   				</if>
+   				<if test="standard != null and !standard.equals('')">
+   					standard = #{standard},
+   				</if>
+   				<if test="unit != null and !unit.equals('')">
+   					unit= #{unit}
+   				</if>
+   			</set>
+   		WHERE pro_code = #{proCode}	
 	</update>
 	
 	<!--물품 삭제.-->
 	<delete id="deletePro" parameterType="com.cart.eco.common.service.ProAllVO">
-	
+		DELETE
+		FROM product
+		WHERE pro_code = #{proCode}
 	</delete>
 	
+	<!--물품 옵션 삭제.-->
+	<delete id="deleteProInfo" parameterType="com.cart.eco.common.service.ProAllVO">
+		DELETE
+		FROM product_option
+		WHERE pro_code = #{proCode}
+	</delete>
 </mapper>

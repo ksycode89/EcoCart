@@ -179,7 +179,21 @@ public class CommonController {
 		return proService.insertPro(vo);
 	}
 
+	// 물품 삭제 ajax.
+	@PostMapping("ajax/deletePro")
+	@ResponseBody
+	public String deletePro(@RequestBody List<ProAllVO> vo) {
+		
+		return proService.deletePro(vo);
+	}
 	
+	// 물품 수정.
+	@PostMapping("ajax/updatePro")
+	@ResponseBody
+	public int updatePro(ProAllVO vo) {
+		System.out.println("updatePro"+vo);
+		return proService.updateProInfo(vo);
+	}
 	         
 // 공통코드이동.
 

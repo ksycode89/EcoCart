@@ -13,5 +13,5 @@ public interface ProductService {
 	// 물품 수정.
 	public int updateProInfo(ProAllVO vo);
 	// 물품 삭제.
-	public int deletePro(List<ProAllVO> vo);
+	public String deletePro(List<ProAllVO> vo);
 }
