@@ -75,10 +75,11 @@
 	<div class="mb-3 row flex-right mt-3">
 			<div class="col-lg-auto col-sm-12 ">
 		        <button class="ml-5 btn btn-sm btn-primary" onclick="getListClient()">조회</button>
-		        <button class="ml-5 btn btn-sm btn-primary" onclick="insertBOM()">등록</button>
+		        <button class="ml-5 btn btn-sm btn-primary" onclick="insertClinet()">등록</button>
 				<button class="ml-5 btn btn-sm btn-primary" onclick="addRow()"><svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></button>
-				<button class="ml-5 btn btn-sm btn-primary" onclick="updateWH()">수정</button>
+				<button class="ml-5 btn btn-sm btn-primary" onclick="updateClient()">수정</button>
 				<button class="ml-5 btn btn-sm btn-secondary" onclick="window.location.reload()">초기화</button>
+				<button class="ml-5 btn btn-sm btn-secondary" onclick="deleteClient()">삭제</button>
 			</div>
 	</div>
 	</div>	
@@ -87,7 +88,7 @@
 		
 <div id="grid" class="mb-3 row"></div>
 
-<!-- modal 시작 -->
+<!-- 거래처 modal 시작 -->
 	  <div class="modal fade" id="searchClient" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		  <div class="modal-dialog modal-lg">
 		    <div class="modal-content">
@@ -117,53 +118,99 @@
 		</div>
 	    
 	    <!--  모달창 끝 -->
+	    <!--주소 modal 시작 -->
+	  <div class="modal fade" id="clientadrrM" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		    
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="staticBackdropLabel">주소 검색</h5>
+		      </div>
+		      
+		      <div class="modal-body">
+		      	<div id="clientadrr"></div>
+			    <input type="text" id="sample4_postcode" placeholder="우편번호">
+					<input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+					<input type="text" id="sample4_roadAddress" placeholder="도로명주소">
+					<input type="text" id="sample4_jibunAddress" placeholder="지번주소">
+					<span id="guide" style="color:#999;display:none"></span>
+					<input type="text" id="sample4_detailAddress" placeholder="상세주소">
+					<input type="text" id="sample4_extraAddress" placeholder="참고항목">
+		      </div>
+		        
+		        
+					 <div id ="grid3"></div>
+				
+		        
+		      <div class="modal-footer">
+		        <button id="addrCheck" type="button" class="btn btn-primary" >확인</button>
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+		      </div>
+		      
+		    </div>
+		  </div>
+		</div>
+	    
+	    <!--  모달창 끝 -->
 	<script>
 
 	/* token */
-	 var token = $("meta[name='_csrf']").attr("content");
+	 var token =  $("meta[name='_csrf']").attr("content");
 	 var header = $("meta[name='_csrf_header']").attr("content");
 
 	const grid = new tui.Grid({
 			el : document.getElementById('grid'),
-			rowHeaders: ['rowNum'],
-			scrollX : false,
+			rowHeaders: ['checkbox'],
+			scrollX : true ,
 			scrollY : false,
-			columns : [ {
+			columns : [ 
+				{
+				header : '거래처코드',
+				name : 'clientCode',
+				editor : 'text',
+				 width: 'auto'
+				},
+				{
 				header : '거래처명',
-				name : 'clientName'
+				name : 'clientName',
+				editor : 'text',
+				 width: 'auto'
 			}, {
 				header : '사업자번호',
-				name : 'regNum'
+				name : 'regNum',
+				editor : 'text'
+				, width: 'auto'
 			}, {
 				header : '업종',
-				name : 'workType'
+				name : 'workType',
+				 width: 'auto'
 			}, {
 				header : '주소',
-				name : 'clientAddr'
+				name : 'clientAddr',
+				 width: 'auto'
 			}, {
 				header : 'tel',
-				name : 'clientTel'
+				name : 'clientTel',
+				editor : 'text',
+				 width: 'auto'
 			}, {
 				header : 'fax',
-				name : 'clientFax'
+				name : 'clientFax',
+				editor : 'text',
+				 width: 'auto'
 			}, {
 				header : '등록일',
 				name : 'clientHire',
-				editOptions: {
-				      type: 'text'
-				    },
-				    component: {
-				      name: 'datePicker',
-				      options: {
-				        format: 'yyyy-MM-dd'
-				      }
-				    }
+				editor : 'datePicker',
+				 width: 'auto'
 			}, {
 				header : '등급',
 				name : 'clientGrade'
 			}, {
 				header : '비고',
-				name : 'comments'
+				name : 'comments',
+				editor : 'text',
+				 width: 'auto'
 			}
 
 			]
@@ -185,6 +232,22 @@
 				name : 'regNum'
 			}]
 		});
+//========on click ==============//		
+		//주소 넣기 
+		let addrev;
+		grid.on('dblclick',ev=>{
+			if(ev.columnName =='clientAddr'){
+			$('#clientadrrM').modal('show')
+			addrev=ev
+			}
+			console.log(grid.getModifiedRows().createdRows.length)
+		})
+		//주소인풋에 넣기
+	    $('#addrCheck').on('click',()=>{
+			addAddr(addrev);
+			$('#clientadrrM').modal('hide');
+		}) 
+		
 		//한줄선택시키기
 		let getrow ;
         gridClient.on('click', function(ev) {
@@ -194,7 +257,6 @@
          }
            getrow = ev.rowKey
            gridClient.setSelectionRange(record);
-             
          });
         //input에 거래처 입력
         function insertClient (){
@@ -204,12 +266,12 @@
         	$('#searchClient').modal('hide');
         	
         }
+ 
 		//거래처모달 팝업시
 		searchClient.addEventListener('shown.bs.modal', () => {
 			//모달창 새로고침
 			gridClient.refreshLayout(); 
 			//거래처 검색 아작스
-			console.log(123)
 			ClientListAjax(gridClient)
 		})
 		
@@ -221,14 +283,57 @@
 		}	
 		//거래처 추가
 		function addRow(){
-			let data = [{"workType" : $('#workType').val(),"clientGrade" : $('#clientGrade').val()}]
-			grid.appendRows(data)
-			
+			console.log(grid.getCheckedRows())
+			if(grid.getModifiedRows().createdRows.length == 0){
+				grid.clear()
+			}
+			let gridData = grid.getData();
+			let checkCode = false;
+			let checkName = false;
+		//거래처 코드 중복값체크	
+			for (var i = 0; i < gridData.length-1; i++) {
+			    if (gridData[i].clientCode ==gridData[gridData.length-1].clientCode) {
+			    	checkCode = true;
+			    }
+			  } 
+		//거래처 이름 중복값체크	
+			for (var i = 0; i < gridData.length-1; i++) {
+			    if (gridData[i].clientName ==gridData[gridData.length-1].clientName) {
+			    	checkName = true;
+			    }
+			  } 
+		//빈값체크
+		console.log(grid.getData().length)
+		
+			if($('#workType').val() == '==선택=='){
+				swal("업종을 선택해주세요.");
+			}else if  ($('#clientGrade').val()== '==선택=='){
+				swal("회사 등급을 선택해주세요.");
+			}else{
+				
+				if(grid.getData().length >0){
+					
+					if(grid.getRow(grid.getData().length-1).clientCode == ''){
+						swal("거래처코드가 비어있습니다.")
+					}else if(checkCode){
+						swal("추가 거래처코드가 중복됩니다.")
+					}else if (checkName){
+						swal("추가 거래처명이 중복됩니다.")
+					}else{
+						let data = [{"workType" : $('#workType').val(),"clientGrade" : $('#clientGrade').val()}]
+						grid.appendRows(data)
+					}
+				}else{
+					let data = [{"workType" : $('#workType').val(),"clientGrade" : $('#clientGrade').val()}]
+					grid.appendRows(data)
+				}
+			}
 		}
 		
-		/* 기능모음*/
+		
+	/* ===============기능모음=================*/
 		//거래처 부르는 함수
-		function ClientListAjax(methods,param){
+	function ClientListAjax(methods,param){
 			 $.ajax({
 	               url : "/clientList",
 	               type: "post",
@@ -245,9 +350,62 @@
 	               }
 	            })
 		}
+	//삭제
+	function deleteClient(){
+		let checkRowKeys = grid.getCheckedRowKeys();
+		 $.ajax({
+             url : "/deleteClient",
+             type: "post",
+         	contentType : "application/json",
+             beforeSend : function(xhr){
+         		xhr.setRequestHeader(header, token);
+         	 },
+         	 data : JSON.stringify(grid.getCheckedRows()),
+             success : function(data){
+               let checked = data,exp=/삭제/;
+               if(exp.test(checked)){
+               swal(data)
+               grid.removeRows(checkRowKeys);
+               }
+             },error : err=>{
+                console.log(err)
+             }
+          }) 
 		
+		
+	}
+	//dblclick grid에 주소넣기
+	function addAddr(ev){
+		//$('sample4_postcode').val() //우편번
+		let addr = $('#sample4_roadAddress').val()+$('#sample4_detailAddress').val()+'('+$('#sample4_postcode').val()+')';
+	//	$('sample4_jibunAddress').val() //구주소
+		grid.setValue(ev.rowKey,'clientAddr',addr)
+		
+	}
+	//거래처 등록 
+	function insertClinet(){
+	
+		console.log(grid.getModifiedRows().createdRows);
+
+		 $.ajax({
+             url : "/insertClinet",
+             type: "post",
+         	contentType : "application/json",
+             beforeSend : function(xhr){
+         		xhr.setRequestHeader(header, token);
+         	 },
+         	 data : JSON.stringify(grid.getModifiedRows().createdRows),
+             success : function(data){
+                console.log(data);
+               swal(data)
+             },error : err=>{
+                console.log(err)
+             }
+          }) 
+		
+	}
 		/*다음api */
-		 //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+	//본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
     function sample4_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -304,13 +462,7 @@
     }
 	</script>
 	
-<input type="text" id="sample4_postcode" placeholder="우편번호">
-<input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
-<input type="text" id="sample4_roadAddress" placeholder="도로명주소">
-<input type="text" id="sample4_jibunAddress" placeholder="지번주소">
-<span id="guide" style="color:#999;display:none"></span>
-<input type="text" id="sample4_detailAddress" placeholder="상세주소">
-<input type="text" id="sample4_extraAddress" placeholder="참고항목">
+
 
 
 

@@ -9,20 +9,51 @@
 			  ON c.work_type = cc.code_id
 		  <where>
 			<if test="clientCode != null and !clientCode.equals('') ">
-	         	 	   client_code = #{clientCode}
+	         	  client_code = #{clientCode}
 	      	</if>
 			<if test="workType != null and !workType.equals('') and !workType.equals('==선택==')">
-	         	 	 AND  work_type = #{workType}
+	         	  AND  work_type = #{workType}
       		</if>
       		<if test="clientGrade != null and !clientGrade.equals('') and !clientGrade.equals('==선택==')">
          	 	  AND client_grade = #{clientGrade}
       		</if>
       		<if test='clientHire != null and clientHire != "" and clientTel != null and clientTel != ""'>
-  			 AND  client_hire BETWEEN TO_DATE(#{clientHire}) AND TO_DATE(#{clientTel})
+  		       	 AND  client_hire BETWEEN TO_DATE(#{clientHire}) AND TO_DATE(#{clientTel})
 			</if>
 	      	
 		  </where>
 	</select>
-
+	
+	<insert id="insertClinet"  parameterType="com.cart.eco.common.service.ClientVO"> 
+		INSERT INTO client (client_code,client_name,reg_num,work_type,client_addr,client_tel,
+		<if test="clientFax != null and !clientFax.equals('') ">
+	         client_fax,
+      	</if>
+		
+		<if test="comments != null and !comments.equals('') ">
+	         comments
+      	</if>
+      		client_hire,client_grade	)
+      		
+      		VALUES ( #{clientCode},#{clientName},#{regNum},#{workType},#{clientAddr},#{clientTel},
+      		<if test="clientFax != null and !clientFax.equals('') ">
+	         #{clientFax},
+      	</if>
+		
+		<if test="comments != null and !comments.equals('') ">
+	        #{ comments},	
+      	</if>
+      		#{clientHire},#{clientGrade}
+      		)
+	
+	</insert>
+	
+	<delete id="deleteClient"  parameterType="com.cart.eco.common.service.ClientVO">
+		DELETE 
+		FROM client
+		WHERE client_code = #{clientCode} 
+	</delete>
+	
+	
 
 </mapper>

@@ -17,5 +17,6 @@ public class ClientVO {
 	private String clientFax;      // 팩스
 	private String clientGrade;      // 등급
 	private String clientHire;      // 등급
+	private String comments;      // 비고 
 
 }

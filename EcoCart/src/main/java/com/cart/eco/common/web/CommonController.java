@@ -413,7 +413,7 @@ public class CommonController {
 	}
 
 //			====================거래처 ======================================= //
-
+	//거래처목록 
 	@PostMapping("/clientList")
 	@ResponseBody
 	public List<ClientVO> clientList(ClientVO vo) {
@@ -421,5 +421,21 @@ public class CommonController {
 
 		return clientServcie.clientList(vo);
 
+	}
+	//거래처등록 
+	@PostMapping("/insertClinet")
+	@ResponseBody
+	public String insertClinet(@RequestBody List<ClientVO> vo) {
+		System.out.println("insertClinet : " + vo);
+		return clientServcie.insertClinet(vo);
+		
+	}
+	//거래처 석제 
+	@PostMapping("/deleteClient")
+	@ResponseBody
+	public String deleteClient(@RequestBody List<ClientVO> vo) {
+		System.out.println("deleteClient : " + vo);
+		return clientServcie.deleteClient(vo);
+		
 	}
 }
