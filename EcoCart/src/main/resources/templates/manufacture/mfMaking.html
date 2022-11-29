@@ -17,6 +17,10 @@
 			<div id=makingGridId></div>
 		</div><br>
 		<div>
+			<h4 style="height:40px">생산가동</h4>
+			<div id="mfResultGridId"></div>
+		</div><br>
+		<div>
 			<h4 style="height:40px">생산가동상세</h4>
 			<div id="makingDetailGridId"></div>
 		</div><br>
@@ -109,6 +113,10 @@
 		          name: 'mfOrderCode'
 		        },
 		        {
+		          header: '생산코드',
+		          name: 'mfMakingCode'
+		        },
+		        {
 		          header: '생산지시넘버링',
 		          name: 'mfOrderNo'
 		        },
@@ -145,11 +153,53 @@
 	    
 	    makingGrid.hideColumn('mfOrderNo');
 	    
+	    var mfResultGrid = new tui.Grid({
+			el: document.getElementById('mfResultGridId'),
+			scrollX: false,
+			scrollY: false,
+			bodyHeight: 40,
+			minBodyHeight: 40,
+			columns: [
+		        {
+		          header: '생산코드',
+		          name: 'mfMakingCode'
+		        },
+		        {
+		          header: '생산지시코드',
+		          name: 'mfOrderCode'
+		        },
+		        {
+		          header: '라인번호',
+		          name: 'lineNo'
+		        },
+		        {
+		          header: '총투입량',
+		          name: 'inputNum'
+		        },
+		        {
+		          header: '총생산량',
+		          name: 'makingNum'
+		        },
+		        {
+		          header: '총불량량',
+		          name: 'faultyNum'
+		        },
+		        {
+		          header: '작업시작시간',
+		          name: 'startTime'
+		        },
+		        {
+		          header: '작업종료시간',
+		          name: 'endTime'
+		        }
+			]
+		});
+	    
 		var makingDetailGrid = new tui.Grid({
 			el: document.getElementById('makingDetailGridId'),
 			scrollX: false,
 			scrollY: true,
-			bodyHeight: 360,
+			bodyHeight: 200,
 			rowHeaders:['rowNum'],
 			columns: [
 		        {
@@ -254,10 +304,7 @@
 				proName : orderDecideModalGrid.getRow(ev.rowKey).proName,
 				mfOrderNum : orderDecideModalGrid.getRow(ev.rowKey).mfOrderNum
 			})
-			
-			makingDetailGrid.appendRow({
-				
-			})
+		mfResultGrid.appendRow({})
 			$("#decideOrderModal").modal("hide");
 		})
 		

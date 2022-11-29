@@ -225,6 +225,13 @@ public class MfController {
 		return mfmaking.getMfResultList();
 	}
 	
+	//공정실적조회 - 해당실적불량내역조회
+	@GetMapping("/mfResultFaultyList")
+	@ResponseBody
+	public List<Map<String,Object>> mfResultFaultyList(String mfMakingCode){
+		return mfmaking.getMfFaultyList(mfMakingCode);
+	}
+	
 	//생산공정관리 페이지
 	@GetMapping("/mfProcess")
 	public String mfProcess(Model model) {
