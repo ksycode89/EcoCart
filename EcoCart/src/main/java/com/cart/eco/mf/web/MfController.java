@@ -132,14 +132,14 @@ public class MfController {
 	//생산지시등록 - 생산지시코드 자동등록
 	@GetMapping("/mfOrderCodeBring")
 	@ResponseBody
-	public List<MfOrderVO> mfOrderCodeBring(MfOrderVO vo){
+	public List<MfOrderVO> mfOrderCodeBring(){
 		return mforder.getMfOrderCode();
 	}
 	
 	//생산지시등록 - 생산지시코드 자동등록
 	@GetMapping("/releaseCodeBring")
 	@ResponseBody
-	public List<MfOrderVO> releaseCodeBring(MfOrderVO vo){
+	public List<MfOrderVO> releaseCodeBring(){
 		return mforder.getReleaseCode();
 	}
 
@@ -210,6 +210,34 @@ public class MfController {
 	@ResponseBody
 	public List<MfMakingVO> mfOrderDecideList(){
 		return mfmaking.getMfOrderDecideList();
+	}
+	
+	//생산관리 - 실시간 생산가동조회
+	@GetMapping("/mfMakingTotal")
+	@ResponseBody
+	public List<Map<String,Object>> mfMakingTotal(String mfMakingCode){
+		return mfmaking.getMfMakingTotal(mfMakingCode);
+	}
+	
+	//생산관리 - 실시간 생산가동상세조회 
+	@GetMapping("/mfMakingDetailList")
+	@ResponseBody
+	public List<Map<String,Object>> mfMakingDetailList(String mfMakingCode){
+		return mfmaking.getMfMakingDetailList(mfMakingCode);
+	}
+	
+	//생산관리 - 생산코드 자동등록
+	@GetMapping("/mfMakingCodeBring")
+	@ResponseBody
+	public List<MfMakingVO> mfMakingCodeBring(){
+		return mfmaking.getMfMakingCode();
+	}
+	
+	//생산공정관리 - 설비변경
+	@PostMapping("/mfMakingTitleInsert")
+	@ResponseBody
+	public int mfMakingTitleInsert(@RequestBody List<MfMakingVO> vo){
+		return mfmaking.insertMakingResult(vo);
 	}
 	
 	//공정실적조회 페이지

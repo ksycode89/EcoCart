@@ -96,6 +96,23 @@
 		    }
 		}
 	    
+	    class MakingButtonRenderer3 {
+			constructor(props) {
+		    	const el = document.createElement('span');
+		        el.innerHTML='<button type="button" class="btn btn-sm btn-secondary" style="width:80px">재가동</button>';
+		        this.el = el;
+		        this.render(props);
+		    }
+
+		    getElement() {
+		    	return this.el;
+		    }
+
+		    render(props) {
+		    	this.el.value = String(props.value);
+		    }
+		}
+	    
 	    var makingGrid = new tui.Grid({
 			el: document.getElementById('makingGridId'),
 			data: gridData,
@@ -148,6 +165,14 @@
 				  	type: MakingButtonRenderer2
 				  }
 		        },
+		        {
+		          header: '공정재가동',
+		          name: 'restartProcess',
+		          align: 'center',
+				  renderer: {
+				  	type: MakingButtonRenderer3
+				  }
+		        }
 			]
 		});
 	    
@@ -161,16 +186,16 @@
 			minBodyHeight: 40,
 			columns: [
 		        {
-		          header: '생산코드',
-		          name: 'mfMakingCode'
+		          header: '라인번호',
+		          name: 'lineNo'
 		        },
 		        {
 		          header: '생산지시코드',
 		          name: 'mfOrderCode'
 		        },
 		        {
-		          header: '라인번호',
-		          name: 'lineNo'
+		          header: '생산코드',
+		          name: 'mfMakingCode'
 		        },
 		        {
 		          header: '총투입량',
@@ -191,9 +216,16 @@
 		        {
 		          header: '작업종료시간',
 		          name: 'endTime'
+		        },
+		        {
+		          header: '가동상태',
+		          name : 'processStatus'
 		        }
 			]
 		});
+	    
+	    mfResultGrid.hideColumn('mfOrderCode');
+	    mfResultGrid.hideColumn('mfMakingCode');
 	    
 		var makingDetailGrid = new tui.Grid({
 			el: document.getElementById('makingDetailGridId'),
@@ -202,10 +234,6 @@
 			bodyHeight: 200,
 			rowHeaders:['rowNum'],
 			columns: [
-		        {
-		          header: '생산코드',
-		          name: 'mfMakingCode'
-		        },
 		        {
 		          header: '프레임용접공정',
 		          name: 'mfMaking1'
@@ -292,21 +320,92 @@
 				decideOrderModal.addEventListener('shown.bs.modal', () => {
 					orderDecideModalGrid.refreshLayout();
 			    });	
+			} else if(ev.columnName=='startProcess'){
+				if(mfResultGrid.getRow(0) != null){
+					$.ajax({
+		        		url: '/mfMakingTitleInsert',
+		        		method: 'POST',
+		        		contentType: 'application/json',
+		        		data: JSON.stringify(mfResultGrid.getData()),
+		        		dataType: 'JSON',
+		        		beforeSend : function(xhr){
+		               		xhr.setRequestHeader(header, token);
+		               	},
+		        		success: function(data){
+		        			console.log(data);
+		        			let a = mfResultGrid.getRow(0).mfMakingCode
+		        			$.ajax({
+		    	    			url: '/mfMakingTotal?mfMakingCode='+a,
+		    	    			method: 'GET',
+		    	    			success: function(data){
+		    	    				mfResultGrid.resetData(data);
+		    	    				mfResultGrid.refreshLayout();
+		    	    			},
+		    	    			error: function(error){
+		    	    				console.log(error);
+		    	    			}
+		    	    		});
+		        		},
+		        		error: function(error){
+			    			console.log(error);
+		        		}
+		        	});
+				} else {
+					alert('생산지시가 설정되지 않은 라인입니다.\n생산지시를 설정해주세요.');
+				}
+			} else if(ev.columnName=='stopProcess'){
+				if(mfResultGrid.getRow(0) != null){
+					alert('멈춰!');
+				}
+			} else if(ev.columnName=='restartProcess'){
+				if(mfResultGrid.getRow(0) != null){
+					alert('재가동합니다~');
+				}
 			}
 		});
 		
 		orderDecideModalGrid.on('click', (ev) => {
-			makingGrid.setRow(makingEv.rowKey, {
-				lineNo : makingEv.rowKey+1,
-				mfOrderCode : orderDecideModalGrid.getRow(ev.rowKey).mfOrderCode,
-				mfOrderNo : orderDecideModalGrid.getRow(ev.rowKey).mfOrderNo,
-				proCode : orderDecideModalGrid.getRow(ev.rowKey).proCode,
-				proName : orderDecideModalGrid.getRow(ev.rowKey).proName,
-				mfOrderNum : orderDecideModalGrid.getRow(ev.rowKey).mfOrderNum
-			})
-		mfResultGrid.appendRow({})
-			$("#decideOrderModal").modal("hide");
-		})
+			$.ajax({
+				url:'/mfMakingCodeBring',
+				success: function(data){
+			    	if(ev.rowKey != null){
+			    		makingGrid.setRow(makingEv.rowKey, {
+							lineNo : makingEv.rowKey+1,
+							mfOrderCode : orderDecideModalGrid.getRow(ev.rowKey).mfOrderCode,
+							mfMakingCode : data[0],
+							mfOrderNo : orderDecideModalGrid.getRow(ev.rowKey).mfOrderNo,
+							proCode : orderDecideModalGrid.getRow(ev.rowKey).proCode,
+							proName : orderDecideModalGrid.getRow(ev.rowKey).proName,
+							mfOrderNum : orderDecideModalGrid.getRow(ev.rowKey).mfOrderNum
+						})
+						if(mfResultGrid.getRowCount()<1){
+							mfResultGrid.appendRow({
+								lineNo : makingEv.rowKey+1,
+								mfOrderCode : orderDecideModalGrid.getRow(ev.rowKey).mfOrderCode,
+								mfMakingCode : data[0],
+								inputNum : orderDecideModalGrid.getRow(ev.rowKey).mfOrderNum,
+								processStatus : '대기'
+							})
+						} else {
+							mfResultGrid.setRow(0, {
+								lineNo : makingEv.rowKey+1,
+								mfOrderCode : orderDecideModalGrid.getRow(ev.rowKey).mfOrderCode,
+								mfMakingCode : data[0],
+								inputNum : orderDecideModalGrid.getRow(ev.rowKey).mfOrderNum,
+								processStatus : '대기'
+							})
+						}
+						
+						$("#decideOrderModal").modal("hide");
+			    	}
+				},
+				error: function(error){
+					console.log(error);
+				}
+			});
+		});
+		
+		
 		
 /* 		var n = 0;
    var interval ;

@@ -17,7 +17,7 @@
 		ON d.faulty_code = f.faulty_code
 		WHERE m.mf_making_code = #{mfMakingCode}
 		AND d.mf_making4 != '통과'
-		ORDER BY d.mf_making_no
+		ORDER BY d.faulty_code
 	</select>
 	
 	<select id="getMfOrderDecideList" resultType="com.cart.eco.mf.service.MfMakingVO">
@@ -26,6 +26,25 @@
 		ON d.mf_order_code = o.mf_order_code
 		WHERE d.mf_order_status = '확정'
 		AND trunc(d.mf_order_date) = trunc(SYSDATE)
+	</select>
+	
+	<select id="getMfMakingTotal" parameterType="String" resultType="Map">
+		SELECT mf_making_code "mfMakingCode", mf_order_code "mfOrderCode", line_no "lineNo", input_num "inputNum", making_num "makingNum", faulty_num "faultyNum", start_time "startTime", end_time "endTime", process_status "processStatus"
+		FROM mf_making
+		WHERE mf_making_code = #{mfMakingCode}
+	</select>
+	
+	<select id="getMfMakingDetailList" parameterType="String" resultType="Map">
+		SELECT d.mf_making1 "mfMaking1", d.mf_making2 "mfMaking2", d.mf_making3 "mfMaking3", d.mf_making4 "mfMaking4", d.faulty_code "faultyCode", f.faulty_content "faultyContent"
+		FROM mf_making_detail d LEFT OUTER JOIN faulty_code f
+		ON d.faulty_code = f.faulty_code
+		WHERE mf_making_code = #{mfMakingCode}
+		ORDER BY mf_making_no
+	</select>
+	
+	<select id="getMfMakingCode" resultType="String">
+		SELECT concat('MFM-',concat(to_char(SYSDATE,'YYmmdd'),concat('-', nvl(max(to_number(substr(mf_order_code, 12))),0)+1)))
+		FROM mf_making
 	</select>
 
 	<insert id="insertMakingProduct" parameterType="com.cart.eco.mf.service.MfMakingVO">
@@ -110,7 +129,7 @@
 			SELECT * FROM DUAL
 	</insert>
 	
-	<insert id="insertMakingResult">
+	<insert id="insertMakingResult" parameterType="com.cart.eco.mf.service.MfMakingVO">
 		INSERT INTO mf_making(mf_making_code
 							, mf_order_code
 							, line_no
@@ -121,7 +140,7 @@
 			 , #{inputNum})
 	</insert>
 	
-	<update id="updateMakingResult">
+	<update id="updateMakingResult" parameterType="com.cart.eco.mf.service.MfMakingVO">
 		UPDATE mf_making
 		SET making_num = (SELECT COUNT(mf_making4)
 						  FROM mf_making_detail
@@ -131,9 +150,9 @@
 						  FROM mf_making_detail
 						  WHERE mf_making4 != '통과'
 						  AND mf_making_code = #{mfMakingCode})
-		  , start_time = #{startTime}
-		  , end_time = #{endTime}
-		  , process_status = #{processStatus}
+		  <if test="startTime != null and !startTime.equals('')">, start_time = #{startTime}</if>
+		  <if test="endTime != null and !endTime.equals('')">, end_time = #{endTime}</if>
+		  <if test="processStatus != null and !processStatus.equals('')">, process_status = #{processStatus}</if>
 		 WHERE mf_making_code = #{mfMakingCode}
 	</update>
 </mapper>
