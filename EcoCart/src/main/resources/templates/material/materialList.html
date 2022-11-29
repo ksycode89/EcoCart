@@ -14,35 +14,38 @@
 	
 		<div id="content">
 			<h2>발주현황</h2>
-			
-			<div class="filters mt-4" style="height:35px" >
-				<label for="planStatus" style="width:100px">진행구분</label>
-				<label><input type="radio" id="planAll"  name="plan"value="all" checked>전체</label>&nbsp;
-				<label><input type="radio" id="planStart"  name="plan" value="start">대기</label>&nbsp;
-				<label><input type="radio" id="planWait"  name="plan" value="wait">승인</label>
-			</div>
-			
-			<label for="code_group" style="width:80px;">담당자</label>
-			<input type="text" id="codeGroup" name="code_group" class="form-control" style="width:150px; display:inline"><br>
-			<label for="code_group" style="width:80px;">발주날짜</label>
-			<input type="date"  id="searchDate" class="form-control" style="width:150px; display:inline">
-			
+<!-- =============필터 레디오 =========== -->		
+		<div class="filters mt-4" style="height:35px" >
+			<label for="planStatus" style="width:100px">진행구분</label>
+			<label><input type="radio" id="planAll"  name="plan"value="all" checked>전체</label>&nbsp;
+			<label><input type="radio" id="ogwt"  name="plan" value="og_wt">진행</label>&nbsp;
+			<label><input type="radio" id="ogco"  name="plan" value="og_co">완료</label>
+		</div>
+		
+		<label for="code_group" style="width:80px;">발주번호</label>
+		<input type="text" id="orderNo" name="code_group" class="form-control" style="width:150px; display:inline"><br>
+		<label for="code_group" style="width:80px;">납기일</label>
+		<input type="date"  id="orderReceiving" class="form-control" style="width:150px; display:inline">
+<!-- ============버튼=========== -->	
 		<div class="mb-3 row flex-right mt-3">
-				<div class="col-lg-auto col-sm-12 ">
-			        <button class="ml-5 btn btn-sm btn-primary" onclick="getList()">조회</button>
-					<button class="ml-5 btn btn-sm btn-secondary" onclick="window.location.reload()">초기화</button>
-					<button class="ml-5 btn btn-sm btn-secondary" onclick="cancel()">발주취소</button>
-				</div>
+			<div class="col-lg-auto col-sm-12 ">
+		        <button class="ml-5 btn btn-sm btn-primary" id= "orderSearch" >조건조회</button>
+		        <button class="ml-5 btn btn-sm btn-primary" onclick="getList()">조회</button>
+		        <button class="ml-5 btn btn-sm btn-primary" onclick="commitOrder()">발주확정</button>
+				<button class="ml-5 btn btn-sm btn-secondary" onclick="window.location.reload()">초기화</button>
+				<button class="ml-5 btn btn-sm btn-secondary" onclick="cancel()">발주취소</button>
+			</div>
 		</div>
 		
 		</div>
+	<!-- =============그리드 =========== -->
 		<div class="row">
 			<div>
 				<div id="grid"></div>
 			</div>
 		</div>
-			<div class="col-8" >
-				<div id="grid2" style="width: 1450px" ></div>
+			<div class="row" >
+				<div id="grid2" ></div>
 			</div>
 		<br>
 		
@@ -61,6 +64,7 @@
 	            {
 	              header: '발주번호',
 	              name: 'orderNo',
+	              filter : 'select'
 	            },
 	            {
 	              header: '발주일자',
@@ -80,12 +84,12 @@
 	              options: {
 	              format: 'yyyy-MM-dd'
 	             }
-	             }
+	             },
+	         	filter : 'select'
 	            },
 	            {
 	            	header: '거래처코드',
 	            	name: 'clientName'
-	            	
 	            },
 	            {
 	              header: '담당자',
@@ -98,15 +102,14 @@
 	            {
 	              header: '진행상황',
 	              name: 'orderGroup',
-	              editor: 'text'
+		              filter : 'select',
+	              
 	            }
 	           
 	          ] ,pageOptions: {
 	    	        useClient: true,
 	    	        perPage:20
 	    	      }
-	   	
-	      
 	  });
 		    
    //상세조회
@@ -135,20 +138,19 @@
 	      {
 	        header: '발주수량',
 	        name: 'orderNum'
-	        },
-	        {
-	        header: '검사수량',
-	        name: 'checkNum'
-	          }
+	        }
+	        
 	    ]
 	  });	  
-	   
    
 	   grid.on('click',(ab)=>{
 		   //console.log(ab.nativeEvent.target.innerText)
 		   $.ajax({
 			   url:'/detailList',
 			   data : {'orderNo' : grid.getRow(ab.rowKey).orderNo},
+              	beforeSend : function(xhr){
+            		xhr.setRequestHeader(header, token);
+            	 },
 			   success : function(data) {
 				   //console.log(data);
 				   grid2.resetData(data);				   
@@ -163,9 +165,13 @@
 	   
 	  
 	/* =================기=능===================== */
+ //조회
 	function getList (){
 		   $.ajax({
 				url : '/materialListInfo',
+              	beforeSend : function(xhr){
+            		xhr.setRequestHeader(header, token);
+            	 },
 				success : function(data) {
 					grid.resetData(data)
 					console.log(data);
@@ -176,9 +182,55 @@
 			})
 		   
 	   }
-
+	 // 진행구분
+		planAll.addEventListener('click', () => {
+	    	grid.unfilter('orderGroup');
+	    })
+	    
+	   ogwt.addEventListener('click', () => {
+	    	grid.filter('orderGroup', [{code:'eq', value:'og_wt'}]);
+	    })
+	    
+	    ogco.addEventListener('click', () => {
+	    	grid.filter('orderGroup', [{code:'eq', value:'og_co'}]);
+	    })
+	//필터
+	orderSearch.addEventListener('click', () => {
+		grid.filter('orderNo' , [{code:'contain', value:$('#orderNo').val()}])
+		if($('#orderReceiving').val() != '' ){
+			grid.filter('orderReceiving' , [{code:'beforeEq', value:$('#orderReceiving').val()}])
+		}
+	});
+	//발주확정 commitOrder
+	function commitOrder(){
+		let a = grid.getCheckedRows()
+		let getOrderNo = []
+		
+		$(grid.getCheckedRowKeys()).each((a,val)=>{
+			getOrderNo.push(grid.getRow(val).orderNo)
+		})
+		console.log(getOrderNo)
+		
 	
-	   
+	 $ .ajax({
+				url : '/commitOrder',
+				type : 'post',
+				contentType : "application/json",
+				data : JSON.stringify(getOrderNo),
+              	beforeSend : function(xhr){
+            		xhr.setRequestHeader(header, token);
+            	 },
+				success : function(data) {
+					let mes = data+'건 확정'
+					swal(mes)
+					grid.removeRows(grid.getCheckedRowKeys())
+				},
+				error : function(reject) {
+					swal('확정실패')
+					console.log(reject);
+				}
+			})  
+	}
    </script>
 	</div>
 </body>

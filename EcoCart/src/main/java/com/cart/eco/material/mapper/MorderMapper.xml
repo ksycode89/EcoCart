@@ -38,7 +38,7 @@
 		  on p.pro_code = o.pro_code
         left join client c
         on o.client_code = c.client_code
-        where p.pro_group = 'j2'
+        where p.pro_group = 'HCP' 
 	</select>
 	
 	<insert id="insertOrder" parameterType="com.cart.eco.material.service.MorderVO">
@@ -108,7 +108,25 @@
 	<delete id="deleteOrder" parameterType="com.cart.eco.material.service.MorderVO">
 		delete from m_order
 		where order_no = #{orderNo}
-		
 	</delete>
 	
+	<!-- /////////////// -->
+	<update id="commitOrder" parameterType="com.cart.eco.material.service.MorderVO">
+		UPDATE m_order
+		SET order_group = #{orderGroup}
+		where order_no = #{orderNo}
+	</update>
+	
+	<select id="searchOrder" parameterType="int" resultType="com.cart.eco.material.service.MorderVO">
+		select order_no, order_date,
+		c.client_code, c.client_name,m.order_group,m.order_receiving,m.total,
+		e.emp_name,e.emp_num 
+		from m_order m left outer join client c
+		on
+		m.client_code = c.client_code
+		left outer join employees e
+		on m.emp_num = e.emp_num
+		where order_no = #{orderNo}
+		order by order_no DESC
+	</select>
 </mapper>

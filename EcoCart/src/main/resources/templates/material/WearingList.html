@@ -1,202 +1,316 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"  
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" 
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">	
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout}">
 <head>
-<meta charset="UTF-8">
-<title>입고관리</title>
 <meta charset="UTF-8">
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
 <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+<title>입고현황</title>
 </head>
 <body>
-<div layout:fragment="content" class="page-content">
-	<div id="content">
-		<h3>입고관리</h3>
-		&nbsp;
-		<table class="mb-5">
-		<tr>
-			<td> 부서 <input type="text" id="empDept"> <i class="bi bi-search" id="emplist" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="cursor:pointer"> </i> 사원 <input type="text" id="empName"> </td>
-		</tr>
-		</table>
-	</div>
-	<br>
+	<div layout:fragment="content" class="page-content">
 	
-	<!-- Modal -->
-	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
-		data-bs-keyboard="false" tabindex="-1"
-		aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="staticBackdropLabel">사원 목록</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div id="modalGrid"></div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">확인</button>
-				</div>
+		<div id="content">
+			<h2>입고현황</h2>
+<!-- =============필터 레디오 =========== -->		
+		
+		
+		<label for="code_group" style="width:80px;">입고번호</label>
+		<input type="text" id="orderNo" name="code_group" class="form-control" style="width:150px; display:inline"><br>
+		<label for="code_group" style="width:80px;">입고일</label>
+		<input type="date"  id="orderReceiving" class="form-control" style="width:150px; display:inline">
+<!-- ============버튼=========== -->	
+		<div class="mb-3 row flex-right mt-3">
+			<div class="col-lg-auto col-sm-12 ">
+		        <button class="ml-5 btn btn-sm btn-primary" id= "orderSearch" >조건조회</button>
+		        <button class="ml-5 btn btn-sm btn-primary" onclick="getList()">조회</button>
+		        <button class="ml-5 btn btn-sm btn-primary" onclick="commitOrder()">입고처리</button>
+				<button class="ml-5 btn btn-sm btn-secondary" onclick="window.location.reload()">초기화</button>
+				<button class="ml-5 btn btn-sm btn-secondary" onclick="cancel()">발주취소</button>
 			</div>
 		</div>
-	</div>
+		
+		</div>
+	<!-- =============그리드 =========== -->
+		<div class="row">
+			<div>
+				<div id="grid"></div>
+			</div>
+		</div>
+			<div class="row" >
+				<div id="grid2" ></div>
+			</div>
+		<br>
+		
+	<!--  입고처리 모달창  -->
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-lg">  
+		    <div class="modal-content">
+		    
+		      <div class="modal-header">
+		        <h4 class="modal-title" id="staticBackdropLabel">발주완료</h4>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+		      </div>
+		        
+		      <div class="modal-body">
+				  <div class="container-fluid">
+							<label for="row1" style="width:80px; height: 30px; text-align:center;">주문코드</label>
+				        		<input type="text" class="form-control form-control-sm" style="width:150px; display:inline" id="orderCode"  readonly>
+							
+							<label for="row2" style="width:80px; height: 30px; text-align:center;"> 견적코드</label>
+				         		<select id="select4" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white" name="no">
+				         			<option value="선택">----선 택----</option>
+				         			<th:block th:each="e : ${orderList}">
+				         				<option th:value="${e.orderNo}" th:text="${e.orderNo}"></option>
+				         			</th:block>  			
+				         		</select>
+			         		 	<button class="btn-sm btn-primary" onclick="searchOrder()" type="button" >조 회</button>
+		         				
+				</div>
+			 </div>
+			 
+			 		<div id="gridM1"></div>
+			 		<div id="gridM2"></div>
+		      
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-primary" onclick="plusOrder()">주문 등록</button>
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+		      </div>
+		      
+		    </div>
+		  </div>
+		</div>
+	    
+	    <!--  모달창 끝 -->
+	    <div id="gridre"></div>
+		<div id="gridreD"></div>
+		<script>
 	
-	<div id="grid"></div>
-	<div id="grid2"></div>
-	<script>
-	
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
-	
-   const gridData = [
-       {
-          name:'',
-          artist:'',
-          type:'',
-          release:'',
-          genre:''
-       }];
-   const grid = new tui.Grid({
-	    el: document.getElementById('grid'),
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
+	   const grid = new tui.Grid({
+	          el: document.getElementById('gridM1'),
+	          scrollX: false,
+	          scrollY: false,
+	          rowHeaders : ['checkbox'],
+	          columns: [
+	            {
+	              header: '발주번호',
+	              name: 'orderNo',
+	              filter : 'select'
+	            },
+	            {
+	              header: '발주일자',
+	              name: 'orderDate',
+	              editor: {
+	                  type: 'datePicker', 
+	              option : {
+	            	  format:'yyyy-MM-dd',
+	              }
+	             }
+	              },
+	              {
+	              header: '납기일',
+	              name: 'orderReceiving',
+	              editor: {
+	              type: 'datePicker',
+	              options: {
+	              format: 'yyyy-MM-dd'
+	             }
+	             },
+	         	filter : 'select'
+	            },
+	            {
+	            	header: '거래처',
+	            	name: 'clientName'
+	            },
+	            {
+	              header: '담당자',
+	              name: 'empName',
+	            },
+	            {
+	                header: '담당자사번',
+	                name: 'empNum',
+	            }
+	           
+	          ] ,pageOptions: {
+	    	        useClient: true,
+	    	        perPage:20
+	    	      }
+	  });
+		    
+   //상세조회
+	  var grid2 = new tui.Grid({
+	    el: document.getElementById('gridM2'),
+	    rowHeders : ['rowNum'], 
 	    scrollX: false,
 	    scrollY: false,
-	    rowHeaders : ['checkbox'],
 	    columns: [
 	      {
-	    	
-	        header: '입고번호',
-	        name: 'orderNo'
+	        header: '품번',
+	        name: 'proCode'
 	      },
 	      {
-	        header: '입고일자',
-	        name: 'receiving_date'
+	        header: '품명',
+	        name: 'proName'
 	      },
 	      {
-	        header: '담당자',
-	        name: 'empName'
-	      }
+	        header: '규격',
+	        name: 'standard'
+	      },
+	      {
+	        header: '단위',
+	        name: 'unit'
+	      },
+	      {
+	        header: '발주수량',
+	        name: 'orderNum'
+	        }
+	        
 	    ]
-	  });
-   
-   
-  const grid2 = new tui.Grid({
-    el: document.getElementById('grid2'),
-    data: gridData,
-    scrollX: false,
-    scrollY: false,
-    columns: [
-      {
-        header: 'NO',
-        name: '부서'
-      },
-      {
-        header: '품번',
-        name: '사원'
-      },
-      {
-        header: '품명',
-        name: '거래처'
-      },
-      {
-        header: '규격',
-        name: '발주기간'
-      },
-      {
-        header: '단위',
-        name: '발주번호'
-      },
-      {
-        header: '수량',
-        name: '발주번호'
-        },
-        {
-        header: '검사수량',
-        name: '발주번호'
-          },
-          {
-        header: '구분',
-        name: '발주번호'
-            }
-    ]
-  });
-  
-	  var modalGrid = new tui.Grid({
-	      el: document.getElementById('modalGrid'),
-	      bodyHeight: 200,
-	      scrollX: true,
-	      scrollY: true,
-	      columns: [
-	         {
-	            header: '부서',
-	            name: 'empDept',
-	         },
-	         {
-	            header: '사원',
-	            name: 'empName',
-	         }
-	      ]
-	   });
+	  });	  
+   //입고현황
+    var grid2 = new tui.Grid({
+	    el: document.getElementById('gridre'),
+	    rowHeders : ['rowNum'], 
+	    scrollX: false,
+	    scrollY: false,
+	    columns: [
+	      {
+	        header: '입고',
+	        name: 'proCode'
+	      },
+	      {
+	        header: '품명',
+	        name: 'proName'
+	      },
+	      {
+	        header: '규격',
+	        name: 'standard'
+	      },
+	      {
+	        header: '단위',
+	        name: 'unit'
+	      },
+	      {
+	        header: '발주수량',
+	        name: 'orderNum'
+	        }
+	        
+	    ]
+	  });	  
+   //입고현황 상세
+    var gridre = new tui.Grid({
+	    el: document.getElementById('gridreD'),
+	    rowHeders : ['rowNum'], 
+	    scrollX: false,
+	    scrollY: false,
+	    columns: [
+	      {
+	        header: '입고디테일',
+	        name: 'proCode'
+	      },
+	      {
+	        header: '품명',
+	        name: 'proName'
+	      },
+	      {
+	        header: '규격',
+	        name: 'standard'
+	      },
+	      {
+	        header: '단위',
+	        name: 'unit'
+	      },
+	      {
+	        header: '발주수량',
+	        name: 'orderNum'
+	        }
+	        
+	    ]
+	  });	  
+    /* 
+      gridreD.on('click',(ab)=>{
+		   //console.log(ab.nativeEvent.target.innerText)
+		   $.ajax({
+			   url:'/detailList',
+			   data : {'orderNo' : grid.getRow(ab.rowKey).orderNo},
+              	beforeSend : function(xhr){
+            		xhr.setRequestHeader(header, token);
+            	 },
+			   success : function(data) {
+				   //console.log(data);
+				   grid2.resetData(data);				   
+				   
+			   },
+			   error :  function(reject) {
+				   console.log(111)
+			   }
+		   })
+		   
+	   }) */
+	   
 	  
-	  modalGrid.on("click", event => {
-   	   //console.log("inner modal grd ", modalGrid.getRow(event.rowKey).empDept)
-   	  let managers = [
-   		  {
-   			  "empName" :  modalGrid.getRow(event.rowKey).empName,
-   			  "empDept" :  modalGrid.getRow(event.rowKey).empDept,
-   			  "orderReceiving" :  modalGrid.getRow(event.rowKey).orderReceiving,
-   			  "orderNo" :  modalGrid.getRow(event.rowKey).orderNo,
-   			  "orderDate" :  modalGrid.getRow(event.rowKey).orderDate,
-   		  }
-   	  ] 
-   	
-		grid.appendRows(managers)
-		
-   		$('#empDept').val(modalGrid.getRow(event.rowKey)['empDept']);
-		$('#empName').val(modalGrid.getRow(event.rowKey)['empName']);
-		$('#clientCode').val(modalGrid.getRow(event.rowKey)['clientCode']);
-		$('#large').modal('hide');
-      })
-	  
-	  
-	  modalGrid.on("click", event => {
-		
-		  let managers = [
-			  {
-				  "empName" :  modalGrid.getRow(event.rowKey).empName,
-    			  "empDept" :  modalGrid.getRow(event.rowKey).empDept,
-    			  "empNum" :  modalGrid.getRow(event.rowKey).empNum
-				  
-			  }
-		  ]
-	  })
-	  
-  
-  	emplist.addEventListener("click", () => {
-  		  $.ajax({
-         url : 'ajax/list',
-         type : 'POST',
-         beforeSend : function(xhr){
-        	xhr.setRequestHeader(header, token);
-         },
-         data : {"empNum" : $('#empNum').val(),},
-         success : function(data) {
-            console.log(data);
-            modalGrid.resetData(data);
-         },
-         error : function(rejcet) {
-            console.log(123);
-         }
-      })
-  	})
-  	
-  	staticBackdrop.addEventListener('shown.bs.modal', () => {
-	       	modalGrid.refreshLayout(); 
-	  })
+	/* =================기=능===================== */
+ //조회
+	function getList (){
+		   $.ajax({
+				url : '/relList',
+              	beforeSend : function(xhr){
+            		xhr.setRequestHeader(header, token);
+            	 },
+				success : function(data) {
+					grid.resetData(data)
+					console.log(data);
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			})
+		   
+	   }
+	 
+	//필터
+	orderSearch.addEventListener('click', () => {
+		grid.filter('orderNo' , [{code:'contain', value:$('#orderNo').val()}])
+		if($('#orderReceiving').val() != '' ){
+			grid.filter('orderReceiving' , [{code:'beforeEq', value:$('#orderReceiving').val()}])
+		}
+	});
+	//발주확정 commitOrder
+	function commitOrder(){
+		$('#staticBackdrop').modal('show')
+	}
+	
+	//새로고침
+	 	staticBackdrop.addEventListener('shown.bs.modal', () => {
+	   	      grid.refreshLayout(); //모달창 새로고침
+	   	      grid2.refreshLayout(); //모달창 새로고침
+	   	 })
+	   	 
+	function searchOrder(){
+		let orderN = $('#select4').val();
+	
+			   $.ajax({
+					url : '/searchOrder/?orderNo='+orderN,
+	              	beforeSend : function(xhr){
+	            		xhr.setRequestHeader(header, token);
+	            	 },
+					success : function(data) {
+						console.log(data)
+						grid.resetData(data)
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				})
+			   
+		   }
+	 
    </script>
-   </div>
+	</div>
 </body>
 </html>

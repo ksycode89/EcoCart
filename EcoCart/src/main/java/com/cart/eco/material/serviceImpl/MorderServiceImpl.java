@@ -98,6 +98,25 @@ public class MorderServiceImpl implements MorderService {
 	public List<MorderVO> proInfo(MorderVO morderVO) {
 		return moMapper.proInfo(morderVO);
 	}
+/////////////////////////////////////////
+	//발주상태변경 (확정)
+	@Override
+	public int commitOrder(List<Integer> list) {
+		int	result = 0;	
+		for(int no : list) {
+				MorderVO vo = new MorderVO();
+				vo.setOrderNo(no);
+				vo.setOrderGroup("og_co");
+				result += moMapper.commitOrder(vo);
+			}
+		return result;
+	}
+
+	@Override
+	public MorderVO searchOrder(int orderNo) {
+			
+		return moMapper.searchOrder(orderNo);
+	}
 
 
 }
