@@ -168,6 +168,17 @@
 													</select>
 												</div>
 											</div>
+											<div class="mt-1 mb-3 row">
+												<label class="col-lg-3 col-sm-12 col-form-label">조달구분</label>
+												<div class="col-lg-auto col-sm-6">
+													<select class="form-select form-select-sm"
+														aria-label=".form-select-sm example" id="proGet2" name="proGet">
+														<option selected></option>
+														<option value="PG-MK">생산</option>
+														<option value="PG-BY">구매</option>
+													</select>
+												</div>
+											</div>
 											<div class="mb-3 row">
 												<label class="col-lg-3 col-sm-12 col-form-label">LOT여부</label>
 												<div class=" col-lg-auto ">
@@ -263,14 +274,29 @@
 									<div class="mb-3 row">
 										<label class="col-lg-3 col-sm-12 col-form-label">원가</label>
 										<div class="col-lg-auto col-sm-6">
-											<input id="cost" name="cost" class="form-control">
+											<input id="cost2" class="form-control">
+											<input type="hidden" id="cost" name="cost" class="form-control">
 										</div>
 
 									</div>
 									<div class="mb-3 row">
 										<label class="col-lg-3 col-sm-12 col-form-label">판매단가</label>
 										<div class="col-lg-auto col-sm-6">
-											<input id="sellPrice" name="sellPrice" class="form-control">
+											<input id="sellPrice2" class="form-control">
+											<input type="hidden" id="sellPrice" name="sellPrice" class="form-control">
+										</div>
+									</div>
+									<div class="mb-3 row">
+										<label class="col-lg-3 col-sm-12 col-form-label">규격</label>
+										<div class="col-lg-auto col-sm-6">
+											<input id="standard" name="standard" class="form-control">
+										</div>
+
+									</div>
+									<div class="mb-3 row">
+										<label class="col-lg-3 col-sm-12 col-form-label">단위</label>
+										<div class="col-lg-auto col-sm-6">
+											<input id="unit" name="unit" class="form-control">
 										</div>
 									</div>
 								</div>
@@ -459,7 +485,7 @@
 					      listItems: [
 					        {
 					          text: '선택',
-					          value: '0'
+					          value: '선택'
 					        },
 					        {
 					          text: '완제품',
@@ -612,11 +638,11 @@
 			
 			// 물품 조회 ajax.
 			function selectPro() {
-					 console.log( $('codeId').val() )
+					//console.log( $('codeId').val() )
 				$.ajax({
 					url : "ajax/selectPro",
 					type : "post",
-					data : {"codeId" : $('#codeId').val()  ,"proGet" : $('#proGet').val(),"lotUsed" : $('#lotUsed').val(),"testUsed" : $('#testUsed').val()
+					data : {"proCode" : $('#codeId').val()  ,"proGet" : $('#proGet').val(),"lotUsed" : $('#lotUsed').val(),"testUsed" : $('#testUsed').val()
 					},
 					 beforeSend : function(xhr){
 		             		xhr.setRequestHeader(header, token);
@@ -634,13 +660,14 @@
 			
 			// 물품조회 그리드 클릭시 오른쪽에 값 넣기.
 			grid.on("click", ev =>{
-				//console.log(grid.getRow(ev.rowKey).proName)
-				console.log("A",$('#proGroup2').val())
+				console.log(grid.getRow(ev.rowKey).proGroup)
+				//console.log("A",$('#proGroup2').val())
 				
-				$('#proItem2').val(grid.getRow(ev.rowKey).codeId);
+				$('#proItem2').val(grid.getRow(ev.rowKey).codeId);							// 품목
 				$('#proCode2').val(grid.getRow(ev.rowKey).proCode);
 				$('#proName2').val(grid.getRow(ev.rowKey).proName);
-				$('#proGroup2').val(grid.getRow(ev.rowKey).codeContent).prop("selected",true);
+				$('#proGroup2').val(grid.getRow(ev.rowKey).proGroup).prop("selected",true); // 구분
+				$('#proGet2').val(grid.getRow(ev.rowKey).proGet).prop("selected",true); // 조달구분
 				$('#lotUsed2').val(grid.getRow(ev.rowKey).lotUsed).prop("selected",true);
 				$('#testUsed2').val(grid.getRow(ev.rowKey).testUsed).prop("selected",true);
 				$('#proHire').val(grid.getRow(ev.rowKey).proHire);
@@ -652,8 +679,11 @@
 				$('#clientName').val(grid.getRow(ev.rowKey).clientName);
 				$('#proManager').val(grid.getRow(ev.rowKey).empNum);
 				$('#empName').val(grid.getRow(ev.rowKey).empName);
-				$('#cost').val((grid.getRow(ev.rowKey).cost).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
-				$('#sellPrice').val((grid.getRow(ev.rowKey).sellPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+				$('#cost2').val((grid.getRow(ev.rowKey).cost).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+				$('#sellPrice2').val((grid.getRow(ev.rowKey).sellPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+				
+				$('#cost').val((grid.getRow(ev.rowKey).cost));
+				$('#sellPrice').val((grid.getRow(ev.rowKey).sellPrice));
 				
 			})
 			
@@ -670,6 +700,7 @@
 			$('#proCode2').val('');
 			$('#proName2').val('');
 			$('#proGroup2').val('');
+			$('#proGet2').val('');
 			$('#lotUsed2').val('');
 			$('#testUsed2').val('');
 			$('#proHire').val('');
@@ -681,8 +712,8 @@
 			$('#clientName').val('');
 			$('#proManager').val('');
 			$('#empName').val('');
-			$('#cost').val('');
-			$('#sellPrice').val('');
+			$('#cost2').val('');
+			$('#sellPrice2').val('');
 			
 			grid.clear();
 
@@ -690,27 +721,8 @@
 		
 		// 물품 등록.(한 건)
 		function insertPro(){
-			/* let num =0;
-			$(grid.getData()).each((a, result )=>{
-				
-					num = result.rowKey
-				
-			}) */
-			
-		
-		/* document.getElementById('enter').addEventListener("keydown", function(){
-           if(event.keyCode == 13){
-        	   
-        	
-           }
-       })
-			
-			
-			
-		 */
-		 //let datas = {"codeId":grid.getData()[0].codeId, "codeId":grid.getData()[0].codeId,"codeId":grid.getData()[0].codeId}
-		 
-				   $.ajax({
+				   
+				$.ajax({
 		   				url : "ajax/insertPro",
 		   				type : 'post',
 		   				data :$('#proData').serialize()
@@ -731,10 +743,74 @@
 		              
 		}
 		
+		 grid.on("keydown", ev => {
+			// console.log(ev)
+			 if(ev.columnName == 'proGroup'){
+				 if(ev.keyboardEvent.key == 'Enter'){
+					$('#proItem2').val(grid.getRow(ev.rowKey).codeId);
+					$('#proCode2').val(grid.getRow(ev.rowKey).proCode);
+					$('#proName2').val(grid.getRow(ev.rowKey).proName);
+					$('#proGroup2').val(grid.getRow(ev.rowKey).proGroup).prop("selected",true);
+					
+					grid.blur() // 
+				 }
+			 }
+				 
+		 })
+		
+		
 		 
+		 // 물품 삭제.
+		 function delPro(){
+			 
+
+				$.ajax({
+					url : "ajax/deletePro",
+					type : 'post',
+					contentType : "application/json",
+					data : JSON.stringify(grid.getCheckedRows())
+					,
+					 beforeSend : function(xhr){
+	             		xhr.setRequestHeader(header, token);
+	             	 },
+			        success : function (data){
+			       
+			        	swal(data)
+			        	
+						grid.removeCheckedRows(true);
+					
+					}, 
+					error : function(error){
+					swal ("삭제 실패!!!!!");
+					console.log(error)
+					
+					}
+				 })
+			
+		 }
 		 
-		 
-		 
+		 // 물품 수정.
+		 function updatePro(){
+			
+			 $.ajax({
+	   				url : "ajax/updatePro",
+	   				type : 'post',
+	   				data :$('#proData').serialize()
+	   				,
+	   				 beforeSend : function(xhr){
+	                		xhr.setRequestHeader(header, token);
+	                	 },
+	   				success : function(data) {
+	   					//console.log(data)
+	   					swal("수정 완료!!!!")
+	   					selectPro();
+	   				
+	   				}, error : function(error) {
+	   					swal("수정 실패!!!!!");
+	   					console.log(error);
+	   				}
+	   			})
+		 }
 		 
 		
 		</script>
