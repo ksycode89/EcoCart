@@ -28,5 +28,10 @@ public interface MorderMapper{
 
 		// 발주삭제
 		public int deleteOrder(MorderVO morderVO);
+		//////////////////////////////////////
+		//발주현황에 진행변경 (group)
+		public int commitOrder(MorderVO morderVO);
+		
+		public MorderVO searchOrder (int orderNo);
 		
 }

@@ -22,4 +22,9 @@ public interface MorderService {
 	// 발주삭제
 	public String deleteOrder(List<MorderVO> morderVO);
 	
+	//////////////////////////////////////
+	//발주현황에 진행변경 (group)
+	public int commitOrder(List<Integer> list);
+	//입고가져오기 (발주완료들)
+	public MorderVO searchOrder(int orderNo);
 }
