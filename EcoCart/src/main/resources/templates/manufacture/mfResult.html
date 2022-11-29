@@ -36,11 +36,11 @@
 			el: document.getElementById('mfResultGridId'),
 			scrollX: false,
 			scrollY: false,
-			bodyHeight: 160,
+			bodyHeight: 200,
 			rowHeaders: ['rowNum'],
 			pageOptions: {
 		        useClient: true,
-		        perPage: 4
+		        perPage: 5
 		    },
 			columns: [
 		        {
@@ -90,21 +90,21 @@
 			bodyHeight: 200,
 			rowHeaders: ['rowNum'],
 			columns: [
-				{
-				  header: '생산코드넘버링',
-			      name: 'mfMakingNo'	
-				},
 		        {
-		          header: '생산코드',
-		          name: 'mfMakingCode'
+		          header: '프레임용접공정',
+		          name: 'mfMaking1'
 		        },
 		        {
-		          header: '공정코드',
-		          name: 'mfProcessCode'
+		          header: '엔진조립공정',
+		          name: 'mfMaking2'
 		        },
 		        {
-		          header: '공정이름',
-		          name: 'mfProcessName'
+		          header: '최종조립공정',
+		          name: 'mfMaking3'
+		        },
+		        {
+		          header: '테스트공정',
+		          name: 'mfMaking4'
 		        },
 		        {
 		          header: '불량코드',
@@ -117,9 +117,6 @@
 			]
 		});
 		
-		mfFaultyGrid.hideColumn('mfMakingNo');
-		mfFaultyGrid.hideColumn('mfMakingCode');
-		
 		$.ajax({
     		url:'/mfResultListAll',
     		success:function(data){
@@ -131,10 +128,32 @@
     	})
     	
 		selectBtn.addEventListener('click', () => {
-	    	if($('#mfOrderDate').val()!=''){
+	    	if($('#processDate').val()!=''){
 	    		mfResultGrid.filter('mfOrderDate', [{code:'eq', value:$('#mfOrderDate').val()}]);
 			}
 	    })
+	    
+	    resetBtn.addEventListener('click', () => {
+	    	document.getElementById('processDate').value='';
+	    	mfResultGrid.unfilter('mfOrderDate');
+	    })
+	    
+	    mfResultGrid.on('click', (ev) => {
+	    	if(mfResultGrid.getRow(ev) != null){
+	    		let a = mfResultGrid.getRow(ev.rowKey).mfMakingCode;
+		    	$.ajax({
+	    			url: '/mfResultFaultyList?mfMakingCode='+a,
+	    			method: 'GET',
+	    			success: function(data){
+	    				mfFaultyGrid.resetData(data);
+	    				mfFaultyGrid.refreshLayout();
+	    			},
+	    			error: function(error){
+	    				console.log(error);
+	    			}
+	    		});	
+	    	}
+	    });
 		
 	    </script>
 	</div>

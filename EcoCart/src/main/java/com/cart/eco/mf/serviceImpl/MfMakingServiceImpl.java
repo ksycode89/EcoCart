@@ -30,5 +30,20 @@ public class MfMakingServiceImpl implements MfMakingService {
 	public List<MfMakingVO> getMfOrderDecideList() {
 		return mapper.getMfOrderDecideList();
 	}
+
+	@Override
+	public int insertMakingProduct(MfMakingVO vo) {
+		return mapper.insertMakingProduct(vo);
+	}
+
+	@Override
+	public int insertMakingResult(MfMakingVO vo) {
+		return mapper.insertMakingResult(vo);
+	}
+
+	@Override
+	public int updateMakingResult(MfMakingVO vo) {
+		return mapper.updateMakingResult(vo);
+	}
 	
 }

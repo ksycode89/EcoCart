@@ -10,14 +10,13 @@
 	</select>
 			
 	<select id="getMfFaultyList" parameterType="String" resultType="Map">
-		SELECT d.mf_process_code, p.mf_process_name, d.faulty_code, f.faulty_content
+		SELECT d.mf_making1 "mfMaking1", d.mf_making2 "mfMaking2", d.mf_making3 "mfMaking3", d.mf_making4 "mfMaking4", d.faulty_code "faultyCode", f.faulty_content "faultyContent"
 		FROM mf_making_detail d JOIN mf_making m
 		ON d.mf_making_code = m.mf_making_code
-		JOIN mf_process p
-		ON d.mf_process_code = p.mf_process_code
-		JOIN faulty_code f
+		LEFT OUTER JOIN faulty_code f
 		ON d.faulty_code = f.faulty_code
-		WHERE mf_making_code = #{mfMakingCode}
+		WHERE m.mf_making_code = #{mfMakingCode}
+		AND d.mf_making4 != '통과'
 		ORDER BY d.mf_making_no
 	</select>
 	
@@ -28,4 +27,113 @@
 		WHERE d.mf_order_status = '확정'
 		AND trunc(d.mf_order_date) = trunc(SYSDATE)
 	</select>
+
+	<insert id="insertMakingProduct" parameterType="com.cart.eco.mf.service.MfMakingVO">
+		<selectKey keyProperty="mfMakingNo" resultType="Integer" order="BEFORE">
+			SELECT nvl(max(mf_making_no),0)+1
+			FROM mf_making_detail
+		</selectKey>
+			INSERT FIRST
+			WHEN ROUND(dbms_random.value(1,100)) = 1 THEN
+			INTO mf_making_detail(mf_making_no
+								, mf_making_code
+								, mf_making1
+								, mf_making2
+								, mf_making3
+								, mf_making4
+								, faulty_code)
+			VALUES(#{mfMakingNo}
+				 , #{mfMakingCode}
+				 , '불량'
+				 , '-'
+				 , '-'
+				 , '-'
+				 , 'FA-MF00')
+			WHEN ROUND(dbms_random.value(1,100)) = 2 THEN
+			INTO mf_making_detail(mf_making_no
+								, mf_making_code
+								, mf_making1
+								, mf_making2
+								, mf_making3
+								, mf_making4
+								, faulty_code)
+			VALUES(#{mfMakingNo}
+				 , #{mfMakingCode}
+				 , '통과'
+				 , '불량'
+				 , '-'
+				 , '-'
+				 , 'FA-MF01')
+			WHEN ROUND(dbms_random.value(1,100)) = 3 THEN
+			INTO mf_making_detail(mf_making_no
+								, mf_making_code
+								, mf_making1
+								, mf_making2
+								, mf_making3
+								, mf_making4
+								, faulty_code)
+			VALUES(#{mfMakingNo}
+				 , #{mfMakingCode}
+				 , '통과'
+				 , '통과'
+				 , '불량'
+				 , '-'
+				 , 'FA-MF02')
+			WHEN ROUND(dbms_random.value(1,100)) = 4 THEN
+			INTO mf_making_detail(mf_making_no
+								, mf_making_code
+								, mf_making1
+								, mf_making2
+								, mf_making3
+								, mf_making4
+								, faulty_code)
+			VALUES(#{mfMakingNo}
+				 , #{mfMakingCode}
+				 , '통과'
+				 , '통과'
+				 , '통과'
+				 , '불량'
+				 , 'FA-MF03')
+			ELSE
+			INTO mf_making_detail(mf_making_no
+								, mf_making_code
+								, mf_making1
+								, mf_making2
+								, mf_making3
+								, mf_making4)
+			VALUES(#{mfMakingNo}
+				 , #{mfMakingCode}
+				 , '통과'
+				 , '통과'
+				 , '통과'
+				 , '통과')
+			SELECT * FROM DUAL
+	</insert>
+	
+	<insert id="insertMakingResult">
+		INSERT INTO mf_making(mf_making_code
+							, mf_order_code
+							, line_no
+							, input_num)
+		VALUES(#{mfMakingCode}
+			 , #{mfOrderCode}
+			 , #{lineNo}
+			 , #{inputNum})
+	</insert>
+	
+	<update id="updateMakingResult">
+		UPDATE mf_making
+		SET making_num = (SELECT COUNT(mf_making4)
+						  FROM mf_making_detail
+						  WHERE mf_making4 = '통과'
+						  AND mf_making_code = #{mfMakingCode})
+		  , faulty_num = (SELECT COUNT(mf_making4)
+						  FROM mf_making_detail
+						  WHERE mf_making4 != '통과'
+						  AND mf_making_code = #{mfMakingCode})
+		  , start_time = #{startTime}
+		  , end_time = #{endTime}
+		  , process_status = #{processStatus}
+		 WHERE mf_making_code = #{mfMakingCode}
+	</update>
 </mapper>
