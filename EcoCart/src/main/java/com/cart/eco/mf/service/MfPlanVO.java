@@ -22,7 +22,7 @@ public class MfPlanVO {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date deDate;	 		//납기일자
-	private int allsellNum;			//총수량
+	private int sellNum;			//총수량
 	private int needNum; 			//필요수량
 	private int totalOrderNum; 		//총지시수량
 	private String mfPlanStatus;	//진행상황
