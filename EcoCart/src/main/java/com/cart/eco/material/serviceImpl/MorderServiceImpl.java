@@ -10,6 +10,8 @@ import com.cart.eco.material.service.ModerReqVO;
 import com.cart.eco.material.service.MorderService;
 import com.cart.eco.material.service.MorderVO;
 import com.cart.eco.material.service.MorderdetailVO;
+import com.cart.eco.material.service.ReDetailVO;
+import com.cart.eco.material.service.ReceivingVO;
 
 @Service
 public class MorderServiceImpl implements MorderService {
@@ -116,6 +118,43 @@ public class MorderServiceImpl implements MorderService {
 	public List<MorderVO> searchOrder(int orderNo) {
 			
 		return moMapper.searchOrder(orderNo);
+	}
+
+	@Override
+	public ReceivingVO insertReceiving(ReceivingVO vo) {
+		moMapper.insertReceiving(vo);
+		return vo;
+	}
+//상세 
+	@Override
+	public int insertReceivingD(List<ReDetailVO> vo) {
+		int result =0;
+		int orderNo = vo.get(0).getOrderNo();
+		
+		 System.out.println("nono"+orderNo);
+		 String receNo=moMapper.searchReNo(orderNo);
+		 System.out.println("nono"+receNo);
+	
+		  for (ReDetailVO one : vo) { 
+		  one.setReceivingCode(receNo);
+		  System.out.println("insertReceivingD imple : "+one);
+		  result +=  moMapper.insertReceivingD(one); 
+		  
+		  }
+		if (vo.size() == result) {
+			MorderVO reVo= new MorderVO();
+			reVo.setOrderNo(orderNo);
+			reVo.setOrderGroup("og_co");
+			moMapper.completeOrder(reVo);
+		}
+			
+		return result;
+	}
+//공통코드로 발주 검색 
+	@Override
+	public List<MorderVO> getOrderGroup(String group) {
+		
+		return moMapper.getOrderGroup(group);
 	}
 
 

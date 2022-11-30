@@ -10,9 +10,7 @@ public interface OrderService {
 	//입고상세현황
 	public List<OrderChDetailVO> dataList(OrderCheckVO ordervo);
 	
-	//입고 검사
+
 	
-	
-	//입고처리
 	
 }

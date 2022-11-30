@@ -27,4 +27,10 @@ public interface MorderService {
 	public int commitOrder(List<Integer> list);
 	//입고가져오기 (발주완료들)
 	public List<MorderVO> searchOrder(int orderNo);
+	//입고처리
+	public ReceivingVO insertReceiving(ReceivingVO vo); 
+	//입고처리 상세
+	public int insertReceivingD(List<ReDetailVO> vo);
+	//발주진행목록 가져오기
+	public List<MorderVO> getOrderGroup(String group);
 }

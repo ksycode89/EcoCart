@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.cart.eco.material.service.MorderVO;
 import com.cart.eco.material.service.MorderdetailVO;
+import com.cart.eco.material.service.ReDetailVO;
+import com.cart.eco.material.service.ReceivingVO;
 
 public interface MorderMapper{
 	
@@ -28,10 +30,22 @@ public interface MorderMapper{
 
 		// 발주삭제
 		public int deleteOrder(MorderVO morderVO);
+		
 		//////////////////////////////////////
 		//발주현황에 진행변경 (group)
 		public int commitOrder(MorderVO morderVO);
 		
 		public List<MorderVO> searchOrder (int orderNo);
+		// 입고테이블 마스터 입력
+		public int insertReceiving(ReceivingVO vo); 
+		//입고처리 상세
+		public int insertReceivingD(ReDetailVO vo);
 		
+		//발주번호로 주문번호호출
+		public String searchReNo(int orderNo);
+		//발주진행목록 가져오기
+		public List<MorderVO> getOrderGroup(String group);
+		//발주에서 ->입고로
+		public int completeOrder(MorderVO morderVO);
+	
 }
