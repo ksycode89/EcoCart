@@ -25,4 +25,5 @@ public class DeliveryGVO {
 	private String dlivyGSt; 	//출고등록상태
 	
 	private String fallSum;
+	private String clientName;
 }

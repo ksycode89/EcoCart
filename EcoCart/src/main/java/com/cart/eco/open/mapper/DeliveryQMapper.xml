@@ -245,7 +245,8 @@
 			d.dlivy_date, 
 			d.dlivy_g_code, 
 			d.order_code,
-			c.client_name "client_code", 
+			c.client_name "clientName",
+			d.client_code "clientCode" ,
 			e.emp_name "emp_num", 
 			d.dlivy_g_st "dlivyGSt"
 		
@@ -263,27 +264,24 @@
 	<!-- 배송 정보 전체 조회 -->
 	<select id="DeliveryInfoList" resultType="com.cart.eco.open.service.DeliveryProVO">
 		
-		select d.dlivy_pro_code, d.dlivy_date, c.client_name, d.dlivy_mth, d.dlivy_code, d.dlivy_name, d.dlivy_pnum
+		select d.dlivy_pro_code, d.dlivy_date, c.client_name "clientName", d.dlivy_mth, d.dlivy_code, d.dlivy_name, d.dlivy_pnum
 		from delivery_pro d, client c
 		where d.client_code = c.client_code
 	
 	</select>
 	
 	
-	<!-- 출고 처리 번호 가져오기 -->
-	<select id="getDlivyPCode" resultType="com.cart.eco.open.service.DeliveryProVO" parameterType="String">
-		select  concat('dlp' , 
-  					concat (to_char(sysdate,'YYmmdd'), 
-        			concat ('-', nvl(max(to_number(substr(dlivy_pro_code, 11))),0)+1 )
-        			)) "dlivyProCode"
-        	from delivery_Pro
-	</select>
-	
-	
 	
 	<!-- 배송정보 등록 -->
 	<insert id="updateInfo" parameterType="com.cart.eco.open.service.DeliveryProVO">
-	
+		<selectKey keyProperty="dlivyProCode" order="BEFORE" resultType="String">
+			select  concat('dlp' , 
+	  					concat (to_char(sysdate,'YYmmdd'), 
+	        			concat ('-', nvl(max(to_number(substr(dlivy_pro_code, 11))),0)+1 )
+	        			)) "dlivyProCode"
+	        	from delivery_Pro
+		</selectKey>
+		
 		insert into
 			delivery_pro ( dlivy_pro_code, dlivy_date, order_code, client_code, emp_num, dlivy_mth, dlivy_code, dlivy_name, dlivy_pnum)
 			values ( #{dlivyProCode}, sysdate, #{orderCode}, #{clientCode}, '2020110205',#{dlivyMth}, #{dlivyCode}, #{dlivyName}, #{dlivyPnum} )
@@ -321,8 +319,8 @@
 	</select>
 
 
-
-
+	<!--  설비  -->
+	
 
 
 

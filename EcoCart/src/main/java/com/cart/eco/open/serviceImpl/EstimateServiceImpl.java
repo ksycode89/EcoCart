@@ -12,6 +12,7 @@ import com.cart.eco.open.mapper.EstimateMapper;
 import com.cart.eco.open.service.EstimateDVO;
 import com.cart.eco.open.service.EstimateService;
 import com.cart.eco.open.service.EstimateVO;
+import com.cart.eco.open.service.facilitiesVO;
 
 @Service
 public class EstimateServiceImpl implements EstimateService {
@@ -71,14 +72,34 @@ public class EstimateServiceImpl implements EstimateService {
 	}
 
 	
-	
-
 
 	@Override
 	public List<EstimateVO> getEstmtCode() {
 		// TODO Auto-generated method stub
 		return mapper.getEstmtCode();
 	}
+
+
+	//////////////////////////////////////////////////
+	
+	@Override
+	public int facInsert(List<facilitiesVO> vo) {
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			
+			result  += mapper.facInsert(vo.get(i));
+		}
+		
+		return result;
+	}
+
+
+	@Override
+	public List<facilitiesVO> facList() {
+		// TODO Auto-generated method stub
+		return mapper.facList();
+	}
+
 
 
 

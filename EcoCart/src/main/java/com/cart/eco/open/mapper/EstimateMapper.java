@@ -7,6 +7,7 @@ import com.cart.eco.common.service.ClientVO;
 import com.cart.eco.common.service.ProductVO;
 import com.cart.eco.open.service.EstimateDVO;
 import com.cart.eco.open.service.EstimateVO;
+import com.cart.eco.open.service.facilitiesVO;
 
 public interface EstimateMapper {
 	//
@@ -29,13 +30,16 @@ public interface EstimateMapper {
 
 	public int insertEstmtD(EstimateDVO vo);
 	
-	
-
-	
 	//견적 번호 가져오기
 	public List<EstimateVO> getEstmtCode();
 	
+	////////////////////////////////////////////////
 	
+	public List<facilitiesVO> facList();
+	
+	public int facInsert(facilitiesVO vo);
+	
+
 
 
 }
