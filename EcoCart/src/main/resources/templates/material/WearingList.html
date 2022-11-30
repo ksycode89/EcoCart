@@ -61,7 +61,7 @@
 							
 							<label for="row2" style="width:80px; height: 30px; text-align:center;"> 견적코드</label>
 				         		<select id="select4" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white" name="no">
-				         			<option value="선택">----선 택----</option>
+				         			<option value="선택">==선택==</option>
 				         			<th:block th:each="e : ${orderList}">
 				         				<option th:value="${e.orderNo}" th:text="${e.orderNo}"></option>
 				         			</th:block>  			
@@ -173,7 +173,7 @@
 	    ]
 	  });	  
    //입고현황
-    var grid2 = new tui.Grid({
+    var gridre = new tui.Grid({
 	    el: document.getElementById('gridre'),
 	    rowHeders : ['rowNum'], 
 	    scrollX: false,
@@ -203,7 +203,7 @@
 	    ]
 	  });	  
    //입고현황 상세
-    var gridre = new tui.Grid({
+    var gridred = new tui.Grid({
 	    el: document.getElementById('gridreD'),
 	    rowHeders : ['rowNum'], 
 	    scrollX: false,
@@ -232,9 +232,10 @@
 	        
 	    ]
 	  });	  
-    /* 
-      gridreD.on('click',(ab)=>{
+    
+      grid.on('click',(ab)=>{
 		   //console.log(ab.nativeEvent.target.innerText)
+	
 		   $.ajax({
 			   url:'/detailList',
 			   data : {'orderNo' : grid.getRow(ab.rowKey).orderNo},
@@ -251,7 +252,7 @@
 			   }
 		   })
 		   
-	   }) */
+	   }) 
 	   
 	  
 	/* =================기=능===================== */
@@ -290,7 +291,7 @@
 	   	      grid.refreshLayout(); //모달창 새로고침
 	   	      grid2.refreshLayout(); //모달창 새로고침
 	   	 })
-	   	 
+	  //조회버튼 	 
 	function searchOrder(){
 		let orderN = $('#select4').val();
 	
@@ -300,7 +301,6 @@
 	            		xhr.setRequestHeader(header, token);
 	            	 },
 					success : function(data) {
-						console.log(data)
 						grid.resetData(data)
 					},
 					error : function(reject) {

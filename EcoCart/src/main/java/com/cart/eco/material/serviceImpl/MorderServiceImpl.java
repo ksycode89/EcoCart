@@ -113,7 +113,7 @@ public class MorderServiceImpl implements MorderService {
 	}
 
 	@Override
-	public MorderVO searchOrder(int orderNo) {
+	public List<MorderVO> searchOrder(int orderNo) {
 			
 		return moMapper.searchOrder(orderNo);
 	}
