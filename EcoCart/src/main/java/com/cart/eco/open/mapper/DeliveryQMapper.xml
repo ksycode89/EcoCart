@@ -48,7 +48,7 @@
 		insert into delivery_q 
 			(dlivy_q_code, order_code,dlivy_date, client_code, emp_num, dlivy_q_st)
 			
-		values ( #{dlivyQCode}, #{orderCode}, sysdate , #{clientCode}, '2020110205', '요청' ) 
+		values ( #{dlivyQCode}, #{orderCode}, sysdate , #{clientCode}, #{empNum}, '요청' ) 
 	
 	</insert>
 	
@@ -304,19 +304,18 @@
 	<select id="productList" resultType="com.cart.eco.common.service.ProductVO">
 		select pro_code, pro_name, pro_num, wh_code
 		from product
+		where pro_group like 'CP%'
 	</select>
 
 
-
-	<!-- bom -->
-	<select id="bomList" resultType="Map" parameterType="String">
-		select p.pro_code,p.pro_code, p.pro_name, c.need_num, c.bom_code,
-		from product p, bom_children c, bom b
-		where p.pro_code = b.pro_code
-		and c.bom_code = b.bom_code
-		and p.pro_code = #{proCode}
-		
+	<!-- 제품재고 -->
+	<select id="productList2" resultType="com.cart.eco.common.service.ProductVO">
+		select pro_code, pro_name, pro_num, wh_code
+		from product
+		where pro_group like 'HCP%'
 	</select>
+	
+	
 
 
 	<!--  설비  -->

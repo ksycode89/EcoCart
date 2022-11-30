@@ -23,7 +23,7 @@ public interface DeliveryQService {
 	public List<DeliveryQVO> getDlivyQCode();
 
 	//충고요청 등록
-	public int insertDlivyQ(List<DeliveryQVO> vo);
+	public int insertDlivyQ(List<DeliveryQVO> vo, String empNum);
 	
 	//충고요청 상세 등록
 	public int insertDlivyQD(List<DeliveryQDVO> vo);
@@ -108,9 +108,9 @@ public interface DeliveryQService {
 	// 제품 재고 현황
 	public List<ProductVO> productList();
 
-		
-	// BOM 수급 현황
-	public List<Map<String, Object>> bomList(String proCode);
+	// 제품 재고 현황
+	public List<ProductVO> productList2();
+	
 	
 	
 	

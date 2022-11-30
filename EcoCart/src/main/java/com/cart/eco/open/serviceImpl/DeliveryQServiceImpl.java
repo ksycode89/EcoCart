@@ -3,6 +3,8 @@ package com.cart.eco.open.serviceImpl;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,11 +43,15 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 	
 	
 	@Override
-	public int insertDlivyQ(List<DeliveryQVO> vo) {
+	public int insertDlivyQ(List<DeliveryQVO> vo,String empNum) {
 		// TODO Auto-generated method stub
+		
+		
 		int result = 0;
 		for(int i = 0; i< vo.size(); i++) {
-			
+			System.out.println(vo.get(i).getEmpNum());
+			vo.get(i).setEmpNum(empNum);
+			System.out.println(vo.get(i).getEmpNum());
 			result  += mapper.insertDlivyQ(vo.get(i));
 		}
 		
@@ -242,13 +248,13 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 		return mapper.productList();
 	}
 
+	
 	@Override
-	public List<Map<String, Object>> bomList(String proCode) {
+	public List<ProductVO> productList2() {
 		// TODO Auto-generated method stub
-		return mapper.bomList(proCode);
+		return mapper.productList2();
 	}
-	
-	
+
 	
 	
 	//셀렉트 옵션

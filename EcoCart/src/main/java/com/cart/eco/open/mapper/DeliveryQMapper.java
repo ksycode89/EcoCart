@@ -118,9 +118,9 @@ public interface DeliveryQMapper {
 	// 제품 재고 현황
 	public List<ProductVO> productList();
 
-	
-	// BOM 수급 현황
-	public List<Map<String, Object>> bomList(String proCode);
+	// 제품 재고 현황
+	public List<ProductVO> productList2();
+
 	
 	
 	//셀렉트 옵션

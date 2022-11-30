@@ -393,7 +393,7 @@
 		//tr click
 		grid.on('click', (event)=>{
 			console.log(event.nativeEvent.target.textContent);
-			var a = event.nativeEvent.target.textContent;
+			var a = grid.getRow(event.rowKey).orderCode;
 			
 			$.ajax({
 				method:'GET',
@@ -506,8 +506,9 @@
 								data: JSON.stringify(grid4.getData()),
 								success : function(result) {
 									console.log(result)
-									location.reload(result);
 									swal("주문 등록 완료")
+									ordersList();
+									
 								},
 								error : function(error){
 									console.log(error);

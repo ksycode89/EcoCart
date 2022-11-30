@@ -104,7 +104,7 @@
 				         		<select id="select6" name="no" onchange="handleOnChange6(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white; display:inline; text-align:center;">
 				         			<option value="선택">----선 택----</option>
 				         			<th:block th:each="v : ${proCode}">
-				         				<option th:value="${v.proName}+'-'+${v.sellPrice}" th:text="${v.proCode}"></option>
+				         				<option th:value="${v.proName}+'/'+${v.sellPrice}" th:text="${v.proCode}"></option>
 											         				
 				         			</th:block>
 				         		</select>
@@ -114,7 +114,7 @@
 				         		<select id="select7" name="no" onchange="handleOnChange7(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white; display:inline; text-align:center;">
 				         			<option value="선택">----선 택----</option>
 				         			<th:block th:each="v: ${proCode}">
-				         				<option th:value="${v.proCode}+'-'+${v.sellPrice}" th:text="${v.proName}"></option>
+				         				<option th:value="${v.proCode}+'/'+${v.sellPrice}" th:text="${v.proName}"></option>
 				         			</th:block>
 				         		</select>
 				        </div> 		
@@ -216,7 +216,8 @@
             columns: [
             	{
                 	header: 'no',
-                	name: 'estmtDno'
+                	name: 'estmtDno',
+                	hidden : 1
                 },
                 {
                 	header: '제품코드',
@@ -315,14 +316,9 @@
 	//모달창 선택값 리셋
 	function modalResetBtn(){
 		
-		$("#deDate").val('');
-		$("#select5").attr('disabled', false)
-		$("#select6").attr('disabled',false)
-		$("#select7").attr('disabled', false)
-		$("#select8").attr('disabled', false)
+		$("#select6").attr('disabled', false)
+		$("#select7").attr('disabled',false)
 		
-		document.getElementById("select5").value = '선택';
-		document.getElementById("select8").value = '선택';
 		document.getElementById("select7").value = '선택';
 		document.getElementById("select6").value = '선택';
 		$("#productNum").val('');
@@ -404,10 +400,7 @@
 	
 	 //tr clickevent
 	 grid.on('click', (event)=>{
-		 console.log('clicked');
-		 console.log(event);
-		 console.log(event.nativeEvent.target.textContent);		//d
-		 var a  = event.nativeEvent.target.textContent;
+		 var a  = grid.getRow(event.rowKey).estmtCode
 				
 		 $.ajax({
 					method:'GET',
@@ -432,16 +425,16 @@
 			let a = $('#select6').val();
 			
 			let sumA = parseInt($('#productNum').val());
-			let sumB = parseInt((a.split('-'))[1]);
+			let sumB = parseInt((a.split('/'))[1]);
 			let result = sumA * sumB;
 			 
 			const rowData = [
 				{
 					estmtCode : $('#estmtCode').val(),	
 					proCode : $('#select6 option:selected').text(),
-					proName : (a.split('-'))[0],
+					proName : (a.split('/'))[0],
 					sellNum : $('#productNum').val(),
-					sellPrice : (a.split('-'))[1],
+					sellPrice : (a.split('/'))[1],
 					sumPrice : result
 				}	
 			];
@@ -457,21 +450,19 @@
 			  
 			 let a = $('#select7').val();
 				
-			for (let b of a.split('-')){
-				console.log(b)
+			for (let b of a.split('/')){
 			}
 			
 			let sumA = parseInt($('#productNum').val());
-			let sumB = parseInt((a.split('-'))[1]);
+			let sumB = parseInt((a.split('/'))[1]);
 			let result = sumA * sumB;
-			console.log( result)
 			 
 			const rowData = [
 				{
-					proCode : (a.split('-'))[0],
+					proCode : (a.split('/'))[0],
 					proName : $('#select7 option:selected').text(),
 					sellNum : $('#productNum').val(),
-					sellPrice : (a.split('-'))[1],
+					sellPrice : (a.split('/'))[1],
 					sumPrice : result
 				}	
 			];
@@ -483,7 +474,7 @@
 	  
 		  
 			$("#input7").val ($("#select7").val()) ;		
-			console.log($("#input7").val());			//제품명 출력
+			//console.log($("#input7").val());			//제품명 출력
 			
 				  
 		  }else{
@@ -502,12 +493,10 @@
 		$.ajax({
 			url:'/getEstmtCode',
 			success : function(result) {
-				console.log(result)
-				console.log(result[0].estmtCode)
+				//console.log(result[0].estmtCode)
 				$("#estmtCode").val(result[0].estmtCode);
 			},
 			error : function(error){
-				console.log(error);
 			}
 		})
 	}
@@ -515,6 +504,7 @@
 	 
 	//견적서 등록버튼 눌렀을때
 	function insertEstmt(){
+
 	 if( $("#select5").val() != '선택'  && $("#deDate").val() !=''){
 		 
 		let allSum = plusSum();
@@ -552,7 +542,7 @@
 	 		 
 		
 	}else{
-	 	alert("값을 다 넣어주세여");
+	 	swal("값을 다 넣어주세여");
  	}
 	
 	
@@ -561,7 +551,7 @@
 	 
 	 function masterinsert(data){	
 	 		
-			// 견적서 input에 있는 값들 insert 
+		// 견적서 input에 있는 값들 insert 
 		$.ajax({
 			method:'POST',
 			url:'/insertEstmt',
@@ -572,11 +562,10 @@
            		xhr.setRequestHeader(header, token);
            	 },
 			success : function(result) {
-				console.log(result);
 				deinsert();
 			},
 			error : function(error){
-				console.log(error);
+				swal("견적서 등록 실패")
 			}
 		})
 				
@@ -600,12 +589,12 @@
             		xhr.setRequestHeader(header, token);
             	 },
 				success : function(result) {
-					alert("견적서 등록 완료")
+					swal("견적서 등록 완료")
 					estmtList();
 					
 				},
 				error : function(error){
-					console.log(error);
+					swal("견적서 등록 실패")
 				}
 			})
 		 
