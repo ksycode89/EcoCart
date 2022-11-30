@@ -27,5 +27,6 @@ public class DeliveryProVO {
 	private String dlivyPnum;	//기사연락처
 	
 	private String fallSum;		//총합계액
+	private String clientName;
 	
 }

@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cart.eco.open.service.DeliveryQVO;
 import com.cart.eco.open.service.EstimateDVO;
 import com.cart.eco.open.service.EstimateService;
 import com.cart.eco.open.service.EstimateVO;
+import com.cart.eco.open.service.facilitiesVO;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 
@@ -73,11 +75,9 @@ public class EstimateController {
 	@ResponseBody
 	public List<EstimateVO> getEstmtCode(EstimateVO vo) {
 		
-		System.out.println("------------------------");
 		estimateService.getEstmtCode();
 		
 		System.out.println(vo.getEstmtCode());
-		
 		
 		return estimateService.getEstmtCode();
 		
@@ -114,6 +114,7 @@ public class EstimateController {
 	}
 
 
+	////////////////////////////////////////////////////////////////////////////////////
 	
 	//설비
 	@GetMapping("/facilities")
@@ -121,8 +122,32 @@ public class EstimateController {
 		return "open/facilities";
 	}
 	
-	
+	//설비 조회
+	@GetMapping("/facList")
+	@ResponseBody
+	public List<facilitiesVO> facList(){
+		
+		return estimateService.facList();
+		
+	}
 
+	
+	
+	//설비 등록
+	@PostMapping("/facInsert")
+	@ResponseBody
+	public int facInsert( @RequestBody List<facilitiesVO> vo ) {
+		
+		return estimateService.facInsert(vo);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	//주문
 //	@GetMapping("/order")
 //	public String Order() {

@@ -33,7 +33,14 @@ public interface EstimateService {
 	public List<EstimateVO> getEstmtCode();
 	
 	
-
+	////////////////////////////////////////////
+	
+	//설비등록
+	public int facInsert(List<facilitiesVO> vo);
+	
+	//설비조회
+	public List<facilitiesVO> facList();
+	
 
 
 
@@ -41,14 +48,6 @@ public interface EstimateService {
 
 
 	
-
-
-//	//견적 번호 가져오기
-//	public int getEstimateNo();
-//
-////승인 버튼 누르면 estmt_st update 
-//public int updateEstimate(EstimateVO vo);
-
 
 
 
