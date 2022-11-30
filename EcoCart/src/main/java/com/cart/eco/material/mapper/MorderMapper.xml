@@ -18,7 +18,7 @@
 	<select id="detailList"
 		parameterType="com.cart.eco.material.service.MorderVO"
 		resultType="com.cart.eco.material.service.MorderdetailVO">
-		select d.pro_code, p.pro_name, d.order_num, i.standard, c.client_code, unit, m.comments 
+		select d.pro_code, p.pro_name, d.order_num, i.standard, m.client_code, d.unit, m.comments 
 		from m_order m 
         join m_order_detail d
 		  on m.order_no = d.order_no
@@ -28,7 +28,11 @@
 		  on p.pro_code = i.pro_code
         join client c 
           on d.client_code = c.client_code
-		where d.order_no = #{orderNo}
+		<where>
+   		 <if test="orderNum != null and !orderNum.equals('')">
+   		 	m.order_num = #{orderNum}
+   		 </if>
+   		 </where>
 	</select>
 	
 	<select id="proInfo" parameterType="com.cart.eco.material.service.MorderVO" resultType="com.cart.eco.material.service.MorderVO">

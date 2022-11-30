@@ -150,10 +150,10 @@ public class MaterialController {
 			System.out.println(list);
 			return morder.commitOrder(list);
 		}	
-
+		
 		@GetMapping("/searchOrder")
 		@ResponseBody
-		public MorderVO searchOrder(int orderNo) {
+		public List<MorderVO> searchOrder(int orderNo) {
 			System.out.println("orderNo"+orderNo);
 			return  morder.searchOrder(orderNo);
 		}

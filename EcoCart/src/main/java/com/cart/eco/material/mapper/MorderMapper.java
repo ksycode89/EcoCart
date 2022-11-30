@@ -32,6 +32,6 @@ public interface MorderMapper{
 		//발주현황에 진행변경 (group)
 		public int commitOrder(MorderVO morderVO);
 		
-		public MorderVO searchOrder (int orderNo);
+		public List<MorderVO> searchOrder (int orderNo);
 		
 }
