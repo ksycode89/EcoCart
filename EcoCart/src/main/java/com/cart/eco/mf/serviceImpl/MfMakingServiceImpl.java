@@ -32,18 +32,33 @@ public class MfMakingServiceImpl implements MfMakingService {
 	}
 
 	@Override
-	public int insertMakingProduct(MfMakingVO vo) {
-		return mapper.insertMakingProduct(vo);
+	public List<Map<String, Object>> getMfMakingTotal(String mfMakingCode) {
+		return mapper.getMfMakingTotal(mfMakingCode);
 	}
 
 	@Override
-	public int insertMakingResult(MfMakingVO vo) {
-		return mapper.insertMakingResult(vo);
-	}
-
-	@Override
-	public int updateMakingResult(MfMakingVO vo) {
-		return mapper.updateMakingResult(vo);
+	public List<Map<String, Object>> getMfMakingDetailList(String mfMakingCode) {
+		return mapper.getMfMakingDetailList(mfMakingCode);
 	}
 	
+	@Override
+	public List<MfMakingVO> getMfMakingCode() {
+		return mapper.getMfMakingCode();
+	}
+	
+	@Override
+	public int insertMakingProduct(List<MfMakingVO> vo) {
+		return mapper.insertMakingProduct(vo.get(0));
+	}
+
+	@Override
+	public int insertMakingResult(List<MfMakingVO> vo) {
+		return mapper.insertMakingResult(vo.get(0));
+	}
+
+	@Override
+	public int updateMakingResult(List<MfMakingVO> vo) {
+		return mapper.updateMakingResult(vo.get(0));
+	}
+
 }

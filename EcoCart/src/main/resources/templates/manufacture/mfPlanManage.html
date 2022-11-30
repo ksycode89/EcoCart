@@ -83,7 +83,7 @@
 		scrollX: false,
 		scrollY: true,
 		bodyHeight: 400,
-		rowHeaders: ['rowNum'],
+		rowHeaders: ['checkbox', 'rowNum'],
 		columns: [
 	        {
 	          header: '생산계획명',
@@ -240,6 +240,7 @@
     
     addRowBtn.addEventListener('click', () => {
     	planInsertGrid.appendRow({});
+    	planInsertGrid.check(planInsertGrid.getRowCount()-1);
     });
     
     removeRowBtn.addEventListener('click', () => {
@@ -280,6 +281,7 @@
 			proCode : proCode1,
 			proName : proName1
 		});
+		planInsertGrid.check(ev1.rowKey);
 		$('#productModal').modal('hide');
 	});
     
@@ -288,7 +290,7 @@
     		url: '/mfInsertPlan',
     		method: 'POST',
     		contentType: 'application/json',
-    		data: JSON.stringify(planInsertGrid.getData()),
+    		data: JSON.stringify(planInsertGrid.getCheckedRows()),
     		dataType: 'JSON',
     		beforeSend : function(xhr){
            		xhr.setRequestHeader(header, token);
@@ -351,6 +353,7 @@
     orderModalGrid.on('click', (ev) => {
     	if(ev.rowKey != null){
     		planInsertGrid.appendRow(orderModalGrid.getRow(ev.rowKey));
+    		planInsertGrid.check(planInsertGrid.getRowCount()-1);
     		$('#orderModal').modal('hide');
     	}
     })

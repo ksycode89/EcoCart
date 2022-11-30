@@ -470,82 +470,81 @@
         		    		success: function(data){
         		    			if(data != 0){
         		    				alert('생산지시가 등록되었습니다.\n자재출고를 요청합니다.');
-        		    			}
-        		    		},
-        		    		error: function(error){
-        		    			console.log(error);
-        		    		}
-        		    	});
-        				
-        				$.ajax({
-        	        		url: '/mfReleaseInsert',
-        	        		method: 'POST',
-        	        		contentType: 'application/json',
-        	        		data: JSON.stringify(mfNeedGrid.getData()),
-        	        		dataType: 'JSON',
-        	        		beforeSend : function(xhr){
-        	               		xhr.setRequestHeader(header, token);
-        	               	},
-        	        		success: function(data){
-        	        			if(data != 0){
-        	        				$.ajax({
-        	        		    		url: '/mfReleaseDetailInsert',
-        	        		    		method: 'POST',
-        	        		    		contentType: 'application/json',
-        	        		    		data: JSON.stringify(mfNeedGrid.getData()),
-        	        		    		dataType: 'JSON',
-        	        		    		beforeSend : function(xhr){
-        	        		           		xhr.setRequestHeader(header, token);
-        	        		           	},
-        	        		    		success: function(data){
-        	        		    			if(data != 0){
-        	        		    				alert('자재출고요청이 완료되었습니다.');
-        	        		    				$.ajax({
-        	        		    	        		url: '/mfReceivingDetailUpdate',
-        	        		    	        		method: 'POST',
-        	        		    	        		contentType: 'application/json',
-        	        		    	        		data: JSON.stringify(mfNeedGrid.getData()),
-        	        		    	        		dataType: 'JSON',
-        	        		    	        		beforeSend : function(xhr){
-        	        		    	               		xhr.setRequestHeader(header, token);
-        	        		    	               	},
-        	        		    	        		success: function(data){
-        	        		    	        			console.log(data);
-                	        		    				$.ajax({
-                	        		    	        		url: '/mfReleaseDetailUpdate',
-                	        		    	        		method: 'POST',
-                	        		    	        		contentType: 'application/json',
-                	        		    	        		data: JSON.stringify(mfNeedGrid.getData()),
-                	        		    	        		dataType: 'JSON',
-                	        		    	        		beforeSend : function(xhr){
-                	        		    	               		xhr.setRequestHeader(header, token);
-                	        		    	               	},
-                	        		    	        		success: function(data){
-                	        		    	        			console.log(data);
-                	        		    	        			location.reload();
-                	        		    	        		},
-                	        		    	        		error: function(error){
-                	        	        		    			console.log(error);
-                	        		    	        		}
-                	        		    	        	});
-        	        		    	        		},
-        	        		    	        		error: function(error){
+        		    				$.ajax({
+        	        	        		url: '/mfReleaseInsert',
+        	        	        		method: 'POST',
+        	        	        		contentType: 'application/json',
+        	        	        		data: JSON.stringify(mfNeedGrid.getData()),
+        	        	        		dataType: 'JSON',
+        	        	        		beforeSend : function(xhr){
+        	        	               		xhr.setRequestHeader(header, token);
+        	        	               	},
+        	        	        		success: function(data){
+        	        	        			if(data != 0){
+        	        	        				$.ajax({
+        	        	        		    		url: '/mfReleaseDetailInsert',
+        	        	        		    		method: 'POST',
+        	        	        		    		contentType: 'application/json',
+        	        	        		    		data: JSON.stringify(mfNeedGrid.getData()),
+        	        	        		    		dataType: 'JSON',
+        	        	        		    		beforeSend : function(xhr){
+        	        	        		           		xhr.setRequestHeader(header, token);
+        	        	        		           	},
+        	        	        		    		success: function(data){
+        	        	        		    			if(data != 0){
+        	        	        		    				alert('자재출고요청이 완료되었습니다.');
+        	        	        		    				$.ajax({
+        	        	        		    	        		url: '/mfReceivingDetailUpdate',
+        	        	        		    	        		method: 'POST',
+        	        	        		    	        		contentType: 'application/json',
+        	        	        		    	        		data: JSON.stringify(mfNeedGrid.getData()),
+        	        	        		    	        		dataType: 'JSON',
+        	        	        		    	        		beforeSend : function(xhr){
+        	        	        		    	               		xhr.setRequestHeader(header, token);
+        	        	        		    	               	},
+        	        	        		    	        		success: function(data){
+        	        	        		    	        			console.log(data);
+        	                	        		    				$.ajax({
+        	                	        		    	        		url: '/mfReleaseDetailUpdate',
+        	                	        		    	        		method: 'POST',
+        	                	        		    	        		contentType: 'application/json',
+        	                	        		    	        		data: JSON.stringify(mfNeedGrid.getData()),
+        	                	        		    	        		dataType: 'JSON',
+        	                	        		    	        		beforeSend : function(xhr){
+        	                	        		    	               		xhr.setRequestHeader(header, token);
+        	                	        		    	               	},
+        	                	        		    	        		success: function(data){
+        	                	        		    	        			console.log(data);
+        	                	        		    	        			location.reload();
+        	                	        		    	        		},
+        	                	        		    	        		error: function(error){
+        	                	        	        		    			console.log(error);
+        	                	        		    	        		}
+        	                	        		    	        	});
+        	        	        		    	        		},
+        	        	        		    	        		error: function(error){
+        	        	        	        		    			console.log(error);
+        	        	        		    	        		}
+        	        	        		    	        	});
+        	        	        		    			}
+        	        	        		    		},
+        	        	        		    		error: function(error){
         	        	        		    			console.log(error);
-        	        		    	        		}
-        	        		    	        	});
-        	        		    			}
-        	        		    		},
-        	        		    		error: function(error){
-        	        		    			console.log(error);
-        	        		    		}
-        	        		    	});
+        	        	        		    		}
+        	        	        		    	});
+        	        	        			}
+        	        	        		},
+        	        	        		error: function(error){
+        	        	        			console.log(error);
+        	        	        		}
+        	        	        	});
+        	        				
         	        			}
         	        		},
         	        		error: function(error){
         	        			console.log(error);
         	        		}
         	        	});
-        				
         			}
         		},
         		error: function(error){

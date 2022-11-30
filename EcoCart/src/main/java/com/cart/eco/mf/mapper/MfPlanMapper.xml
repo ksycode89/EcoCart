@@ -41,7 +41,7 @@
 		INSERT ALL
 		INTO mf_plan(mf_plan_code
 				   , mf_plan_name
-					<if test="orderCode != null and !orderCode.equals('')">, order_code</if>)
+				   <if test="orderCode != null and !orderCode.equals('')">, order_code</if>)
 		VALUES(#{mfPlanCode}
 			 , #{mfPlanName}
 				<if test="orderCode != null and !orderCode.equals('')">, #{orderCode}</if>)

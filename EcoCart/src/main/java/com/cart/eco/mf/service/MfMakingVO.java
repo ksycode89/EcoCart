@@ -17,6 +17,7 @@ public class MfMakingVO {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date mfOrderDate; //지시일자
+	private int mfMakingNo; //생산넘버링
 	private String mfMakingCode; //생산코드
 	private String mfOrderCode; //생산지시코드
 	private String mfProcessCode; //공정코드
