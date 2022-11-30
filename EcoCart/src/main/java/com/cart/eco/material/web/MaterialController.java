@@ -20,6 +20,8 @@ import com.cart.eco.material.service.MreleDetailVO;
 import com.cart.eco.material.service.MreleService;
 import com.cart.eco.material.service.MreleaseVO;
 import com.cart.eco.material.service.OrderService;
+import com.cart.eco.material.service.ReDetailVO;
+import com.cart.eco.material.service.ReceivingVO;
 
 import groovyjarjarpicocli.CommandLine.Parameters;
 
@@ -94,7 +96,7 @@ public class MaterialController {
 	@GetMapping("/WearingList")
 	public String selectOrList(Model mo) {
 		//발주번호가져오기 
-		mo.addAttribute("orderList",morder.selectOrderList());
+		mo.addAttribute("orderList",morder.getOrderGroup("og_wt"));
 		return "material/WearingList";
 	}
 	
@@ -157,5 +159,26 @@ public class MaterialController {
 			System.out.println("orderNo"+orderNo);
 			return  morder.searchOrder(orderNo);
 		}
-	
+	//입고마스터 
+		@PostMapping("/insertReceiving")
+		@ResponseBody
+		public ReceivingVO insertReceiving(ReceivingVO vo) {
+			System.out.println(vo);
+			return morder.insertReceiving(vo);
+		}	
+		//입고상세
+		@PostMapping("/insertReceivingD")
+		@ResponseBody
+		public int insertReceivingD(@RequestBody List<ReDetailVO> vo) {
+			System.out.println("insertReceivingD"+vo);
+			return morder.insertReceivingD(vo);
+		}	
+		//발주진행가져오기 
+		@GetMapping("/orderWT")
+		@ResponseBody
+		public List<MorderVO> orderWT(String orderNo) {
+			System.out.println("orderNo"+orderNo);
+			return  morder.getOrderGroup(orderNo);
+		}
+		
 }

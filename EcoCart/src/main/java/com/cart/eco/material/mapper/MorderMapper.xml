@@ -13,12 +13,13 @@
 		left outer join employees e
 		on m.emp_num = e.emp_num
 		order by order_no DESC
+	
 	</select>
 
 	<select id="detailList"
 		parameterType="com.cart.eco.material.service.MorderVO"
 		resultType="com.cart.eco.material.service.MorderdetailVO">
-		select d.pro_code, p.pro_name, d.order_num, i.standard, m.client_code, d.unit, m.comments 
+		select d.pro_code, p.pro_name, d.order_num, i.standard, m.client_code, d.unit, m.comments ,d.order_no
 		from m_order m 
         join m_order_detail d
 		  on m.order_no = d.order_no
@@ -28,11 +29,9 @@
 		  on p.pro_code = i.pro_code
         join client c 
           on d.client_code = c.client_code
-		<where>
-   		 <if test="orderNum != null and !orderNum.equals('')">
-   		 	m.order_num = #{orderNum}
-   		 </if>
-   		 </where>
+		where
+   		 	m.order_no = #{orderNo}
+   		
 	</select>
 	
 	<select id="proInfo" parameterType="com.cart.eco.material.service.MorderVO" resultType="com.cart.eco.material.service.MorderVO">
@@ -130,7 +129,61 @@
 		m.client_code = c.client_code
 		left outer join employees e
 		on m.emp_num = e.emp_num
-		where order_no = #{orderNo}
+		<where>
+   		 <if test="orderNo != 0 ">
+   		 	m.order_no = #{orderNo}
+   		 </if>
+   		</where>
 		order by order_no DESC
 	</select>
+<!-- 	//입고  -->
+	<insert id="insertReceiving" parameterType="com.cart.eco.material.service.ReceivingVO" >
+		INSERT
+		INTO receiving  
+		VALUES ((select  NVL(max(to_number(receiving_code)),0)+1 from receiving),#{orderNo},sysdate,#{clientCode},#{manager}
+		<if test="comments != null and !comments.equals('')">
+			,#{comments}
+		</if>
+		<if test="comments == null or comments.equals('')">
+			,null
+		</if>
+		)
+	</insert>
+	
+	<!-- 입고번호가져오기 -->
+	<select id="searchReNo" parameterType="int" resultType="String">
+		SELECT receiving_code 
+		FROM receiving 
+		WHERE order_no=#{orderNo}
+	</select>
+	
+	<!-- 입고상세  -->
+	<insert id="insertReceivingD" parameterType="com.cart.eco.material.service.ReDetailVO">
+		INSERT
+		INTO receiving_detail  
+		VALUES ((select  NVL(max(to_number(receiving_no)),0) from receiving_detail)+1,#{proCode},#{proName},0,#{orderNum},null,( select #{proCode}||to_char(sysdate,'yyyyMMdd')||to_number(max(receiving_no)+1) from receiving_detail)
+		, #{whCode},#{receivingCode}
+		
+				)
+	</insert>
+	
+	<select id="getOrderGroup" parameterType="String" resultType="com.cart.eco.material.service.MorderVO">
+		select order_no, order_date,
+		c.client_code, c.client_name,m.order_group,m.order_receiving,m.total,
+		e.emp_name,e.emp_num 
+		from m_order m left outer join client c
+		on
+		m.client_code = c.client_code
+		left outer join employees e
+		on m.emp_num = e.emp_num
+		<where>
+			<if test="orderGroup != null and !orderGroup.equals('')">
+			order_group = #{orderGroup}
+			</if>
+		</where>
+	</select>
+		
+	<update id="completeOrder" parameterType="com.cart.eco.material.service.MorderVO">
+		UPDATE m_order set  order_group= #{orderGroup}   where  order_no=#{orderNo}
+	</update>	
 </mapper>

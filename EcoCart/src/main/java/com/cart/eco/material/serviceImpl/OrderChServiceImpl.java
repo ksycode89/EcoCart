@@ -9,6 +9,7 @@ import com.cart.eco.material.mapper.OrderCHMapper;
 import com.cart.eco.material.service.OrderChDetailVO;
 import com.cart.eco.material.service.OrderCheckVO;
 import com.cart.eco.material.service.OrderService;
+import com.cart.eco.material.service.ReceivingVO;
 
 @Service
 public class OrderChServiceImpl implements OrderService{
@@ -29,5 +30,6 @@ public class OrderChServiceImpl implements OrderService{
 		// TODO Auto-generated method stub
 		return omapper.dataList(ordervo);
 	}
+
 
 }
