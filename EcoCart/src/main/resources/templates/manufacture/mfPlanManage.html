@@ -83,7 +83,7 @@
 		scrollX: false,
 		scrollY: true,
 		bodyHeight: 400,
-		rowHeaders: ['checkbox', 'rowNum'],
+		rowHeaders: ['checkbox'],
 		columns: [
 	        {
 	          header: '생산계획명',
@@ -104,7 +104,7 @@
 	        },
 	        {
 	          header: '주문수량',
-		      name: 'allsellNum'
+		      name: 'sellNum'
 	        },
 	        {
 		      header: '계획수량',
@@ -195,7 +195,7 @@
 	        },
 	        {
 	          header: '주문수량',
-		      name: 'allsellNum'
+		      name: 'sellNum'
 	        },
 	        {
 	          header: '납기일자',
@@ -239,7 +239,7 @@
     });
     
     addRowBtn.addEventListener('click', () => {
-    	planInsertGrid.appendRow({});
+    	planInsertGrid.appendRow();
     	planInsertGrid.check(planInsertGrid.getRowCount()-1);
     });
     
@@ -351,9 +351,8 @@
     });
     
     orderModalGrid.on('click', (ev) => {
-    	if(ev.rowKey != null){
+    	if(orderModalGrid.getRow(ev.rowKey) != null){
     		planInsertGrid.appendRow(orderModalGrid.getRow(ev.rowKey));
-    		planInsertGrid.check(planInsertGrid.getRowCount()-1);
     		$('#orderModal').modal('hide');
     	}
     })

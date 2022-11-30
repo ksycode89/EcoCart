@@ -353,7 +353,7 @@
 		    	    			success: function(data){
 		    	    				mfResultGrid.resetData(data);
 		    	    				mfResultGrid.refreshLayout();
-	    	    					setInterval(startProcessing, 300);
+		    	    				setInterval(startProcessing, 300);
 		    	    			},
 		    	    			error: function(error){
 		    	    				console.log(error);
@@ -423,7 +423,7 @@
 		var makingNum = 0;
 		
 		function startProcessing(){
-			if(makingNum < mfResultGrid.getRow(0).inputNum){
+			if(makingNum < mfResultGrid.getRow(0).inputNum-1){
 				$.ajax({
 					url: '/mfMakingDetailInsert',
 	        		method: 'POST',
@@ -441,7 +441,7 @@
 	    	    			success: function(data){
 	    	    				makingDetailGrid.resetData(data);
 	    	    				makingDetailGrid.refreshLayout();
-	    	    				console.log(makingDetailGrid.getData());
+	    	    				makingDetailGrid.focusAt(makingNum+1, 2, true);
 	    	    				$.ajax({
 	    	    					url: '/mfMakingTitleUpdate',
 	    	    	        		method: 'POST',
@@ -481,7 +481,7 @@
 						console.log(error);
 					}
 				});
-			} else if(makingNum == mfResultGrid.getRow(0).inputNum){
+			} else if(makingNum == mfResultGrid.getRow(0).inputNum-1){
 				let data2 = [{
 					mfMakingCode : mfResultGrid.getRow(0).mfMakingCode,
 					processStatus : '완료'
@@ -503,7 +503,7 @@
 	    	    			success: function(data){
 	    	    				mfResultGrid.resetData(data);
 	    	    				mfResultGrid.refreshLayout();
-	    	    				console.log(makingNum);
+	    	    				makingNum++
 	    	    			},
 	    	    			error: function(error){
 	    	    				console.log(error);
@@ -516,6 +516,8 @@
 	        	});
 			}
 		};
+		
+		
 		
 	    </script>
 	</div>
