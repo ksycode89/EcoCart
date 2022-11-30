@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	layout:decorate="~{layout/layout}">
 
 <head>
@@ -13,7 +14,7 @@
 <body>
 <div layout:fragment="header" class="page-heading"><h2>출고요청</h2></div>
 	<div layout:fragment="content" class="page-content">
-				
+			
 		<div class="mb-1">
 			<div class="filters" style="height:35px">
 				<label for="planStatus" style="width:100px">진행구분</label>
@@ -285,7 +286,7 @@
 			success : function(result) {
 				for(let i =0; i< result.length; i++){
 					console.log("ss")
-					console.log($("#dlivyCode").val())
+					console.log()
 					result[i].dlivyQCode= $("#dlivyCode").val()
 				}
 				grid4.resetData(result);
@@ -319,7 +320,7 @@
      grid.on('click',(event)=>{
     	
     	 console.log(event.nativeEvent.target.textContent);
-		var a = event.nativeEvent.target.textContent;
+		var a = grid.getRow(event.rowKey).dlivyQCode
 		grid.allCheck
 		
 		$.ajax({
@@ -340,7 +341,7 @@
 	grid4.on('click', (event)=>{
 		
 		if(event.columnName != "_checked"){
-		var a = event.nativeEvent.target.textContent;
+		var a = grid4.getRow(event.rowKey).orderCode;
 			
 		$.ajax({
 			method:'GET',
@@ -380,41 +381,55 @@
 	 
 	 //모달창에서 출고요청 버튼 눌렀을때
 	function goDlivy(){
-		//출고해야하는 수량 > 출고 할 수량
-		let a = 0;
-		
-		for(let i = 0; i < grid5.getData().length; i++){
-			if( grid5.getData()[i].doDlivyNum >= grid5.getData()[i].dsellNum && grid5.getData()[i].dsellNum != '' && grid5.getData()[i].dsellNum != 0){
-			 	a += 0
-			 	console.log("성공");
-			}else {
-			 	a += 1
-			 	console.log("실패");
-			}
-		}	
-		
-		if(a == 0){
-			//출고요청 등록
-			let a = grid4.getData()[0];
-			a.dlivyGCode = $("#dlivyCode").val()
-			console.log(grid4.getCheckedRows())			
-			//출고 등록 1번
-			$.ajax({
-				method:'POST',
-				url:'/insertDlivyQ',
-				contentType : 'application/json',
-				dataType:'JSON',
-				data: JSON.stringify(grid4.getCheckedRows()),
-				beforeSend : function(xhr){
-	           		xhr.setRequestHeader(header, token);
-	           	 },
-				success : function(result) {
-					console.log(result);
-					grid5.blur();
-					//출고요청상세 등록 여러번
-					$.ajax({
+		 
+	//출고해야하는 수량 > 출고 할 수량
+	let a = 0;
+	
+	for(let i = 0; i < grid5.getData().length; i++){
+		if( grid5.getData()[i].doDlivyNum >= grid5.getData()[i].dsellNum && grid5.getData()[i].dsellNum != '' && grid5.getData()[i].dsellNum != 0){
+		 	a += 0
+		 	console.log("성공");
+		}else {
+		 	a += 1
+		 	console.log("실패");
+		}
+	}	
+	
+	if(a == 0){
+		//출고요청 등록
+		let a = grid4.getData()[0];
+		a.dlivyGCode = $("#dlivyCode").val()
+		console.log(grid4.getCheckedRows())			
+		//출고 등록 1번
+		$.ajax({
+			method:'POST',
+			url:'/insertDlivyQ',
+			contentType : 'application/json',
+			dataType:'JSON',
+			data: JSON.stringify(grid4.getCheckedRows()),
+			beforeSend : function(xhr){
+           		xhr.setRequestHeader(header, token);
+           	 },
+			success : function(result) {
+				console.log(result);
+				grid5.blur();
+				//출고요청상세 등록 여러번
+				$.ajax({
+					method:'POST',
+					url:'/insertDlivyQD',
+					contentType : 'application/json',
+					dataType:'JSON',
+					data: JSON.stringify(grid5.getData()), //+ 출고요청코드,
+					beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           	 },
+					success : function(result) {
+						console.log(result);
+						
+						//주문서에 납품수량 + 
+						$.ajax({
 						method:'POST',
-						url:'/insertDlivyQD',
+						url:'/updateOrderNum',
 						contentType : 'application/json',
 						dataType:'JSON',
 						data: JSON.stringify(grid5.getData()), //+ 출고요청코드,
@@ -423,46 +438,35 @@
 			           	 },
 						success : function(result) {
 							console.log(result);
-							
-							//주문서에 납품수량 + 
-							$.ajax({
-							method:'POST',
-							url:'/updateOrderNum',
-							contentType : 'application/json',
-							dataType:'JSON',
-							data: JSON.stringify(grid5.getData()), //+ 출고요청코드,
-							beforeSend : function(xhr){
-				           		xhr.setRequestHeader(header, token);
-				           	 },
-							success : function(result) {
-								console.log(result);
-							},
-							error : function(error){
-								console.log(error);
-							}
-							
-							})
-							
+							swal("출고요청 완료")
+							DeliveryList();
 						},
-						error : function(error){s
+						error : function(error){
 							console.log(error);
 						}
-					})
-				},
-				error : function(error){
-					console.log(error);
-				}
-			})	
-			DeliveryList();
-			swal("출고요청 완료")
-			//등록버튼 누르면 모달창 닫고 화면
-			 $('#staticBackdrop').modal('hide');
-			
-		}else{
-			swal("다시 입력해주세요.")
-			getCode();
-		}	
-				
+						
+						})
+						
+					},
+					error : function(error){s
+						console.log(error);
+					}
+				})
+			},
+			error : function(error){
+				console.log(error);
+			}
+		})	
+		
+		
+		//등록버튼 누르면 모달창 닫고 화면
+		 $('#staticBackdrop').modal('hide');
+		
+	}else{
+		swal("다시 입력해주세요.")
+		getCode();
+	}
+			 
 	}
 		
 			

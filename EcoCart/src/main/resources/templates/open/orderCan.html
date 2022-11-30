@@ -198,7 +198,8 @@
 			grid.on('click', (event)=>{
 				console.log(event.nativeEvent.target.textContent);
 				
-				var a = event.nativeEvent.target.textContent;
+				var a = grid.getRow(event.rowKey).orderCode;
+
 				
 				$.ajax({
 					method:'GET',
@@ -244,18 +245,15 @@
 					           		xhr.setRequestHeader(header, token);
 					           	 },
 								success : function(result) {
-									console.log(result)
-									location.reload();
 									swal("주문마감 되었습니다.")
+									ordersList();
 								},
 								error : function(error){
-									console.log(error);
 								}
 							})
 						//location.reload(result);
 					},
 					error : function(error){
-						console.log(error);
 					}
 				})		
 			

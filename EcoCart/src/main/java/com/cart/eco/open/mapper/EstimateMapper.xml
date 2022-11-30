@@ -45,6 +45,7 @@
    		select p.pro_code, p.pro_name, o.sell_price
 		from product p, product_option o
 		where p.pro_code =o.pro_code
+		and p.pro_group like 'CP%'
 		
    </select>
    
