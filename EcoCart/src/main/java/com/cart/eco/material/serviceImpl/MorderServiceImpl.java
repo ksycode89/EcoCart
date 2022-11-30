@@ -147,7 +147,6 @@ public class MorderServiceImpl implements MorderService {
 			reVo.setOrderGroup("og_co");
 			moMapper.completeOrder(reVo);
 		}
-			
 		return result;
 	}
 //공통코드로 발주 검색 

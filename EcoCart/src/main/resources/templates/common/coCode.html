@@ -118,28 +118,32 @@
 
 		</div>
 
-		<div style="display: flex">
-			<!-- <div >
-				<button class="btn btn-primary" onclick="commonBtnDo()">조회</button>
-			</div> -->
-			<div>
-				<button class="btn btn-primary" onclick="commonBtnSave()">insert</button>
+		<div style="display: flex; justify-content:space-between; ; margin-right: 150px; margin-bottom: -30px; margin-top: 50px">
+			
+			<div class="row" style="margin-left: 380px">
+				<div class="col-lg-auto">
+					<button class="btn btn-primary" onclick="commonBtnReset()">추가</button>
+				</div>
 			</div>
-			<div>
-				<button class="btn btn-primary" onclick="commonBtnInsert()">행추가</button>
+			
+			<div  class="row">
+				<div class="col-lg-auto">
+					<button class="btn btn-primary" onclick="commonBtnSave()">추가</button>
+				</div>
+				<div class="col-lg-auto">
+					<button class="btn btn-primary" onclick="commonBtnInsert()">행추가</button>
+				</div>
+				<div class="col-lg-auto">
+					<button class="btn btn-primary" onclick="commonBtnUpdate()">수정</button>
+				</div>
+				<div class="col-lg-auto">
+					<button class="btn btn-primary" onclick="commonBtnDelete()">삭제</button>
+				</div>
+				<div class="col-lg-auto">
+					<button class="btn btn-primary" onclick="commonBtnReset()">초기화</button>
+				</div>
 			</div>
-			<div>
-				<button class="btn btn-primary" onclick="commonBtnUpdate()">업데이</button>
-			</div>
-			<div>
-				<button class="btn btn-primary" onclick="commonBtnDelete()">delete</button>
-			</div>
-			<div>
-				<button class="btn btn-primary" onclick="commonBtnReset()">reset</button>
-			</div>
-
-
-
+			
 		</div>
 
 		<!--   <div class="row">
@@ -195,7 +199,7 @@
 					role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h4 class="modal-title" id="myModalLabel17">거래처</h4>
+							<h4 class="modal-title" id="myModalLabel17">공통코드</h4>
 							<button type="button" class="close" data-bs-dismiss="modal"
 								aria-label="Close">
 								<i data-feather="x"></i>
@@ -326,7 +330,7 @@
             scrollY : true,
             rowHeaders: ['checkbox'],
             columns : [ {
-               header : '공통코드',
+               header : '세부코드',
                name : 'codeId', 
                editor: 'text'
      
@@ -437,7 +441,6 @@
          large2.addEventListener('shown.bs.modal', () => {
             
             gridCommon.refreshLayout(); //모달창 새로고침
-            
 
             $.ajax({
                url : "/callCommon",
@@ -468,12 +471,12 @@
             let  tt = gridCommon.getRow(ev.rowKey);
             $('#commonCodeCo').val(tt.codeId);
             $('#commonNameCo').val(tt.codeName);
-            console.log(tt)
+           
          })
          
          //단건누를시 우측에서 상세정보
          grid2.on('click',ev=>{
-        	 $('#common-code-detail').css('display','block')
+        	 //$('#common-code-detail').css('display','block')
         	        grid3.refreshLayout();
         	let groupCheck = grid2.getRow(ev.rowKey).codeGroup
         	if (groupCheck != null){
@@ -569,7 +572,7 @@
     
           grid3.request('createData');
          	grid3.clear();
-         	 $('#common-code-detail').css('display','none')	
+         	// $('#common-code-detail').css('display','none')	
          		
          	  /*   console.log(a); */
          	}
@@ -593,10 +596,11 @@
         	// grid3.blur(); 윈도우 포커스 제거  
          	}
          function commonBtnReset(){
-        	 $('#common-code-detail').css('display','none')
+        	// $('#common-code-detail').css('display','none')
         	 grid2.clear()
-        	 
-        	 
+        	 grid3.clear()
+             gridInsert.clear()
+             gridCommon.clear()
          }
          
          function commonBtnModi(){
