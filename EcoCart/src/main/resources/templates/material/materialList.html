@@ -69,26 +69,14 @@
 	            {
 	              header: '발주일자',
 	              name: 'orderDate',
-	              editor: {
-	                  type: 'datePicker', 
-	              option : {
-	            	  format:'yyyy-MM-dd',
-	              }
-	             }
 	              },
 	              {
 	              header: '납기일',
 	              name: 'orderReceiving',
-	              editor: {
-	              type: 'datePicker',
-	              options: {
-	              format: 'yyyy-MM-dd'
-	             }
-	             },
-	         	filter : 'select'
+	              filter : 'select'
 	            },
 	            {
-	            	header: '거래처코드',
+	            	header: '거래처',
 	            	name: 'clientName'
 	            },
 	            {
@@ -102,7 +90,7 @@
 	            {
 	              header: '진행상황',
 	              name: 'orderGroup',
-		              filter : 'select',
+		          filter : 'select',
 	              
 	            }
 	           
@@ -209,27 +197,31 @@
 		$(grid.getCheckedRowKeys()).each((a,val)=>{
 			getOrderNo.push(grid.getRow(val).orderNo)
 		})
-		console.log(getOrderNo)
-		
-	
-	 $ .ajax({
-				url : '/commitOrder',
-				type : 'post',
-				contentType : "application/json",
-				data : JSON.stringify(getOrderNo),
-              	beforeSend : function(xhr){
-            		xhr.setRequestHeader(header, token);
-            	 },
-				success : function(data) {
-					let mes = data+'건 확정'
-					swal(mes)
-					grid.removeRows(grid.getCheckedRowKeys())
-				},
-				error : function(reject) {
-					swal('확정실패')
-					console.log(reject);
-				}
-			})  
+		if(grid.getCheckedRowKeys()==1){
+			
+			 $ .ajax({
+						url : '/commitOrder',
+						type : 'post',
+						contentType : "application/json",
+						data : JSON.stringify(getOrderNo),
+		              	beforeSend : function(xhr){
+		            		xhr.setRequestHeader(header, token);
+		            	 },
+						success : function(data) {
+							let mes = data+'건 확정'
+							swal(mes)
+							grid.removeRows(grid.getCheckedRowKeys())
+						},
+						error : function(reject) {
+							swal('확정실패')
+							console.log(reject);
+						}
+					}) 
+		}else if (grid.getCheckedRowKeys()<1){
+			swal('최소 하나의 발주를선택해야합니다.')
+		}else {
+			swal('하나의 발주만 선택해야합니다.')
+		}
 	}
    </script>
 	</div>
