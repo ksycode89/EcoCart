@@ -96,7 +96,7 @@ public class MaterialController {
 	@GetMapping("/WearingList")
 	public String selectOrList(Model mo) {
 		//발주번호가져오기 
-		mo.addAttribute("orderList",morder.getOrderGroup("og_wt"));
+		mo.addAttribute("orderList",morder.getOrderGroup("og-co"));
 		return "material/WearingList";
 	}
 	

@@ -18,8 +18,8 @@
 		<div class="filters mt-4" style="height:35px" >
 			<label for="planStatus" style="width:100px">진행구분</label>
 			<label><input type="radio" id="planAll"  name="plan"value="all" checked>전체</label>&nbsp;
-			<label><input type="radio" id="ogwt"  name="plan" value="og_wt">진행</label>&nbsp;
-			<label><input type="radio" id="ogco"  name="plan" value="og_co">완료</label>
+			<label><input type="radio" id="ogwt"  name="plan" value="og-wt">진행</label>&nbsp;
+			<label><input type="radio" id="ogco"  name="plan" value="og-co">완료</label>
 		</div>
 		
 		<label for="code_group" style="width:80px;">발주번호</label>
@@ -130,12 +130,13 @@
 	        
 	    ]
 	  });	  
-   
-	   grid.on('click',(ab)=>{
+   let gridRowKey;
+	   grid.on('click',ev=>{
+		   gridRowKey=  ev.rowKey
 		   //console.log(ab.nativeEvent.target.innerText)
 		   $.ajax({
 			   url:'/detailList',
-			   data : {'orderNo' : grid.getRow(ab.rowKey).orderNo},
+			   data : {'orderNo' : grid.getRow(ev.rowKey).orderNo},
               	beforeSend : function(xhr){
             		xhr.setRequestHeader(header, token);
             	 },
@@ -150,8 +151,6 @@
 		   })
 		   
 	   })
-	   
-	  
 	/* =================기=능===================== */
  //조회
 	function getList (){
@@ -176,11 +175,11 @@
 	    })
 	    
 	   ogwt.addEventListener('click', () => {
-	    	grid.filter('orderGroup', [{code:'eq', value:'og_wt'}]);
+	    	grid.filter('orderGroup', [{code:'eq', value:'og-wt'}]);
 	    })
 	    
 	    ogco.addEventListener('click', () => {
-	    	grid.filter('orderGroup', [{code:'eq', value:'og_co'}]);
+	    	grid.filter('orderGroup', [{code:'eq', value:'og-co'}]);
 	    })
 	//필터
 	orderSearch.addEventListener('click', () => {
@@ -197,31 +196,38 @@
 		$(grid.getCheckedRowKeys()).each((a,val)=>{
 			getOrderNo.push(grid.getRow(val).orderNo)
 		})
-		if(grid.getCheckedRowKeys()==1){
-			
-			 $ .ajax({
-						url : '/commitOrder',
-						type : 'post',
-						contentType : "application/json",
-						data : JSON.stringify(getOrderNo),
-		              	beforeSend : function(xhr){
-		            		xhr.setRequestHeader(header, token);
-		            	 },
-						success : function(data) {
-							let mes = data+'건 확정'
-							swal(mes)
-							grid.removeRows(grid.getCheckedRowKeys())
-						},
-						error : function(reject) {
-							swal('확정실패')
-							console.log(reject);
-						}
-					}) 
-		}else if (grid.getCheckedRowKeys()<1){
-			swal('최소 하나의 발주를선택해야합니다.')
-		}else {
-			swal('하나의 발주만 선택해야합니다.')
-		}
+		console.log(grid.getRow(gridRowKey))
+		
+		if(grid.getRow(gridRowKey).orderGroup == 'og-wt'){
+			console.log(123123,grid.getCheckedRowKeys())
+			if(grid.getCheckedRowKeys().length==1){
+				
+				 $ .ajax({
+							url : '/commitOrder',
+							type : 'post',
+							contentType : "application/json",
+							data : JSON.stringify(getOrderNo),
+			              	beforeSend : function(xhr){
+			            		xhr.setRequestHeader(header, token);
+			            	 },
+							success : function(data) {
+								let mes = data+'건 확정'
+								swal(mes)
+								grid.removeRows(grid.getCheckedRowKeys())
+							},
+							error : function(reject) {
+								swal('확정실패')
+								console.log(reject);
+							}
+						}) 
+			}else if (grid.getCheckedRowKeys()<1){
+				swal('최소 하나의 발주를선택해야합니다.')
+			}else {
+				swal('하나의 발주만 선택해야합니다.')
+			}
+		}else{
+			swal('발주대상이 아닙니다.')
+		}	
 	}
    </script>
 	</div>
