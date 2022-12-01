@@ -44,6 +44,9 @@ public interface MfOrderService {
 	//자재출고상태변경
 	public int updateMfOrderLotDetail(List<MfOrderVO> vo);
 	
+	//생산계획상태변경
+	public int updateMfPlanStatus(MfOrderVO vo);
+	
 	//생산지시확정변경
-	public int decideMfOrder(MfOrderVO mfvo);
+	public int decideMfOrder(MfOrderVO vo);
 }

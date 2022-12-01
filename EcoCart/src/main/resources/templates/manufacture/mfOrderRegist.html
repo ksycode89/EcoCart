@@ -143,19 +143,6 @@
 		]
 	});
 	
-	document.addEventListener("DOMContentLoaded", mfPlanListAll)
-    function mfPlanListAll(){
-    	$.ajax({
-    		url:'/mfPlanDeleteList',
-    		success:function(data){
-    			mfPlanListModalGrid.resetData(data);
-    		},
-    		error:function(error){
-    			console.log(error);
-    		}
-    	})
-    };
-	
 	var mfOrderGrid = new tui.Grid({
 		el: document.getElementById('mfOrderGridId'),
 		scrollX: false,
@@ -193,8 +180,25 @@
 	          header: '지시수량',
 	          name: 'mfOrderNum',
 	          editor: 'text'
-	        }
-		]
+	        },
+	        {
+	          header: '공정라인',
+	          name: 'lineNo',
+	          align: 'center',
+	          formatter: 'listItemText',
+        	  editor: {
+                type: 'select',
+                options: {
+                  listItems: [
+                    { text: 'LINE-1', value: '1' },
+                    { text: 'LINE-2', value: '2' },
+                    { text: 'LINE-3', value: '3' },
+                    { text: 'LINE-4', value: '4' },
+                  ]
+				}
+			  }
+        	}
+	    ]
 	});
 	
 	mfOrderGrid.hideColumn('mfPlanCode');
@@ -271,6 +275,19 @@
 		]
 	});
     
+    $('#selectPlanBtn').on('click', () => {
+    	$.ajax({
+    		url:'/mfPlanReadyList',
+    		success:function(data){
+    			mfPlanListModalGrid.resetData(data);
+    			mfPlanListModalGrid.refreshLayout();
+    		},
+    		error:function(error){
+    			console.log(error);
+    		}
+    	});
+    });
+    
 	planListModal.addEventListener('shown.bs.modal', () => {
     	mfPlanListModalGrid.refreshLayout();
     });
@@ -321,7 +338,8 @@
         			mfOrderCode : mfPlanSelectGrid.getRow(0).mfOrderCode,
            			proCode : mfPlanSelectGrid.getRow(0).proCode,
            			proName : mfPlanSelectGrid.getRow(0).proName,
-           			mfOrderDate : today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+           			mfOrderDate : today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate(),
+           			lineNo : 1
            		});
         	}
     	}
@@ -338,16 +356,20 @@
     	//console.log(mfPlanSelectGrid.getRow(0).needNum);
     	if(orderRowCount > mfPlanSelectGrid.getRow(0).needNum){
     		alert('필요수량을 초과하였습니다.');
+    		mfNeedGrid.clear();
+    		$('#insertOrderBtn').hide();
     		let mfPlanCode1 = mfOrderGrid.getRow(ev.changes[0].rowKey).mfPlanCode;
     		let mfOrderCode1 = mfOrderGrid.getRow(ev.changes[0].rowKey).mfOrderCode;
     		let proCode1 = mfOrderGrid.getRow(ev.changes[0].rowKey).proCode;
     		let proName1 = mfOrderGrid.getRow(ev.changes[0].rowKey).proName;
+    		let lineNo1 = mfOrderGrid.getRow(ev.changes[0].rowKey).lineNo;
     		mfOrderGrid.setRow(ev.changes[0].rowKey, {
     			mfPlanCode : mfPlanCode1,
     			mfOrderCode : mfOrderCode1,
     			proCode: proCode1,
     			proName: proName1,
-    			mfOrderDate: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+    			mfOrderDate: today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate(),
+    			lineNo : lineNo1
     		})
     		//console.log(ev.changes[0].rowKey);
     	} else if (orderRowCount == mfPlanSelectGrid.getRow(0).needNum){
@@ -447,6 +469,22 @@
     insertOrderBtn.addEventListener('click', (ev) => {
     	let count = mfNeedGrid.getRowCount()-1;
     	if(mfNeedGrid.getRow(count).restNum != null){
+    		$.ajax({
+	    		url: '/mfPlanProgressUpdate',
+	    		type: 'POST',
+	    		contentType: 'application/json',
+	    		data: JSON.stringify(mfPlanSelectGrid.getRow(0)),
+	    		dataType: 'JSON',
+	    		beforeSend : function(xhr){
+	           		xhr.setRequestHeader(header, token);
+	           	},
+	    		success: function(data){
+	  				console.log('계획 상태 변경 완료');
+	    		},
+	    		error: function(error){
+	    			console.log(error);
+	    		}
+	    	});
     		$.ajax({
         		url: '/mfOrderInsert',
         		method: 'POST',

@@ -13,15 +13,18 @@
 	<div layout:fragment="header" class="page-heading"><h2>생산관리</h2></div>
 	<div layout:fragment="content" class="page-content">
 		<div>
-			<h4 style="height:40px">생산라인설정 & 가동관리</h4>
+			<h4 style="height:40px">생산가동설정</h4>
 			<div id=makingGridId></div>
 		</div><br>
 		<div>
-			<h4 style="height:40px">생산가동</h4>
+			<div style="height:40px;">
+				<h4 style="display:inline">생산가동현황</h4>
+				<button type="button" class="btn btn-sm btn-primary" id="finishBtn" style="float:right; display:none">공정이동표 발행</button>
+			</div>
 			<div id="mfResultGridId"></div>
 		</div><br>
 		<div>
-			<h4 style="height:40px">생산가동상세</h4>
+			<h4 style="height:40px">생산가동현황상세</h4>
 			<div id="makingDetailGridId"></div>
 		</div><br>
 		
@@ -47,20 +50,9 @@
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 		
-	    const gridData = [
-	   		{
-	   			lineNo:'1'
-	   		},
-	   		{
-	   			lineNo:'2'
-	   		},
-	   		{
-	   			lineNo:'3'
-	   		},
-	   		{
-	   			lineNo:'4'
-	   		},
-	   	];
+	    const gridData = [{
+	    	
+	    }];
 	    
 	    class MakingButtonRenderer1 {
 			constructor(props) {
@@ -118,7 +110,8 @@
 			data: gridData,
 			scrollX: false,
 			scrollY: false,
-			bodyHeight: 160,
+			bodyHeight: 40,
+			minBodyHeight: 40,
 			columns: [
 		        {
 		          header: '라인번호',
@@ -147,7 +140,8 @@
 		        },
 		        {
 		          header: '지시수량',
-		          name: 'mfOrderNum'
+		          name: 'mfOrderNum',
+		          align: 'right'
 		        },
 		        {
 		          header: '공정가동',
@@ -187,7 +181,8 @@
 			columns: [
 		        {
 		          header: '라인번호',
-		          name: 'lineNo'
+		          name: 'lineNo',
+		          align: 'center'
 		        },
 		        {
 		          header: '생산지시코드',
@@ -199,27 +194,33 @@
 		        },
 		        {
 		          header: '총투입량',
-		          name: 'inputNum'
+		          name: 'inputNum',
+		          align: 'right'
 		        },
 		        {
 		          header: '총생산량',
-		          name: 'makingNum'
+		          name: 'makingNum',
+		          align: 'right'
 		        },
 		        {
 		          header: '총불량량',
-		          name: 'faultyNum'
+		          name: 'faultyNum',
+		          align: 'right'
 		        },
 		        {
 		          header: '작업시작시간',
-		          name: 'startTime'
+		          name: 'startTime',
+		          align: 'center'
 		        },
 		        {
 		          header: '작업종료시간',
-		          name: 'endTime'
+		          name: 'endTime',
+		          align: 'center'
 		        },
 		        {
 		          header: '가동상태',
-		          name : 'processStatus'
+		          name : 'processStatus',
+		          align: 'center'
 		        }
 			]
 		});
@@ -307,31 +308,39 @@
 		
 		orderDecideModalGrid.hideColumn('mfOrderNo');
 		
-		makingEv = {};
+		var makingEv = {};
+		
+		var makingInterval;
 		
 		makingGrid.on('click', (ev) => {
-			if(ev.columnName == 'mfOrderCode'){
-				$.ajax({
-	    			url: '/mfOrderDecideList',
-	    			method: 'GET',
-	    			success: function(data){
-	    				orderDecideModalGrid.resetData(data);
-	    				makingEv = ev;
-	    			},
-	    			error: function(error){
-	    				console.log(error);
-	    			}
-	    		});
-				$("#decideOrderModal").modal("show");
-				decideOrderModal.addEventListener('shown.bs.modal', () => {
-					orderDecideModalGrid.refreshLayout();
-			    });	
-			} else if(ev.columnName=='startProcess'){
+			if(ev.columnName=='startProcess'){
 				if(mfResultGrid.getRow(0) != null){
+					let today = new Date();
+					let getH = 0;
+					if(today.getHours()<10){
+						getH = '0'+today.getHours();
+					} else {
+						getH = today.getHours();
+					}
+					let getM = 0;
+					if(today.getMinutes()<10){
+						getM = '0'+today.getMinutes();
+					} else {
+						getM = today.getMinutes();
+					}
+					let getS = 0;
+					if(today.getSeconds()<10){
+						getS = '0'+today.getSeconds();
+					} else {
+						getS = today.getSeconds();
+					}
+					let getStartTime = getH + ':' + getM + ':' + getS;
+					console.log(getStartTime);
 					let data1 = [{
 						lineNo : mfResultGrid.getRow(0).lineNo,
 						mfOrderCode : mfResultGrid.getRow(0).mfOrderCode,
 						mfMakingCode : mfResultGrid.getRow(0).mfMakingCode,
+						startTime : getStartTime,
 						inputNum : mfResultGrid.getRow(0).inputNum,
 						processStatus : '가동'
 					}];
@@ -353,7 +362,8 @@
 		    	    			success: function(data){
 		    	    				mfResultGrid.resetData(data);
 		    	    				mfResultGrid.refreshLayout();
-		    	    				setInterval(startProcessing, 300);
+		    	    				makingNum = 0;
+		    	    				makingInterval = setInterval(startProcessing, 300);
 		    	    			},
 		    	    			error: function(error){
 		    	    				console.log(error);
@@ -369,10 +379,127 @@
 				}
 			} else if(ev.columnName=='stopProcess'){
 				if(mfResultGrid.getRow(0) != null){
+					clearInterval(makingInterval);
+					let data2 = [{
+						mfMakingCode : mfResultGrid.getRow(0).mfMakingCode,
+						processStatus : '정지'
+					}]
+					$.ajax({
+						url: '/mfMakingTitleUpdate',
+		        		method: 'POST',
+		        		contentType: 'application/json',
+		        		data: JSON.stringify(data2),
+		        		dataType: 'JSON',
+		        		beforeSend : function(xhr){
+		               		xhr.setRequestHeader(header, token);
+		               	},
+		        		success: function(data){
+		        			let a = mfResultGrid.getRow(0).mfMakingCode
+		        			$.ajax({
+		    	    			url: '/mfMakingTotal?mfMakingCode='+a,
+		    	    			method: 'GET',
+		    	    			success: function(data){
+		    	    				mfResultGrid.resetData(data);
+		    	    				mfResultGrid.refreshLayout();
+		    	    			},
+		    	    			error: function(error){
+		    	    				console.log(error);
+		    	    			}
+		    	    		});
+		        		},
+		        		error: function(error){
+		    				console.log(error);
+		    			}
+		        	});
 				}
 			} else if(ev.columnName=='restartProcess'){
 				if(mfResultGrid.getRow(0) != null){
-					alert('재가동합니다~');
+					let data2 = [{
+						mfMakingCode : mfResultGrid.getRow(0).mfMakingCode,
+						processStatus : '가동'
+					}]
+					$.ajax({
+						url: '/mfMakingTitleUpdate',
+		        		method: 'POST',
+		        		contentType: 'application/json',
+		        		data: JSON.stringify(data2),
+		        		dataType: 'JSON',
+		        		beforeSend : function(xhr){
+		               		xhr.setRequestHeader(header, token);
+		               	},
+		        		success: function(data){
+		        			let a = mfResultGrid.getRow(0).mfMakingCode
+		        			$.ajax({
+		    	    			url: '/mfMakingTotal?mfMakingCode='+a,
+		    	    			method: 'GET',
+		    	    			success: function(data){
+		    	    				mfResultGrid.resetData(data);
+		    	    				mfResultGrid.refreshLayout();
+		    	    			},
+		    	    			error: function(error){
+		    	    				console.log(error);
+		    	    			}
+		    	    		});
+		        		},
+		        		error: function(error){
+		    				console.log(error);
+		    			}
+		        	});
+					setInterval(startProcessing, 300);
+				}
+			} else {
+				if(mfResultGrid.getRow(0)!=null){
+					if(mfResultGrid.getRow(0).startTime!=null){
+						mfResultGrid.clear();
+						makingDetailGrid.clear();
+						$.ajax({
+			    			url: '/mfOrderDecideList',
+			    			method: 'GET',
+			    			success: function(data){
+			    				orderDecideModalGrid.resetData(data);
+			    				makingEv = ev;
+			    			},
+			    			error: function(error){
+			    				console.log(error);
+			    			}
+			    		});
+						$("#decideOrderModal").modal("show");
+						decideOrderModal.addEventListener('shown.bs.modal', () => {
+							orderDecideModalGrid.refreshLayout();
+					    });
+					} else {
+						$.ajax({
+			    			url: '/mfOrderDecideList',
+			    			method: 'GET',
+			    			success: function(data){
+			    				orderDecideModalGrid.resetData(data);
+			    				makingEv = ev;
+			    			},
+			    			error: function(error){
+			    				console.log(error);
+			    			}
+			    		});
+						$("#decideOrderModal").modal("show");
+						decideOrderModal.addEventListener('shown.bs.modal', () => {
+							orderDecideModalGrid.refreshLayout();
+					    });	
+					}
+				} else {
+					$.ajax({
+		    			url: '/mfOrderDecideList',
+		    			method: 'GET',
+		    			success: function(data){
+		    				orderDecideModalGrid.resetData(data);
+		    				makingEv = ev;
+		    			},
+		    			error: function(error){
+		    				console.log(error);
+		    			}
+		    		});
+					$("#decideOrderModal").modal("show");
+					decideOrderModal.addEventListener('shown.bs.modal', () => {
+						orderDecideModalGrid.refreshLayout();
+				    });	
 				}
 			}
 		});
@@ -423,7 +550,8 @@
 		var makingNum = 0;
 		
 		function startProcessing(){
-			if(makingNum < mfResultGrid.getRow(0).inputNum-1){
+			if(makingNum < mfResultGrid.getRow(0).inputNum){
+				console.log(mfResultGrid.getRow(0).inputNum);
 				$.ajax({
 					url: '/mfMakingDetailInsert',
 	        		method: 'POST',
@@ -441,7 +569,7 @@
 	    	    			success: function(data){
 	    	    				makingDetailGrid.resetData(data);
 	    	    				makingDetailGrid.refreshLayout();
-	    	    				makingDetailGrid.focusAt(makingNum+1, 2, true);
+	    	    				makingDetailGrid.focusAt(makingNum, 4, true);
 	    	    				$.ajax({
 	    	    					url: '/mfMakingTitleUpdate',
 	    	    	        		method: 'POST',
@@ -459,8 +587,8 @@
 	    			    	    			success: function(data){
 	    			    	    				mfResultGrid.resetData(data);
 	    			    	    				mfResultGrid.refreshLayout();
-	    			    	    				console.log(makingNum);
 	    			    	    				makingNum++
+	    			    	    				console.log(makingNum);
 	    			    	    			},
 	    			    	    			error: function(error){
 	    			    	    				console.log(error);
@@ -481,9 +609,30 @@
 						console.log(error);
 					}
 				});
-			} else if(makingNum == mfResultGrid.getRow(0).inputNum-1){
+			} else if(makingNum == mfResultGrid.getRow(0).inputNum){
+				let today = new Date();
+				let getH = 0;
+				if(today.getHours()<10){
+					getH = '0'+today.getHours();
+				} else {
+					getH = today.getHours();
+				}
+				let getM = 0;
+				if(today.getMinutes()<10){
+					getM = '0'+today.getMinutes();
+				} else {
+					getM = today.getMinutes();
+				}
+				let getS = 0;
+				if(today.getSeconds()<10){
+					getS = '0'+today.getSeconds();
+				} else {
+					getS = today.getSeconds();
+				}
+				let getEndTime = getH + ':' + getM + ':' + getS;
 				let data2 = [{
 					mfMakingCode : mfResultGrid.getRow(0).mfMakingCode,
+					endTime : getEndTime,
 					processStatus : '완료'
 				}]
 				$.ajax({
@@ -503,7 +652,8 @@
 	    	    			success: function(data){
 	    	    				mfResultGrid.resetData(data);
 	    	    				mfResultGrid.refreshLayout();
-	    	    				makingNum++
+	    	    				alert('생산이 완료되었습니다.');
+    	    					makingInterval=clearInterval(makingInterval);
 	    	    			},
 	    	    			error: function(error){
 	    	    				console.log(error);

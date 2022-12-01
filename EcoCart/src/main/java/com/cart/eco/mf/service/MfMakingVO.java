@@ -25,12 +25,8 @@ public class MfMakingVO {
 	private int inputNum; //투입량
 	private int makingNum; //생산량
 	private int faultyNum; //불량량
-	@JsonFormat(pattern = "hh:mm:ss")
-	@DateTimeFormat(pattern="hh:mm:ss")
-	private Date startTime; //작업시작
-	@JsonFormat(pattern = "hh:mm:ss")
-	@DateTimeFormat(pattern="hh:mm:ss")
-	private Date endTime; //작업종료
+	private String startTime; //작업시작
+	private String endTime; //작업종료
 	private String processStatus; //가동상태
 	private String mfMaking1; //프레임용접공정(통과/불량)
 	private String mfMaking2; //엔진조립공정(통과/불량/-)
