@@ -25,22 +25,26 @@
 
 	<!--필터 시작 -->
 		<div>
-			<div class="mb-3 row">
-				<label class="col-lg-1 col-sm-12 col-form-label">품목군</label>
-				<div class="col-lg-auto col-sm-6">
-					<input id="codeId" name="codeId" placeholder="품목군코드" class="form-control">
-				</div>
-				<div class="col-lg-auto col-sm-6">
-					<button type="button">
-					<!--품목군 모달 이벤트 -->
-						<i class="bi bi-search" data-bs-toggle="modal" data-bs-target="#large"></i>
-					</button>
-				</div>
-				<div class="col-lg-auto col-sm-12">
-					<input id="proName" name="proName" placeholder="품목군명" class="form-control">
-				</div>
+	<!--  -->	
+		<div class="mb-3 row mt-3">
+		<div class="col-md-3 mb-1">
+			<div class="input-group mb-3">
+				<label for="staticEmail" class="col-sm-3 col-form-label">품목군</label>
+				<input type="text" id="codeId" name="codeId" placeholder="품목군코드" class="form-control"
+						aria-label="Recipient's username"
+						aria-describedby="button-addon2"> <span
+						class="input-group-text" data-bs-toggle="modal"
+						data-bs-target="#large" id="basic-addon1" style="cursor: pointer"><i
+						class="bi bi-search"></i></span>
 			</div>
-
+		</div>
+			<div class="col-lg-auto col-sm-12">
+			<input  id="proName" name="proName" placeholder="품목군명" class="form-control">
+			</div>
+		</div>
+	
+	<!--  -->
+	
 			<div class="mb-3 row">
 				<label class="col-lg-1 col-sm-12 col-form-label">조달구분</label>
 				<div class="col-lg-auto col-sm-6">
@@ -240,44 +244,61 @@
 											<input id="ppd" name="ppd" class="form-control">
 										</div>
 									</div>
-
-									<div class="mb-3 row">
-										<label class="col-lg-3 col-sm-12 col-form-label">주거래처</label>
-										<div class="col-lg-3 col-sm-6">
-											<input id="clientCode" name="clientCode" placeholder="거래처코드" class="form-control">
+									<!--  -->
+									<div class="row mt-3">
+										<div class="col-lg-3 col-md-auto ">
+											<label for="staticEmail" style="width: 138px;"class="col-form-label" >주거래처</label>
+										</div>	
+										<div class="col-lg-4 col-md-auto ">
+											<div class="input-group mb-3 ">
+												<input type="text" id="clientCode"  name="clientCode"
+													placeholder="거래처코드" class="form-control"
+													aria-label="Recipient's username"
+													aria-describedby="button-addon2"> <span
+													class="input-group-text " data-bs-toggle="modal"
+													data-bs-target="#large2" id="basic-addon1"
+													style="cursor: pointer"><i class="bi bi-search"></i></span>
+											</div>
 										</div>
-										<div class="col-lg-auto col-sm-6">
-											<button type="button">
-												<!--주거래처 모달 이벤트  -->
-												<i class="bi bi-search" data-bs-toggle="modal" data-bs-target="#large2"></i>
-											</button>
-										</div>
-										<div class="col-lg-3 col-sm-6">
-											<input id="clientName" name="clientName" placeholder="거래처명" class="form-control">
-										</div>
+										<div class="col-lg-3 col-md-auto col-sm-12">
+											<input id="clientName" name="clientName" placeholder="거래처명"
+												class="form-control"> 
+										</div>		
 									</div>
-									<div class="mb-3 row">
-										<label class="col-lg-3 col-sm-12 col-form-label">거래처 담당자</label>
-										<div class="col-lg-3 col-sm-6">
-											<input id="proManager" name="proManager" placeholder="담당자코드" class="form-control">
+								<!--  -->
+								
+		
+								
+								
+								
+								<!--  -->
+									<div class="row mt-3">
+										<div class="col-lg-3 col-md-auto ">
+											<label for="staticEmail" style="width: 138px;"class="col-form-label">거래처 담당자</label>
+										</div>	
+										<div class="col-lg-4 col-md-auto ">
+											<div class="input-group mb-3 ">
+												<input type="text" id="proManager"  name="proManager"
+													placeholder="담당자코드" class="form-control"
+													aria-label="Recipient's username"
+													aria-describedby="button-addon2"> <span
+													class="input-group-text " data-bs-toggle="modal"
+													data-bs-target="#large2" id="basic-addon1"
+													style="cursor: pointer"><i class="bi bi-search"></i></span>
+											</div>
 										</div>
-										<div class="col-lg-auto col-sm-6">
-											<button type="button">
-												<!--담당자 목록 이벤트  -->
-												<i class="bi bi-search" data-bs-toggle="modal" data-bs-target="#large3"></i>
-											</button>
-										</div>
-										<div class="col-lg-3 col-sm-6">
-											<input id="empName" name="empName" placeholder="담당자이름" class="form-control">
-										</div>
+										<div class="col-lg-3 col-md-auto col-sm-12">
+											<input id="empName" name="empName" placeholder="담당자이름"
+												class="form-control"> 
+										</div>		
 									</div>
+								 <!--  -->	
 									<div class="mb-3 row">
 										<label class="col-lg-3 col-sm-12 col-form-label">원가</label>
 										<div class="col-lg-auto col-sm-6">
 											<input id="cost2" class="form-control">
 											<input type="hidden" id="cost" name="cost" class="form-control">
 										</div>
-
 									</div>
 									<div class="mb-3 row">
 										<label class="col-lg-3 col-sm-12 col-form-label">판매단가</label>
@@ -501,7 +522,9 @@
 				}
 
 				]
+			
 			});
+			
 			
 
 			// 등록-행 추가.
