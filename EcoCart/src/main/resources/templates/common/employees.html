@@ -10,8 +10,7 @@
 <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>사원관리</title>
 <style type="text/css">
-#btn-div div
-{
+#btn-div div{
 	margin-right:20px;
 }
 </style>
@@ -24,30 +23,42 @@
 
 	<!--검색 조건 시작  -->
 	<div class="mb-3 row mt-3">
-			<label  class="col-lg-1 col-sm-12 col-form-label">부 서</label>
-			<div class="col-lg-auto col-sm-6">
-			<input  id="codeId" name="codeId" placeholder="부서코드" class="form-control">
+			<!--  -->
+			<div class="col-md-3 mb-1">
+			<div class="input-group mb-3">
+				<label for="staticEmail" class="col-sm-3 col-form-label">부 서</label>
+				<input type="text" id="codeId" name="codeId" placeholder="부서코드" class="form-control"
+						aria-label="Recipient's username"
+						aria-describedby="button-addon2"> <span
+						class="input-group-text" data-bs-toggle="modal"
+						data-bs-target="#large2" id="basic-addon1" style="cursor: pointer"><i
+						class="bi bi-search"></i></span>
 			</div>
-			<div class="col-lg-auto col-sm-6">
-			<button type="button"><i class="bi bi-search" data-bs-toggle="modal" data-bs-target="#large2" ></i></button> 
 			</div>
 			<div class="col-lg-auto col-sm-12">
 			<input  id="codeName" name="codeName" placeholder="부서명" class="form-control">
-			</div>	
+			</div>
+			<!--  -->	
 	</div>	
+				
 	<div>
 		<div class="mb-3 row">
-			<label  class="col-lg-1 col-sm-12 col-form-label">이 름</label>
-			<div class="col-lg-auto col-sm-6">
-			<input  id="empNum" name="empNum" placeholder="사원번호" class="form-control">
+			<!--  -->
+			<div class="col-md-3 mb-1">
+			<div class="input-group mb-3">
+				<label for="staticEmail" class="col-sm-3 col-form-label">이 름</label>
+				<input type="text" id="empNum" name="empNum" placeholder="사원번호" class="form-control"
+						aria-label="Recipient's username"
+						aria-describedby="button-addon2"> <span
+						class="input-group-text" data-bs-toggle="modal"
+						data-bs-target="#large" id="basic-addon1" style="cursor: pointer"><i
+						class="bi bi-search"></i></span>
 			</div>
-			 <div class="col-lg-auto col-sm-6">
-			<button type="button"><i class="bi bi-search" data-bs-toggle="modal" data-bs-target="#large"></i></button> 
 			</div>
 			<div class="col-lg-auto col-sm-12">
 			<input  id="empName" name="empName" placeholder="이름" class="form-control">
-			
 			</div>
+			<!--  -->
 			<div  class="col-lg-auto col-sm-6">
 				<span style="height: 36px; line-height: 25px" class="btn btn-sm btn-primary" onclick="selectEmp()" id="select">조회</span> 
 			    <button  style="height: 36px; line-height: 25px" type="button" class="btn btn-sm btn-secondary" id="reset">초기화</button> 
@@ -76,7 +87,7 @@
 	
 	 </div>
  	<!--버튼 END -->
- 
+			
 	 <!--사원조회 그리드  -->
 	<div class="mb-3 mt-5 row">
 	 <div id="grid" ></div>
@@ -87,19 +98,24 @@
 		<h2>담당자</h2>
 	</div>
 	<div>
-		<div class="mb-3 row">
-			<label  class="col-lg-1 col-sm-12 col-form-label">이 름</label>
-			<div class="col-lg-auto col-sm-6">
-			<input  id="empNum2" name="empCode" placeholder="사원번호" class="form-control">
+	<!--  -->
+	<div class="mb-3 row mt-3">
+		<div class="col-md-3 mb-1">
+			<div class="input-group mb-3">
+				<label for="staticEmail" class="col-sm-3 col-form-label">이 름</label>
+				<input type="text" id="empNum2" name="empCode" placeholder="사원번호" class="form-control"
+						aria-label="Recipient's username"
+						aria-describedby="button-addon2"> <span
+						class="input-group-text" data-bs-toggle="modal"
+						data-bs-target="#large3" id="basic-addon1" style="cursor: pointer"><i
+						class="bi bi-search"></i></span>
 			</div>
-			 <div class="col-lg-auto col-sm-6">
-			<button type="button"><i class="bi bi-search" data-bs-toggle="modal" data-bs-target="#large3"></i></button> 
-			</div>
+		</div>
 			<div class="col-lg-auto col-sm-12">
 			<input  id="empName2" name="name" placeholder="이름" class="form-control">
 			</div>
-		</div>		
-		
+	</div>
+	<!--  -->	
 		<div class="mb-3 row">
 				<label  class="col-lg-1 col-sm-12 col-form-label">부서코드</label>
 				<div class="col-lg-auto col-sm-6">
@@ -132,14 +148,7 @@
 			<h2>담당사원</h2>
 		</div>	
 		  <div style="display: flex; justify-content: flex-end; " id="btn-div" class="mb-3">
-			<div>
-				<button type="button"  class="btn btn-sm btn-primary" onclick="addEmp2()">
-					<svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
-				</button> 
-			</div>
-			<div >
-				<button type="button" class="btn btn-sm btn-primary">업데이트</button> 
-			</div>
+			
 			
 		</div>
 	
@@ -568,8 +577,17 @@
 			document.getElementById('codeName').value='';
 			document.getElementById('empNum').value='';
 			document.getElementById('empName').value='';
+			document.getElementById('empName').value='';
+			document.getElementById('empName').value='';
+			document.getElementById('empName').value='';
+			document.getElementById('empName').value='';
+			document.getElementById('empName').value='';
+			
+			
 			
 			grid1.clear();
+			grid2.clear();
+			
 
 		})
 
@@ -714,11 +732,15 @@
              	 },
 				success : function(data) {
 					//console.log(data)
-					swal("등록 완료!!!!")
+					
+			
+					
+					//swal("success","등록에 성공했습니다!!!","success")
+					
 					selectEmp();
 				
 				}, error : function(error) {
-					swal("등록이 완료되지 않았습니다!!!!!");
+					swal("error","등록에 실패했습니다!!!","error");
 					console.log(error);
 				}
 			})
@@ -731,7 +753,8 @@
 			console.log(grid1.getData())
 			
 			grid1.request('updateData');
-			
+		
+			swal("success","수정 완료!!!","success")
 			/* $.ajax({
 				url : "updateEmp",
 				type : 'post',
@@ -740,7 +763,7 @@
 					grid1.resetData(data);
 					
 				},error : function(){
-					swal("수정 실패!!!!");
+					alert("수정 실패!!!!");
 					console.log(error)
 				}
 			}) */
@@ -756,8 +779,8 @@
 		// 사원 삭제.
 		function delEmp() {
 			let result =[];
-			let checkedRow = grid1.getCheckedRows()
-			$(checkedRow).each((a, data)=>{
+			let a = grid1.getCheckedRows()
+			$(a).each((a, data)=>{
 				let obj = {"empNum": data.empNum}
 				result.push(obj) 
 			})
@@ -780,7 +803,7 @@
 		        	}
 				}, 
 				error : function(error){
-				swal ("삭제 실패!!!!!");
+				swal ("error","삭제 실패!!!","error");
 				console.log(error)
 				
 				}
@@ -991,10 +1014,11 @@
                    	 		},
 							success : function(data) {
 								
-								$('#showEmp').css('display','block')
+								$('#showEmp').css('display','block') // 그리드 화면에 안 보이게.
 								
 								$('#empNum2').val(emp.empNum);
 								$('#empName2').val(emp.empName);
+						
 								$('#codeId2').val(emp.empDept);
 								$('#codeName2').val(emp.comments);
 								$('#empMail2').val(emp.empMail);
@@ -1024,7 +1048,8 @@
 		 //console.log("row num : ", grid1.getFocusedCell().rowKey) ; 
 		 //let emp = grid1.getRow(grid1.getFocusedCell().rowKey).empManager.split(':')[0];
 		 let emp = grid1.getRow(grid1.getFocusedCell().rowKey).empManager;
-		
+		 grid2.clear();		
+		 
 		 $.ajax({
 			url : "ajax/emplist",
 			type : "get",
@@ -1056,6 +1081,7 @@
 							success : function(data) {
 								console.log("cccc");
 								grid2.resetData(data);
+								grid2.refreshLayout();
 							}, error : function(error) {
 								console.log(error);
 							}	
@@ -1067,6 +1093,7 @@
 			}
 		})
 		} else {
+			$('#showEmp').css('display','none')	
 			grid2.clear()
 			$('#empNum2').val('');
 			$('#empName2').val('');
