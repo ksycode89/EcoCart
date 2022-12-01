@@ -117,10 +117,10 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 	}
 	
 	@Override
-	public int insertDlivyG(List<DeliveryGVO> vo) {
+	public int insertDlivyG(List<DeliveryGVO> vo, String empNum) {
 		int result = 0;
 		for(int i = 0; i< vo.size(); i++) {
-			
+			vo.get(i).setEmpNum(empNum);
 			result  += mapper.insertDlivyG(vo.get(i));
 		}
 		return result;

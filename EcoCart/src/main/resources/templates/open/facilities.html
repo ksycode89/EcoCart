@@ -35,19 +35,77 @@
 			</div>
 			
 			 <div>
+			 	<button onclick="facDelete()" type="button" class="btn btn-sm btn-primary"style="float:right; margin:5px; margin-right: 5px" >삭제</button>
             	<button type="button" class="btn btn-sm btn-primary" style="float:right; margin:5px; margin-right: 5px" onclick="facInsert()">설비등록</button>   
-            	<button onclick="deletePro()" type="button" class="btn-sm btn-primary" style="float:right; margin-right:5px; margin:5px;" >행삭제</button>
-				<button type="button"  style="float:right; margin:5px;" class="btn btn-sm btn-primary" onclick="addRow()">
-					<svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
-						<path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
-				</button> 
+            	<button onclick="deletePro()" type="button" class="btn btn-sm btn-primary" style="float:right; margin:5px; margin-right: 5px" >행삭제</button>
+				<button id="showModal" type="button" class="btn btn-sm btn-primary" style= "float:right;  margin:5px; "
+                  data-bs-toggle="modal" data-bs-target="#staticBackdrop" >설비 등록</button>
             </div>
        </div>
 			
 	
 		<div id="grid"></div>
 	
-	   
+	   <!--  모달창  -->
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		    
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="staticBackdropLabel">설비 등록</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      
+		      <div class="modal-body">
+		      	<div class="container-fluid">
+		      			<div style="margin-bottom:5px">
+				        	<label for="row1" style="width:80px; height: 30px; text-align:center;">견적번호</label>
+				        		<input type="text" class="form-control form-control-sm" style="width:150px; display:inline" id="estmtCode"  readonly>
+				        	
+				        	<label for="row2" style="width:80px; height: 30px; text-align:center;" >설비 구분</label>
+				         		<select id="select8" name="no"  onchange="handleOnChange8(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white">
+				         			<option value="선택">--선 택--</option>
+				         			<option vlaue="프레임">프레임</option>	
+				         			<option vlaue="프레임">엔진</option>	
+				         			<option vlaue="프레임">최종</option>	
+				         			<option vlaue="프레임">테스트</option>	
+				         		</select>
+		      			</div>
+
+			
+				        <div style="margin-bottom:5px"> 		
+				         	<label for="row3" style="width:80px; height: 30px; text-align:center;">설비규격</label>	
+				         		<input type="number"  min="1" class="form-control"style="width:150px; display:inline" id="productNum">
+				         		
+				         	<label for="row3" style="width:80px; height: 30px; text-align:center;">설비모델</label>	
+				         		<input type="number"  min="1" class="form-control"style="width:150px; display:inline" id="productNum">
+				         		
+				       </div>
+				       <div style="margin-bottom:5px"> 		 		
+				         	<label for="row3" style="width:80px; height: 30px; text-align:center;">설비가격</label>	
+				         		<input type="number"  min="1" class="form-control"style="width:150px; display:inline" id="productNum">	
+				         		
+				         	<label for="row3" style="width:80px; height: 30px; text-align:center;">점검주기</label>	
+				         		<input type="number"  min="1" class="form-control"style="width:150px; display:inline" id="productNum">		
+				        </div>
+			       </div>
+			    
+		      </div>
+		        
+		        
+					 <div id ="grid3"></div>
+				
+		        
+		      <div class="modal-footer">
+		        <button onclick="insertEstmt()" type="button" class="btn btn-primary" >등록</button>
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+		      </div>
+		      
+		    </div>
+		  </div>
+		</div>
+	    
+	    <!--  모달창 끝 -->
 
 	<script>
 	
@@ -61,6 +119,7 @@
         el: document.getElementById('grid'), // Container element
         scrollX: false,
         scrollY: false,
+        rowHeaders : ['checkbox'],
         bodyHeight : 400,
         columns: [
             {
@@ -128,7 +187,7 @@
 			success:function(result){
 				console.log("연결");
 				console.log(result);
-				grid.resetData(result);
+				grid.resetData(result);	
 			},
 			error : function(error){
 				console.log(error);
@@ -174,6 +233,7 @@
 					success : function(result) {
 						console.log(result);
 						swal("설비등록 완료")
+						facList()
 					},
 					error : function(error){
 						console.log(error);
@@ -199,8 +259,28 @@
 		grid.removeCheckedRows(true)
 	}
 	
-	
-	
+	//설비삭제
+	function facDelete(){
+		$.ajax({
+			method:'POST',
+			url:'/facDelete',
+			contentType : "application/json",
+			dataType:"JSON",
+			data: JSON.stringify(grid.getCheckedRows()),
+            beforeSend : function(xhr){
+           		xhr.setRequestHeader(header, token);
+           	 },
+			success : function(result) {
+				console.log(result);
+				swal("설비삭제 완료")
+				facList()
+			},
+			error : function(error){
+				console.log(error);
+			}
+		})
+		
+	}
 	
 	
 	

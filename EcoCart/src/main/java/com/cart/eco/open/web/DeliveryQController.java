@@ -78,8 +78,6 @@ public class DeliveryQController {
 
 		 HttpSession session = request.getSession();
 		 EmpVO name = (EmpVO)session.getAttribute("infos");
-		 System.out.println("===============================");
-		 System.out.println(name.getEmpNum());
 		 String empNum = name.getEmpNum();
 		
 		return deliverQService.insertDlivyQ(vo,empNum);
@@ -111,6 +109,7 @@ public class DeliveryQController {
 	@GetMapping("/deliveryG")
 	public String deliveryG(Model model) {
 		model.addAttribute("deliveryQ", deliverQService.selectDeliveryQ());
+		 
 		return "open/deliveryG";
 	}
 
@@ -161,9 +160,13 @@ public class DeliveryQController {
 	// 출고등록 등록하기
 	@PostMapping("/insertDlivyG")
 	@ResponseBody
-	public int insertDlivyG(@RequestBody List<DeliveryGVO> vo) {
+	public int insertDlivyG(@RequestBody List<DeliveryGVO> vo,HttpServletRequest request) {
 
-		return deliverQService.insertDlivyG(vo);
+		HttpSession session = request.getSession();
+		EmpVO name = (EmpVO)session.getAttribute("infos");
+		String empNum = name.getEmpNum();
+		
+		return deliverQService.insertDlivyG(vo,empNum);
 	}
 
 	// 출고등록 등록하기
@@ -178,7 +181,7 @@ public class DeliveryQController {
 	@PostMapping("/updateQst")
 	@ResponseBody
 	public int updateQst(@RequestBody List<DeliveryQVO> vo) {
-
+		System.out.println("출고요청 상태 업데이트");
 		return deliverQService.updateQst(vo);
 
 	}

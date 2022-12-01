@@ -7,7 +7,7 @@
 		select o.order_code, c.client_name, c.client_code, o.order_date, o.de_date, o.all_sum, order_st
 		from orders o, client c
 		where o.client_code = c.client_code
-		order by order_code
+		order by order_code desc
 		
 	</select>
 	
@@ -17,7 +17,7 @@
 		from orders o, client c
 		where o.client_code = c.client_code
 		and order_st ='진행'
-		order by order_code
+		order by de_date
 		
 	</select>
 
@@ -127,8 +127,8 @@
 	
 	<!-- 주문서 등록 -->
 	<insert id="insertOrder" parameterType="com.cart.eco.open.service.OrdersVO" >
-		insert into orders (order_code, client_code, order_date, de_date, order_st,all_sum)
-			values( #{orderCode}, #{clientCode}, sysdate, #{deDate}, '진행',#{allSum} )
+		insert into orders (order_code, client_code, order_date, de_date, order_st,all_sum, order_mf)
+			values( #{orderCode}, #{clientCode}, current_date, #{deDate}, '진행',#{allSum},'미생산' )
 		
 	</insert>
 	

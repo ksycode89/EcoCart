@@ -39,7 +39,7 @@ public interface EstimateMapper {
 	
 	public int facInsert(facilitiesVO vo);
 	
-
+	public int facDelete(facilitiesVO vo);
 
 
 }
