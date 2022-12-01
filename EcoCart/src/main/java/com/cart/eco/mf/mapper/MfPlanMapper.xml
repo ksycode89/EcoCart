@@ -12,16 +12,20 @@
 	</select>
 	
 	<select id="getOrderList" resultType="com.cart.eco.mf.service.MfPlanVO">
-		SELECT o.order_code, d.pro_code, d.pro_name, d.sell_num, o.de_date
-		FROM orders o LEFT JOIN order_d d
+		SELECT o.order_code, d.pro_code, p.pro_name, d.sell_num, o.de_date
+		FROM orders o LEFT OUTER JOIN order_d d
 		ON o.order_code = d.order_code
+		JOIN product p
+		ON d.pro_code = p.pro_code
 		WHERE o.de_date >= trunc(SYSDATE)
-		AND o.order_st = '진행'
+		AND o.order_mf = '미생산'
+		ORDER BY o.de_date
 	</select>
 	
 	<select id="getProductList" resultType="com.cart.eco.mf.service.MfPlanVO">
 		SELECT pro_code, pro_name
 		FROM product
+		WHERE pro_group = 'CP'
 	</select>
 	
 	<select id="getMfDeletePlanList" resultType="com.cart.eco.mf.service.MfPlanVO">
@@ -30,7 +34,8 @@
 		ON p.mf_plan_code = d.mf_plan_code
 		LEFT JOIN orders o
 		ON p.order_code = o.order_code
-		WHERE p.mf_plan_status != '완료'
+		WHERE p.mf_plan_status = '대기'
+		ORDER BY p.mf_plan_date
 	</select>
 	
 	<insert id="insertMfPlan" parameterType="com.cart.eco.mf.service.MfPlanVO">

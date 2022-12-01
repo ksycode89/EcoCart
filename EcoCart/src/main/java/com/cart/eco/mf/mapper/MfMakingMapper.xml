@@ -5,8 +5,9 @@
 <mapper namespace="com.cart.eco.mf.mapper.MfMakingMapper">
 	<select id="getMfResultList" resultType="com.cart.eco.mf.service.MfMakingVO">
 		SELECT *
-		FROM mf_making
-		ORDER BY mf_making_code
+		FROM mf_making m JOIN mf_order_detail d
+		ON m.mf_order_code = d.mf_order_code
+		ORDER BY d.mf_order_date DESC
 	</select>
 			
 	<select id="getMfFaultyList" parameterType="String" resultType="Map">

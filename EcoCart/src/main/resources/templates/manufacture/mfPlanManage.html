@@ -57,13 +57,19 @@
 			</div>
 			<!-- 제품 Modal -->
 			<div class="modal fade" id="productModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="productList" aria-hidden="true">
-				<div class="modal-dialog modal-lg">
+				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="productList">주문서 조회</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
+							<div style="height:50px">
+								<label for="searchProductName" style="width:100px">제품명</label>
+								<input type="text" class="form-control" id="searchProductName" name="searchProductName" style="width:200px; display:inline" placeholder="우엥">&nbsp;&nbsp;
+								<button type="button" class="btn btn-sm btn-primary" id="productSearchBtn">검색</button>&nbsp;
+								<button type="button" class="btn btn-sm btn-secondary" id="productResetBtn">초기화</button>
+							</div>
 							<div id="productModalGridId"></div>
 						</div>
 						<div class="modal-footer">
@@ -216,22 +222,10 @@
 	        },
 	        {
 	          header: '제품명',
-	          name: 'proName'
+	          name: 'proName',
+	          filter: 'text'
 	        }
 		]
-	});
-	
-	orderBtn.addEventListener('click', () => {
-		$("orderModalGrid").modal("show");
-    	$.ajax({
-    		url:'/mfPlanOrderList',
-    		success:function(data){
-    			orderModalGrid.resetData(data);
-    		},
-    		error:function(error){
-    			console.log(error);
-    		}
-    	})
 	});
 	
     planInsertTab.addEventListener('click', () => {
@@ -270,6 +264,22 @@
     	}
     });
     
+    planInsertGrid.on('afterChange', (ev) => {
+    	if(planInsertGrid.getRow(ev.changes[0].rowKey).needNum < 0){
+    		alert('1보다 작은 수를 입력할 수 없습니다!');
+    		planInsertGrid.setValue(ev.changes[0].rowKey, 'needNum', planInsertGrid.getRow(ev.changes[0].rowKey).sellNum);
+    	} else if(planInsertGrid.getRow(ev.changes[0].rowKey).needNum == 0){
+    		alert('1보다 작은 수를 입력할 수 없습니다!');
+    		planInsertGrid.setValue(ev.changes[0].rowKey, 'needNum', planInsertGrid.getRow(ev.changes[0].rowKey).sellNum);
+    	}
+    	if(planInsertGrid.getRow(ev.changes[0].rowKey).orderCode!=null){
+    		if(planInsertGrid.getRow(ev.changes[0].rowKey).needNum>planInsertGrid.getRow(ev.changes[0].rowKey).sellNum){
+        		alert('주문수량보다 많습니다!');
+        		planInsertGrid.setValue(ev.changes[0].rowKey, 'needNum', planInsertGrid.getRow(ev.changes[0].rowKey).sellNum);
+        	}
+    	}
+    })
+    
     productModalGrid.on('click', (ev2) => {
 		let mfPlanName1 = planInsertGrid.getRow(ev1.rowKey).mfPlanName;
 		let needNum1 = planInsertGrid.getRow(ev1.rowKey).needNum;
@@ -285,6 +295,15 @@
 		$('#productModal').modal('hide');
 	});
     
+    productSearchBtn.addEventListener('click', () => {
+    	productModalGrid.filter('proName', [{code:'contain', value:$('#searchProductName').val()}]);
+    });
+    
+    productResetBtn.addEventListener('click', () => {
+    	document.getElementById('searchProductName').value='';
+    	productModalGrid.unfilter('proName');
+    });
+    
     planRegistBtn.addEventListener('click', () => {
     	$.ajax({
     		url: '/mfInsertPlan',
@@ -298,7 +317,17 @@
     		success: function(data){
     			if(data != 0){
         			alert('계획이 등록되었습니다.');
-        			location.reload();
+        			planInsertGrid.clear();
+        			$.ajax({
+    		    		url:'/mfPlanDeleteList',
+    		    		success:function(data){
+    		    			planDeleteGrid.resetData(data);
+    		    			planDeleteGrid.refreshLayout();
+    		    		},
+    		    		error:function(error){
+    		    			console.log(error)
+    		    		}
+    		    	});
     			} else {
     				alert('등록할 계획이 없습니다.')
     			}
@@ -346,13 +375,57 @@
     	})
     });
     
+    orderBtn.addEventListener('click', () => {
+		$("orderModalGrid").modal("show");
+    	$.ajax({
+    		url:'/mfPlanOrderList',
+    		success:function(data){
+    			orderModalGrid.resetData(data);
+    		},
+    		error:function(error){
+    			console.log(error);
+    		}
+    	})
+	});
+    
     orderModal.addEventListener('shown.bs.modal', () => {
     	orderModalGrid.refreshLayout();
     });
     
     orderModalGrid.on('click', (ev) => {
     	if(orderModalGrid.getRow(ev.rowKey) != null){
-    		planInsertGrid.appendRow(orderModalGrid.getRow(ev.rowKey));
+    		if(planInsertGrid.getRowCount()==0){
+    			planInsertGrid.appendRow({
+        			orderCode : orderModalGrid.getRow(ev.rowKey).orderCode,
+        			proCode : orderModalGrid.getRow(ev.rowKey).proCode,
+        			proName : orderModalGrid.getRow(ev.rowKey).proName,
+        			sellNum : orderModalGrid.getRow(ev.rowKey).sellNum,
+        			needNum : orderModalGrid.getRow(ev.rowKey).sellNum,
+        			deDate : orderModalGrid.getRow(ev.rowKey).deDate
+        		});
+    		} else {
+    			let checkNum = 0;
+    			for(i=0; i<planInsertGrid.getRowCount(); i++){
+        			if(planInsertGrid.getRow(i).orderCode==orderModalGrid.getRow(ev.rowKey).orderCode && planInsertGrid.getRow(i).proCode==orderModalGrid.getRow(ev.rowKey).proCode){
+        				checkNum++;
+        			}
+        		}
+    			if(checkNum > 0){
+    				alert('이미 계획등록행에 추가된 주문서입니다!');
+    				checkNum = 0;
+    			} else {
+    				planInsertGrid.appendRow({
+            			orderCode : orderModalGrid.getRow(ev.rowKey).orderCode,
+            			proCode : orderModalGrid.getRow(ev.rowKey).proCode,
+            			proName : orderModalGrid.getRow(ev.rowKey).proName,
+            			sellNum : orderModalGrid.getRow(ev.rowKey).sellNum,
+            			needNum : orderModalGrid.getRow(ev.rowKey).sellNum,
+            			deDate : orderModalGrid.getRow(ev.rowKey).deDate
+            		});
+    				checkNum = 0;
+    			}
+    		}
+    		planInsertGrid.check(planInsertGrid.getRowCount()-1);
     		$('#orderModal').modal('hide');
     	}
     })

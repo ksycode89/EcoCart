@@ -12,6 +12,8 @@ import lombok.Data;
 public class MfOrderVO {
 	private String mfOrderCode; //생산지시코드
 	private String mfPlanCode; //생산계획코드
+	private String mfPlanName; //생산계획명
+	private String mfPlanStatus; //생산계획상태
 	private String proCode; //제품코드
 	private String proName; //제품명
 	private int mfOrderNum; //지시수량
@@ -33,5 +35,6 @@ public class MfOrderVO {
 	private int restNum; //LOT재고량
 	private int requestNum; //요청수량
 	private String releaseStatus; //출고상태
+	private int lineNo; //라인번호
 
 }
