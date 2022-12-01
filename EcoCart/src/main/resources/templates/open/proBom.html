@@ -17,7 +17,7 @@
 				
 		<div class="mb-1">
 				
-			<div style="height:50px; margin-bottom:10px">
+			<div style="height:50px;">
 				<label for="planName" style="width:100px">제품코드</label>
 				<input type="text" class="form-control" style="width:200px; display:inline" placeholder="제품코드" id="InProductCode">&nbsp;
 				
@@ -48,7 +48,7 @@
 	        el: document.getElementById('grid'), // Container element
 	        scrollX: false,
 	        scrollY: false,
-	        bodyHeight : 400,
+	        bodyHeight : 200,
 	        columns: [
 	            {
 	            	header: '제품코드',
@@ -85,7 +85,7 @@
 		
 		$.ajax({
 			
-			url:'/productList',
+			url:'/productList2',
 			success:function(result){
 				console.log("연결");
 				console.log(result);

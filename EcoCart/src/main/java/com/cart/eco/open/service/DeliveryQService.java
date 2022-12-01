@@ -52,7 +52,7 @@ public interface DeliveryQService {
 	public List<DeliveryGVO> getDlivyGCode();
 	
 	//충고등록 등록
-	public int insertDlivyG(List<DeliveryGVO> vo);
+	public int insertDlivyG(List<DeliveryGVO> vo,String empNum);
 	
 	//충고등록 상세 등록
 	public int insertDlivyGD(List<DeliveryGDVO> vo);

@@ -26,5 +26,6 @@ public class OrdersVO {
 	private Date deDate;	//납기일자
 	private int allSum;		//총합계액
 	private String orderSt;	//진행상태 진행/취소/완료
+	private String orderMf; //공정상태 미생산 /생산중/ 생산완료
 	
 }

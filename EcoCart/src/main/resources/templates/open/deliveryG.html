@@ -47,7 +47,7 @@
             </div>
             
            <div>
-               <button type="button" style="float:right; margin:5px; margin-right: 10px"  class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="getCode()">출고 등록</button>
+               <button type="button" style="float:right; margin:5px; margin-right: 10px"  class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="getCode()">출고 요청 조회</button>
 			</div>
 
 			
@@ -142,7 +142,8 @@
         columns: [
             {
             	header: 'no',
-            	name: 'dlivyGno'
+            	name: 'dlivyGno',
+            	hidden :1
             },
             {
             	header: '제품코드',
@@ -327,6 +328,7 @@
 	
 	//모달창 출고등록
 	function goDeliveryG(){
+	if(grid3.getCheckedRows().length == 1){
 		
 		let a = 0;
 		
@@ -336,6 +338,7 @@
 			//요청수량 > 재고수량	
 			}else{
 				a +=1
+				console.log("dsf")
 				swal("재고가 부족합니다.")
 			}
 		}
@@ -394,32 +397,33 @@
 					           		xhr.setRequestHeader(header, token);
 					           	 },
 								success : function(result) {
-									console.log(result);
-									swal("출고등록 완료")
+									swal("출고등록 성공")
+									DeliveryList();
 								},
 								error : function(error){
 									console.log(error);
-									swal("출고등록 실패1")
+									swal("출고등록 실패 상태변경")
 								}
 								
 								})
 							},
 							error : function(error){
 								console.log(error);
-								swal("출고등록 실패2")
+								swal("출고등록 실패 재고-")
 							}
 								
 						})
 						},
 						error : function(error){
 							console.log(error);
-							swal("출고등록 실패3")
+							swal("출고등록 실패 상세등록")
 						}
 							
 					})
 				},
 				error : function(error){
 					console.log(error);
+					swal("출고등록 실패 등록")
 				}
 			})	
 			DeliveryList()
@@ -427,8 +431,14 @@
 			 $('#staticBackdrop').modal('hide');
 			
 		}else{
-			swal("출고등록 실패4")
+			swal("재고가 부족합니다.")
 		}
+		
+	}else{
+		swal("하나만 체크 해주세요")
+		
+	}
+		
 		
 	}
 	

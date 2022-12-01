@@ -10,7 +10,7 @@
 		from delivery_q d, client c, employees e
 		where d.client_code = c.client_code
 		and e.emp_num = d.emp_num
-		order by dlivy_q_code
+		order by dlivy_q_code desc
 	
 	</select>
 	
@@ -48,7 +48,7 @@
 		insert into delivery_q 
 			(dlivy_q_code, order_code,dlivy_date, client_code, emp_num, dlivy_q_st)
 			
-		values ( #{dlivyQCode}, #{orderCode}, sysdate , #{clientCode}, #{empNum}, '요청' ) 
+		values ( #{dlivyQCode}, #{orderCode}, current_date , #{clientCode}, #{empNum}, '요청' ) 
 	
 	</insert>
 	
@@ -89,7 +89,7 @@
 		from delivery_g d, client c, employees e
 		where d.client_code = c.client_code
 		and e.emp_num = d.emp_num
-		order by dlivy_g_code
+		order by dlivy_g_code desc
 	
 	</select>
 	
@@ -119,6 +119,7 @@
         from delivery_q q, client c
         where q.client_code = c.client_code
         and dlivy_q_st = '요청'	
+        order by dlivy_q_code
         
 	</select>
 	
@@ -154,7 +155,7 @@
 	<insert id="insertDlivyG" parameterType="com.cart.eco.open.service.DeliveryGVO">
 		insert into 
 			delivery_g (dlivy_g_code, order_code,dlivy_date, client_code, emp_num,dlivy_g_st)
-		values ( #{dlivyGCode}, #{orderCode}, sysdate , #{clientCode}, '2020110205', '등록' )  
+		values ( #{dlivyGCode}, #{orderCode}, current_date , #{clientCode}, #{empNum}, '등록' )  
 	
 	</insert>
 	
@@ -172,8 +173,9 @@
 	
 	<!-- 출고요청 상태 업데이트 하기 -->
 	<update id="updateQst" parameterType="com.cart.eco.open.service.DeliveryQVO">
-		update delivery_q set dlivy_q_st = '등록'
-		where dlivy_q_code = #{dlivyQCode}
+		update delivery_q 
+			set dlivy_q_st = '등록'
+			where dlivy_q_code = #{dlivyQCode}
 	</update>
 	
 	
@@ -300,19 +302,18 @@
 	
 	<!-- 제품재고/bom수급현황 -->
 	
-	<!-- 제품재고 -->
+	<!-- 물품 재고 -->
 	<select id="productList" resultType="com.cart.eco.common.service.ProductVO">
-		select pro_code, pro_name, pro_num, wh_code
+		select pro_code, pro_name, pro_num, wh_code, pro_group
 		from product
-		where pro_group like 'CP%'
 	</select>
 
 
-	<!-- 제품재고 -->
+	<!-- 완제품재고 -->
 	<select id="productList2" resultType="com.cart.eco.common.service.ProductVO">
 		select pro_code, pro_name, pro_num, wh_code
 		from product
-		where pro_group like 'HCP%'
+		where pro_group like 'CP%' 
 	</select>
 	
 	

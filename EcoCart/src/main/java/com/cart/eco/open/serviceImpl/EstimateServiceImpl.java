@@ -83,10 +83,10 @@ public class EstimateServiceImpl implements EstimateService {
 	//////////////////////////////////////////////////
 	
 	@Override
-	public int facInsert(List<facilitiesVO> vo) {
+	public int facInsert(List<facilitiesVO> vo,String empNum) {
 		int result = 0;
 		for(int i = 0; i< vo.size(); i++) {
-			
+			vo.get(i).setEmpNum(empNum);
 			result  += mapper.facInsert(vo.get(i));
 		}
 		
@@ -100,7 +100,15 @@ public class EstimateServiceImpl implements EstimateService {
 		return mapper.facList();
 	}
 
-
+	@Override
+	public int facDelete(List<facilitiesVO> vo) {
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			result  += mapper.facDelete(vo.get(i));
+		}
+		
+		return result;
+	}
 
 
 

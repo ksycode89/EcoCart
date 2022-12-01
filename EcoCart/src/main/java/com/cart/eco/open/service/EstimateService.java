@@ -36,12 +36,12 @@ public interface EstimateService {
 	////////////////////////////////////////////
 	
 	//설비등록
-	public int facInsert(List<facilitiesVO> vo);
+	public int facInsert(List<facilitiesVO> vo,String empNum);
 	
 	//설비조회
 	public List<facilitiesVO> facList();
 	
-
+	public int facDelete(List<facilitiesVO> vo);
 
 
 	

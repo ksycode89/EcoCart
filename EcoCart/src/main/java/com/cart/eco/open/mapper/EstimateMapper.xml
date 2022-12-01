@@ -12,7 +12,7 @@
 		       e.estmt_st
 		 from estimate e, client c
 		where e.client_code = c.client_code
-		order by estmt_code
+		order by estmt_code desc
 		
 	</select>
 
@@ -69,7 +69,7 @@
 	<!-- 견적서 등록 -->
 	<insert id="insertEstmt" parameterType="com.cart.eco.open.service.EstimateVO" >
 		insert into estimate  (estmt_code, client_code, estmt_date, de_date, estmt_st, all_sum)
-			values( #{estmtCode}, #{clientCode} , sysdate, #{deDate}, '대기',#{allSum} )
+			values( #{estmtCode}, #{clientCode} , sysdate, current_date, '대기',#{allSum} )
 			
 	</insert>	
 
@@ -108,9 +108,13 @@
 	
 		insert into facilities 
 			( sys_code, sys_name, sys_date, sys_ks, sys_model, sys_money, sys_status, test_cycle, emp_num )
-		values (#{sysCode}, #{sysName}, sysdate, #{sysKs}, #{sysModel}, #{sysMoney}, '사용' , #{testCycle}, '2020110205')
+		values (#{sysCode}, #{sysName}, current_date, #{sysKs}, #{sysModel}, #{sysMoney}, '미사용' , #{testCycle}, #{empNum} )
 		
 	</insert>
 	
+	<delete id="facDelete" parameterType="com.cart.eco.open.service.facilitiesVO">
+		delete from facilities 
+		where sys_code = #{sysCode}
+	</delete>
 
 </mapper>

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -137,11 +140,21 @@ public class EstimateController {
 	//설비 등록
 	@PostMapping("/facInsert")
 	@ResponseBody
-	public int facInsert( @RequestBody List<facilitiesVO> vo ) {
+	public int facInsert( @RequestBody List<facilitiesVO> vo ,HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		EmpVO name = (EmpVO)session.getAttribute("infos");
+		String empNum = name.getEmpNum();
 		
-		return estimateService.facInsert(vo);
+		return estimateService.facInsert(vo,empNum);
 	}
 	
+	//설비삭제
+	@PostMapping("/facDelete")
+	@ResponseBody
+	public int facDelete( @RequestBody List<facilitiesVO> vo ) {
+		
+		return estimateService.facDelete(vo);
+	}
 	
 	
 	

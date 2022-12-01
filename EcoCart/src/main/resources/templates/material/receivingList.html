@@ -16,16 +16,22 @@
 	<div layout:fragment="content" class="page-content">
 				
 		<div class="mb-1">
-			<h4>완제품 조회</h4>	
-			<div style="height:50px; margin-bottom:10px">
-				<label for="planName" style="width:100px">완제품코드</label>
+			<div class="filters" style="height:35px">
+				<label for="planStatus" style="width:100px">물품구분</label>
+				<label><input type="radio" id="planAll"  name="plan"value="all" checked>전체</label>&nbsp;
+				<label><input type="radio" id="planStart"  name="plan" value="start">완제품</label>&nbsp;
+				<label><input type="radio" id="planWait"  name="plan" value="wait">부품</label>
+			</div>	
+		
+			<div style="height:50px;">
+				<label for="planName" style="width:100px">제품코드</label>
 				<input type="text" class="form-control" style="width:200px; display:inline" placeholder="제품코드" id="InProductCode">&nbsp;
 				
 			</div>	
 				
 				
 			<div style="height:50px; margin-bottom:10px">
-				<label for="planName" style="width:100px">완제품명</label>
+				<label for="planName" style="width:100px">제품명</label>
 				<input type="text" class="form-control" style="width:200px; display:inline" placeholder="제품명" id="InProduct">&nbsp;
 				<button type="button" class="btn btn-sm btn-primary" id="proSearch">검색</button>&nbsp;					
 				<button type="button" class="btn btn-sm btn-secondary" id="proReset">초기화</button>
@@ -36,28 +42,6 @@
 	
 		<div id="grid"></div>
 		
-		<div class="mb-1">
-			<h4>부품 조회</h4>	
-			<div style="height:50px; margin-bottom:10px">
-				<label for="planName" style="width:100px">부품코드</label>
-				<input type="text" class="form-control" style="width:200px; display:inline" placeholder="반제품코드" id="InProductCode2">&nbsp;
-				
-			</div>	
-				
-				
-			<div style="height:50px; margin-bottom:10px">
-				<label for="planName" style="width:100px">부품명</label>
-				<input type="text" class="form-control" style="width:200px; display:inline" placeholder="반제품명" id="InProduct2">&nbsp;
-				<button type="button" class="btn btn-sm btn-primary" id="proSearch2">검색</button>&nbsp;					
-				<button type="button" class="btn btn-sm btn-secondary" id="proReset2">초기화</button>
-				
-			</div>
-			
-          </div>
-	
-		<div id="grid2"></div>
-	
-	   
 
 		<script>
 	
@@ -68,7 +52,7 @@
 	        el: document.getElementById('grid'), // Container element
 	        scrollX: false,
 	        scrollY: false,
-	        bodyHeight : 200,
+	        bodyHeight : 400,
 	        columns: [
 	            {
 	            	header: '제품코드',
@@ -88,38 +72,9 @@
 		             header: '수량',
 		             name: 'proNum'
 		         },
-	        ],
-         pageOptions: {
- 	        useClient: true,
- 	        perPage: 10
- 	        
- 	      }
-			
-		});
-		
-		const grid2 = new Grid({
-	        el: document.getElementById('grid2'), // Container element
-	        scrollX: false,
-	        scrollY: false,
-	        bodyHeight : 200,
-	        columns: [
-	            {
-	            	header: '반제품코드',
-	            	name: 'proCode',
-	            	filter : 'text'
-	            },
-	            {
-	            	header: '반제품명',
-	            	name: 'proName',
-	            	filter : 'text'
-	            },
-	            {
-	            	header: '창고코드',
-	                name: 'whCode'
-	             },
-	             {
-		             header: '수량',
-		             name: 'proNum'
+		         {
+		             header: '물품구분',
+		             name: 'proGroup'
 		         },
 	        ],
          pageOptions: {
@@ -129,6 +84,7 @@
  	      }
 			
 		});
+		
 
 	document.addEventListener("DOMContentLoaded",proList)
 	
@@ -147,19 +103,6 @@
 			}
 		})
 	
-		
-		$.ajax({
-			url:'/productList2',
-			success:function(result){
-				console.log("연결");
-				console.log(result);
-				grid2.resetData(result);
-			},
-			error : function(error){
-				console.log(error);
-			}
-		})
-		
 	}
 	
 		// 그리드 필터
@@ -178,25 +121,16 @@
 		grid.unfilter('proCode');
 	})	
 		
+	planAll.addEventListener('click', () => {
+    	grid.unfilter('proGroup');
+    })
+    planWait.addEventListener('click', () => {
+    	grid.filter('proGroup', [{code:'eq', value:'HCP'}]);
+    })
+    planStart.addEventListener('click', () => {
+    	grid.filter('proGroup', [{code:'eq', value:'CP'}]);
+    })
 	
-	
-		
-		///////////////////////////////////////////////////////////////
-		// 그리드 필터
-	proSearch2.addEventListener('click', () => {
-		grid2.filter('proName' , [{code:'contain', value:$('#InProduct2').val()}])
-		grid2.filter('proCode' , [{code:'contain', value:$('#InProductCode2').val()}])
-			
-		
-	});
-
-
-	proReset2.addEventListener('click', () => {
-		document.getElementById('InProduct2').value = '';
-		grid2.unfilter('proName');
-		document.getElementById('InProductCode2').value = '';
-		grid2.unfilter('proCode');
-	})	
 		
 	
 	
