@@ -71,6 +71,7 @@
 		        scrollX: false,
 		        scrollY: true,
 	            bodyHeight : 240,
+	            rowHeaders : ['checkbox'],
 	            columns: [
 		            {
 		            	header: '주문코드',
@@ -165,32 +166,32 @@
 			
 			});
 			
-	      function handleOnChange(e){
-				//선택된 데이터의 텍스트값 가져오기
-				const text = e.value;
-				
-				//선택한 텍스트 출력
-				document.getElementById('result').value = text;
-			}
+     function handleOnChange(e){
+		//선택된 데이터의 텍스트값 가져오기
+		const text = e.value;
+		
+		//선택한 텍스트 출력
+		document.getElementById('result').value = text;
+	}
 	      
 	      
 			
-	    //실행시 조회
-			document.addEventListener("DOMContentLoaded",ordersList)
-		   	
-			function ordersList(){
-				console.log("연결성공")
-				$.ajax({
-					url:'/listOrders',
-					success : function(result) {
-						grid.resetData(result);
-					},
-					error : function(error){
-						console.log(error);
-					}
-				})
-				
+    //실행시 조회
+	document.addEventListener("DOMContentLoaded",ordersList)
+   	
+	function ordersList(){
+		console.log("연결성공")
+		$.ajax({
+			url:'/listOrders',
+			success : function(result) {
+				grid.resetData(result);
+			},
+			error : function(error){
+				console.log(error);
 			}
+		})
+		
+	}
 	   	 
 			
 			
@@ -220,64 +221,91 @@
 		
 		//마감 상태 업데이트 
 		function updateOrderSt(){
-			console.log(grid.getCheckedRows())	
-			//for (let i = 0; i < )
+			Swal.fire({
+			   title: '정말로 그렇게 하시겠습니까?',
+			   text: '다시 되돌릴 수 없습니다. 신중하세요.',
+			   icon: 'warning',
+			   
+			   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+			   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+			   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+			   confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+			   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+			   
+			   reverseButtons: true, // 버튼 순서 거꾸로
+			   
+			}).then(result => {
+			   // 만약 Promise리턴을 받으면,
+			   if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+				   $.ajax({
+						method:'POST',
+						url:'/updateOrderCanSt',
+						contentType : 'application/json',
+						dataType:'JSON',
+						data: JSON.stringify(grid2.getCheckedRows()),
+						beforeSend : function(xhr){
+			           		xhr.setRequestHeader(header, token);
+			           	 },
+						success : function(result) {
+							console.log(result)
+							
+							 $.ajax({
+									method:'POST',
+									url:'/updateCanNum',
+									contentType : 'application/json',
+									dataType:'JSON',
+									data: JSON.stringify(grid2.getCheckedRows()),
+									beforeSend : function(xhr){
+						           		xhr.setRequestHeader(header, token);
+						           	 },
+									success : function(result) {
+										Swal.fire("주문마감 되었습니다.")
+										ordersList();
+									},
+									error : function(error){
+									}
+								})
+							//location.reload(result);
+						},
+						error : function(error){
+						}
+					})		
+				   
+				   
+			      Swal.fire('승인이 완료되었습니다.', '화끈하시네요~!', 'success');
+			   }
+			});
 				
-			  $.ajax({
-					method:'POST',
-					url:'/updateOrderCanSt',
-					contentType : 'application/json',
-					dataType:'JSON',
-					data: JSON.stringify(grid2.getCheckedRows()),
-					beforeSend : function(xhr){
-		           		xhr.setRequestHeader(header, token);
-		           	 },
-					success : function(result) {
-						console.log(result)
-						
-						 $.ajax({
-								method:'POST',
-								url:'/updateCanNum',
-								contentType : 'application/json',
-								dataType:'JSON',
-								data: JSON.stringify(grid2.getCheckedRows()),
-								beforeSend : function(xhr){
-					           		xhr.setRequestHeader(header, token);
-					           	 },
-								success : function(result) {
-									swal("주문마감 되었습니다.")
-									ordersList();
-								},
-								error : function(error){
-								}
-							})
-						//location.reload(result);
-					},
-					error : function(error){
-					}
-				})		
 			
-				
-				
+		}
 			
-		}	
-		// 조회버튼 / 리셋버튼
-	 	planAll.addEventListener('click', () => {
-	    	grid.unfilter('orderSt');
-	    })
-	    
-	    planWait.addEventListener('click', () => {
-	    	grid.filter('orderSt', [{code:'eq', value:'마감'}]);
-	    })
-	    
-	    planStart.addEventListener('click', () => {
-	    	grid.filter('orderSt', [{code:'eq', value:'진행'}]);
-	    })
+			
+	// 한 줄 선택시 컬러.
+	grid.on('click', ev=>{
+		 var record = {
+	           start : [ev.rowKey,0],
+	           end : [ev.rowKey,grid.getColumns().length]
+	          }
+		            grid.setSelectionRange(record);
+    });		
+			
+	// 조회버튼 / 리셋버튼
+ 	planAll.addEventListener('click', () => {
+    	grid.unfilter('orderSt');
+    })
+    
+    planWait.addEventListener('click', () => {
+    	grid.filter('orderSt', [{code:'eq', value:'마감'}]);
+    })
+    
+    planStart.addEventListener('click', () => {
+    	grid.filter('orderSt', [{code:'eq', value:'진행'}]);
+    })
 	
 	
 	estmtDateSearch.addEventListener('click', () => {
 		grid.filter('orderCode' , [{code:'contain', value:$('#InEstmtCodeSearch').val()}])
-		grid.filter('clientName' , [{code:'contain', value:$('#InClientCodeSearch').val()}])
+		grid.filter('clientName' , [{code:'contain', value:$('#InClientCodeSearch').val().toUpperCase()}])
 		if($('#InEstmtDateSearch').val() != '' ){
 			grid.filter('orderDate' , [{code:'beforeEq', value:$('#InEstmtDateSearch').val()}])
 			
@@ -292,6 +320,7 @@
 		grid.unfilter('clientName');
 		document.getElementById('InEstmtDateSearch').value = '';
 		grid.unfilter('orderDate');
+		planAll.checked = true;
 	})		
 	      
       

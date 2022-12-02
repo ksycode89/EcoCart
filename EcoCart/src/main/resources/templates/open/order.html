@@ -536,7 +536,14 @@
 			
 			
 		}
-			
+	// 한 줄 선택시 컬러.
+	grid.on('click', ev=>{
+		 var record = {
+	           start : [ev.rowKey,0],
+	           end : [ev.rowKey,grid.getColumns().length]
+	          }
+		            grid.setSelectionRange(record);
+	 });		
 		
 	// 조회버튼 / 리셋버튼
  	planAll.addEventListener('click', () => {
@@ -555,7 +562,7 @@
 	
 	estmtDateSearch.addEventListener('click', () => {
 		grid.filter('orderCode' , [{code:'contain', value:$('#InEstmtCodeSearch').val()}])
-		grid.filter('clientCode' , [{code:'contain', value:$('#InClientCodeSearch').val()}])
+		grid.filter('clientName' , [{code:'contain', value:$('#InClientCodeSearch').val().toUpperCase()}])
 		if($('#InEstmtDateSearch').val() != '' ){
 			grid.filter('orderDate' , [{code:'beforeEq', value:$('#InEstmtDateSearch').val()}])
 			
@@ -567,9 +574,10 @@
 		document.getElementById('InEstmtCodeSearch').value = '';
 		grid.unfilter('orderCode');
 		document.getElementById('InClientCodeSearch').value = '';
-		grid.unfilter('clientCode');
+		grid.unfilter('clientName');
 		document.getElementById('InEstmtDateSearch').value = '';
 		grid.unfilter('orderDate');
+		
 	})	
 	
 	
@@ -583,6 +591,7 @@
 	proReset.addEventListener('click', () => {
 		document.getElementById('InProduct').value = '';
 		grid3.unfilter('proName');
+		planAll.checked = true;
 	})	
 	
 	

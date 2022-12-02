@@ -16,10 +16,19 @@
 		<div class="mb-1">
 		
 			<div class="filters" style="height:35px">
-				<label for="planStatus" style="width:100px">진행구분</label>
+				<label for="planStatus" style="width:100px">설비상태</label>
 				<label><input type="radio" id="planAll"  name="plan"value="all" checked>전체</label>&nbsp;
 				<label><input type="radio" id="planStart"  name="plan" value="start">사용</label>&nbsp;
 				<label><input type="radio" id="planWait"  name="plan" value="wait">미사용</label>
+			</div>
+			
+			<div class="filters1" style="height:35px">
+				<label for="sysDiv" style="width:100px">설비구분</label>
+				<label><input type="radio" id="sysAll"  name="plan1"value="all" checked>전체</label>&nbsp;
+				<label><input type="radio" id="sysFam"  name="plan1" value="fam">프레임</label>&nbsp;
+				<label><input type="radio" id="sysEng"  name="plan1" value="eng">엔진</label>
+				<label><input type="radio" id="sysEnd"  name="plan1" value="end">최종</label>&nbsp;
+				<label><input type="radio" id="sysTes"  name="plan1" value="tes">테스트</label>
 			</div>
 				
 			<div style="height:50px;">
@@ -59,36 +68,46 @@
 		      <div class="modal-body">
 		      	<div class="container-fluid">
 		      			<div style="margin-bottom:5px">
-				        	<label for="row1" style="width:80px; height: 30px; text-align:center;">견적번호</label>
-				        		<input type="text" class="form-control form-control-sm" style="width:150px; display:inline" id="estmtCode"  readonly>
+				        	<label for="row1" style="width:80px; height: 30px; text-align:center;">설비코드</label>
+				        		<input type="text" class="form-control form-control-sm" style="width:150px; display:inline" id="sysCode"  readonly>
+	      				</div>
 				        	
-				        	<label for="row2" style="width:80px; height: 30px; text-align:center;" >설비 구분</label>
-				         		<select id="select8" name="no"  onchange="handleOnChange8(this)" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white">
+				        <div style="margin-bottom:5px">
+				        	<label for="row2" style="width:80px; height: 30px; text-align:center;" >설비 구분*</label>
+				         		<select id="selectSys" name="no" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white">
 				         			<option value="선택">--선 택--</option>
 				         			<option vlaue="프레임">프레임</option>	
 				         			<option vlaue="프레임">엔진</option>	
 				         			<option vlaue="프레임">최종</option>	
 				         			<option vlaue="프레임">테스트</option>	
 				         		</select>
-		      			</div>
-
+			        	</div>
 			
+				          <div style="margin-bottom:5px"> 			
+				         	<label for="row3" style="width:80px; height: 30px; text-align:center;">설비모델*</label>	
+				         		<input type="text"  min="1" class="form-control"style="width:150px; display:inline" id="sysModel">
+				      	 </div>
+				      	 
+ 	 			        <div style="margin-bottom:5px"> 			
+				         	<label for="row3" style="width:80px; height: 30px; text-align:center;">설비명*</label>	
+				         		<input type="text" class="form-control"style="width:150px; display:inline" id="sysNamee">
+				      	 </div>
+				      	 
 				        <div style="margin-bottom:5px"> 		
-				         	<label for="row3" style="width:80px; height: 30px; text-align:center;">설비규격</label>	
-				         		<input type="number"  min="1" class="form-control"style="width:150px; display:inline" id="productNum">
-				         		
-				         	<label for="row3" style="width:80px; height: 30px; text-align:center;">설비모델</label>	
-				         		<input type="number"  min="1" class="form-control"style="width:150px; display:inline" id="productNum">
-				         		
-				       </div>
+				         	<label for="row3" style="width:80px; height: 30px; text-align:center;">설비규격*</label>	
+				         		<input type="text"  min="1" class="form-control"style="width:150px; display:inline" id="sysKs">
+				         </div>
+				         
+				      	 
 				       <div style="margin-bottom:5px"> 		 		
-				         	<label for="row3" style="width:80px; height: 30px; text-align:center;">설비가격</label>	
-				         		<input type="number"  min="1" class="form-control"style="width:150px; display:inline" id="productNum">	
-				         		
-				         	<label for="row3" style="width:80px; height: 30px; text-align:center;">점검주기</label>	
-				         		<input type="number"  min="1" class="form-control"style="width:150px; display:inline" id="productNum">		
+				         	<label for="row3" style="width:80px; height: 30px; text-align:center;">설비가격*</label>	
+				         		<input type="number"  min="1" class="form-control"style="width:150px; display:inline" id="sysMoney">	
+				        </div> 		
+				        
+				        <div style="margin-bottom:5px"> 
+				         	<label for="row3" style="width:80px; height: 30px; text-align:center;">점검주기*</label>	
+				         		<input type="number"  min="1" class="form-control"style="width:150px; display:inline" id="testCycle">		
 				        </div>
-			       </div>
 			    
 		      </div>
 		        
@@ -97,7 +116,7 @@
 				
 		        
 		      <div class="modal-footer">
-		        <button onclick="insertEstmt()" type="button" class="btn btn-primary" >등록</button>
+		        <button onclick="insertSys()" type="button" class="btn btn-primary" >등록</button>
 		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 		      </div>
 		      
@@ -118,7 +137,7 @@
 	const grid = new Grid({
         el: document.getElementById('grid'), // Container element
         scrollX: false,
-        scrollY: false,
+        scrollY: true,
         rowHeaders : ['checkbox'],
         bodyHeight : 400,
         columns: [
@@ -128,10 +147,14 @@
             	filter : 'text'
             },
             {
+            	header: '설비구분',
+            	name: 'sysDiv',
+            	filter : 'text',
+            },
+            {
             	header: '설비명',
             	name: 'sysName',
             	filter : 'text',
-            	editor : 'text'
             },
             {
             	header: '설비등록날짜',
@@ -140,23 +163,19 @@
              {
 	             header: '설비규격',
 	             name: 'sysKs',
-	             editor : 'text'
 	         },
 	         {
 	             header: '설비모델',
 	             name: 'sysModel',
-	             editor : 'text'
 	         },
 	         {
 	             header: '설비가격',
 	             name: 'sysMoney',
-	             editor : 'text',
 	             
 	         },
 	         {
 	             header: '점검주기',
 	             name: 'testCycle',
-	             editor : 'text'
 	         },
 	         {
 	             header: '담당자',
@@ -182,66 +201,122 @@
 	function facList(){
 		
 		$.ajax({
-			
 			url:'/facList',
 			success:function(result){
-				console.log("연결");
-				console.log(result);
 				grid.resetData(result);	
 			},
 			error : function(error){
-				console.log(error);
 			}
 		})
 	
 	}
 	
-	
-	
-	
-	//insert 
-	function facInsert(){
-	
-		//빈값 없도록
-		if(grid.getValue(grid.getRowCount()-1, "sysCode") == ''){
-			swal("설비코드를 입력하세요.")
-		}else if(grid.getValue(grid.getRowCount()-1, "sysName") == ''){
-			swal("설비명을 입력하세요.")
-		}else if(grid.getValue(grid.getRowCount()-1, "sysKs") == ''){
-			swal("설비규격을 입력하세요.")
-		}else if(grid.getValue(grid.getRowCount()-1, "sysModel") == ''){
-			swal("설비모델을 입력하세요.")		
-		}else if(grid.getValue(grid.getRowCount()-1, "sysMoney") == ''){
-			swal("설비가격을 입력하세요.")		
-		}else if(grid.getValue(grid.getRowCount()-1, "sysStatus") == ''){
-			swal("설비상태 입력하세요.")		
-		}else if(grid.getValue(grid.getRowCount()-1, "testCycle") == ''){
-			swal("점검주기를 입력하세요.")		
-		}else if(grid.getValue(grid.getRowCount()-1, "empNum") == ''){
-			swal("담당자를 입력하세요.")		
-		}else{
-			//전부 입력 되어있으면 등록
+
+	//설비등록
+	function insertSys(){
+		console.log($("#sysNamee").val())
+		console.log($("#sysMoney").val())
+		console.log($("#testCycle").val())
+		
+		
+		
+		const data = [
+			{
+				sysName : $("#sysNamee").val(),
+				sysKs : $("#sysKs").val(),
+				sysModel : $("#sysModel").val(),
+				sysMoney : $("#sysMoney").val(),
+				testCycle : $("#testCycle").val(),
+			}
+			
+		]
+		var a = $("#selectSys option:selected").text();
+		if( a =='프레임' ){
 			$.ajax({
 					method:'POST',
-					url:'/facInsert',
+					url:'/facInsertFam',
 					contentType : "application/json",
 					dataType:"JSON",
-					data: JSON.stringify(grid.getCheckedRows()),
+					data: JSON.stringify(data),
 		            beforeSend : function(xhr){
 		           		xhr.setRequestHeader(header, token);
 		           	 },
 					success : function(result) {
-						console.log(result);
 						swal("설비등록 완료")
-						facList()
+						 $('#staticBackdrop').modal('hide');
+			 			 grid.refreshLayout();
 					},
 					error : function(error){
-						console.log(error);
+						swal("설비등록 실패")
 					}
 				})
-		}
 				
-	 }
+		}else if(a=='엔진'){
+			$.ajax({
+					method:'POST',
+					url:'/facInsertEng',
+					contentType : "application/json",
+					dataType:"JSON",
+					data: JSON.stringify(data),
+		            beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           	 },
+					success : function(result) {
+						swal("설비등록 완료")
+						 $('#staticBackdrop').modal('hide');
+			 			 grid.refreshLayout();
+					},
+					error : function(error){
+						swal("설비등록 실패")					}
+				})
+				
+		}else if(a=='최종'){
+			$.ajax({
+					method:'POST',
+					url:'/facInsertEnd',
+					contentType : "application/json",
+					dataType:"JSON",
+					data:JSON.stringify(data),
+		            beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           	 },
+					success : function(result) {
+						swal("설비등록 완료")
+						 $('#staticBackdrop').modal('hide');
+			 			 grid.refreshLayout();
+					},
+					error : function(error){
+						swal("설비등록 실패")
+					}
+				})
+			
+		}else if(a=='테스트'){
+			$.ajax({
+					method:'POST',
+					url:'/facInsertTes',
+					contentType : "application/json",
+					dataType:"JSON",
+					data:JSON.stringify(data),
+		            beforeSend : function(xhr){
+		           		xhr.setRequestHeader(header, token);
+		           	 },
+					success : function(result) {
+						swal("설비등록 완료")
+						 $('#staticBackdrop').modal('hide');
+			 			 grid.refreshLayout();
+					},
+					error : function(error){
+						swal("설비등록 실패")
+					}
+				})
+			
+		}else{
+			swal("설비구분을 입력해주세요.")
+			
+		}
+		
+		
+	}
 	
 	// 그리드 행 추가
 	function addRow() {
@@ -252,11 +327,6 @@
 		grid.appendRow(data);
 		grid.check(grid.getRowCount()-1);
 		
-	}
-	
-	//행삭제
-	function deletePro(){
-		grid.removeCheckedRows(true)
 	}
 	
 	//설비삭제
@@ -298,6 +368,34 @@
     })
 	
 	
+    // 그리드 필터
+	sysAll.addEventListener('click', () => {
+    	grid.unfilter('sysDiv');
+    })
+    
+    sysFam.addEventListener('click', () => {
+    	grid.filter('sysDiv', [{code:'eq', value:'프레임'}]);
+    })
+    
+   	sysEng.addEventListener('click', () => {
+    	grid.filter('sysDiv', [{code:'eq', value:'엔진'}]);
+    })
+    
+    sysEnd.addEventListener('click', () => {
+    	grid.filter('sysDiv', [{code:'eq', value:'최종'}]);
+    })
+    
+    sysTes.addEventListener('click', () => {
+    	grid.filter('sysDiv', [{code:'eq', value:'테스트'}]);
+    })
+    
+    
+    
+    
+    
+    
+    
+    
 	goSearch.addEventListener('click', () => {
 		grid.filter('sysCode' , [{code:'contain', value:$('#sysCode').val()}])
 		grid.filter('sysName' , [{code:'contain', value:$('#sysName').val()}])
@@ -307,10 +405,14 @@
 
 
 	goReset.addEventListener('click', () => {
+		sysAll.checked = true;
+		planAll.checked = true;
 		document.getElementById('sysCode').value = '';
 		grid.unfilter('sysCode');
 		document.getElementById('sysName').value = '';
 		grid.unfilter('sysName');
+		grid.unfilter('sysStatus');
+		grid.unfilter('sysDiv');
 	})	
 		
 		

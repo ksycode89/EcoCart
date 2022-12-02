@@ -10,6 +10,8 @@
 	<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
 	<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.4.0/tui-pagination.js"></script>
 
+
+
 	<!-- jquery -->
 	<script	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	
@@ -44,10 +46,14 @@
 	<!-- 다음 주소 api -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	
+
+	<script src="../assets/js/customJS.js"></script>
+
 	<!-- custom  -->
 	<link rel="stylesheet" href="../assets/css/customCSS.css" />
 	<script src="../assets/js/customCSS.js"></script>
 	
+
 </head>
 
 <body>
@@ -92,24 +98,15 @@
 
 
 
-						<li class="sidebar-item  has-sub"><a href="layout/login"
-							class='sidebar-link'> <!--     <i class="bi bi-stack"></i> -->
-								<i class="bi bi-person-badge-fill"></i> <span>인사관리</span>
-						</a>
-							<ul class="submenu ">
-								<li class="submenu-item "><a href="/empList">사원관리</a>
-								</li>
-								<li class="submenu-item "><a href="/test">부서관리</a>
-								</li>
-
-							</ul></li>
+						
 
 						<li class="sidebar-item  has-sub"><a href="#"
 							class='sidebar-link'> <i class="bi bi-collection-fill"></i> <span>기초관리</span>
 						</a>
 							<ul class="submenu ">
+								<li class="submenu-item "><a href="/empList">사원관리</a>
+								</li>
 								<li class="submenu-item "><a href="/coCode">공통코드</a></li>
-								<li class="submenu-item "><a href="check">불량코드</a></li>
 								<li class="submenu-item "><a href=/client>거래처등록</a></li>
 							</ul></li>
 
@@ -122,7 +119,6 @@
 									href="wareHouse">창고등록</a></li>
 								<li class="submenu-item "><a href="bom">BOM등록</a></li>
 								<li class="submenu-item "><a href="bomR">BOM역전개</a></li>
-								<li class="submenu-item "><a href="totalCheck">검사등록</a></li>
 							</ul></li>
 
 						<li class="sidebar-title">영업관리</li>
@@ -155,20 +151,14 @@
 							<ul class="submenu ">
 								<li class="submenu-item "><a href="materialinsert">발주등록</a></li>
 								<li class="submenu-item "><a href="materialList">발주현황</a></li>
+								
 							</ul></li>
 
 						<li class="sidebar-item  has-sub"><a href="#"
-							class='sidebar-link'> <i class="bi bi-egg-fill"></i> <span>자재입고관리</span>
+							class='sidebar-link'> <i class="bi bi-bar-chart-fill"></i> <span>자재입출고관리</span>
 						</a>
 							<ul class="submenu ">
-								<li class="submenu-item "><a href="Wearingtest">입고검사</a></li>
 								<li class="submenu-item "><a href="WearingList">입고관리</a></li>
-							</ul></li>
-
-						<li class="sidebar-item  has-sub"><a href="#"
-							class='sidebar-link'> <i class="bi bi-bar-chart-fill"></i> <span>자재출고관리</span>
-						</a>
-							<ul class="submenu ">
 								<li class="submenu-item "><a href="release">출고처리</a></li>
 								<li class="submenu-item "><a href="releaseList">출고현황</a></li>
 							</ul></li>
@@ -181,10 +171,7 @@
 							<ul class="submenu ">
 								<li class="submenu-item "><a href="receivingList">자재재고조회</a>
 								</li>
-								<li class="submenu-item "><a href="badproduct">자재불량조회</a>
-								</li>
 								<li class="submenu-item "><a href="matmove">재고이동</a></li>
-								<li class="submenu-item "><a href="matment">재고조정</a></li>
 							</ul></li>
 
 						<li class="sidebar-title ">생산관리</li>

@@ -16,18 +16,9 @@
 				
 		<div class="mb-1">
 		
-			<div class="col-md-3 mb-1">
-				<div class="input-group mb-3">
-					<label for="planName" style="margin-right:10px">출고등록 조회</label>
-					<input type="text" id="dlivyProCode"  style="width:100px;" readonly class="form-control" placeholder="출고등록코드" > 
-					<span class="input-group-text"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="basic-addon1" style="cursor: pointer"><i
-						class="bi bi-search"></i></span>
-				</div>
-			</div>
-			
            <div style="height:50px;">
 				<label for="planName" style="width:100px">배송코드</label>
-				<input type="text" class="form-control" style="width:200px; display:inline" id="ProCode">&nbsp;
+				<input type="text" class="form-control" style="width:200px; display:inline" id="ProCode" placeholder="베송코드">&nbsp;
 				
 				<input type="hidden" class="form-control" style="width:200px; display:inline" id="getorderCode" readonly>&nbsp;
 				<input type="hidden" class="form-control" style="width:200px; display:inline" id="getClientCode" readonly>&nbsp;
@@ -54,7 +45,7 @@
             <div>
             	<button type="button" class="btn btn-sm btn-primary" style="float:right; margin:5px; margin-right: 5px" onclick="plusInfo()">배송정보등록</button>   
             	<button onclick="deletePro()" type="button" class="btn-sm btn-primary" style="float:right; margin-right:5px; margin:5px;" >행삭제</button>
-				<button type="button"  style="float:right; margin:5px;" class="btn btn-sm btn-primary" onclick="addRow()">
+				<button type="button"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="float:right; margin:5px;" class="btn btn-sm btn-primary" onclick="addRow()">
 					<svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
 						<path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
 				</button> 
@@ -100,6 +91,7 @@
         el: document.getElementById('grid'), // Container element
         scrollX: false,
         scrollY: false,
+        rowHeaders : ['checkbox'],
         columns: [
             {
             	header: '배송코드',
@@ -109,13 +101,13 @@
             {
             	header: '출고등록코드-h',
             	name: 'dlivyGCode',
-            	hidden :1
+            	hidden : 1
             	
             },
             {
             	header: '주문코드-h',
             	name : 'orderCode',
-            	hidden :1
+            	hidden : 1
             },
             {
             	header: '배송일자',
@@ -125,7 +117,7 @@
             {
             	header: '거래처-h',
                 name : 'clientCode',
-               	hidden :1
+                hidden : 1
              },
              {
              	header: '거래처',
@@ -180,7 +172,8 @@
 	const grid2 = new Grid({
         el: document.getElementById('grid2'), // Container element
         scrollX: false,
-        scrollY: false,
+        scrollY: true,
+        bodyHeight : 400,
         columns: [
             {
             	header: '출고등록코드',
@@ -195,7 +188,7 @@
             {
             	header: '거래처드-h',
                 name: 'clientCode',
-                hidden :1
+                hidden : 1
 
              },
             {
@@ -266,30 +259,36 @@
 		
 	
 	//모달창에서 누른 코드 검색 부부넹 보이게
-   	grid2.on("click", event => {
-		//console.log(grid2.getRow(event.rowKey))   //rowKey : 인덱스 번호  
-		// input 태그에 값 넣어주기.
-		$('#dlivyProCode').val(grid2.getRow(event.rowKey).dlivyGCode);
-		$('#getorderCode').val(grid2.getRow(event.rowKey).orderCode);
-		$('#getClientCode').val(grid2.getRow(event.rowKey).clientCode);
-		$('#getClientName').val(grid2.getRow(event.rowKey).clientName);
-		
-		// 모달창 숨기기.
-		$('#staticBackdrop').modal('hide');
-	})
+   
 	
 	// 그리드 행 추가
-	function addRow() {
+	function addRow() {}
 		
-		let data = { dlivyProCode :  $("#getdlivyCode").val(), dlivyGCode : $("#dlivyProCode").val() , 
-				orderCode : $("#getorderCode").val(), dlivyDate : "" , 
-				clientName : $('#getClientName').val(), clientCode : $('#getClientCode').val(),
-				dlivyMth : "" , dlivyCode : "", dlivyName : "", dlivyName : "", dlivyPnum : ""}
+		grid2.on("click", event => {
+			
+			console.log(grid2.getRow(event.rowKey).orderCode)
+			let data = { 
+					dlivyProCode : "",
+					dlivyGCode : grid2.getRow(event.rowKey).dlivyGCode,
+					orderCode : grid2.getRow(event.rowKey).orderCode,
+					dlivyDate : "" , 
+					clientName : "",
+					clientCode : grid2.getRow(event.rowKey).clientCode,
+					dlivyMth : "" , 
+					dlivyCode : "", 
+					dlivyName : "", 
+					dlivyName : "", 
+					dlivyPnum : ""
+			}
+			// 모달창 숨기기.
+			$('#staticBackdrop').modal('hide');
+			grid.appendRow(data);
+			grid.check(grid.getRowCount()-1);
+			
+		})
 		
-		grid.appendRow(data);
-		grid.check(grid.getRowCount()-1);
 		
-	}
+	
 	
 	//행삭제
 	function deletePro(){
@@ -334,7 +333,7 @@
 					success : function(result) {
 						console.log(result);
 						swal("배송정보등록 완료")
-						location.reload();
+						listDeliveryProInfo();
 					},
 					error : function(error){
 						swal("출고등록 상태 변경 실패")
@@ -356,7 +355,7 @@
 	//필터
 	Searchbtn.addEventListener('click', () => {
 		grid.filter('dlivyProCode' , [{code:'contain', value:$('#ProCode').val()}])
-		grid.filter('clientName' , [{code:'contain', value:$('#clientName').val()}])
+		grid.filter('clientName' , [{code:'contain', value:$('#clientName').val().toUpperCase()}])
 		grid.filter('dlivyMth' , [{code:'contain', value:$('#dlivyMth').val()}])
 		if($('#dlivyDate').val() != '' ){
 			grid.filter('dlivyDate' , [{code:'beforeEq', value:$('#dlivyDate').val()}])
