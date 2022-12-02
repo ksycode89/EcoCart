@@ -4,10 +4,10 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cart.eco.mf.mapper.MfMakingMapper">
 	<select id="getMfResultList" resultType="com.cart.eco.mf.service.MfMakingVO">
-		SELECT *
+		SELECT DISTINCT m.mf_making_code, m.mf_order_code, m.line_no, m.input_num, m.making_num, m.faulty_num, m.start_time, m.end_time, d.mf_order_date
 		FROM mf_making m JOIN mf_order_detail d
 		ON m.mf_order_code = d.mf_order_code
-		ORDER BY d.mf_order_date DESC
+		ORDER BY d.mf_order_date DESC, m.start_time
 	</select>
 			
 	<select id="getMfFaultyList" parameterType="String" resultType="Map">
@@ -22,7 +22,7 @@
 	</select>
 	
 	<select id="getMfOrderDecideList" resultType="com.cart.eco.mf.service.MfMakingVO">
-		SELECT d.mf_order_code, d.mf_order_no, o.pro_code, o.pro_name, d.mf_order_num, d.mf_order_date
+		SELECT d.line_no, d.mf_order_code, d.mf_order_no, o.pro_code, o.pro_name, d.mf_order_num, d.mf_order_date
 		FROM mf_order_detail d JOIN mf_order o
 		ON d.mf_order_code = o.mf_order_code
 		WHERE d.mf_order_status = '확정'
@@ -145,6 +145,25 @@
 			 , #{processStatus})
 	</insert>
 	
+	<insert id="insertFinishLot" parameterType="com.cart.eco.mf.service.MfMakingVO">
+		<selectKey keyProperty="lotCode" resultType="String" order="BEFORE">
+			SELECT concat('MFL-',concat(to_char(SYSDATE,'YYmmdd'),concat('-', nvl(max(to_number(substr(lot_code, 12))),0)+1)))
+			FROM lot
+		</selectKey>
+		INSERT INTO lot(lot_code
+					  , pro_code
+					  , pro_name
+					  , lot_date
+					  , lot_num
+					  , mf_making_code)
+		VALUES(#{lotCode}
+			 , #{proCode}
+			 , #{proName}
+			 , SYSDATE
+			 , #{lotNum}
+			 , #{mfMakingCode})
+	</insert>
+	
 	<update id="updateMakingResult" parameterType="com.cart.eco.mf.service.MfMakingVO">
 		UPDATE mf_making
 		SET making_num = (SELECT COUNT(mf_making4)
@@ -159,4 +178,28 @@
 		  <if test="processStatus != null and !processStatus.equals('')">, process_status = #{processStatus}</if>
 		 WHERE mf_making_code = #{mfMakingCode}
 	</update>
+	
+	<update id="updateMfPlanFinish" parameterType="com.cart.eco.mf.service.MfMakingVO">
+		UPDATE mf_plan
+		SET mf_plan_status = '완료'
+		WHERE mf_plan_code = (SELECT mf_plan_code
+							  FROM mf_order
+							  WHERE mf_order_code = #{mfOrderCode})
+	</update>
+	
+	<update id="updateMfOrderFinish" parameterType="com.cart.eco.mf.service.MfMakingVO">
+		UPDATE mf_order_detail
+		SET mf_order_status = '완료'
+		WHERE mf_order_no = #{mfOrderNo}
+	</update>
+	
+	<update id="updateProductNum" parameterType="com.cart.eco.mf.service.MfMakingVO">
+		UPDATE product p
+		SET pro_num = pro_num + (SELECT lot_num
+								 FROM lot l
+								 WHERE l.pro_code = p.pro_code
+								 AND lot_code = #{lotCode})
+		WHERE p.pro_code = #{proCode}
+	</update>
+	
 </mapper>

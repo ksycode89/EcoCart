@@ -57,8 +57,24 @@ public class MfMakingServiceImpl implements MfMakingService {
 	}
 
 	@Override
+	public int mfFinishLot(List<MfMakingVO> vo) {
+		int result = 0;
+		result += mapper.insertFinishLot(vo.get(0));
+		result += mapper.updateProductNum(vo.get(0));
+		return result;
+	}
+	
+	@Override
 	public int updateMakingResult(List<MfMakingVO> vo) {
 		return mapper.updateMakingResult(vo.get(0));
+	}
+
+	@Override
+	public int updateMfFinish(List<MfMakingVO> vo) {
+		int result = 0;
+		result += mapper.updateMfPlanFinish(vo.get(0));
+		result += mapper.updateMfOrderFinish(vo.get(0));
+		return result ;
 	}
 
 }

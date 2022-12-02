@@ -41,12 +41,12 @@ public interface MfOrderService {
 	//자재재고변경
 	public int updateReceivingDetail(List<MfOrderVO> vo);
 	
-	//자재출고상태변경
+	//자재출고상태변경(대기->승인)
 	public int updateMfOrderLotDetail(List<MfOrderVO> vo);
 	
-	//생산계획상태변경
+	//생산계획상태변경(대기->진행)
 	public int updateMfPlanStatus(MfOrderVO vo);
 	
-	//생산지시확정변경
+	//생산지시확정변경(대기->확정)
 	public int decideMfOrder(MfOrderVO vo);
 }

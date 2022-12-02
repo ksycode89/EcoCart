@@ -225,6 +225,7 @@
 			]
 		});
 	    
+	    mfResultGrid.hideColumn('lineNo');
 	    mfResultGrid.hideColumn('mfOrderCode');
 	    mfResultGrid.hideColumn('mfMakingCode');
 	    
@@ -275,6 +276,11 @@
 			bodyHeight: 360,
 			rowHeaders:['rowNum'],
 			columns: [
+				{
+		          header: '라인번호',
+		          name: 'lineNo',
+		          align: 'center'
+		        },
 		        {
 		          header: '생산지시코드',
 		          name: 'mfOrderCode'
@@ -411,6 +417,8 @@
 		    				console.log(error);
 		    			}
 		        	});
+				} else {
+					alert('생산지시가 설정되지 않은 라인입니다.\n생산지시를 설정해주세요.');
 				}
 			} else if(ev.columnName=='restartProcess'){
 				if(mfResultGrid.getRow(0) != null){
@@ -446,27 +454,33 @@
 		    			}
 		        	});
 					setInterval(startProcessing, 300);
+				} else {
+					alert('생산지시가 설정되지 않은 라인입니다.\n생산지시를 설정해주세요.');
 				}
 			} else {
 				if(mfResultGrid.getRow(0)!=null){
 					if(mfResultGrid.getRow(0).startTime!=null){
-						mfResultGrid.clear();
-						makingDetailGrid.clear();
-						$.ajax({
-			    			url: '/mfOrderDecideList',
-			    			method: 'GET',
-			    			success: function(data){
-			    				orderDecideModalGrid.resetData(data);
-			    				makingEv = ev;
-			    			},
-			    			error: function(error){
-			    				console.log(error);
-			    			}
-			    		});
-						$("#decideOrderModal").modal("show");
-						decideOrderModal.addEventListener('shown.bs.modal', () => {
-							orderDecideModalGrid.refreshLayout();
-					    });
+						if(mfResultGrid.getRow(0).endTime==null){
+							alert('공정이 가동중입니다!');
+						} else {
+							mfResultGrid.clear();
+							makingDetailGrid.clear();
+							$.ajax({
+				    			url: '/mfOrderDecideList',
+				    			method: 'GET',
+				    			success: function(data){
+				    				orderDecideModalGrid.resetData(data);
+				    				makingEv = ev;
+				    			},
+				    			error: function(error){
+				    				console.log(error);
+				    			}
+				    		});
+							$("#decideOrderModal").modal("show");
+							decideOrderModal.addEventListener('shown.bs.modal', () => {
+								orderDecideModalGrid.refreshLayout();
+						    });
+						}
 					} else {
 						$.ajax({
 			    			url: '/mfOrderDecideList',
@@ -510,7 +524,7 @@
 				success: function(data){
 			    	if(ev.rowKey != null){
 			    		makingGrid.setRow(makingEv.rowKey, {
-							lineNo : makingEv.rowKey+1,
+							lineNo : orderDecideModalGrid.getRow(ev.rowKey).lineNo,
 							mfOrderCode : orderDecideModalGrid.getRow(ev.rowKey).mfOrderCode,
 							mfMakingCode : data[0],
 							mfOrderNo : orderDecideModalGrid.getRow(ev.rowKey).mfOrderNo,
@@ -520,7 +534,7 @@
 						})
 						if(mfResultGrid.getRowCount()<1){
 							mfResultGrid.appendRow({
-								lineNo : makingEv.rowKey+1,
+								lineNo : orderDecideModalGrid.getRow(ev.rowKey).lineNo,
 								mfOrderCode : orderDecideModalGrid.getRow(ev.rowKey).mfOrderCode,
 								mfMakingCode : data[0],
 								inputNum : orderDecideModalGrid.getRow(ev.rowKey).mfOrderNum,
@@ -528,7 +542,7 @@
 							})
 						} else {
 							mfResultGrid.setRow(0, {
-								lineNo : makingEv.rowKey+1,
+								lineNo : orderDecideModalGrid.getRow(ev.rowKey).lineNo,
 								mfOrderCode : orderDecideModalGrid.getRow(ev.rowKey).mfOrderCode,
 								mfMakingCode : data[0],
 								inputNum : orderDecideModalGrid.getRow(ev.rowKey).mfOrderNum,
@@ -654,6 +668,51 @@
 	    	    				mfResultGrid.refreshLayout();
 	    	    				alert('생산이 완료되었습니다.');
     	    					makingInterval=clearInterval(makingInterval);
+    	    					console.log(data[0]);
+    	    					let data3 = [{
+    	    						mfMakingCode: makingGrid.getRow(0).mfMakingCode,
+    		        				proCode : makingGrid.getRow(0).proCode,
+    		        				proName : makingGrid.getRow(0).proName,
+    		        				lotNum : data[0].makingNum
+    		        			}]
+    		        			$.ajax({
+    		        				url: '/mfMakingLotInsert',
+    		        				method: 'POST',
+    		    	        		contentType: 'application/json',
+    		    	        		data: JSON.stringify(data3),
+    		    	        		dataType: 'JSON',
+    		    	        		beforeSend : function(xhr){
+    		    	               		xhr.setRequestHeader(header, token);
+    		    	               	},
+    		    	               	success : function(data){
+    		    	               		console.log(data);
+    		    	               		console.log('LOT 입력완료');
+    		    	               	},
+    		    	               	error :function(error){
+    		    	    				console.log(error);
+    		    	    			}
+    		    	    		});
+    	    					let data4 = [{
+    	    						mfOrderCode : makingGrid.getRow(0).mfOrderCode ,
+    	    						mfOrderNo : makingGrid.getRow(0).mfOrderNo
+    	    					}]
+    	    					$.ajax({
+    		        				url: '/mfMakingFinishUpdate',
+    		        				method: 'POST',
+    		    	        		contentType: 'application/json',
+    		    	        		data: JSON.stringify(data4),
+    		    	        		dataType: 'JSON',
+    		    	        		beforeSend : function(xhr){
+    		    	               		xhr.setRequestHeader(header, token);
+    		    	               	},
+    		    	               	success : function(data){
+    		    	               		console.log(data);
+    		    	               		console.log('계획&지시 상태변경완료');
+    		    	               	},
+    		    	               	error :function(error){
+    		    	    				console.log(error);
+    		    	    			}
+    		    	    		});
 	    	    			},
 	    	    			error: function(error){
 	    	    				console.log(error);
@@ -666,8 +725,6 @@
 	        	});
 			}
 		};
-		
-		
 		
 	    </script>
 	</div>

@@ -129,7 +129,7 @@
     	
 		selectBtn.addEventListener('click', () => {
 	    	if($('#processDate').val()!=''){
-	    		mfResultGrid.filter('mfOrderDate', [{code:'eq', value:$('#mfOrderDate').val()}]);
+	    		mfResultGrid.filter('mfOrderDate', [{code:'eq', value:$('#processDate').val()}]);
 			}
 	    })
 	    
@@ -154,6 +154,7 @@
 	    		});	
 	    	}
 	    });
+
 		
 	    </script>
 	</div>

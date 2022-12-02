@@ -12,4 +12,5 @@ public class MfProcessVO {
 	private String empNum; //작업자번호 - 작업자이름 불러오는 용도
 	private String empName; //작업자명
 	private String sysStatus; //설비사용여부
+	private String sysDiv; //설비분류
 }

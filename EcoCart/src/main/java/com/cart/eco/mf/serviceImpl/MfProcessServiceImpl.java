@@ -1,6 +1,7 @@
 package com.cart.eco.mf.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,8 @@ public class MfProcessServiceImpl implements MfProcessService {
 	}
 	
 	@Override
-	public List<MfProcessVO> getMfSystemList() {
-		return mapper.getMfSystemList();
+	public List<Map<String, Object>> getMfSystemList(String sysDiv) {
+		return mapper.getMfSystemList(sysDiv);
 	}
 
 	@Override
@@ -34,5 +35,18 @@ public class MfProcessServiceImpl implements MfProcessService {
 		return result;
 	}
 
+	@Override
+	public int updateSystemUsing(List<MfProcessVO> vo) {
+		int result = 0;
+		for(int i=0; i<vo.size(); i++) {
+			result += mapper.updateSystemUsing(vo.get(i));
+		}
+		return result;
+	}
+
+	@Override
+	public int updateSystemUnusing(List<MfProcessVO> vo) {
+		return mapper.updateSystemUnusing(vo.get(0));
+	}
 
 }

@@ -4,19 +4,22 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cart.eco.mf.mapper.MfProcessMapper">
 	<select id="getMfProcessList" resultType="com.cart.eco.mf.service.MfProcessVO">
-		SELECT p.line_no, p.mf_process_code, p.mf_process_name, p.sys_code, f.sys_name, e.emp_num, e.emp_name
+		SELECT p.line_no, p.mf_process_code, p.mf_process_name, p.sys_code, f.sys_name, e.emp_num, e.emp_name, p.sys_div
 		FROM mf_process p LEFT OUTER JOIN facilities f
 		ON p.sys_code = f.sys_code
 		LEFT OUTER JOIN employees e
 		ON f.emp_num = e.emp_num
-		ORDER BY p.mf_process_num
+		ORDER BY p.mf_process_code
 	</select>
 	
-	<select id="getMfSystemList" resultType="com.cart.eco.mf.service.MfProcessVO">
-		SELECT f.sys_code, f.sys_name, e.emp_num, e.emp_name
+	<select id="getMfSystemList" parameterType="String" resultType="Map">
+		SELECT DISTINCT f.sys_code "sysCode", f.sys_name "sysName", e.emp_num "empNum", e.emp_name "empName"
 		FROM facilities f JOIN employees e
 		ON f.emp_num = e.emp_num
+		JOIN mf_process p
+		ON f.sys_div = p.sys_div
 		WHERE f.sys_status = '미사용'
+		AND p.sys_div = #{sysDiv}
 	</select>
 	
 	<update id="updateMfSystem" parameterType="com.cart.eco.mf.service.MfProcessVO">
@@ -24,5 +27,17 @@
 		SET sys_code = #{sysCode}
 		  , emp_num = #{empNum}
 		WHERE mf_process_code = #{mfProcessCode}
+	</update>
+	
+	<update id="updateSystemUsing" parameterType="com.cart.eco.mf.service.MfProcessVO">
+		UPDATE facilities f
+		SET sys_status = '사용'
+		WHERE f.sys_code = #{sysCode}
+	</update>
+	
+	<update id="updateSystemUnusing" parameterType="com.cart.eco.mf.service.MfProcessVO">
+		UPDATE facilities f
+		SET sys_status = '미사용'
+		WHERE f.sys_code = #{sysCode}
 	</update>
 </mapper>

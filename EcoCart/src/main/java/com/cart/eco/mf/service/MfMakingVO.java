@@ -34,4 +34,9 @@ public class MfMakingVO {
 	private String mfMaking4; //테스트공정(통과/불량/-)
 	private String faultyCode; //불량코드
 	private String faultyContent; //불량내용
+	private String lotCode; //완제품LOT코드
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date lotDate; //LOT제작일자
+	private int lotNum; //LOT생산량저장
 }
