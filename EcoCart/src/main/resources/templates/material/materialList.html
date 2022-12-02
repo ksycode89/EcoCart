@@ -8,6 +8,11 @@
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
 <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title>발주현황</title>
+<style type="text/css">
+
+.ttok{color: red;}
+
+</style>
 </head>
 <body>
 	<div layout:fragment="content" class="page-content">
@@ -20,16 +25,15 @@
 				<label><input type="radio" id="planAll"  name="plan"value="all" checked>전체</label>&nbsp;
 				<label><input type="radio" id="ogwt"  name="plan" value="og-wt">진행</label>&nbsp;
 				<label><input type="radio" id="ogco"  name="plan" value="og-co">완료</label>
+				<label><input type="radio" id="ogcc"  name="plan" value="og-cc">취소</label>
 			</div>
-			
 			<label for="code_group" style="width:80px;">발주번호</label>
-			<input type="text" id="orderNo" name="code_group" class="form-control" style="width:150px; display:inline"><br>
-			<label for="code_group" style="width:80px;">납기일</label>
-			<input type="date"  id="orderReceiving" class="form-control" style="width:150px; display:inline">
+			<input type="text"  readonly="readonly" id="orderNo" name="code_group" class="form-control" style="width:150px; display:inline"><br>
+			<label for="code_group"  style="width:80px;">납기일</label>
+			<input type="date" readonly="readonly" id="orderReceiving" class="form-control" style="width:150px; display:inline">
 	<!-- ============버튼=========== -->	
-			<div class="mb-3 row flex-right mt-3">
+			<div class=" row flex-right mt-3" style="margin-bottom: 8px">
 				<div class="col-lg-auto col-sm-12 ">
-			        <button class="ml-5 btn btn-sm btn-primary" id= "orderSearch" >조건조회</button>
 			        <button class="ml-5 btn btn-sm btn-primary" onclick="getList()">조회</button>
 			        <button class="ml-5 btn btn-sm btn-primary" onclick="commitOrder()">발주확정</button>
 					<button class="ml-5 btn btn-sm btn-secondary" onclick="window.location.reload()">초기화</button>
@@ -58,13 +62,14 @@
 	   const grid = new tui.Grid({
 	          el: document.getElementById('grid'),
 	          scrollX: false,
-	          scrollY: false,
+	          scrollY: true	,
+	          bodyHeight: 400,
 	          rowHeaders : ['checkbox'],
 	          columns: [
 	            {
 	              header: '발주번호',
 	              name: 'orderNo',
-	              filter : 'select'
+	              filter : 'select',
 	            },
 	            {
 	              header: '발주일자',
@@ -90,14 +95,38 @@
 	            {
 	              header: '진행상황',
 	              name: 'orderGroup',
-		          filter : 'select',
-	              
+	              formatter: 'listItemText',
+	              editor: {
+	                type: 'select',
+	                options: {
+	                  listItems: [
+	                    {
+	                      text: '발주진행',
+	                      value: 'og-wt'
+	                    },
+	                    {
+	                      text: '발주완료',
+	                      value: 'og-co'
+	                    },
+	                    {
+	                      text: '발주취소',
+	                      value: 'og-cc'
+	                    },
+	                    {
+	                      text: '입고완료',
+	                      value: 'og-dn'
+		                }
+	                  ]
+	                }
+	              },
+		          filter : 'select'
 	            }
 	           
-	          ] ,pageOptions: {
+	          ] 
+	   			/* 	,pageOptions: {
 	    	        useClient: true,
-	    	        perPage:20
-	    	      }
+	    	        perPage:10
+	    	      } */
 	  });
 		    
    //상세조회
@@ -131,6 +160,7 @@
 	    ]
 	  });	  
    let gridRowKey;
+  
 	   grid.on('click',ev=>{
 		   gridRowKey=  ev.rowKey
 		   //console.log(ab.nativeEvent.target.innerText)
@@ -141,7 +171,7 @@
             		xhr.setRequestHeader(header, token);
             	 },
 			   success : function(data) {
-				   //console.log(data);
+				   console.log('inner',data);
 				   grid2.resetData(data);				   
 				   
 			   },
@@ -154,40 +184,48 @@
 	/* =================기=능===================== */
  //조회
 	function getList (){
-		   $.ajax({
-				url : '/materialListInfo',
-              	beforeSend : function(xhr){
-            		xhr.setRequestHeader(header, token);
-            	 },
-				success : function(data) {
-					grid.resetData(data)
-					console.log(data);
-				},
-				error : function(reject) {
-					console.log(reject);
-				}
-			})
+		  $('#orderNo').attr('readonly',false)
+		  $('#orderReceiving').attr('readonly',false)
 		   
+		   if($('#orderNo').val() == '' && $('#orderReceiving').val() == ''  ){
+			   $.ajax({
+					url : '/materialListInfo',
+	              	beforeSend : function(xhr){
+	            		xhr.setRequestHeader(header, token);
+	            	 },
+					success : function(data) {
+						grid.resetData(data)
+						console.log(data);
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				})
+		   }else{
+			   grid.filter('orderNo' , [{code:'contain', value:$('#orderNo').val()}])
+				
+				if($('#orderReceiving').val() != '' ){
+					grid.filter('orderReceiving' , [{code:'beforeEq', value:$('#orderReceiving').val()}])
+				}
+		   }
 	   }
+	   
 	 // 진행구분
 		planAll.addEventListener('click', () => {
 	    	grid.unfilter('orderGroup');
 	    })
 	    
 	   ogwt.addEventListener('click', () => {
-	    	grid.filter('orderGroup', [{code:'eq', value:'og-wt'}]);
+	    	grid.filter('orderGroup', [{code:'eq', value:'발주진행'}]);
 	    })
 	    
 	    ogco.addEventListener('click', () => {
-	    	grid.filter('orderGroup', [{code:'eq', value:'og-co'}]);
+	    	grid.filter('orderGroup', [{code:'eq', value:'발주완료'}]);
 	    })
-	//필터
-	orderSearch.addEventListener('click', () => {
-		grid.filter('orderNo' , [{code:'contain', value:$('#orderNo').val()}])
-		if($('#orderReceiving').val() != '' ){
-			grid.filter('orderReceiving' , [{code:'beforeEq', value:$('#orderReceiving').val()}])
-		}
-	});
+	    ogcc.addEventListener('click', () => {
+	    	grid.filter('orderGroup', [{code:'eq', value:'발주취소'}]);
+	    })
+	
 	//발주확정 commitOrder
 	function commitOrder(){
 		let a = grid.getCheckedRows()
@@ -199,8 +237,8 @@
 		console.log(grid.getRow(gridRowKey))
 		
 		if(grid.getRow(gridRowKey).orderGroup == 'og-wt'){
-			console.log(123123,grid.getCheckedRowKeys())
-			if(grid.getCheckedRowKeys().length==1){
+			console.log(123123,getOrderNo)
+			if(grid.getCheckedRowKeys().length>0){
 				
 				 $ .ajax({
 							url : '/commitOrder',
@@ -213,7 +251,20 @@
 							success : function(data) {
 								let mes = data+'건 확정'
 								swal(mes)
-								grid.removeRows(grid.getCheckedRowKeys())
+							$.ajax({
+								url : '/materialListInfo',
+				              	beforeSend : function(xhr){
+				            		xhr.setRequestHeader(header, token);
+				            	 },
+								success : function(data) {
+									$('#planAll').prop("checked", true);
+									grid.resetData(data);
+									
+								},
+								error : function(reject) {
+									console.log(reject);
+								}
+						     	})
 							},
 							error : function(reject) {
 								swal('확정실패')
@@ -222,13 +273,66 @@
 						}) 
 			}else if (grid.getCheckedRowKeys()<1){
 				swal('최소 하나의 발주를선택해야합니다.')
-			}else {
-				swal('하나의 발주만 선택해야합니다.')
 			}
 		}else{
-			swal('발주대상이 아닙니다.')
+			swal('발주확정 대상이 아닙니다.')
 		}	
 	}
+	
+	//발주취소 cancel
+	function cancel(){
+		let a = grid.getCheckedRows()
+		let getOrderNo = []
+		
+		$(grid.getCheckedRowKeys()).each((a,val)=>{
+			getOrderNo.push(grid.getRow(val).orderNo)
+		})
+		console.log(grid.getRow(gridRowKey))
+		
+		if(grid.getRow(gridRowKey).orderGroup != 'og-dn'){
+			console.log(123123,getOrderNo)
+			if(grid.getCheckedRowKeys().length>0){
+				
+				 $ .ajax({
+							url : '/OrderCancel',
+							type : 'post',
+							contentType : "application/json",
+							data : JSON.stringify(getOrderNo),
+			              	beforeSend : function(xhr){
+			            		xhr.setRequestHeader(header, token);
+			            	 },
+							success : function(data) {
+								let mes = data+'건 확정'
+								swal(mes)
+							$.ajax({
+								url : '/materialListInfo',
+				              	beforeSend : function(xhr){
+				            		xhr.setRequestHeader(header, token);
+				            	 },
+								success : function(data) {
+									$('#planAll').prop("checked", true);
+									grid.resetData(data);
+									
+								},
+								error : function(reject) {
+									console.log(reject);
+								}
+						     	})
+							},
+							error : function(reject) {
+								swal('확정실패')
+								console.log(reject);
+							}
+						}) 
+			}else if (grid.getCheckedRowKeys()<1){
+				swal('최소 하나의 발주를선택해야합니다.')
+			}
+		}else{
+			swal('발주취소 대상이 아닙니다.')
+		}	
+	} 
+	 
+
    </script>
 	</div>
 </body>

@@ -146,39 +146,53 @@ public class MaterialController {
 	}
 	/////////////////////////////////////////////////commitOrder
 	//확정
-		@PostMapping("/commitOrder")
-		@ResponseBody
-		public int commitOrder(@RequestBody List<Integer> list  ) {
-			System.out.println(list);
-			return morder.commitOrder(list);
-		}	
-		
-		@GetMapping("/searchOrder")
-		@ResponseBody
-		public List<MorderVO> searchOrder(int orderNo) {
-			System.out.println("orderNo"+orderNo);
-			return  morder.searchOrder(orderNo);
-		}
+	@PostMapping("/commitOrder")
+	@ResponseBody
+	public int commitOrder(@RequestBody List<Integer> list  ) {
+		System.out.println(list);
+		return morder.commitOrder(list);
+	}	
+	
+	@GetMapping("/searchOrder")
+	@ResponseBody
+	public List<MorderVO> searchOrder(int orderNo) {
+		System.out.println("orderNo"+orderNo);
+		return  morder.searchOrder(orderNo);
+	}
 	//입고마스터 
-		@PostMapping("/insertReceiving")
+	@PostMapping("/insertReceiving")
+	@ResponseBody
+	public ReceivingVO insertReceiving(ReceivingVO vo) {
+		System.out.println(vo);
+		return morder.insertReceiving(vo);
+	}	
+	//입고상세
+	@PostMapping("/insertReceivingD")
+	@ResponseBody
+	public int insertReceivingD(@RequestBody List<ReDetailVO> vo) {
+		System.out.println("insertReceivingD"+vo);
+		return morder.insertReceivingD(vo);
+	}	
+	//발주진행가져오기 
+	@GetMapping("/orderWT")
+	@ResponseBody
+	public List<MorderVO> orderWT(String orderNo) {
+		System.out.println("orderNo"+orderNo);
+		return  morder.getOrderGroup(orderNo);
+	}
+	//확정
+		@PostMapping("/OrderCancel")
 		@ResponseBody
-		public ReceivingVO insertReceiving(ReceivingVO vo) {
-			System.out.println(vo);
-			return morder.insertReceiving(vo);
+		public int OrderCancel(@RequestBody List<Integer> list  ) {
+			System.out.println(list);
+			return morder.OrderCancel(list);
 		}	
-		//입고상세
-		@PostMapping("/insertReceivingD")
+		//확정
+		@GetMapping("/getCoOrder")
 		@ResponseBody
-		public int insertReceivingD(@RequestBody List<ReDetailVO> vo) {
-			System.out.println("insertReceivingD"+vo);
-			return morder.insertReceivingD(vo);
+		public  List<MorderVO>  getCoOrder() {
+			
+			return morder.getCoOrder();
 		}	
-		//발주진행가져오기 
-		@GetMapping("/orderWT")
-		@ResponseBody
-		public List<MorderVO> orderWT(String orderNo) {
-			System.out.println("orderNo"+orderNo);
-			return  morder.getOrderGroup(orderNo);
-		}
 		
 }

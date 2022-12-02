@@ -20,7 +20,7 @@
 			<div class="col-md-auto mb-1">
 				<div class="input-group mb-3">
 					<label for="staticEmail" class="col-sm-3 col-form-label">담당자</label>
-					<input type="text" id="empDept" class="form-control"
+					<input type="text" id="empDept" class="form-control "
 						placeholder="담당자코드" aria-label="Recipient's username"
 						aria-describedby="button-addon2"> <span
 						class="input-group-text" data-bs-toggle="modal"
@@ -51,11 +51,12 @@
 	</div>		
  
    <div style="margin-left: 3px;">   
-         <button id="insertBtn" type="button" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">등록</button>
+         <button id="insertBtn" type="button" class="btn btn-sm btn-primary" style="width: 80px; float:right; margin:5px;">등록</button>
+         <button id="test" type="button" class="btn btn-sm btn-primary" style="width: 80px; float:right; margin:5px;">test</button>
    </div>
    <div id="grid"></div>   
          
-   <button id="addBtn" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" style="width: 80px; background-color: black; color:white; float:right; margin:5px;">자재검색</button>
+   <button id="addBtn" type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" style="width: 80px; float:right; margin:5px;">자재검색</button>
    <div id="grid2"></div>
    
    
@@ -74,7 +75,7 @@
 					<div id="modalGrid"></div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
+					<button type="button" class="btn btn-sm btn-primary"
 						data-bs-dismiss="modal">확인</button>
 				</div>
 			</div>
@@ -457,7 +458,29 @@
     	  gridClient.refreshLayout(); 
        })
        
-     
+     $('#test').on('click',()=>{
+    	 Swal.fire({
+    		   title: '정말로 그렇게 하시겠습니까?',
+    		   text: '다시 되돌릴 수 없습니다. 신중하세요.',
+    		   icon: 'warning',
+    		   
+    		   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+    		   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+    		   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+    		   confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+    		   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+    		   
+    		   reverseButtons: true, // 버튼 순서 거꾸로
+    		   
+    		}).then(result => {
+    		   // 만약 Promise리턴을 받으면,
+    		   if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+    		   
+    		      Swal.fire('승인이 완료되었습니다.', '화끈하시네요~!', 'success');
+    		   }
+    		});
+    	 
+     })
    </script>
    </div>
 </body>

@@ -47,5 +47,6 @@ public interface MorderMapper{
 		public List<MorderVO> getOrderGroup(String group);
 		//발주에서 ->입고로
 		public int completeOrder(MorderVO morderVO);
+		
 	
 }

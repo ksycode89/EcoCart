@@ -113,6 +113,17 @@ public class MorderServiceImpl implements MorderService {
 			}
 		return result;
 	}
+	@Override
+	public int OrderCancel(List<Integer> list) {
+		int	result = 0;	
+		for(int no : list) {
+				MorderVO vo = new MorderVO();
+				vo.setOrderNo(no);
+				vo.setOrderGroup("og-cc");
+				result += moMapper.commitOrder(vo);
+			}
+		return result;
+	}
 
 	@Override
 	public List<MorderVO> searchOrder(int orderNo) {
@@ -156,5 +167,10 @@ public class MorderServiceImpl implements MorderService {
 		return moMapper.getOrderGroup(group);
 	}
 
+	@Override
+	public  List<MorderVO>  getCoOrder() {
+	
+		return moMapper.getOrderGroup("og-co");
+	}
 
 }
