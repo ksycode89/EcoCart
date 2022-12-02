@@ -161,7 +161,7 @@
 	<insert id="insertReceivingD" parameterType="com.cart.eco.material.service.ReDetailVO">
 		INSERT
 		INTO receiving_detail  
-		VALUES ((select  NVL(max(to_number(receiving_no)),0) from receiving_detail)+1,#{proCode},#{proName},0,#{orderNum},null,( select #{proCode}||to_char(sysdate,'yyyyMMdd')||to_number(max(receiving_no)+1) from receiving_detail)
+		VALUES ((select  NVL(max(to_number(receiving_no)),0) from receiving_detail)+1,#{proCode},#{proName},#{orderNum},#{orderNum},null,( select #{proCode}||to_char(sysdate,'yyyyMMdd')||to_number(max(receiving_no)+1) from receiving_detail)
 		, #{whCode},#{receivingCode}
 		
 				)

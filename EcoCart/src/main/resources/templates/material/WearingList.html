@@ -24,7 +24,7 @@
 		<label for="code_group" style="width:80px;">입고일</label>
 		<input type="date"  id="orderReceiving" class="form-control" style="width:150px; display:inline">
 <!-- ============버튼=========== -->	
-		<div class="mb-3 row flex-right mt-3">
+		<div class=" row flex-right mt-3">
 			<div class="col-lg-auto col-sm-12 ">
 		        <button class="ml-5 btn btn-sm btn-primary" onclick="doCommit()">입고처리</button>
 		        <button class="ml-5 btn btn-sm btn-primary" onclick="commitOrder()">완료발주조회</button>
@@ -33,18 +33,17 @@
 				
 			</div>
 		</div>
-		
-		</div>
+	</div>
 	<!-- =============그리드 =========== -->
-		<div class="row">
-			<div>
+		
+			
 				<div id="grid"></div>
-			</div>
-		</div>
+	
+	
 			<div class="row" >
 				<div id="grid2" ></div>
 			</div>
-		<br>
+		
 		
 	<!--  입고처리 모달창  -->
       <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -52,13 +51,14 @@
 		    <div class="modal-content">
 		    
 		      <div class="modal-header">
-		        <h4 class="modal-title" id="staticBackdropLabel">발주완료</h4>
-		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+		        <h4 class="modal-title" id="staticBackdropLabel">발주완료목록</h4>
+		        <button type="button" id="innderClose" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      </div>
 		        
 		      <div class="modal-body">
 				  <div class="container-fluid flex-right">
-				         		<select id="select4" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white" name="no">
+				  				<label for="select4" class="col-form-label" style="margin-right: 20px">발주번호</label>
+				         		<select id="select4" class="btn form-control" style="width:150px; border:1px solid #dce7f1; background-color:white" name="no">
 				         			<option value="0">==선택==</option>
 				         			<th:block th:each="e : ${orderList}">
 				         				<option th:value="${e.orderNo}" th:text="${e.orderNo}"></option>
@@ -74,7 +74,7 @@
 		      
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-primary" onclick="plusOrder()">선택</button>
-		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cancleOrderM()">취소</button>
 		      </div>
 		      
 		    </div>
@@ -169,7 +169,7 @@
 	          el: document.getElementById('gridM1'),
 	          scrollX: false,
 	          scrollY: false,
-	          bodyHeight: 500,
+	          bodyHeight: 325,
 	          rowHeaders : ['checkbox'],
 	          columns: [
 	            {
@@ -445,9 +445,26 @@
 	   	 })
 	//조회버튼 	 
 	function searchOrder(){
-		let orderN = $('#select4').val();
+			let orderN = {'orderNo':$('#select4').val()};
+		if($('#select4').val() == "0"){
+			 $.ajax({
+					url : '/getCoOrder',
+				   beforeSend : function(xhr){
+	            		xhr.setRequestHeader(header, token);
+	            	 },
+					success : function(data) {
+						grid.resetData(data)
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				})
+		}else{
+			
+	
 			   $.ajax({
-					url : '/searchOrder/?orderNo='+orderN,
+					url : '/searchOrder',
+					data : orderN ,
 	              	beforeSend : function(xhr){
 	            		xhr.setRequestHeader(header, token);
 	            	 },
@@ -458,20 +475,38 @@
 						console.log(reject);
 					}
 				})
-		   }
+			}	
+		 }
 	//입고처리 그리드로 
 	function plusOrder(){
 		//grid.getRow(grid.getCheckedRowKeys()[0]).orderNo
 		console.log(grid.getCheckedRows())
-		if (grid.getCheckedRowKeys().length >1){
+		if (grid.getCheckedRowKeys().length !=1){
 			swal('확정은 하나씩 해주세요.')
 		}else {
 			gridre.resetData(grid.getCheckedRows())
 			gridred.resetData(grid2.getData())
+			
+			grid.clear()
+			grid2.clear()
+			$("#select4 option:eq(0)").attr("selected", "selected");
+			$('#staticBackdrop').modal('hide')
+			
 		}
 		
-		$('#staticBackdrop').modal('hide')
 	}
+	//입고처리그리드 취소시 초기화 
+	function cancleOrderM(){
+		grid.clear()
+		grid2.clear()
+		$("#select4 option:eq(0)").attr("selected", "selected");
+	}
+	
+	$('#innderClose').on('click',()=>{
+		grid.clear()
+		grid2.clear()
+		$("#select4 option:eq(0)").attr("selected", "selected");
+	})
 
 	//입고 실질 처리 
 	function doCommit(){

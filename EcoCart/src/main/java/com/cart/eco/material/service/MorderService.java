@@ -25,6 +25,8 @@ public interface MorderService {
 	//////////////////////////////////////
 	//발주현황에 진행변경 (group)
 	public int commitOrder(List<Integer> list);
+	//발주현황에 진행변경 (group)
+	public int OrderCancel(List<Integer> list);
 	//입고가져오기 (발주완료들)
 	public List<MorderVO> searchOrder(int orderNo);
 	//입고처리
@@ -33,4 +35,6 @@ public interface MorderService {
 	public int insertReceivingD(List<ReDetailVO> vo);
 	//발주진행목록 가져오기
 	public List<MorderVO> getOrderGroup(String group);
+	//발주완료목록
+	public  List<MorderVO>  getCoOrder( );
 }

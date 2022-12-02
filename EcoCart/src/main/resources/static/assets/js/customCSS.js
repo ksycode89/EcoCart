@@ -16,3 +16,5 @@ function swal (a,b,c){
       icon: c,
     })
 }
+
+
