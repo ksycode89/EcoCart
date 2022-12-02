@@ -2,3 +2,7 @@
 .ml-5{ margin-left: 5px}
 .flex-right{ display: flex; justify-content: flex-end;}
 .flex-between {justify-content: space-between; }
+
+body{
+	font-family: 'Gowun Dodum', sans-serif; font-weight: bold; 
+}

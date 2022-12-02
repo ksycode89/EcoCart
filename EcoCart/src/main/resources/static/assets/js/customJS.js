@@ -1,4 +1,19 @@
 
+const Toast = Swal.mixin({
+    toast: true,
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: false,
+   
+})
+
+function swal (a,b,c){
+	Swal.fire({
+      title: a,
+      text: b,
+      icon: c,
+    })
+}
 
 function sweetConfirm(msg, callBack){
 	let msgA = {'C' : '등록' , 'R' : '조회' , 'U' : '마감', 'D' : '삭제' }
