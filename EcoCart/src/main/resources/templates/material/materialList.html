@@ -15,28 +15,28 @@
 		<div id="content">
 			<h2>발주현황</h2>
 <!-- =============필터 레디오 =========== -->		
-		<div class="filters mt-4" style="height:35px" >
-			<label for="planStatus" style="width:100px">진행구분</label>
-			<label><input type="radio" id="planAll"  name="plan"value="all" checked>전체</label>&nbsp;
-			<label><input type="radio" id="ogwt"  name="plan" value="og_wt">진행</label>&nbsp;
-			<label><input type="radio" id="ogco"  name="plan" value="og_co">완료</label>
-		</div>
-		
-		<label for="code_group" style="width:80px;">발주번호</label>
-		<input type="text" id="orderNo" name="code_group" class="form-control" style="width:150px; display:inline"><br>
-		<label for="code_group" style="width:80px;">납기일</label>
-		<input type="date"  id="orderReceiving" class="form-control" style="width:150px; display:inline">
-<!-- ============버튼=========== -->	
-		<div class="mb-3 row flex-right mt-3">
-			<div class="col-lg-auto col-sm-12 ">
-		        <button class="ml-5 btn btn-sm btn-primary" id= "orderSearch" >조건조회</button>
-		        <button class="ml-5 btn btn-sm btn-primary" onclick="getList()">조회</button>
-		        <button class="ml-5 btn btn-sm btn-primary" onclick="commitOrder()">발주확정</button>
-				<button class="ml-5 btn btn-sm btn-secondary" onclick="window.location.reload()">초기화</button>
-				<button class="ml-5 btn btn-sm btn-secondary" onclick="cancel()">발주취소</button>
+			<div class="filters mt-4" style="height:35px" >
+				<label for="planStatus" style="width:100px">진행구분</label>
+				<label><input type="radio" id="planAll"  name="plan"value="all" checked>전체</label>&nbsp;
+				<label><input type="radio" id="ogwt"  name="plan" value="og-wt">진행</label>&nbsp;
+				<label><input type="radio" id="ogco"  name="plan" value="og-co">완료</label>
 			</div>
-		</div>
-		
+			
+			<label for="code_group" style="width:80px;">발주번호</label>
+			<input type="text" id="orderNo" name="code_group" class="form-control" style="width:150px; display:inline"><br>
+			<label for="code_group" style="width:80px;">납기일</label>
+			<input type="date"  id="orderReceiving" class="form-control" style="width:150px; display:inline">
+	<!-- ============버튼=========== -->	
+			<div class="mb-3 row flex-right mt-3">
+				<div class="col-lg-auto col-sm-12 ">
+			        <button class="ml-5 btn btn-sm btn-primary" id= "orderSearch" >조건조회</button>
+			        <button class="ml-5 btn btn-sm btn-primary" onclick="getList()">조회</button>
+			        <button class="ml-5 btn btn-sm btn-primary" onclick="commitOrder()">발주확정</button>
+					<button class="ml-5 btn btn-sm btn-secondary" onclick="window.location.reload()">초기화</button>
+					<button class="ml-5 btn btn-sm btn-secondary" onclick="cancel()">발주취소</button>
+				</div>
+			</div>
+			
 		</div>
 	<!-- =============그리드 =========== -->
 		<div class="row">
@@ -69,26 +69,14 @@
 	            {
 	              header: '발주일자',
 	              name: 'orderDate',
-	              editor: {
-	                  type: 'datePicker', 
-	              option : {
-	            	  format:'yyyy-MM-dd',
-	              }
-	             }
 	              },
 	              {
 	              header: '납기일',
 	              name: 'orderReceiving',
-	              editor: {
-	              type: 'datePicker',
-	              options: {
-	              format: 'yyyy-MM-dd'
-	             }
-	             },
-	         	filter : 'select'
+	              filter : 'select'
 	            },
 	            {
-	            	header: '거래처코드',
+	            	header: '거래처',
 	            	name: 'clientName'
 	            },
 	            {
@@ -102,7 +90,7 @@
 	            {
 	              header: '진행상황',
 	              name: 'orderGroup',
-		              filter : 'select',
+		          filter : 'select',
 	              
 	            }
 	           
@@ -142,12 +130,13 @@
 	        
 	    ]
 	  });	  
-   
-	   grid.on('click',(ab)=>{
+   let gridRowKey;
+	   grid.on('click',ev=>{
+		   gridRowKey=  ev.rowKey
 		   //console.log(ab.nativeEvent.target.innerText)
 		   $.ajax({
 			   url:'/detailList',
-			   data : {'orderNo' : grid.getRow(ab.rowKey).orderNo},
+			   data : {'orderNo' : grid.getRow(ev.rowKey).orderNo},
               	beforeSend : function(xhr){
             		xhr.setRequestHeader(header, token);
             	 },
@@ -162,8 +151,6 @@
 		   })
 		   
 	   })
-	   
-	  
 	/* =================기=능===================== */
  //조회
 	function getList (){
@@ -188,11 +175,11 @@
 	    })
 	    
 	   ogwt.addEventListener('click', () => {
-	    	grid.filter('orderGroup', [{code:'eq', value:'og_wt'}]);
+	    	grid.filter('orderGroup', [{code:'eq', value:'og-wt'}]);
 	    })
 	    
 	    ogco.addEventListener('click', () => {
-	    	grid.filter('orderGroup', [{code:'eq', value:'og_co'}]);
+	    	grid.filter('orderGroup', [{code:'eq', value:'og-co'}]);
 	    })
 	//필터
 	orderSearch.addEventListener('click', () => {
@@ -209,27 +196,38 @@
 		$(grid.getCheckedRowKeys()).each((a,val)=>{
 			getOrderNo.push(grid.getRow(val).orderNo)
 		})
-		console.log(getOrderNo)
+		console.log(grid.getRow(gridRowKey))
 		
-	
-	 $ .ajax({
-				url : '/commitOrder',
-				type : 'post',
-				contentType : "application/json",
-				data : JSON.stringify(getOrderNo),
-              	beforeSend : function(xhr){
-            		xhr.setRequestHeader(header, token);
-            	 },
-				success : function(data) {
-					let mes = data+'건 확정'
-					swal(mes)
-					grid.removeRows(grid.getCheckedRowKeys())
-				},
-				error : function(reject) {
-					swal('확정실패')
-					console.log(reject);
-				}
-			})  
+		if(grid.getRow(gridRowKey).orderGroup == 'og-wt'){
+			console.log(123123,grid.getCheckedRowKeys())
+			if(grid.getCheckedRowKeys().length==1){
+				
+				 $ .ajax({
+							url : '/commitOrder',
+							type : 'post',
+							contentType : "application/json",
+							data : JSON.stringify(getOrderNo),
+			              	beforeSend : function(xhr){
+			            		xhr.setRequestHeader(header, token);
+			            	 },
+							success : function(data) {
+								let mes = data+'건 확정'
+								swal(mes)
+								grid.removeRows(grid.getCheckedRowKeys())
+							},
+							error : function(reject) {
+								swal('확정실패')
+								console.log(reject);
+							}
+						}) 
+			}else if (grid.getCheckedRowKeys()<1){
+				swal('최소 하나의 발주를선택해야합니다.')
+			}else {
+				swal('하나의 발주만 선택해야합니다.')
+			}
+		}else{
+			swal('발주대상이 아닙니다.')
+		}	
 	}
    </script>
 	</div>

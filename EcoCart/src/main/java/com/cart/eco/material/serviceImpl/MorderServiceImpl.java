@@ -108,7 +108,7 @@ public class MorderServiceImpl implements MorderService {
 		for(int no : list) {
 				MorderVO vo = new MorderVO();
 				vo.setOrderNo(no);
-				vo.setOrderGroup("og_co");
+				vo.setOrderGroup("og-co");
 				result += moMapper.commitOrder(vo);
 			}
 		return result;
@@ -144,7 +144,7 @@ public class MorderServiceImpl implements MorderService {
 		if (vo.size() == result) {
 			MorderVO reVo= new MorderVO();
 			reVo.setOrderNo(orderNo);
-			reVo.setOrderGroup("og_co");
+			reVo.setOrderGroup("og-dn");
 			moMapper.completeOrder(reVo);
 		}
 		return result;

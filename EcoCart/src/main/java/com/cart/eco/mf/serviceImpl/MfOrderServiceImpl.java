@@ -98,8 +98,14 @@ public class MfOrderServiceImpl implements MfOrderService {
 	}
 	
 	@Override
+	public int updateMfPlanStatus(MfOrderVO vo) {
+		return mapper.updateMfPlanStatus(vo);
+	}
+	
+	@Override
 	public int decideMfOrder(MfOrderVO vo) {
 		return mapper.decideMfOrder(vo);
 	}
+
 
 }

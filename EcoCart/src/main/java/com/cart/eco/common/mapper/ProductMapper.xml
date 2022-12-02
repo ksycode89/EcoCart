@@ -29,10 +29,10 @@
 		    ON p.pro_group = c2.code_id
 		
 		 <where>
-		<!--  <if test="proItem != null and !proItem.equals('')">
-		 	 pro_item = #{proItem},
-		 </if> -->
-   		 <if test="codeId != null and !codeId.equals('')">
+		<if test="proCode != null and !proCode.equals('')">
+		 	 pro_item = #{proCode}
+		 </if> 
+   		<if test="codeId != null and !codeId.equals('')">
    		 	c.code_id = #{codeId}
    		 </if>
    		  <if test="codeName != null and !codeName.equals('')">
@@ -50,6 +50,7 @@
          <if test="proGet != null and !proGet.equals('')">
            AND p.pro_get = #{proGet} 
          </if>
+        
    		</where> 
    		
    		

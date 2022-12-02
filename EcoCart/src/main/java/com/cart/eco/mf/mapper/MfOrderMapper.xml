@@ -17,12 +17,10 @@
 	</select>
 	
 	<select id="getMfReadyPlanList" resultType="com.cart.eco.mf.service.MfOrderVO">
-		SELECT p.mf_plan_code, p.mf_plan_name, d.pro_code, d.pro_name, p.mf_plan_date, o.de_date, d.need_num, d.total_order_num
+		SELECT p.mf_plan_code, p.mf_plan_name, d.pro_code, d.pro_name, d.need_num
 		FROM mf_plan p JOIN mf_plan_detail d
 		ON p.mf_plan_code = d.mf_plan_code
-		LEFT JOIN orders o
-		ON p.order_code = o.order_code
-		WHERE p.mf_plan_status != '완료'
+		WHERE p.mf_plan_status = '대기'
 	</select>
 	
 	<select id="getMfOrderMaterialList" parameterType="String" resultType="Map">
@@ -71,11 +69,13 @@
 			INSERT INTO mf_order_detail(mf_order_no
 									  , mf_order_code
 									  , mf_order_date
-									  , mf_order_num)
+									  , mf_order_num
+									  , line_no)
 			VALUES(#{mfOrderNo}
 				 , #{mfOrderCode}
 				 , #{mfOrderDate}
-				 , #{mfOrderNum}) 
+				 , #{mfOrderNum}
+				 , #{lineNo}) 
 	</insert>
 	
 	<insert id="insertMfOrderLot" parameterType="com.cart.eco.mf.service.MfOrderVO">
@@ -120,6 +120,12 @@
 		SET release_status = '승인'
 		WHERE release_code = #{releaseCode}
 		AND pro_code = #{proCode}
+	</update>
+	
+	<update id="updateMfPlanStatus" parameterType="com.cart.eco.mf.service.MfOrderVO">
+		UPDATE mf_plan
+		SET mf_plan_status = '진행'
+		where mf_plan_code = #{mfPlanCode}
 	</update>
 	
 	<update id="decideMfOrder" parameterType="com.cart.eco.mf.service.MfOrderVO">

@@ -129,6 +129,13 @@ public class MfController {
 		return "manufacture/mfOrderRegist";
 	}
 	
+	//생산지시등록 - 모달창 대기생산계획조회
+	@GetMapping("/mfPlanReadyList")
+	@ResponseBody
+	public List<MfOrderVO> mfPlanReadyList(){
+		return mforder.getMfReadyPlanList();
+	}
+	
 	//생산지시등록 - 생산지시코드 자동등록
 	@GetMapping("/mfOrderCodeBring")
 	@ResponseBody
@@ -136,7 +143,7 @@ public class MfController {
 		return mforder.getMfOrderCode();
 	}
 	
-	//생산지시등록 - 생산지시코드 자동등록
+	//생산지시등록 - 자재출고코드 자동등록
 	@GetMapping("/releaseCodeBring")
 	@ResponseBody
 	public List<MfOrderVO> releaseCodeBring(){
@@ -197,6 +204,13 @@ public class MfController {
 	@ResponseBody
 	public int mfReleaseDetailUpdate(@RequestBody List<MfOrderVO> vo){
 		return mforder.updateMfOrderLotDetail(vo);
+	}
+	
+	//생산지시등록 - 생산계획상태변경(대기->진행)
+	@PostMapping("/mfPlanProgressUpdate")
+	@ResponseBody
+	public int mfPlanProgressUpdate(@RequestBody MfOrderVO vo){
+		return mforder.updateMfPlanStatus(vo);
 	}
 	
 	//생산관리 페이지
