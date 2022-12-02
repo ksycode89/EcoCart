@@ -26,9 +26,15 @@ public interface MfMakingService {
 	//생산물품입력
 	public int insertMakingProduct(List<MfMakingVO> vo);
 	
+	//완제품LOT등록 & 제품수량업데이트
+	public int mfFinishLot(List<MfMakingVO> vo);
+	
 	//생산공정기본틀입력
 	public int insertMakingResult(List<MfMakingVO> vo);
 	
 	//생산공정수치변경
 	public int updateMakingResult(List<MfMakingVO> vo);
+	
+	//생산계획 & 지시상태수정(진행->완료)
+	public int updateMfFinish(List<MfMakingVO> vo);
 }

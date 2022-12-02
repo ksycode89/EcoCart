@@ -261,11 +261,25 @@ public class MfController {
 		return mfmaking.insertMakingProduct(vo);
 	}
 	
-	//생산관리 - 생산가동기본틀 입력
+	//생산관리 - 완제품LOT등록
+	@PostMapping("/mfMakingLotInsert")
+	@ResponseBody
+	public int mfMakingLotInsert(@RequestBody List<MfMakingVO> vo){
+		return mfmaking.mfFinishLot(vo);
+	}
+	
+	//생산관리 - 생산가동수치변경
 	@PostMapping("/mfMakingTitleUpdate")
 	@ResponseBody
 	public int mfMakingTitleUpdate(@RequestBody List<MfMakingVO> vo){
 		return mfmaking.updateMakingResult(vo);
+	}
+	
+	//생산관리 - 생산계획&지시상태수정(진행->완료)
+	@PostMapping("/mfMakingFinishUpdate")
+	@ResponseBody
+	public int mfMakingFinishUpdate(@RequestBody List<MfMakingVO> vo){
+		return mfmaking.updateMfFinish(vo);
 	}
 	
 	//공정실적조회 페이지
@@ -304,10 +318,24 @@ public class MfController {
 	//생산공정관리 - 모달창 미사용설비목록조회
 	@GetMapping("/mfSystemList")
 	@ResponseBody
-	public List<MfProcessVO> mfSystemList(){
-		return mfprocess.getMfSystemList();
+	public List<Map<String,Object>> mfSystemList(String sysDiv){
+		return mfprocess.getMfSystemList(sysDiv);
 	}
 	
+	//생산공정관리 - 설비상태변경(미사용->사용)
+	@PostMapping("/mfSystemUsingUpdate")
+	@ResponseBody
+	public int mfSystemUsingUpdate(@RequestBody List<MfProcessVO> vo){
+		return mfprocess.updateSystemUsing(vo);
+	}
+	
+	//생산공정관리 - 설비상태변경(사용->미사용)
+	@PostMapping("/mfSystemUnusingUpdate")
+	@ResponseBody
+	public int mfSystemUnusingUpdate(@RequestBody List<MfProcessVO> vo){
+		return mfprocess.updateSystemUnusing(vo);
+	}
+		
 	//생산공정관리 - 설비변경
 	@PostMapping("/mfSystemUpdate")
 	@ResponseBody

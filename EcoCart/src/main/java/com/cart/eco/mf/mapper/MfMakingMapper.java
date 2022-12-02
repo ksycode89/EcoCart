@@ -31,6 +31,19 @@ public interface MfMakingMapper {
 	//생산가동기본틀입력
 	public int insertMakingResult(MfMakingVO vo);
 	
-	//생산공정수치변경
+	//완제품LOT등록
+	public int insertFinishLot(MfMakingVO vo);
+	
+	//생산가동수치변경
 	public int updateMakingResult(MfMakingVO vo);
+	
+	//생산계획상태수정(진행->완료)
+	public int updateMfPlanFinish(MfMakingVO vo);
+	
+	//생산지시상태수정(확정->완료)
+	public int updateMfOrderFinish(MfMakingVO vo);
+	
+	//완제품LOT 물품수량 업데이트
+	public int updateProductNum(MfMakingVO vo);
+	
 }

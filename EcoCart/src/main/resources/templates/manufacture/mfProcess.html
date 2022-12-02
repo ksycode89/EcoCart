@@ -51,7 +51,7 @@
 			el: document.getElementById('processGridId'),
 			scrollX: false,
 			scrollY: false,
-			bodyHeight: 600,
+			bodyHeight: 640,
 			columns: [
 		        {
 		          header: '라인번호',
@@ -82,11 +82,16 @@
 		        {
 		          header: '관리자',
 		          name: 'empName'
+		        },
+		        {
+		          header: '설비분류',
+		          name: 'sysDiv'
 		        }
 			]
 		});
 		
 		processGrid.hideColumn('empNum');
+		//processGrid.hideColumn('sysDiv');
 		
 		var systemModalGrid = new tui.Grid({
 			el: document.getElementById('systemModalGridId'),
@@ -151,8 +156,9 @@
 		
 		processGrid.on('click', (ev) => {
 			if(ev.columnName=='sysCode' || ev.columnName=='sysName' || ev.columnName=='empName'){
+				let a = processGrid.getRow(ev.rowKey).sysDiv;
 				$.ajax({
-		    		url:'/mfSystemList',
+		    		url:'/mfSystemList?sysDiv='+a,
 		    		success:function(data){
 		    			systemModalGrid.resetData(data);
 		    			ev1 = ev;
@@ -161,14 +167,46 @@
 		    			console.log(error);
 		    		}
 		    	});
-				$("#systemModal").modal("show");
 				systemModal.addEventListener('shown.bs.modal', () => {
 					systemModalGrid.refreshLayout();
         	    });
+				$("#systemModal").modal("show");
 			}
 		});
 		
 		systemModalGrid.on('click', (ev2) => {
+			$.ajax({
+	    		url:'/mfSystemUnusingUpdate',
+	    		method: 'POST',
+        		contentType: 'application/json',
+        		data: JSON.stringify([{ sysCode : processGrid.getRow(ev1.rowKey).sysCode}]),
+        		dataType: 'JSON',
+        		beforeSend : function(xhr){
+               		xhr.setRequestHeader(header, token);
+               	},
+	    		success:function(data){
+	    			console.log(processGrid.getRow(ev1.rowKey).sysCode+' 설비 미사용상태로 변경');
+	    			$.ajax({
+	    	    		url:'/mfSystemUsingUpdate',
+	    	    		method: 'POST',
+	            		contentType: 'application/json',
+	            		data: JSON.stringify([{ sysCode : systemModalGrid.getRow(ev2.rowKey).sysCode}]),
+	            		dataType: 'JSON',
+	            		beforeSend : function(xhr){
+	                   		xhr.setRequestHeader(header, token);
+	                   	},
+	    	    		success:function(data){
+	    	    			console.log(systemModalGrid.getRow(ev2.rowKey).sysCode+' 설비 사용상태로 변경');
+	    	    		},
+	    	    		error:function(error){
+	    	    			console.log(error);
+	    	    		}
+	    	    	});
+	    		},
+	    		error:function(error){
+	    			console.log(error);
+	    		}
+	    	});
 			let lineNo1 = processGrid.getRow(ev1.rowKey).lineNo;
 			let mfProcessCode1 = processGrid.getRow(ev1.rowKey).mfProcessCode;
 			let mfProcessName1 = processGrid.getRow(ev1.rowKey).mfProcessName;
@@ -176,6 +214,7 @@
 			let sysName1 = systemModalGrid.getRow(ev2.rowKey).sysName;
 			let empNum1 = systemModalGrid.getRow(ev2.rowKey).empNum;
 			let empName1 = systemModalGrid.getRow(ev2.rowKey).empName;
+			let sysDiv1 = processGrid.getRow(ev1.rowKey).sysDiv;
 			processGrid.setRow(ev1.rowKey, {
 				lineNo : lineNo1,
 				mfProcessCode : mfProcessCode1,
@@ -183,7 +222,8 @@
 				sysCode : sysCode1,
 				sysName : sysName1,
 				empNum : empNum1,
-				empName : empName1
+				empName : empName1,
+				sysDiv : sysDiv1
 			});
 			$('#systemModal').modal('hide');
 		});

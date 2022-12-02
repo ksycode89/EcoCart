@@ -347,9 +347,11 @@
     
     mfOrderGrid.on('afterChange', (ev) => {
     	let orderRowCount = 0;
+    	let lineNoCount = 0;
     	for(i=0; i<mfOrderGrid.getRowCount(); i++){
     		if(mfOrderGrid.getRow(i).mfOrderNum != null){
     			orderRowCount += parseInt(mfOrderGrid.getRow(i).mfOrderNum);
+    			lineNoCount += parseInt(mfOrderGrid.getRow(i).lineNo);
     			//console.log(orderRowCount)
     		}
 		}
