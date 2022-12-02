@@ -603,7 +603,8 @@
 			el : document.getElementById('grid'),
 			rowHeaders: ['checkbox'],
 			scrollX : false,
-			scrollY : false,
+			scrollY : true,
+			bodyHeight : 320,
 			columns : [ {
 				header : '사원번호',
 				name : 'empNum',
@@ -808,15 +809,15 @@
 				
 				}
 			 })
-		
-		}
+}
 
 		 /* 담당사원 */
 		const grid2 = new tui.Grid({
 			el : document.getElementById('grid2'),
 			rowHeaders: ['checkbox'],
 			scrollX : false,
-			scrollY : false,
+			scrollY : true,
+			bodyHeight : 200,
 			columns : [ {
 				header : '사원번호',
 				name : 'empNum'
@@ -1104,6 +1105,17 @@
 		}
 	 }
 	})
+	
+	// 한 줄 선택시 컬러.
+	grid1.on('click', ev=>{
+		 var record = {
+	           start : [ev.rowKey,0],
+	           end : [ev.rowKey,grid1.getColumns().length]
+	          }
+		            grid1.setSelectionRange(record);
+	          });
+	  
+	
 			
 	
 		// 사원 추가. (row 추가.)

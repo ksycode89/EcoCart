@@ -449,7 +449,8 @@
 				el : document.getElementById('grid'),
 				rowHeaders: ['checkbox'],
 				scrollX : false,
-				scrollY : false,
+				scrollY : true,
+				bodyHeight : 485,
 				columns : [ {
 					
 					header : '제품코드',
@@ -525,7 +526,15 @@
 			
 			});
 			
-			
+			// 한 줄 선택시 컬러.
+			grid.on('click', ev=>{
+				 var record = {
+			           start : [ev.rowKey,0],
+			           end : [ev.rowKey,grid.getColumns().length]
+			          }
+				            grid.setSelectionRange(record);
+			          });
+			  
 
 			// 등록-행 추가.
 			function addEmp() {
