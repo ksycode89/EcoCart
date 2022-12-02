@@ -138,14 +138,47 @@ public class EstimateController {
 	
 	
 	//설비 등록
-	@PostMapping("/facInsert")
+	@PostMapping("/facInsertFam")
 	@ResponseBody
-	public int facInsert( @RequestBody List<facilitiesVO> vo ,HttpServletRequest request) {
+	public int facInsertFam( @RequestBody List<facilitiesVO> vo ,HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		EmpVO name = (EmpVO)session.getAttribute("infos");
 		String empNum = name.getEmpNum();
 		
-		return estimateService.facInsert(vo,empNum);
+		return estimateService.facInsertFam(vo,empNum);
+	}
+	
+	//설비 등록
+	@PostMapping("/facInsertEng")
+	@ResponseBody
+	public int facInsertEng( @RequestBody List<facilitiesVO> vo ,HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		EmpVO name = (EmpVO)session.getAttribute("infos");
+		String empNum = name.getEmpNum();
+		
+		return estimateService.facInsertEng(vo,empNum);
+	}
+	
+	//설비 등록
+	@PostMapping("/facInsertEnd")
+	@ResponseBody
+	public int facInsertEnd( @RequestBody List<facilitiesVO> vo ,HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		EmpVO name = (EmpVO)session.getAttribute("infos");
+		String empNum = name.getEmpNum();
+		
+		return estimateService.facInsertEnd(vo,empNum);
+	}
+	
+	//설비 등록
+	@PostMapping("/facInsertTes")
+	@ResponseBody
+	public int facInsertTes( @RequestBody List<facilitiesVO> vo ,HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		EmpVO name = (EmpVO)session.getAttribute("infos");
+		String empNum = name.getEmpNum();
+		
+		return estimateService.facInsertTes(vo,empNum);
 	}
 	
 	//설비삭제

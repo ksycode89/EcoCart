@@ -87,7 +87,7 @@
 	
 	<select id="facList" resultType="com.cart.eco.open.service.facilitiesVO">
 		select 
-			f.sys_code, f.sys_name, f.sys_date, f.sys_ks, f.sys_model, f.sys_money, f.sys_status, f.test_cycle, e.emp_name
+			f.sys_code, f.sys_name, f.sys_date, f.sys_ks, f.sys_model, f.sys_money, f.sys_status, f.test_cycle, e.emp_name, f.sys_div
 		from facilities f, employees e
 		where f.emp_num = e.emp_num
 		order by sys_code
@@ -96,9 +96,9 @@
 	
 	
 	
-	<insert id="facInsert" parameterType="com.cart.eco.open.service.facilitiesVO">
+	<insert id="facInsertFam" parameterType="com.cart.eco.open.service.facilitiesVO">
 		<selectKey keyProperty="sysCode" order="BEFORE" resultType="String">
-		select  concat('sys' , 
+		select  concat('fam' , 
   					concat (to_char(sysdate,'YYmmdd'), 
         			concat ('-', nvl(max(to_number(substr(sys_code, 11))),0)+1 )
         			)) "sysCode"
@@ -107,10 +107,59 @@
 		</selectKey>
 	
 		insert into facilities 
-			( sys_code, sys_name, sys_date, sys_ks, sys_model, sys_money, sys_status, test_cycle, emp_num )
-		values (#{sysCode}, #{sysName}, current_date, #{sysKs}, #{sysModel}, #{sysMoney}, '미사용' , #{testCycle}, #{empNum} )
+			( sys_code, sys_name, sys_date, sys_ks, sys_model, sys_money, sys_status, test_cycle, emp_num, sys_div )
+		values (#{sysCode}, #{sysName}, current_date, #{sysKs}, #{sysModel}, #{sysMoney}, '미사용' , #{testCycle}, #{empNum}, '프레임' )
 		
 	</insert>
+	
+	<insert id="facInsertEng" parameterType="com.cart.eco.open.service.facilitiesVO">
+		<selectKey keyProperty="sysCode" order="BEFORE" resultType="String">
+		select  concat('eng' , 
+  					concat (to_char(sysdate,'YYmmdd'), 
+        			concat ('-', nvl(max(to_number(substr(sys_code, 11))),0)+1 )
+        			)) "sysCode"
+        	from facilities 
+		
+		</selectKey>
+	
+		insert into facilities 
+			( sys_code, sys_name, sys_date, sys_ks, sys_model, sys_money, sys_status, test_cycle, emp_num, sys_div)
+		values (#{sysCode}, #{sysName}, current_date, #{sysKs}, #{sysModel}, #{sysMoney}, '미사용' , #{testCycle}, #{empNum}, '엔진' )
+		
+	</insert>
+	
+	<insert id="facInsertEnd" parameterType="com.cart.eco.open.service.facilitiesVO">
+		<selectKey keyProperty="sysCode" order="BEFORE" resultType="String">
+		select  concat('end' , 
+  					concat (to_char(sysdate,'YYmmdd'), 
+        			concat ('-', nvl(max(to_number(substr(sys_code, 11))),0)+1 )
+        			)) "sysCode"
+        	from facilities 
+		
+		</selectKey>
+	
+		insert into facilities 
+			( sys_code, sys_name, sys_date, sys_ks, sys_model, sys_money, sys_status, test_cycle, emp_num, sys_div )
+		values (#{sysCode}, #{sysName}, current_date, #{sysKs}, #{sysModel}, #{sysMoney}, '미사용' , #{testCycle}, #{empNum}, '최종')
+		
+	</insert>
+	
+	<insert id="facInsertTes" parameterType="com.cart.eco.open.service.facilitiesVO">
+		<selectKey keyProperty="sysCode" order="BEFORE" resultType="String">
+		select  concat('tes' , 
+  					concat (to_char(sysdate,'YYmmdd'), 
+        			concat ('-', nvl(max(to_number(substr(sys_code, 11))),0)+1 )
+        			)) "sysCode"
+        	from facilities 
+		
+		</selectKey>
+	
+		insert into facilities 
+			( sys_code, sys_name, sys_date, sys_ks, sys_model, sys_money, sys_status, test_cycle, emp_num ,sys_div)
+		values (#{sysCode}, #{sysName}, current_date, #{sysKs}, #{sysModel}, #{sysMoney}, '미사용' , #{testCycle}, #{empNum} ,'테스트')
+		
+	</insert>
+	
 	
 	<delete id="facDelete" parameterType="com.cart.eco.open.service.facilitiesVO">
 		delete from facilities 

@@ -324,18 +324,29 @@
 	
 	function handleOnChange5(e){
 		if($("#select5").val() != '선택'){
-			var a = $("#select5").val()
-			$("#select8 option:selected").text(a)
+		/* 	var a = $("#select5").val()
+			$("#select8 option[]:selected").val(a)
 			$("#select8").attr('disabled', true)
+			 */
+			const text = e.value;
+			
+			//선택한 텍스트 출력
+			document.getElementById('select').value = text;
+			
 		}
 	} 
 
 	
 	function handleOnChange8(e){
 		if($("#select8").val() != '선택'){
-			var a = $("#select8").val()
+		/* 	var a = $("#select8").val()
 			$("#select5 option:selected").text(a)
-			$("#select5").attr('disabled', true)
+			$("#select5").attr('disabled', true) */
+			
+			const text = e.value;
+			
+			//선택한 텍스트 출력
+			document.getElementById('result').value = text;
 		}
 	
 	}
@@ -632,6 +643,7 @@
 		grid.unfilter('clientCode');
 		document.getElementById('InEstmtDateSearch').value = '';
 		grid.unfilter('estmtDate');
+		planAll.checked = true;
 	})	
 	
 	
@@ -642,22 +654,35 @@
 		grid3.removeCheckedRows(true)
 	}
 	
-	
+	// 한 줄 선택시 컬러.
+	grid.on('click', ev=>{
+		 var record = {
+	           start : [ev.rowKey,0],
+	           end : [ev.rowKey,grid.getColumns().length]
+	          }
+		            grid.setSelectionRange(record);
+    });
+
 	
 	
 	//모달창 끌때 reset되도록
 	$("#staticBackdrop").on('hidden.bs.modal', function (e) {
 		grid3.clear()
 		$("#deDate").val('');
+		
 		$("#select5").attr('disabled', false)
 		$("#select6").attr('disabled',false)
 		$("#select7").attr('disabled', false)
 		$("#select8").attr('disabled', false)
 		
+		var a = "----선 택----";
+		$("#select8 option[]:selected").val()
+		
 		document.getElementById("select5").value = '선택';
 		document.getElementById("select8").value = '선택';
 		document.getElementById("select7").value = '선택';
 		document.getElementById("select6").value = '선택';
+		
 		$("#productNum").val('');
 		
 			 

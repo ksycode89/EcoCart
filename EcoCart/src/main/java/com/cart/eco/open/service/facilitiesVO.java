@@ -17,10 +17,11 @@ public class facilitiesVO {
 	private Date sysDate;	//설비등록날짜
 	private String sysKs;	//설비규격
 	private String sysModel; //설비모델
-	private String sysMoney;	//설비가격
+	private int sysMoney;	//설비가격
 	private String sysStatus;	//설비상태 사용/미사용 
 	private int testCycle;		//점검주기
 	private String empNum;		//담당자사번
+	private String sysDiv; 		//설비구분 프레임/엔진/최종/테스트
 	
 	private String empName;
 

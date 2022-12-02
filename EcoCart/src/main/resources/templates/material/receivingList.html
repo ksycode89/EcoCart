@@ -107,7 +107,7 @@
 	
 		// 그리드 필터
 	proSearch.addEventListener('click', () => {
-		grid.filter('proName' , [{code:'contain', value:$('#InProduct').val()}])
+		grid.filter('proName' , [{code:'contain', value:$('#InProduct').val().toUpperCase()}])
 		grid.filter('proCode' , [{code:'contain', value:$('#InProductCode').val()}])
 			
 		
@@ -119,6 +119,7 @@
 		grid.unfilter('proName');
 		document.getElementById('InProductCode').value = '';
 		grid.unfilter('proCode');
+		planAll.checked = true;
 	})	
 		
 	planAll.addEventListener('click', () => {

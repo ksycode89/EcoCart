@@ -37,7 +37,12 @@ public interface EstimateMapper {
 	
 	public List<facilitiesVO> facList();
 	
-	public int facInsert(facilitiesVO vo);
+	public int facInsertFam(facilitiesVO vo);
+	public int facInsertEng(facilitiesVO vo);
+	public int facInsertEnd(facilitiesVO vo);
+	public int facInsertTes(facilitiesVO vo);
+	
+	
 	
 	public int facDelete(facilitiesVO vo);
 

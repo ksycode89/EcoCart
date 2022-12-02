@@ -441,6 +441,23 @@
 		
 		
 	}
+	// 한 줄 선택시 컬러.
+	grid.on('click', ev=>{
+		 var record = {
+	           start : [ev.rowKey,0],
+	           end : [ev.rowKey,grid.getColumns().length]
+	          }
+		            grid.setSelectionRange(record);
+    });
+	
+	// 한 줄 선택시 컬러.
+	grid3.on('click', ev=>{
+		 var record = {
+	           start : [ev.rowKey,0],
+	           end : [ev.rowKey,grid3.getColumns().length]
+	          }
+		            grid3.setSelectionRange(record);
+    });
 	
     //조회버튼 / 리셋버튼
    	planAll.addEventListener('click', () => {
@@ -455,7 +472,7 @@
     
  	Searchbtn.addEventListener('click', () => {
 		grid.filter('dlivyGCode' , [{code:'contain', value:$('#CodeSearch').val()}])
-		grid.filter('clientCode' , [{code:'contain', value:$('#ClientSearch').val()}])
+		grid.filter('clientCode' , [{code:'contain', value:$('#ClientSearch').val().toUpperCase()}])
 		grid.filter('empNum' , [{code:'contain', value:$('#EmpSearch').val()}])
 		
 		if($('#DateSearch').val() != '' ){
@@ -473,6 +490,7 @@
 		grid.unfilter('empNum');
 		document.getElementById('DateSearch').value = '';
 		grid.unfilter('dlivyDate');
+		planAll.checked = true;
 	})	 
 		
 	//모달창 끌때 reset되도록

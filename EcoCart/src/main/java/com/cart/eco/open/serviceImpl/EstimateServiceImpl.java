@@ -83,11 +83,44 @@ public class EstimateServiceImpl implements EstimateService {
 	//////////////////////////////////////////////////
 	
 	@Override
-	public int facInsert(List<facilitiesVO> vo,String empNum) {
+	public int facInsertFam(List<facilitiesVO> vo,String empNum) {
 		int result = 0;
 		for(int i = 0; i< vo.size(); i++) {
 			vo.get(i).setEmpNum(empNum);
-			result  += mapper.facInsert(vo.get(i));
+			result  += mapper.facInsertFam(vo.get(i));
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int facInsertEng(List<facilitiesVO> vo,String empNum) {
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			vo.get(i).setEmpNum(empNum);
+			result  += mapper.facInsertEng(vo.get(i));
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int facInsertEnd(List<facilitiesVO> vo,String empNum) {
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			vo.get(i).setEmpNum(empNum);
+			result  += mapper.facInsertEnd(vo.get(i));
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int facInsertTes(List<facilitiesVO> vo,String empNum) {
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			vo.get(i).setEmpNum(empNum);
+			result  += mapper.facInsertTes(vo.get(i));
 		}
 		
 		return result;

@@ -495,7 +495,7 @@
 	
  	Searchbtn.addEventListener('click', () => {
 		grid.filter('dlivyQCode' , [{code:'contain', value:$('#CodeSearch').val()}])
-		grid.filter('clientCode' , [{code:'contain', value:$('#ClientSearch').val()}])
+		grid.filter('clientCode' , [{code:'contain', value:$('#ClientSearch').val().toUpperCase()}])
 		grid.filter('empNum' , [{code:'contain', value:$('#EmpSearch').val()}])
 		
 		if($('#DateSearch').val() != '' ){
@@ -503,6 +503,22 @@
 			
 		}
 	})
+	// 한 줄 선택시 컬러.
+	grid.on('click', ev=>{
+		 var record = {
+	           start : [ev.rowKey,0],
+	           end : [ev.rowKey,grid.getColumns().length]
+	          }
+		            grid.setSelectionRange(record);
+    });
+	
+	grid4.on('click', ev=>{
+		 var record = {
+	           start : [ev.rowKey,0],
+	           end : [ev.rowKey,grid4.getColumns().length]
+	          }
+		            grid4.setSelectionRange(record);
+    });
 
 		
 	Resetbtn.addEventListener('click', () => {
@@ -514,6 +530,7 @@
 		grid.unfilter('empNum');
 		document.getElementById('DateSearch').value = '';
 		grid.unfilter('dlivyDate');
+		planAll.checked = true;
 	})	 
 	
     //모달창 끌때 reset되도록
