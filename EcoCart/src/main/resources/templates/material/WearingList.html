@@ -27,7 +27,7 @@
 		<div class="mb-3 row flex-right mt-3">
 			<div class="col-lg-auto col-sm-12 ">
 		        <button class="ml-5 btn btn-sm btn-primary" onclick="doCommit()">입고처리</button>
-		        <button class="ml-5 btn btn-sm btn-primary" onclick="commitOrder()">완료발주검색</button>
+		        <button class="ml-5 btn btn-sm btn-primary" onclick="commitOrder()">완료발주조회</button>
 				<button class="ml-5 btn btn-sm btn-secondary" onclick="window.location.reload()">초기화</button>
 				<button class="ml-5 btn btn-sm btn-secondary" onclick="test()">test</button>
 				
@@ -57,11 +57,7 @@
 		      </div>
 		        
 		      <div class="modal-body">
-				  <div class="container-fluid">
-							<label for="row1" style="width:80px; height: 30px; text-align:center;">주문코드</label>
-				        		<input type="text" class="form-control form-control-sm" style="width:150px; display:inline" id="orderCode"  readonly>
-							
-							<label for="row2" style="width:80px; height: 30px; text-align:center;"> 견적코드</label>
+				  <div class="container-fluid flex-right">
 				         		<select id="select4" class="btn" style="width:150px; border:1px solid #dce7f1; background-color:white" name="no">
 				         			<option value="0">==선택==</option>
 				         			<th:block th:each="e : ${orderList}">
@@ -164,15 +160,16 @@
 		
 	    <div id="gridre"style="margin-bottom: 50px" ></div>
 		<div id="gridreD"></div>	
-		<script>
 		
+	<script>
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 		
-	   const grid = new tui.Grid({
+	const grid = new tui.Grid({
 	          el: document.getElementById('gridM1'),
 	          scrollX: false,
 	          scrollY: false,
+	          bodyHeight: 500,
 	          rowHeaders : ['checkbox'],
 	          columns: [
 	            {
@@ -216,7 +213,7 @@
 	           
 	          ] ,pageOptions: {
 	    	        useClient: true,
-	    	        perPage:20
+	    	        perPage:8
 	    	      }
 	  });
 		    
@@ -337,7 +334,7 @@
 			]
 	});
 	empModal.addEventListener('shown.bs.modal', () => {
-		//모달창 새로고침
+	//모달창 새로고침
 		searchEmp.refreshLayout(); 
 		 $.ajax({
 	           url : "ajax/list",
@@ -395,7 +392,7 @@
         })
 	  })
       grid.on('click',(ab)=>{
-		   //console.log(ab.nativeEvent.target.innerText)
+     //console.log(ab.nativeEvent.target.innerText)
 	
 		   $.ajax({
 			   url:'/detailList',
@@ -436,7 +433,7 @@
 	   }
 	 
 	//필터
-		//발주확정 commitOrder
+	//발주확정 commitOrder
 	function commitOrder(){
 		$('#staticBackdrop').modal('show')
 	}
@@ -446,7 +443,7 @@
 	   	      grid.refreshLayout(); //모달창 새로고침
 	   	      grid2.refreshLayout(); //모달창 새로고침
 	   	 })
-	  //조회버튼 	 
+	//조회버튼 	 
 	function searchOrder(){
 		let orderN = $('#select4').val();
 			   $.ajax({
@@ -528,6 +525,10 @@
 					         	 },
 					           success : function(data){
 					          		swal('입고완료!')
+					          		grid.clear()
+					          		grid2.clear()
+					          		gridre.clear()
+					          		gridred.clear()
 					           },
 					           error : err=>{
 					              console.log(err)
@@ -551,15 +552,14 @@
 		}
 	})
 	gridWH.on('click',ev=>{
-		//console.log('클릭된 상세 행',gridredRow)
-		//console.log('클린된 창고 정보 ',gridWH.getRow(ev.rowKey))
+	//console.log('클릭된 상세 행',gridredRow)
+	//console.log('클린된 창고 정보 ',gridWH.getRow(ev.rowKey))
 		gridred.setValue(gridredRow,'whCode',gridWH.getRow(ev.rowKey).whCode)
 		
 		$('#WHcodemodal').modal('hide')
 	})
 	
 	//사원선택 gridr
-	
 	gridre.on('click',ev=>{
 	
 		gridredRow = ev.rowKey
@@ -569,12 +569,10 @@
 	})
 	
 	searchEmp.on('click',ev=>{
-	console.log('클릭된 상세 행',searchEmp.getRow(ev.rowKey))
-	//console.log('클린된 창고 정보 ',gridWH.getRow(ev.rowKey))
-	gridre.setValue(0,'manager',searchEmp.getRow(ev.rowKey).empNum)
-	
-	
-	$('#empModal').modal('hide')
+		console.log('클릭된 상세 행',searchEmp.getRow(ev.rowKey))
+		//console.log('클린된 창고 정보 ',gridWH.getRow(ev.rowKey))
+		gridre.setValue(0,'manager',searchEmp.getRow(ev.rowKey).empNum)
+		$('#empModal').modal('hide')
 	})
 	
 	function test(){
@@ -583,9 +581,6 @@
 		)
 	}
 	
-	
-	
-	 
   </script>
 	</div>
 </body>

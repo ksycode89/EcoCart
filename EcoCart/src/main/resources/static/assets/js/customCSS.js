@@ -13,6 +13,6 @@ function swal (a,b,c){
 	Swal.fire({
       title: a,
       text: b,
-      icon: 'error',
+      icon: c,
     })
 }
