@@ -6,7 +6,14 @@ const Toast = Swal.mixin({
     timerProgressBar: false,
    
 })
-
+function toast (a,b){
+ Toast.fire({
+ 
+    icon: a,
+    title: b
+					})  
+}
+					
 function swal (a,b,c){
 	Swal.fire({
       title: a,
@@ -38,5 +45,24 @@ Swal.fire({
    }
 });
 	 	
-	 
 } 
+
+	function cSwal(a,callB,c){
+		
+		Swal.fire({
+		   title: a+'하시겠습니까?',
+		   icon: 'warning',
+		   
+		   showCancelButton: true, 
+		   confirmButtonColor: '#3085d6', 
+		   cancelButtonColor: '#d33', 
+		   confirmButtonText: '확인', 
+		   cancelButtonText: '취소', 
+		   
+		}).then(result => {
+		   if (result.isConfirmed) { 
+		   callB()
+		    
+		   }
+		});
+	}

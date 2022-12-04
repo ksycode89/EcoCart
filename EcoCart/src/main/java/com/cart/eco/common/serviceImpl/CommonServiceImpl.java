@@ -62,6 +62,12 @@ public class CommonServiceImpl implements CommonService {
 		
 		return commonMapper.selectProItem();
 	}
+	// 상위공통코드 부르기 null
+	@Override
+	public List<CommonVO> commonGroupNull(){
+		
+		return commonMapper.commonGroupNull();
+	}
 
 
 	
