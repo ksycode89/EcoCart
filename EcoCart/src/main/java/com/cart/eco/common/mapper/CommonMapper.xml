@@ -29,7 +29,12 @@
       FROM client
    </select>
    
-   
+   <!--  상위공통코드 호출 구 -->
+   <select id="commonGroupNull" resultType="com.cart.eco.common.service.CommonVO">
+   		SELECT *
+   		FROM common_code
+   		WHERE code_group is null
+   </select>
    
    <!--공통코드 - 전체조회  -->
    <select id="callCommon" resultType="com.cart.eco.common.service.CommonVO" parameterType="com.cart.eco.common.service.CommonVO">

@@ -31,7 +31,7 @@
       	</if>
 		
 		<if test="comments != null and !comments.equals('') ">
-	         comments
+	         comments,
       	</if>
       		client_hire,client_grade	)
       		

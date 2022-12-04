@@ -6,6 +6,7 @@ import javax.security.auth.message.callback.SecretKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.jaas.DefaultLoginExceptionResolver;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,9 @@ import com.cart.eco.common.service.WHService;
 import com.cart.eco.common.service.WHVO;
 import com.cart.eco.material.service.ReDetailService;
 import com.cart.eco.material.service.ReDetailVO;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import ch.qos.logback.core.net.server.Client;
 import groovy.util.logging.Log4j2;
@@ -282,8 +286,14 @@ public class CommonController {
 	// 공통코드이동.
 
 	@GetMapping("/coCode")
-	public String moveCoCode() {
-
+	public String moveCoCode(Model model) {
+		CommonVO vo = new CommonVO();
+		List<CommonVO> list =commonService.commonGroupNull();
+		
+		 String json  = new Gson().toJson(list);
+		 System.out.println(json);
+	
+			model.addAttribute("list",json);
 		return "common/coCode";
 	}
 

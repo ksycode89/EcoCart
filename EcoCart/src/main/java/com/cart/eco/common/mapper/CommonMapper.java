@@ -15,7 +15,8 @@ public interface CommonMapper {
 	
 	// 공통코드 - 품목군코드, 품목군명 조회
 	public List<CommonVO> selectProItem();
-	
+	//상위공통코드 부르기 (group null)
+	public List<CommonVO> commonGroupNull();
 	
     //거래처리스트
 	public List<ClientVO>callClient();
