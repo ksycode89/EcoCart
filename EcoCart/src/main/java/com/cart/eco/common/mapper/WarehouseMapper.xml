@@ -60,14 +60,31 @@
 	<update id="WHUpdate" parameterType="com.cart.eco.common.service.WHVO">
 		UPDATE warehouse 
 		<set>
-			 <if test="whUsed != null and !whUsed.equals('')">
+			<if test="whCode != null and !whCode.equals('')">
+		        wh_code=#{whUsed},
+		     </if>
+			<if test="whName != null and !whName.equals('')">
+		        wh_name=#{whName},
+		     </if>
+		     <if test="whUsed != null and !whUsed.equals('')">
 		        wh_used=#{whUsed},
 		     </if>
 		      <if test="whManager != null and !whManager.equals('')">
-		        wh_manager=#{whManager}
+		        wh_manager=#{whManager},
+		     </if>
+		      <if test="whExplain != null and !whExplain.equals('')">
+		        wh_explain=#{whExplain},
+		     </if>
+		     <if test="comments != null and !comments.equals('')">
+		        comments=#{comments},
 		     </if>
 		</set>
 		WHERE wh_code= #{whCode}
 	</update>
+	
+	<delete id="deleteWare" parameterType="com.cart.eco.common.service.WHVO">
+		DELETE FROM warehouse
+		WHERE wh_code = #{whCode}
+	</delete>
 
 </mapper>

@@ -404,6 +404,19 @@ public class CommonController {
 		System.out.println("결과값 합산 : " + result);
 		return result;
 	}
+	//창고삭제
+	@PostMapping("/deleteWare")
+	@ResponseBody
+	public int deleteWare(@RequestBody ToastGridVO<WHVO> vo) {
+		System.out.println("update : " + vo.getUpdatedRows());
+		int result = 0;
+		for (WHVO wh : vo.getDeletedRows()) {
+			
+			result += whService.deleteWare(wh);
+		}
+		System.out.println("결과값 합산 : " + result);
+		return result;
+	}
 //	====================BOM=======================================
 
 	// 창고등록

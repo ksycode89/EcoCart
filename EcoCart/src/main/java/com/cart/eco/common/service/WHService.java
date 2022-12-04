@@ -11,5 +11,7 @@ public interface WHService {
 	  public int WHInsert(WHVO vo);
 	  //창고수정
 	  public int WHUpdate(WHVO vo);
+	  //창고수정
+	  public int deleteWare(WHVO vo);
 
 }

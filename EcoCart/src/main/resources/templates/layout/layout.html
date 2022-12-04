@@ -73,11 +73,11 @@
 							<a href="layout.html">
 <!-- --------------------------sec------------------- -->			
 <div sec:authorize="isAuthenticated()">
-	<i class="bi bi-stack"></i>
-	<!-- <span th:text="${session.infos.empName}"> USER_ID </span>  -->
-		Logged user: <span sec:authentication="name">Bob</span><br>
-		omg : <span>[[${name}]]</span>
-	  	Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
+	<i class="bi bi-stack"></i><br>
+	  <!--   이름 : <span th:text="${session.infos.empName}"></span> <br> -->
+		사번 : <span sec:authentication="name">Bob</span><br>
+		부서 : <span>[[${name}]]</span><br>
+	  	Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN, ROLE_EMP]</span>
 		<form action="logout" method="post">
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 			<button>로그아웃</button>

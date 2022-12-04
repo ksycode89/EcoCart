@@ -84,6 +84,7 @@
 				<button class="ml-5 btn btn-sm btn-primary" onclick="addRow()"><svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></button>
 				<button class="ml-5 btn btn-sm btn-primary" onclick="updateWH()">수정</button>
 				<button class="ml-5 btn btn-sm btn-secondary" onclick="reset()">초기화</button>
+				<button class="ml-5 btn btn-sm btn-secondary" onclick="deleteWare()">삭제</button>
 			</div>
 	</div>
 	</div>	
@@ -290,7 +291,7 @@
    		    readData  : { url: '', method: 'GET' },
    		    createData: { url: '/WHInsert', method: 'POST' },
    		    updateData: { url: '/WHUpdate', method: 'POST' },
-   		    deleteData : { url: '/', method: 'POST' },
+   		    deleteData : { url: '/deleteWare', method: 'POST' },
    		    updateModifiy: { url: '/', method: 'POST' },
    		  }
    		};
@@ -607,7 +608,25 @@
 	///버튼들///
 	//등록
 	function insertWH(){
-	    gird1.request('createData');
+		if(gird1.getModifiedRows().createdRows.length !=0){
+			console.log(gird1.getData(gird1.getData().length-1)[0].whCode)
+	  	 if(gird1.getData(gird1.getData().length-1)[0].whCode == null || gird1.getData(gird1.getData()[0].length-1).whCode==''){
+	  		 toast('warning','창고코드를 입력해주세요')
+	  	 }else if (gird1.getData(gird1.getData().length-1)[0].whName == null || gird1.getData(gird1.getData()[0].length-1).whName==''){
+	  		 toast('warning','창고이름을 입력해주세요')
+	  	 }else if (gird1.getData(gird1.getData().length-1)[0].whUsed == null || gird1.getData(gird1.getData()[0].length-1).whUsed==''){
+	  		 toast('warning','창고사용여부를 입력해주세요')
+	  	 }else if (gird1.getData(gird1.getData().length-1)[0].whHire == null || gird1.getData(gird1.getData()[0].length-1).whHire==''){
+	  		 toast('warning','창고등록일을 입력해주세요')
+	  	 }else{
+			gird1.request('createData');
+			gird1.on('response',()=>{
+				swal('success','시행완료')
+			})
+	  	 }
+		}else{
+			toast('warning','추가된 창고가없습니다.')
+		}
 	}
 	//리셋
 	function reset(){
@@ -658,14 +677,13 @@
 	function addRow(){
 				let data = [
 					 {"whField" : $('#whfield').val(),"whManager": $('#empcode').val()}
-									
 					]
-				
 				console.log( $('#whcode').val())
+				
 		     if ($('#empcode').val() ==null || $('#empcode').val() ==''){
-				alert('담당자를 선택해주세요')
-			}else if ($('#whfield').val() =='none`' || $('#whfield').val() ==''){
-				alert('창고분류를 선택해주세요 ')
+				toast('warning','담당자를 선택해주세요')
+			}else if ($('#whfield').val() =='none' || $('#whfield').val() ==''){
+				toast('warning','창고분류를 선택해주세요 ')
 			}else {
 				gird1.refreshLayout(); 
 				gird1.appendRows(data);
@@ -690,7 +708,13 @@
 				 
 			 })
 		 }
-		 
+	 function deleteWare(){
+			let checkRowKeys = gird1.getCheckedRowKeys();
+	        gird1.removeRows(checkRowKeys);
+	      	gird1.request('deleteData');
+	      	swal('성공적으로 삭제되었습니다.')
+		} 
+	 
 	
 	</script>
 </div>

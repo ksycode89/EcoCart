@@ -32,5 +32,11 @@ public class WHServiceImple implements WHService {
 		
 		return WHmapper.WHUpdate(vo);
 	}
+	//삭제
+	@Override
+	public int deleteWare(WHVO vo) {
+		
+		return WHmapper.deleteWare(vo);
+	}
 
 }
