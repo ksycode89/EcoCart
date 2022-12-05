@@ -58,8 +58,23 @@
    </select>
 	
 	<insert id="callInsert" parameterType="com.cart.eco.common.service.CommonVO" >
-		insert into common_code
-		values (#{codeId},#{codeName},#{codeGroup},#{codeContent},#{codeUsed})
+		insert into common_code (code_id,code_name,
+								<if test="codeGroup != null and !codeGroup.equals('')">
+						            code_group,
+						         </if>
+						         <if test="codeContent != null and !codeContent.equals('')">
+						            code_content,
+						         </if>
+						         code_used	
+		)
+		values (#{codeId},#{codeName},
+		<if test="codeGroup != null and !codeGroup.equals('')">
+            #{codeGroup},
+         </if>
+         <if test="codeContent != null and !codeContent.equals('')">
+            #{codeContent},
+         </if>
+		#{codeUsed})
 	</insert>
 	
 	<update id="callupdate" parameterType="com.cart.eco.common.service.CommonVO">

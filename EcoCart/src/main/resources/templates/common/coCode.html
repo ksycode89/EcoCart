@@ -11,7 +11,7 @@
 
 </head>
 <body>
-	<div layout:fragment="header">
+<!-- 	<div layout:fragment="header">
 
 		<header class='mb-3'>
 			<nav class="navbar navbar-expand navbar-light ">
@@ -25,7 +25,7 @@
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
-						<h1>공통코드관리</h1>
+					
 						<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 							<li class="nav-item dropdown me-1"><a
 								class="nav-link active dropdown-toggle" href="#"
@@ -88,10 +88,11 @@
 				</div>
 			</nav>
 		</header>
-	</div>
+	</div> -->
 
 	<div layout:fragment="content">
-		<div class="row">
+		<h2>공통코드</h2>
+		<div class="row mt-4">
 			<div class="col-md-3 mb-1">
 				<div class="input-group mb-3">
 					<label for="staticEmail" class="col-sm-3 col-form-label">공통코드</label>
@@ -113,7 +114,7 @@
 				</div>
 			</div>
 		</div>
-		<div  class="row"  style="margin-bottom: -40px ; margin-top: 20px">
+		<div  class="row mt-5"  style="margin-bottom: -40px  ">
 			<div class="col-lg-4" style=" display: flex; justify-content:flex-end; ">
 				<button class="ml-5 btn btn-sm btn-primary" onclick="insertmast()"><svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></button>
 			</div>
@@ -122,7 +123,8 @@
 		        <button class="ml-5 btn btn-sm btn-primary" onclick="commonBtnSave()">등록</button>
 				<button class="ml-5 btn btn-sm btn-primary" onclick="addRow()"><svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></button>
 				<button class="ml-5 btn btn-sm btn-primary" onclick="commonBtnUpdate()">수정</button>
-				<button class="ml-5 btn btn-sm btn-secondary" onclick="  location.reload();">초기화</button>			
+				<button class="ml-5 btn btn-sm btn-secondary" onclick="location.reload();">초기화</button>			
+				<button class="ml-5 btn btn-sm btn-secondary" onclick="commonBtnDelete();">삭제</button>			
 		    </div>
 		</div>
 		<!--modal  -->
@@ -204,6 +206,7 @@
             el : document.getElementById('common-code01'), // Container element
             scrollX : false,
             scrollY : false,
+            rowHeaders: ['checkbox'],
             columns : [ {
                header : '공통코드',
                name : 'codeId', 
@@ -344,7 +347,7 @@
            
          })
          //단건누를시 우측에서 상세정보
-         let mastCode ;
+         let mastCode= '' ;
        grid2.on('click',ev=>{
     	   mastCode= ''
       	 //$('#common-code-detail').css('display','block')
@@ -377,7 +380,10 @@
          		 ev.xhr.setRequestHeader(header, token);
          		  console.log("aa", ev.xhr)
          })
-         
+	         grid2.on('beforeRequest', function(ev) {
+	         		 ev.xhr.setRequestHeader(header, token);
+         		  	console.log("aa", ev.xhr)
+         })
          //공통코드조회
          function commonBtnDo(){
         	 
@@ -406,11 +412,7 @@
        		
        	}
        	
-       	gridInsert.on('click',ev=>{
-       		let tr = ev.nativeEvent.path[0].cellIndex
-       		let tr2 =  ev
-       		
-       	})
+       
        	
        	function commonBtnSave (){
 		  	let  checkadd = 0
@@ -434,18 +436,31 @@
        	  /*   console.log(a); */
        	}
        	function commonBtnUpdate(){
+       	 grid2.request('updateData');
        	 grid3.request('updateData');
        	}
        	//행삭제
        function commonBtnDelete(){
       	
 		let test = grid3.getCheckedRows()
+		let test2 = grid2.getCheckedRows()
 		
 	    $(test).each((a,b)=>{
 	    	grid3.removeRow(b.rowKey);
 	
 	    })
-      	 grid3.request('deleteData');
+	    $(test2).each((a,b)=>{
+	    	grid2.removeRow(b.rowKey);
+	
+	    })
+	   	console.log('de2',grid2.getModifiedRows().deletedRows)
+	   	console.log('de3',grid3.getModifiedRows().deletedRows)
+	   	if(grid2.getModifiedRows().deletedRows.length != 0 ){
+      	 grid2.request('deleteData');
+	   	}
+		if(grid3.getModifiedRows().deletedRows.length != 0){
+      		 grid3.request('deleteData');
+		   	}
       	// grid3.blur(); 윈도우 포커스 제거  
        	}
        function commonBtnReset(){
@@ -460,7 +475,8 @@
       }
       //하위코드 
      function addRow(){
-  	  if(mastCode.codeId == ''){
+    	  console.log(mastCode)
+  	  if(mastCode.codeId == '' || mastCode.codeId == null || mastCode==''){
   		  toast('info','상위코드를 선택해주세요')
   	  }else{
 	  		  
@@ -480,6 +496,7 @@
       	grid2.appendRow();	
       	}
       }
+ 
       </script>
 		<!-- end layout -->
 
