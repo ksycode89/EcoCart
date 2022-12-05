@@ -45,8 +45,6 @@
 			
 			 <div>
 			 	<button onclick="facDelete()" type="button" class="btn btn-sm btn-primary"style="float:right; margin:5px; margin-right: 5px" >삭제</button>
-            	<button type="button" class="btn btn-sm btn-primary" style="float:right; margin:5px; margin-right: 5px" onclick="facInsert()">설비등록</button>   
-            	<button onclick="deletePro()" type="button" class="btn btn-sm btn-primary" style="float:right; margin:5px; margin-right: 5px" >행삭제</button>
 				<button id="showModal" type="button" class="btn btn-sm btn-primary" style= "float:right;  margin:5px; "
                   data-bs-toggle="modal" data-bs-target="#staticBackdrop" >설비 등록</button>
             </div>
@@ -397,8 +395,8 @@
     
     
 	goSearch.addEventListener('click', () => {
-		grid.filter('sysCode' , [{code:'contain', value:$('#sysCode').val()}])
-		grid.filter('sysName' , [{code:'contain', value:$('#sysName').val()}])
+		grid.filter('sysCode' , [{code:'contain', value:$('#sysCode').val().toUpperCase()}])
+		grid.filter('sysName' , [{code:'contain', value:$('#sysName').val().toUpperCase()}])
 			
 		
 	});
@@ -407,6 +405,9 @@
 	goReset.addEventListener('click', () => {
 		sysAll.checked = true;
 		planAll.checked = true;
+		grid.unfilter('sysStatus');
+		grid.unfilter('sysDiv');
+		
 		document.getElementById('sysCode').value = '';
 		grid.unfilter('sysCode');
 		document.getElementById('sysName').value = '';
@@ -415,7 +416,19 @@
 		grid.unfilter('sysDiv');
 	})	
 		
+	//모달창 끌때 reset되도록
+	$("#staticBackdrop").on('hidden.bs.modal', function (e) {
 		
+		document.getElementById("selectSys").value = '선택';
+		
+		$("#sysModel").val('');
+		$("#sysMoney").val('');
+		$("#sysKs").val('');
+		$("#sysNamee").val('');
+		$("#testCycle").val('');
+		
+			 
+	});	
 	</script>
 	
 	</div>

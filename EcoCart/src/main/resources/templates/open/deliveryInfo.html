@@ -16,9 +16,17 @@
 				
 		<div class="mb-1">
 		
+			<div class="filters" style="height:35px">
+				<label for="planStatus" style="width:100px">출고방법</label>
+				<label><input type="radio" id="planAll"  name="plan"value="all" checked>전체</label>&nbsp;
+				<label><input type="radio" id="planA"  name="plan" value="start">차량</label>&nbsp;
+				<label><input type="radio" id="planB"  name="plan" value="wait">선박</label>
+				<label><input type="radio" id="planC"  name="plan" value="wait">비행기</label>
+			</div>
+		
            <div style="height:50px;">
 				<label for="planName" style="width:100px">배송코드</label>
-				<input type="text" class="form-control" style="width:200px; display:inline" id="ProCode" placeholder="베송코드">&nbsp;
+				<input type="text" class="form-control" style="width:200px; display:inline" id="ProCode" placeholder="배송코드">&nbsp;
 				
 				<input type="hidden" class="form-control" style="width:200px; display:inline" id="getorderCode" readonly>&nbsp;
 				<input type="hidden" class="form-control" style="width:200px; display:inline" id="getClientCode" readonly>&nbsp;
@@ -33,11 +41,6 @@
 			<div style="height:50px;">
 				<label for="planName" style="width:100px">거래처</label>
 				<input type="text" class="form-control"style="width:200px; display:inline" placeholder="거래처명" id="clientName">&nbsp;
-            </div>
-            
-            <div style="height:50px;">
-				<label for="planName" style="width:100px">출고방법</label>
-				<input type="text" class="form-control"style="width:200px; display:inline" placeholder="출고방법" id="dlivyMth">&nbsp;
 				<button type="button" class="btn btn-sm btn-primary" id="Searchbtn">검색</button>&nbsp;
 				<button type="button" class="btn btn-sm btn-secondary" id="Resetbtn">초기화</button>
             </div>
@@ -127,13 +130,14 @@
              {
              	header: '출고방법',
                 name: 'dlivyMth',
+                filter : 'text',
                 formatter: 'listItemText',
                 editor: {
                     type: 'select',
                     options: {
                       listItems: [
 	                      {
-	                        text: '챠량',
+	                        text: '차량',
 	                        value: '차량'
 	                      },
 	                      {
@@ -251,6 +255,7 @@
 		success : function(result) {
 			console.log(result);
 			grid2.resetData(result);
+			
 		},
 		error : function(error){
 			console.log(error);
@@ -354,29 +359,40 @@
 	
 	//필터
 	Searchbtn.addEventListener('click', () => {
-		grid.filter('dlivyProCode' , [{code:'contain', value:$('#ProCode').val()}])
+		grid.filter('dlivyProCode' , [{code:'contain', value:$('#ProCode').val().toUpperCase()}])
 		grid.filter('clientName' , [{code:'contain', value:$('#clientName').val().toUpperCase()}])
-		grid.filter('dlivyMth' , [{code:'contain', value:$('#dlivyMth').val()}])
 		if($('#dlivyDate').val() != '' ){
 			grid.filter('dlivyDate' , [{code:'beforeEq', value:$('#dlivyDate').val()}])
 			
 		}
+		
 	});
 
 		
 	Resetbtn.addEventListener('click', () => {
+		planAll.checked = true;
+		grid.unfilter('dlivyMth')
 		document.getElementById('ProCode').value ='';
 		grid.unfilter('dlivyProCode');
 		document.getElementById('clientName').value = '';
 		grid.unfilter('clientName');
-		document.getElementById('dlivyMth').value = '';
-		grid.unfilter('dlivyMth');
 		document.getElementById('dlivyDate').value = '';
 		grid.unfilter('dlivyDate');
 	})	 
       
       
-	
+	planAll.addEventListener('click', () => {
+   		grid.unfilter('dlivyMth');
+    })
+    planA.addEventListener('click', () => {
+    	grid.filter('dlivyMth', [{code:'eq', value:'차량'}]);
+    })
+    planB.addEventListener('click', () => {
+    	grid.filter('dlivyMth', [{code:'eq', value:'선박'}]);
+    })
+    planC.addEventListener('click', () => {
+    	grid.filter('dlivyMth', [{code:'eq', value:'비행기'}]);
+    })
      
      
      </script>

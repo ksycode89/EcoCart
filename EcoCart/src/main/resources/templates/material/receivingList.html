@@ -74,7 +74,8 @@
 		         },
 		         {
 		             header: '물품구분',
-		             name: 'proGroup'
+		             name: 'proGroup',
+		           	 filter : 'text'
 		         },
 	        ],
          pageOptions: {
@@ -94,8 +95,6 @@
 			
 			url:'/productList',
 			success:function(result){
-				console.log("연결");
-				console.log(result);
 				grid.resetData(result);
 			},
 			error : function(error){
@@ -108,7 +107,7 @@
 		// 그리드 필터
 	proSearch.addEventListener('click', () => {
 		grid.filter('proName' , [{code:'contain', value:$('#InProduct').val().toUpperCase()}])
-		grid.filter('proCode' , [{code:'contain', value:$('#InProductCode').val()}])
+		grid.filter('proCode' , [{code:'contain', value:$('#InProductCode').val().toUpperCase()}])
 			
 		
 	});
@@ -121,7 +120,10 @@
 		grid.unfilter('proCode');
 		planAll.checked = true;
 	})	
-		
+	
+	
+	
+	
 	planAll.addEventListener('click', () => {
     	grid.unfilter('proGroup');
     })

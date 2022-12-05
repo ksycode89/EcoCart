@@ -23,6 +23,7 @@ import com.cart.eco.open.service.DeliveryQDVO;
 import com.cart.eco.open.service.DeliveryQService;
 import com.cart.eco.open.service.DeliveryQVO;
 import com.cart.eco.open.service.OrderDVO;
+import com.cart.eco.open.service.OrdersVO;
 
 @Controller
 public class DeliveryQController {
@@ -99,6 +100,14 @@ public class DeliveryQController {
 	public int updateOrderNum(@RequestBody List<OrderDVO> vo) {
 
 		return deliverQService.updateOrderNum(vo);
+	}
+
+	//주문서 상태 업ㅇ데이트 완료
+	@PostMapping("/updateOrder")
+	@ResponseBody
+	public int updateOrder(@RequestBody List<OrdersVO> vo) {
+		return deliverQService.updateOrder(vo);
+
 	}
 
 	/////////////////////////////////////////////////////////////////////////

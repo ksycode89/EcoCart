@@ -222,8 +222,7 @@
 		//마감 상태 업데이트 
 		function updateOrderSt(){
 			Swal.fire({
-			   title: '정말로 그렇게 하시겠습니까?',
-			   text: '다시 되돌릴 수 없습니다. 신중하세요.',
+			   title: '주문마감하겠습니까?',
 			   icon: 'warning',
 			   
 			   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
@@ -232,7 +231,7 @@
 			   confirmButtonText: '승인', // confirm 버튼 텍스트 지정
 			   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
 			   
-			   reverseButtons: true, // 버튼 순서 거꾸로
+			   reverseButtons: false, // 버튼 순서 거꾸로
 			   
 			}).then(result => {
 			   // 만약 Promise리턴을 받으면,
@@ -304,7 +303,7 @@
 	
 	
 	estmtDateSearch.addEventListener('click', () => {
-		grid.filter('orderCode' , [{code:'contain', value:$('#InEstmtCodeSearch').val()}])
+		grid.filter('orderCode' , [{code:'contain', value:$('#InEstmtCodeSearch').val().toUpperCase()}])
 		grid.filter('clientName' , [{code:'contain', value:$('#InClientCodeSearch').val().toUpperCase()}])
 		if($('#InEstmtDateSearch').val() != '' ){
 			grid.filter('orderDate' , [{code:'beforeEq', value:$('#InEstmtDateSearch').val()}])
@@ -321,6 +320,7 @@
 		document.getElementById('InEstmtDateSearch').value = '';
 		grid.unfilter('orderDate');
 		planAll.checked = true;
+		grid.unfilter('orderSt')
 	})		
 	      
       

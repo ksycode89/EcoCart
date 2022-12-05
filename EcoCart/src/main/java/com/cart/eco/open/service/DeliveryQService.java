@@ -31,6 +31,8 @@ public interface DeliveryQService {
 	//요청 시 주문서 남품수량 +
 	public int updateOrderNum(List<OrderDVO> vo);
 	
+	public int updateOrder(List<OrdersVO> vo);
+	
 	////////////////////////////////////////////////////////////////////////////
 	
 	//출고 등록2

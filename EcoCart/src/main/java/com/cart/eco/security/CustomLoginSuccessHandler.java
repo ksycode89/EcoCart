@@ -29,6 +29,7 @@ public class CustomLoginSuccessHandler
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 		Authentication authentication) throws IOException, ServletException {
 		String name = authentication.getName();
+		
 		System.out.println(name);
 //		System.out.println("CustomLoginSuccessHandler : " + name);
 	

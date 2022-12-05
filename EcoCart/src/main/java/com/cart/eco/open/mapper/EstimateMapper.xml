@@ -59,7 +59,7 @@
 	
 	<!-- 견적서 번호 가져오기 -->
 	<select id="getEstmtCode" resultType="com.cart.eco.open.service.EstimateVO" parameterType="String">
-		select  concat('est' , 
+		select  concat('EST' , 
   					concat (to_char(sysdate,'YYmmdd'), 
         			concat ('-', nvl(max(to_number(substr(estmt_code, 11))),0)+1 )
         			)) "estmtCode"
@@ -98,7 +98,7 @@
 	
 	<insert id="facInsertFam" parameterType="com.cart.eco.open.service.facilitiesVO">
 		<selectKey keyProperty="sysCode" order="BEFORE" resultType="String">
-		select  concat('fam' , 
+		select  concat('FAM' , 
   					concat (to_char(sysdate,'YYmmdd'), 
         			concat ('-', nvl(max(to_number(substr(sys_code, 11))),0)+1 )
         			)) "sysCode"
@@ -114,7 +114,7 @@
 	
 	<insert id="facInsertEng" parameterType="com.cart.eco.open.service.facilitiesVO">
 		<selectKey keyProperty="sysCode" order="BEFORE" resultType="String">
-		select  concat('eng' , 
+		select  concat('ENG' , 
   					concat (to_char(sysdate,'YYmmdd'), 
         			concat ('-', nvl(max(to_number(substr(sys_code, 11))),0)+1 )
         			)) "sysCode"
@@ -130,7 +130,7 @@
 	
 	<insert id="facInsertEnd" parameterType="com.cart.eco.open.service.facilitiesVO">
 		<selectKey keyProperty="sysCode" order="BEFORE" resultType="String">
-		select  concat('end' , 
+		select  concat('END' , 
   					concat (to_char(sysdate,'YYmmdd'), 
         			concat ('-', nvl(max(to_number(substr(sys_code, 11))),0)+1 )
         			)) "sysCode"
@@ -146,7 +146,7 @@
 	
 	<insert id="facInsertTes" parameterType="com.cart.eco.open.service.facilitiesVO">
 		<selectKey keyProperty="sysCode" order="BEFORE" resultType="String">
-		select  concat('tes' , 
+		select  concat('TES' , 
   					concat (to_char(sysdate,'YYmmdd'), 
         			concat ('-', nvl(max(to_number(substr(sys_code, 11))),0)+1 )
         			)) "sysCode"

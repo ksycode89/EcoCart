@@ -26,6 +26,6 @@ public interface EmpService {
 	public EmpVO selectManager(String manager);
 
 	//단건 사원 조회
-		public EmpVO selectEmpOne(String empNum);
+	public EmpVO selectEmpOne(String empNum);
 
 }
