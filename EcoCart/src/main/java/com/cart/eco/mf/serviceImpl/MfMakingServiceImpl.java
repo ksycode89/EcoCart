@@ -72,6 +72,7 @@ public class MfMakingServiceImpl implements MfMakingService {
 	@Override
 	public int updateMfFinish(List<MfMakingVO> vo) {
 		int result = 0;
+		result += mapper.updateOrderFinish(vo.get(0));
 		result += mapper.updateMfPlanFinish(vo.get(0));
 		result += mapper.updateMfOrderFinish(vo.get(0));
 		return result ;
