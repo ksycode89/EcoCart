@@ -72,8 +72,14 @@
 	</insert>
 <!-- 	bom자제품검 -->
 	<select id="bomChildren" parameterType="com.cart.eco.common.service.BomVO" resultType="com.cart.eco.common.service.BomVO">
-		SELECT * 
+		SELECT bom_code,por_code,bom_hire,bom_fire,p.pro_name "bom_need_day",bom_group
 		FROM bom_children 
 		WHERE bom_code = #{bomCode}
+	</select>
+	
+	<select id="getChildPro" resultType="com.cart.eco.common.service.BomVO">
+		SELECT *
+		FROM  bom
+		WHERE bom_group = 'CP'
 	</select>
 </mapper>

@@ -56,6 +56,15 @@ public class BomServiceImpl  implements BomService{
 		return result;
 	}
 
+	@Override
+	public List<BomVO> getChildPro() {
+	
+		return mapper.getChildPro();
+	}
+
+
+	
+
 	
 
 }

@@ -142,7 +142,7 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 		// TODO Auto-generated method stub
 		int result = 0;
 		for(int i = 0; i< vo.size(); i++) {
-			
+			System.out.println("testQst"+vo.get(i));
 			result  += mapper.updateQst(vo.get(i));
 		}
 		return result;

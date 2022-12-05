@@ -19,6 +19,10 @@ public interface BomMapper {
 		
 		//bom option 등록
 		public int bomInsertOP(BomChildernVO vo);
+		
+		//반제자불러오기 
+		public List<BomVO>getChildPro();
+		
 
 
 }
