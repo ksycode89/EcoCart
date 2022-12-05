@@ -37,6 +37,9 @@ public interface MfMakingMapper {
 	//생산가동수치변경
 	public int updateMakingResult(MfMakingVO vo);
 	
+	//주문서수정(생산중->생산완료)
+	public int updateOrderFinish(MfMakingVO vo);
+	
 	//생산계획상태수정(진행->완료)
 	public int updateMfPlanFinish(MfMakingVO vo);
 	

@@ -91,7 +91,7 @@
 		});
 		
 		processGrid.hideColumn('empNum');
-		//processGrid.hideColumn('sysDiv');
+		processGrid.hideColumn('sysDiv');
 		
 		var systemModalGrid = new tui.Grid({
 			el: document.getElementById('systemModalGridId'),
@@ -240,7 +240,12 @@
                	},
         		success: function(data){
         			console.log(data);
-        			alert('공정의 설비가 변경되었습니다.')
+        			swal(
+        	          	'공정의 설비가 변경되었습니다!',
+        	           	'',
+        	           	'success'
+        	        );
+        			//alert('공정의 설비가 변경되었습니다.')
         		},
         		error: function(error){
 	    			console.log(error);

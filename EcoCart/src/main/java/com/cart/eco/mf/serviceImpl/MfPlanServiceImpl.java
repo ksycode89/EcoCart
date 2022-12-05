@@ -35,6 +35,9 @@ public class MfPlanServiceImpl implements MfPlanService {
 		int result = 0;
 		for(int i=0; i<vo.size(); i++) {
 			result += mapper.insertMfPlan(vo.get(i));
+			if(vo.get(i).getOrderCode()!=null) {
+				mapper.updateOrderList(vo.get(i));
+			}
 		}
 		return result;
 	}
@@ -48,6 +51,9 @@ public class MfPlanServiceImpl implements MfPlanService {
 	public int deleteMfPlan(List<MfPlanVO> vo) {
 		int result = 0;
 		for(int i=0; i<vo.size(); i++) {
+			if(vo.get(i).getOrderCode()!=null) {
+				mapper.updateOrderListReturn(vo.get(i));
+			}
 			mapper.deleteMfPlan2(vo.get(i));
 			result += mapper.deleteMfPlan(vo.get(i));
 		}

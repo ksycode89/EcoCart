@@ -357,7 +357,12 @@
 		}
     	//console.log(mfPlanSelectGrid.getRow(0).needNum);
     	if(orderRowCount > mfPlanSelectGrid.getRow(0).needNum){
-    		alert('필요수량을 초과하였습니다.');
+    		swal(
+        		'필요수량을 초과하였습니다!',
+        	  	'',
+        	   	'error'
+        	);
+    		//alert('필요수량을 초과하였습니다.');
     		mfNeedGrid.clear();
     		$('#insertOrderBtn').hide();
     		let mfPlanCode1 = mfOrderGrid.getRow(ev.changes[0].rowKey).mfPlanCode;
@@ -447,7 +452,12 @@
 		    	let lotCode1 = mfLotModalGrid.getRow(ev.rowKey).lotCode;
 		    	let restNum1 = mfLotModalGrid.getRow(ev.rowKey).restNum;
 		    	if(bomNeedNum1 > restNum1){
-		    		alert('LOT재고량이 필요량보다 부족하니 다른 LOT를 선택해주세요!');
+		    		swal(
+        				'LOT재고량이 필요량보다 부족하니\n다른 LOT를 선택해주세요!',
+        		    	'',
+        		      	'warning'
+        		    );
+		    		//alert('LOT재고량이 필요량보다 부족하니 다른 LOT를 선택해주세요!');
 		    	} else {
 		    		mfNeedGrid.setRow(evNeed.rowKey, {
 		    			releaseCode : releaseCode1,
@@ -509,7 +519,12 @@
         		           	},
         		    		success: function(data){
         		    			if(data != 0){
-        		    				alert('생산지시가 등록되었습니다.\n자재출고를 요청합니다.');
+        		    				swal(
+        		            			'생산지시가 등록되었습니다.\n자재출고를 요청합니다.',
+        		            		  	'',
+        		            		  	'success'
+        		            		);
+        		    				//alert('생산지시가 등록되었습니다.\n자재출고를 요청합니다.');
         		    				$.ajax({
         	        	        		url: '/mfReleaseInsert',
         	        	        		method: 'POST',
@@ -532,7 +547,12 @@
         	        	        		           	},
         	        	        		    		success: function(data){
         	        	        		    			if(data != 0){
-        	        	        		    				alert('자재출고요청이 완료되었습니다.');
+        	        	        		    				swal(
+        	        	            		            		'자재출고요청이 완료되었습니다!',
+        	        	            		            	  	'',
+        	        	            		            	  	'success'
+        	        	            		            	);
+        	        	        		    				//alert('자재출고요청이 완료되었습니다.');
         	        	        		    				$.ajax({
         	        	        		    	        		url: '/mfReceivingDetailUpdate',
         	        	        		    	        		method: 'POST',
@@ -593,7 +613,12 @@
         	});
     		
     	} else {
-    		alert('자재 LOT가 전부 지정되지 않았습니다!');
+    		swal(
+            	'자재 LOT가\n전부 지정되지 않았습니다!',
+              	'',
+             	'error'
+            );
+    		//alert('자재 LOT가 전부 지정되지 않았습니다!');
     	}
     });
     

@@ -145,6 +145,10 @@
 	          name: 'mfPlanName'
 	        },
 	        {
+	          header: '주문코드',
+	          name: 'orderCode'
+	        },
+	        {
 	          header: '제품코드',
 	          name: 'proCode'
 	        },
@@ -166,6 +170,8 @@
 	        }
 		]
 	});
+	
+	planDeleteGrid.hideColumn('orderCode');
 	
 	document.addEventListener('DOMContentLoaded', mfPlanDeleteList);
 	
@@ -244,32 +250,45 @@
     let ev1 = {};
     
     planInsertGrid.on('click', (ev) => {
-    	if(planInsertGrid.getRow(ev.rowKey).orderCode == '' || planInsertGrid.getRow(ev.rowKey).orderCode == null){
-    		if(ev.columnName=='proCode' || ev.columnName=='proName'){
-        		$.ajax({
-            		url:'/mfProductList',
-            		success:function(data){
-            			productModalGrid.resetData(data);
-            			ev1 = ev;
-            		},
-            		error:function(error){
-            			console.log(error);
-            		}
-            	});
-        		$("#productModal").modal("show");
-        		productModal.addEventListener('shown.bs.modal', () => {
-        	    	productModalGrid.refreshLayout();
-        	    });
+    	if(planInsertGrid.getRow(ev.rowKey)!=null){
+    		if(planInsertGrid.getRow(ev.rowKey).orderCode == '' || planInsertGrid.getRow(ev.rowKey).orderCode == null){
+        		if(ev.columnName=='proCode' || ev.columnName=='proName'){
+            		$.ajax({
+                		url:'/mfProductList',
+                		success:function(data){
+                			productModalGrid.resetData(data);
+                			ev1 = ev;
+                		},
+                		error:function(error){
+                			console.log(error);
+                		}
+                	});
+            		$("#productModal").modal("show");
+            		productModal.addEventListener('shown.bs.modal', () => {
+            	    	productModalGrid.refreshLayout();
+            	    });
+            	}	
         	}	
     	}
     });
     
     planInsertGrid.on('afterChange', (ev) => {
     	if(planInsertGrid.getRow(ev.changes[0].rowKey).needNum < 0){
-    		alert('1보다 작은 수를 입력할 수 없습니다!');
+    		swal(
+               	'1보다 작은 수를\n입력할 수 없습니다!',
+               	'',
+               	'error'
+            );
+    		//alert('1보다 작은 수를 입력할 수 없습니다!');
     		planInsertGrid.setValue(ev.changes[0].rowKey, 'needNum', planInsertGrid.getRow(ev.changes[0].rowKey).sellNum);
+    		
     	} else if(planInsertGrid.getRow(ev.changes[0].rowKey).needNum == 0){
-    		alert('1보다 작은 수를 입력할 수 없습니다!');
+    		swal(
+        	   	'1보다 작은 수를\n입력할 수 없습니다!',
+        	   	'',
+        	   	'error'
+        	);
+    		//alert('1보다 작은 수를 입력할 수 없습니다!');
     		planInsertGrid.setValue(ev.changes[0].rowKey, 'needNum', planInsertGrid.getRow(ev.changes[0].rowKey).sellNum);
     	}
     	if(planInsertGrid.getRow(ev.changes[0].rowKey).orderCode!=null){
@@ -304,6 +323,8 @@
     	productModalGrid.unfilter('proName');
     });
     
+    var checkInsert = 0;
+    
     planRegistBtn.addEventListener('click', () => {
     	$.ajax({
     		url: '/mfInsertPlan',
@@ -316,7 +337,13 @@
            	},
     		success: function(data){
     			if(data != 0){
-        			alert('계획이 등록되었습니다.');
+    				console.log(planInsertGrid.getCheckedRows());
+    				swal(
+        				'계획이 등록되었습니다!',
+        		    	'',
+        		      	'success'
+        		    );
+    				//alert('계획이 등록되었습니다.');
         			planInsertGrid.clear();
         			$.ajax({
     		    		url:'/mfPlanDeleteList',
@@ -329,7 +356,12 @@
     		    		}
     		    	});
     			} else {
-    				alert('등록할 계획이 없습니다.')
+    				swal(
+    					'등록할 계획이 없습니다!',
+    		    		'',
+    		    	  	'info'
+    		    	);
+    				//alert('등록할 계획이 없습니다.')
     			}
     		},
     		error: function(error){
@@ -354,7 +386,12 @@
            	},
     		success: function(data){
     			if(data != 0){
-    			alert('해당 계획이 취소되었습니다.');
+    			swal(
+    	        	'해당 계획이 취소되었습니다!',
+    	           	'',
+    	           	'success'
+    	        );
+    			//alert('해당 계획이 취소되었습니다.');
     		    	$.ajax({
     		    		url:'/mfPlanDeleteList',
     		    		success:function(data){
@@ -366,7 +403,12 @@
     		    		}
     		    	});
     			} else {
-    				alert('취소할 계획을 선택하지 않았습니다.');	
+    				swal(
+        				'취소할 계획을\n선택하지 않았습니다!',
+        		    	'',
+        		      	'info'
+        		    );
+    				//alert('취소할 계획을 선택하지 않았습니다.');	
     			}
     		},
     		error: function(error){
@@ -411,7 +453,12 @@
         			}
         		}
     			if(checkNum > 0){
-    				alert('이미 계획등록행에 추가된 주문서입니다!');
+    				swal(
+            			'이미 계획등록행에\n추가된 주문서입니다!',
+            		   	'',
+            		   	'error'
+            		);
+    				//alert('이미 계획등록행에 추가된 주문서입니다!');
     				checkNum = 0;
     			} else {
     				planInsertGrid.appendRow({

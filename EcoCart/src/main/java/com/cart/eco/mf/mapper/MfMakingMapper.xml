@@ -179,6 +179,16 @@
 		 WHERE mf_making_code = #{mfMakingCode}
 	</update>
 	
+	<update id="updateOrderFinish" parameterType="com.cart.eco.mf.service.MfMakingVO">
+		UPDATE order_d
+		SET order_mf = '생산완료'
+		WHERE order_code = (SELECT p.order_code
+						    FROM mf_plan p JOIN mf_order o
+							ON p.mf_plan_code = o.mf_plan_code
+							WHERE o.mf_order_code = #{mfOrderCode})
+		AND pro_code = #{proCode}
+	</update>
+	
 	<update id="updateMfPlanFinish" parameterType="com.cart.eco.mf.service.MfMakingVO">
 		UPDATE mf_plan
 		SET mf_plan_status = '완료'

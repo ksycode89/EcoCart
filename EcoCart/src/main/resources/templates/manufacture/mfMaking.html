@@ -381,7 +381,12 @@
 		        		}
 		        	});
 				} else {
-					alert('생산지시가 설정되지 않은 라인입니다.\n생산지시를 설정해주세요.');
+					swal(
+			           	'생산지시가 설정되지 않았습니다.\n생산지시를 설정해주세요.',
+			           	'',
+			           	'warning'
+			        );
+					//alert('생산지시가 설정되지 않은 라인입니다.\n생산지시를 설정해주세요.');
 				}
 			} else if(ev.columnName=='stopProcess'){
 				if(mfResultGrid.getRow(0) != null){
@@ -418,7 +423,12 @@
 		    			}
 		        	});
 				} else {
-					alert('생산지시가 설정되지 않은 라인입니다.\n생산지시를 설정해주세요.');
+					swal(
+			           	'생산지시가 설정되지 않았습니다.\n생산지시를 설정해주세요.',
+			           	'',
+			           	'warning'
+			        );
+					//alert('생산지시가 설정되지 않은 라인입니다.\n생산지시를 설정해주세요.');
 				}
 			} else if(ev.columnName=='restartProcess'){
 				if(mfResultGrid.getRow(0) != null){
@@ -455,13 +465,23 @@
 		        	});
 					setInterval(startProcessing, 300);
 				} else {
-					alert('생산지시가 설정되지 않은 라인입니다.\n생산지시를 설정해주세요.');
+					swal(
+			           	'생산지시가 설정되지 않았습니다.\n생산지시를 설정해주세요.',
+			           	'',
+			           	'warning'
+			        );
+					//alert('생산지시가 설정되지 않은 라인입니다.\n생산지시를 설정해주세요.');
 				}
 			} else {
 				if(mfResultGrid.getRow(0)!=null){
 					if(mfResultGrid.getRow(0).startTime!=null){
 						if(mfResultGrid.getRow(0).endTime==null){
-							alert('공정이 가동중입니다!');
+							swal(
+						       	'공정이 가동중입니다!',
+						       	'',
+						       	'warning'
+						    );
+							//alert('공정이 가동중입니다!');
 						} else {
 							mfResultGrid.clear();
 							makingDetailGrid.clear();
@@ -565,7 +585,7 @@
 		
 		function startProcessing(){
 			if(makingNum < mfResultGrid.getRow(0).inputNum){
-				console.log(mfResultGrid.getRow(0).inputNum);
+				//console.log(mfResultGrid.getRow(0).inputNum);
 				$.ajax({
 					url: '/mfMakingDetailInsert',
 	        		method: 'POST',
@@ -602,7 +622,7 @@
 	    			    	    				mfResultGrid.resetData(data);
 	    			    	    				mfResultGrid.refreshLayout();
 	    			    	    				makingNum++
-	    			    	    				console.log(makingNum);
+	    			    	    				//console.log(makingNum);
 	    			    	    			},
 	    			    	    			error: function(error){
 	    			    	    				console.log(error);
@@ -666,7 +686,12 @@
 	    	    			success: function(data){
 	    	    				mfResultGrid.resetData(data);
 	    	    				mfResultGrid.refreshLayout();
-	    	    				alert('생산이 완료되었습니다.');
+	    	    				swal(
+	    	    					'생산이 완료되었습니다!',
+	    	    					'',
+	    	    					'success'
+	    	    				);
+	    	    				//alert('생산이 완료되었습니다.');
     	    					makingInterval=clearInterval(makingInterval);
     	    					console.log(data[0]);
     	    					let data3 = [{
@@ -693,8 +718,9 @@
     		    	    			}
     		    	    		});
     	    					let data4 = [{
-    	    						mfOrderCode : makingGrid.getRow(0).mfOrderCode ,
-    	    						mfOrderNo : makingGrid.getRow(0).mfOrderNo
+    	    						mfOrderCode : makingGrid.getRow(0).mfOrderCode,
+    	    						mfOrderNo : makingGrid.getRow(0).mfOrderNo,
+    	    						proCode : makingGrid.getRow(0).proCode
     	    					}]
     	    					$.ajax({
     		        				url: '/mfMakingFinishUpdate',

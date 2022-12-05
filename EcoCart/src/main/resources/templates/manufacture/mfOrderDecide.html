@@ -111,7 +111,12 @@
 		           		xhr.setRequestHeader(header, token);
 		           	},
 		    		success: function(data){
-		    			alert('해당 생산지시가 활성화됩니다.');
+		    			swal(
+		    	          	'해당 생산지시가 활성화됩니다!',
+		    	           	'',
+		    	           	'success'
+		    	        );
+		    			//alert('해당 생산지시가 활성화됩니다.');
 		    			$.ajax({
 		    	    		url:'/mfOrderDecideAll',
 		    	    		success:function(data){

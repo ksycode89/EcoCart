@@ -18,7 +18,8 @@
 		JOIN product p
 		ON d.pro_code = p.pro_code
 		WHERE o.de_date >= trunc(SYSDATE)
-		AND o.order_mf = '미생산'
+		AND d.order_mf = '미생산'
+		AND o.order_st = '진행'
 		ORDER BY o.de_date
 	</select>
 	
@@ -29,7 +30,7 @@
 	</select>
 	
 	<select id="getMfDeletePlanList" resultType="com.cart.eco.mf.service.MfPlanVO">
-		SELECT p.mf_plan_code, p.mf_plan_name, d.pro_code, d.pro_name, p.mf_plan_date, o.de_date, d.need_num, d.total_order_num
+		SELECT p.mf_plan_code, p.mf_plan_name, d.pro_code, d.pro_name, p.mf_plan_date, o.de_date, d.need_num, d.total_order_num, o.order_code
 		FROM mf_plan p JOIN mf_plan_detail d
 		ON p.mf_plan_code = d.mf_plan_code
 		LEFT JOIN orders o
@@ -45,10 +46,12 @@
 		</selectKey>
 		INSERT ALL
 		INTO mf_plan(mf_plan_code
-				   , mf_plan_name
+				   , mf_plan_date
+				   <if test="mfPlanName != null and !mfPlanName.equals('')">, mf_plan_name</if>
 				   <if test="orderCode != null and !orderCode.equals('')">, order_code</if>)
 		VALUES(#{mfPlanCode}
-			 , #{mfPlanName}
+			 , current_date
+				<if test="mfPlanName != null and !mfPlanName.equals('')">, #{mfPlanName}</if>
 				<if test="orderCode != null and !orderCode.equals('')">, #{orderCode}</if>)
 		INTO mf_plan_detail(mf_plan_code
 						  , pro_code
@@ -60,6 +63,20 @@
 			 , #{needNum})
 		SELECT * FROM DUAL
 	</insert>
+	
+	<update id="updateOrderList" parameterType="com.cart.eco.mf.service.MfPlanVO">
+		UPDATE order_d
+		SET order_mf = '생산중'
+		WHERE order_code = #{orderCode}
+		AND pro_code = #{proCode}
+	</update>
+	
+	<update id="updateOrderListReturn" parameterType="com.cart.eco.mf.service.MfPlanVO">
+		UPDATE order_d
+		SET order_mf = '미생산'
+		WHERE pro_code = #{proCode}
+		AND order_code = #{orderCode}
+	</update>
 	
 	<delete id="deleteMfPlan" parameterType="com.cart.eco.mf.service.MfPlanVO">
 		DELETE FROM mf_plan
