@@ -35,8 +35,8 @@ public class CustomLoginSuccessHandler
 		EmpVO empVo= empSer.selectEmpOne(name);
 		System.out.println("inner succhand : "+empVo);
 		
-		request.getSession().setMaxInactiveInterval(180000000);
 		request.getSession().setAttribute("infos", empVo);
+		request.getSession().setMaxInactiveInterval(3600);
 		//사용자
 		response.sendRedirect("/");
 	}
