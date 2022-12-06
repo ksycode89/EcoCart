@@ -36,7 +36,7 @@
 			</div>
 			</div>
 			<div class="col-lg-auto col-sm-12">
-			<input  id="codeName" name="codeName" placeholder="부서명" class="form-control">
+			<input  id="codeName" name="codeName" placeholder="부서명" class="form-control" readonly>
 			</div>
 			<!--  -->	
 	</div>	
@@ -56,7 +56,7 @@
 			</div>
 			</div>
 			<div class="col-lg-auto col-sm-12">
-			<input  id="empName" name="empName" placeholder="이름" class="form-control">
+			<input  id="empName" name="empName" placeholder="이름" class="form-control" readonly>
 			</div>
 			<!--  -->
 			<div  class="col-lg-auto col-sm-6">
@@ -112,7 +112,7 @@
 			</div>
 		</div>
 			<div class="col-lg-auto col-sm-12">
-			<input  id="empName2" name="name" placeholder="이름" class="form-control">
+			<input  id="empName2" name="name" placeholder="이름" class="form-control" readonly>
 			</div>
 	</div>
 	<!--  -->	
@@ -123,7 +123,7 @@
 				</div>
 				<label  class="col-lg-1 col-sm-12 col-form-label">부서명</label>
 				<div class="col-lg-auto col-sm-12">
-				<input  id="codeName2" name="depName" class="form-control">
+				<input  id="codeName2" name="depName" class="form-control" readonly>
 				</div>
 		</div>		
 	</div>	
@@ -394,31 +394,11 @@
 			})
 			
 			
-			
-			
-			
-			/* gridM.refreshLayout(); //모달창 새로고침
-			let data ={"empDept" : $('#codeId').val()},
-			console.log(data)
-			// 이름 모달 ajax.
-			fetch("ajax/list",{
-				method:"post",
-				
-				body : data
-			})			
-			.then(data => data.json())
-			.then (objs => {
-				gridM.resetData(objs); */
-			})
+		})
 	 
-	   	      
-	   	      
-	   /* 	 })
-				  */         
-			
 	   	 
 
-	   	 /*부서 필터  id= gridD, large2*/
+	   	 // 부서필터
 		const gridD = new tui.Grid({
 			el : document.getElementById('gridD'),
 			rowHeaders: ['checkbox'],
@@ -485,8 +465,9 @@
 	   	      
 	   	 })
 	   	 
-	   	 // 담당자의 담당사원 등록 -id=gridEmp2, large6.
+	   	 // 담당자의 담당사원 등록 
 		const gridEmp2 = new tui.Grid({
+	
 			el : document.getElementById('gridEmp2'),
 			rowHeaders: ['checkbox'],
 			scrollX : false,
@@ -520,7 +501,7 @@
 	   	 
 	   	 
 	   	 
-	   	 // 담당자 이름 목록 id=gridmn, large3
+	   	 // 담당자 이름 목록 
 		const gridMN = new tui.Grid({
 			el : document.getElementById('gridmn'),
 			
@@ -612,7 +593,7 @@
 			}, {
 				header : '이름',
 				name : 'empName',
-				filter: 'select',
+				filter: 'text',
 				editor : 'text'
 			}, {
 				header : '부서',
@@ -716,37 +697,61 @@
 	
 		// 사원 등록.(한 건)
 		function insertEmp(){
-			let num =0;
-			$(grid1.getData()).each((a, result )=>{
-				if (result.empNum == null) {
-					num = result.rowKey
+			console.log(grid1.getRow(grid1.getData().length-1).empName)
+			console.log(grid1.getRow(0))
+			// 필수값 체크하기.
+			let empRowKey = grid1.getRow(grid1.getData().length-1);
+			if(grid1.getData().length > 0){
+				if(empRowKey.empName == '' || empRowKey.empName ==  null){
+					swal("필수 입력값입니다.","이름을 입력해주세요.","info");
+				} else if(empRowKey.empDept == '' || empRowKey.empDept == null){
+					swal("필수 입력값입니다.","부서를 입력해주세요.","info");
+				} else if(empRowKey.empHire == null){
+					swal("필수 입력값입니다.","입사일을 입력해주세요.","info");
+				} else {
+
+					let num =0;
+					$(grid1.getData()).each((a, result )=>{
+						if (result.empNum == null) {
+							num = result.rowKey
+						}
+					})
+					//console.log(grid1.getRow(num))
+					//console.log(grid1.getData()[num])
+					//console.log(grid1.getData()[num+1])
+					$.ajax({
+						url : "/insertEmp",
+						type : 'post',
+						data : grid1.getRow(num)
+						,
+						 beforeSend : function(xhr){
+		             		xhr.setRequestHeader(header, token);
+		             	 },
+						success : function(data) {
+							//console.log(data)
+							
+					
+							
+							swal("success","등록에 성공했습니다!!!","success")
+							
+							selectEmp();
+						
+						}, error : function(error) {
+							swal("error","등록에 실패했습니다!!!","error");
+							console.log(error);
+						}
+					})
 				}
-			})
 			
-			$.ajax({
-				url : "/insertEmp",
-				type : 'post',
-				data : grid1.getData()[num]
-				,
-				 beforeSend : function(xhr){
-             		xhr.setRequestHeader(header, token);
-             	 },
-				success : function(data) {
-					//console.log(data)
-					
-			
-					
-					//swal("success","등록에 성공했습니다!!!","success")
-					
-					selectEmp();
 				
-				}, error : function(error) {
-					swal("error","등록에 실패했습니다!!!","error");
-					console.log(error);
+					}
 				}
-			})
-		}
-	
+			
+			
+			
+			
+			
+			
 		
 		
 		// 사원정보 수정.
@@ -984,20 +989,20 @@
 	 
 	
 	// 한 줄 선택시 컬러.
-	gridMN.on('click', ev=>{
+	 gridMN.on('click', ev=>{
 		 var record = {
 	           start : [ev.rowKey,0],
 	           end : [ev.rowKey,gridMN.getColumns().length]
 	          }
 		            gridMN.setSelectionRange(record);
-	          });
+	          }); 
 	  
 	// 담당자 조회시 모달 안 확인 버튼 클릭시 담당자 - 담당자의 사원 정보 입력.
 		let emp;
 	gridMN.on('click', ev=>{ 
 			 
 			emp = gridMN.getRow(ev.rowKey)
-			//emp = gridMN.getRow(ev.rowKey)
+			
 		    console.log('ㅔㅔㅔ',emp)
 		
 		
@@ -1035,9 +1040,21 @@
 	
 	}
 	
+
+	// 한 줄 선택시 컬러.
+	grid1.on('click', ev=>{
+		 var record = {
+	           start : [ev.rowKey,0],
+	           end : [ev.rowKey,grid1.getColumns().length]
+	          }
+		            grid1.setSelectionRange(record);
+	          });
+	  
 	
 	// 사원번호 셀 클릭시 담당자 - 담당자의 담당사원 정보 입력.
 	grid1.on("click", ev => {
+		
+		//console.log("찾아보자 : " + ev.rowKey)
 		
 	if(ev.columnName == 'empNum'){
 		if(grid1.getRow(ev.rowKey).empManager != null || !grid1.getRow(ev.rowKey).empManager =='' ){
@@ -1104,17 +1121,9 @@
 			$('#empTel2').val(''); 
 		}
 	 }
+	
 	})
 	
-	// 한 줄 선택시 컬러.
-	grid1.on('click', ev=>{
-		 var record = {
-	           start : [ev.rowKey,0],
-	           end : [ev.rowKey,grid1.getColumns().length]
-	          }
-		            grid1.setSelectionRange(record);
-	          });
-	  
 	
 			
 	
@@ -1124,7 +1133,7 @@
 			let data = { emp_num : "", emp_name : "", emp_dept : "", job_grade : ""
 						, emp_hire : "", emp_mail : "", emp_tel : "", comments : ""}
 			
-			grid1.appendRow(data);
+			grid1.appendRow(data,{'at':0});
 		}
 		
 		// 담당사원 추가. (row 추가.)
@@ -1132,7 +1141,7 @@
 			let data = { emp_num : "", emp_name : "", emp_dept : "", job_grade : ""
 						, emp_hire : "",emp_mail : "", emp_tel : "", comments : ""}
 			
-			grid2.appendRow(data);
+			grid2.appendRow(data,{'at':0});
 		}
 		
 	// 담당자의 담당사원 -부서이름 셀 클릭시 모달창 띄우기. 
