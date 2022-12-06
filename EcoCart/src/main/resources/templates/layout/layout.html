@@ -75,7 +75,7 @@
 <!-- --------------------------sec------------------- -->			
 <div sec:authorize="isAuthenticated()">
 	<i class="bi bi-stack"></i><br>
-	  <!--   이름 : <span th:text="${session.infos.empName}"></span> <br> -->
+	이름 : <span th:text="${session.infos.empName}"></span> <br>
 		사번 : <span sec:authentication="name">Bob</span><br>
 		부서 : <span>[[${name}]]</span><br>
 	  	Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN, ROLE_EMP]</span>
