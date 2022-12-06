@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/layout/layout}">
+	layout:decorate="~{layout/layout}">
 
 <head>
 <meta charset="UTF-8">
@@ -94,23 +94,7 @@
  </div>
 	
  <div id="gird1" class="mb-5 row"></div>
-<!-- 	//grid2의 인풋창 -->
-			<!-- <div class="row  flex-right ">
-			     <div class="col-md-3 mb-1">
-					<div class="input-group mb-3">
-						<label for="staticEmail" class="col-sm-3 col-form-label">총수량</label>
-						<input type="text" id="sumProCode" class="form-control"
-							placeholder="prodcut code" aria-label="Recipient's username"
-							aria-describedby="button-addon2"> 
-					</div>
-				</div>
-				<div class="col-lg-auto col-sm-12">
-					<input  id="sumProName" name="sumProName" class="form-control"placeholder="product name">
-				</div>
-				<div class="col-lg-auto col-sm-12">
-					<input  id="proTotal" name="proTotal" class="form-control"placeholder="total">
-				</div>
-			</div>	 -->
+
 				<button class="ml-5 btn btn-sm btn-primary" onclick="addChildRow()"><svg class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></button>
 			
 	<div id="grid2"></div>

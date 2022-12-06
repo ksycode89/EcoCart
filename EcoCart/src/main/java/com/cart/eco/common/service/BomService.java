@@ -12,6 +12,9 @@ public interface BomService {
 	public BomVO bomInsert(BomVO vo);
 	
 	public  String bomInsertOP(List<BomChildernVO> vo);
+	//반제자불러오기 
+	public List<BomVO> getChildPro();
+
 	
 
 }

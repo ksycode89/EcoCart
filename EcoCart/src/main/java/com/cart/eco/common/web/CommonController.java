@@ -141,8 +141,7 @@ public class CommonController {
 
 	// 사원정보 수정.
 	@PostMapping("/updateEmp")
-	
-	
+
 	@ResponseBody
 	public String updateEmp(@RequestBody ToastGridVO<EmpVO> vo) {
 		System.out.println("updaate : " + vo.getUpdatedRows());
@@ -174,12 +173,11 @@ public class CommonController {
 		return proService.selectPro(vo);
 	}
 
-	
 	// 물품 등록 ajax.
 	@PostMapping("ajax/insertPro")
 	@ResponseBody
-	public int insertPro(ProAllVO vo){
-		System.out.println("insertPro" +vo);
+	public int insertPro(ProAllVO vo) {
+		System.out.println("insertPro" + vo);
 		return proService.insertPro(vo);
 	}
 
@@ -187,20 +185,19 @@ public class CommonController {
 	@PostMapping("ajax/deletePro")
 	@ResponseBody
 	public String deletePro(@RequestBody List<ProAllVO> vo) {
-		
+
 		return proService.deletePro(vo);
 	}
-	
+
 	// 물품 수정.
 	@PostMapping("ajax/updatePro")
 	@ResponseBody
 	public int updatePro(ProAllVO vo) {
-		System.out.println("updatePro"+vo);
+		System.out.println("updatePro" + vo);
 		return proService.updateProInfo(vo);
 	}
-	         
-// 공통코드이동.
 
+// 공통코드이동.
 
 	// 공통코드가져오기
 
@@ -280,7 +277,15 @@ public class CommonController {
 
 		return commonService.getProItem();
 	}
-
+	
+	// 품목군 코드, 이름 가져오기.
+	@GetMapping("/getChildPro")
+	@ResponseBody
+	public List<BomVO> getChildPro() {
+		
+		return bomService.getChildPro();
+	}
+	
 	// ===================== ↓ 이동 페이지↓=====================================//
 
 	// 공통코드이동.
@@ -288,12 +293,12 @@ public class CommonController {
 	@GetMapping("/coCode")
 	public String moveCoCode(Model model) {
 		CommonVO vo = new CommonVO();
-		List<CommonVO> list =commonService.commonGroupNull();
-		
-		 String json  = new Gson().toJson(list);
-		 System.out.println(json);
-	
-			model.addAttribute("list",json);
+		List<CommonVO> list = commonService.commonGroupNull();
+
+		String json = new Gson().toJson(list);
+		System.out.println(json);
+
+		model.addAttribute("list", json);
 		return "common/coCode";
 	}
 
@@ -404,14 +409,15 @@ public class CommonController {
 		System.out.println("결과값 합산 : " + result);
 		return result;
 	}
-	//창고삭제
+
+	// 창고삭제
 	@PostMapping("/deleteWare")
 	@ResponseBody
 	public int deleteWare(@RequestBody ToastGridVO<WHVO> vo) {
 		System.out.println("update : " + vo.getUpdatedRows());
 		int result = 0;
 		for (WHVO wh : vo.getDeletedRows()) {
-			
+
 			result += whService.deleteWare(wh);
 		}
 		System.out.println("결과값 합산 : " + result);
@@ -452,7 +458,7 @@ public class CommonController {
 	}
 
 //			====================거래처 ======================================= //
-	//거래처목록 
+	// 거래처목록
 	@PostMapping("/clientList")
 	@ResponseBody
 	public List<ClientVO> clientList(ClientVO vo) {
@@ -461,29 +467,32 @@ public class CommonController {
 		return clientServcie.clientList(vo);
 
 	}
-	//거래처등록 
+
+	// 거래처등록
 	@PostMapping("/insertClinet")
 	@ResponseBody
 	public String insertClinet(@RequestBody List<ClientVO> vo) {
 		System.out.println("insertClinet : " + vo);
 		return clientServcie.insertClinet(vo);
-		
+
 	}
-	//거래처 수정 
+
+	// 거래처 수정
 	@PostMapping("/updateClient")
 	@ResponseBody
 	public int updateClient(@RequestBody ToastGridVO<ClientVO> vo) {
 		System.out.println("updateClient : " + vo.getUpdatedRows());
-		
+
 		return clientServcie.updateClient(vo.getUpdatedRows());
-		
+
 	}
-	//거래처 삭제  
+
+	// 거래처 삭제
 	@PostMapping("/deleteClient")
 	@ResponseBody
 	public String deleteClient(@RequestBody List<ClientVO> vo) {
 		System.out.println("deleteClient : " + vo);
 		return clientServcie.deleteClient(vo);
-		
+
 	}
 }
