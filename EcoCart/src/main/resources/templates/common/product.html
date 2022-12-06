@@ -553,10 +553,12 @@
 				scrollY : false,
 				columns : [ {
 					header : '품목군코드',
-					name : 'codeId'
+					name : 'codeId',
+					filter: 'select'
 				}, {
 					header : '품목군명',
-					name : 'codeName'
+					name : 'codeName',
+					filter: 'select'
 				}
 				]	
 				
@@ -594,10 +596,12 @@
 				scrollY : false,
 				columns : [ {
 					header : '거래처코드',
-					name : 'clientCode'
+					name : 'clientCode',
+					filter: 'select'
 				}, {
 					header : '거래처명',
-					name : 'clientName'
+					name : 'clientName',
+					filter: 'select'
 				}
 				]	
 				
@@ -635,10 +639,12 @@
 				scrollY : false,
 				columns : [ {
 					header : '담당자 코드',
-					name : 'empNum'
+					name : 'empNum',
+					filter: 'select'
 				}, {
 					header : '담당자 이름',
-					name : 'empName'
+					name : 'empName',
+					filter: 'select'
 				}
 				]	
 				
@@ -791,7 +797,7 @@
 			   			})
 					}
 				} else {
-					swal(123);
+					swal();
 				} 
 				
 				
