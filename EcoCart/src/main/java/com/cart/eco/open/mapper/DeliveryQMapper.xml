@@ -36,7 +36,7 @@
 
 	<!-- 출고 요청1 번호 가져오기 -->
 	<select id="getDlivyQCode" resultType="com.cart.eco.open.service.DeliveryQVO" parameterType="String">
-		select  concat('dlq' , 
+		select  concat('DLQ' , 
   					concat (to_char(sysdate,'YYmmdd'), 
         			concat ('-', nvl(max(to_number(substr(dlivy_q_code, 11))),0)+1 )
         			)) "dlivyQCode"
@@ -75,6 +75,14 @@
 	</update>
 	
 
+
+	<!-- 주문서 상태 업데에이트하기 -->
+	<update id="updateOrder" parameterType="com.cart.eco.open.service.OrdersVO">
+		update orders set order_st = '완료' where order_code = #{orderCode}
+	
+	</update>
+	
+	
 	<!-- 출고 등록2 -->
 	
 	<!-- 출고 등록2 전제 조회 -->
@@ -144,7 +152,7 @@
 	
 	<!-- 출고 등록2 번호 가져오기 -->
 	<select id="getDlivyGCode" resultType="com.cart.eco.open.service.DeliveryGVO" parameterType="String">
-		select  concat('dlg' , 
+		select  concat('DLG' , 
   					concat (to_char(sysdate,'YYmmdd'), 
         			concat ('-', nvl(max(to_number(substr(dlivy_g_code, 11))),0)+1 )
         			)) "dlivyGCode"
@@ -277,7 +285,7 @@
 	<!-- 배송정보 등록 -->
 	<insert id="updateInfo" parameterType="com.cart.eco.open.service.DeliveryProVO">
 		<selectKey keyProperty="dlivyProCode" order="BEFORE" resultType="String">
-			select  concat('dlp' , 
+			select  concat('DLP' , 
 	  					concat (to_char(sysdate,'YYmmdd'), 
 	        			concat ('-', nvl(max(to_number(substr(dlivy_pro_code, 11))),0)+1 )
 	        			)) "dlivyProCode"
@@ -318,9 +326,6 @@
 	
 	
 
-
-	<!--  설비  -->
-	
 
 
 

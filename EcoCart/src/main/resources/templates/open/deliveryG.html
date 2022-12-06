@@ -346,6 +346,7 @@
 		
 		if(a==0){
 			//출고등록
+			let array=grid3.getCheckedRows()  
 			$.ajax({
 				method:'POST',
 				url:'/insertDlivyG',
@@ -385,14 +386,13 @@
 							success : function(result) {
 								console.log(result);
 								
-								
 								//출고요청 상태 변경
 								$.ajax({
 								method:'POST',
 								url:'/updateQst',
 								contentType : 'application/json',
 								dataType:'JSON',
-								data: JSON.stringify(grid3.getCheckedRows()), 
+								data: JSON.stringify(array), 
 								beforeSend : function(xhr){
 					           		xhr.setRequestHeader(header, token);
 					           	 },
@@ -471,7 +471,7 @@
     })
     
  	Searchbtn.addEventListener('click', () => {
-		grid.filter('dlivyGCode' , [{code:'contain', value:$('#CodeSearch').val()}])
+		grid.filter('dlivyGCode' , [{code:'contain', value:$('#CodeSearch').val().toUpperCase()}])
 		grid.filter('clientCode' , [{code:'contain', value:$('#ClientSearch').val().toUpperCase()}])
 		grid.filter('empNum' , [{code:'contain', value:$('#EmpSearch').val()}])
 		
@@ -491,6 +491,7 @@
 		document.getElementById('DateSearch').value = '';
 		grid.unfilter('dlivyDate');
 		planAll.checked = true;
+		grid.unfilter('dlivyGSt');
 	})	 
 		
 	//모달창 끌때 reset되도록

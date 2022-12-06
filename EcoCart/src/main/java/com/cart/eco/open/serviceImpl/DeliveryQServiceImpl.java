@@ -142,9 +142,12 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 		// TODO Auto-generated method stub
 		int result = 0;
 		for(int i = 0; i< vo.size(); i++) {
-			System.out.println("testQst"+vo.get(i));
+			System.out.println("test : "+ vo.get(i));
 			result  += mapper.updateQst(vo.get(i));
 		}
+		System.out.println("---------------------");
+		System.out.println(result);
+		System.out.println("---------------------");
 		return result;
 	}			
 		
@@ -155,6 +158,7 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 			
 			result  += mapper.updateProduct(vo.get(i));
 		}
+		
 		return result;
 	}
 	//////////////////////////////////////////////////////////////////////////
@@ -329,6 +333,16 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 	public List<DeliveryProVO> getDlivytPCode() {
 		// TODO Auto-generated method stub
 		return mapper.getDlivyPCode();
+	}
+
+	@Override
+	public int updateOrder(List<OrdersVO> vo) {
+		int result = 0;
+		for(int i = 0; i< vo.size(); i++) {
+			
+			result  += mapper.updateOrder(vo.get(i));
+		}
+		return result;
 	}
 
 	

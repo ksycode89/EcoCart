@@ -56,22 +56,6 @@
 		<div id="grid2"></div>
 	
 		<div><br></div>
-		<div><br></div>
-		
-		<div class="mb-1">
-				<div style="height:50px; margin-bottom:10px">
-					<label for="planName" style="width:100px">제품명</label>
-					<input type="text" class="form-control" style="width:200px; display:inline" placeholder="제품명" id="InProduct">&nbsp;
-					<button type="button" class="btn btn-sm btn-primary" id="proSearch">검색</button>&nbsp;
-					<button type="button" class="btn btn-sm btn-secondary" id="proReset">초기화</button>
-				
-				</div>
-				
-	            
-	     </div>
-		
-		<div id="grid3"></div>
-	
 	
 	
 	
@@ -232,32 +216,6 @@
 	        ]
 		});
 	
-		//제품재고 조회
-		const grid3 = new Grid({
-	        el: document.getElementById('grid3'), // Container element
-	        scrollX: false,
-	        scrollY: true,
-            bodyHeight : 240,
-	        columns: [
-	        	{
-	            	header: '제품코드',
-	            	name: 'proCode',
-	            	filter : 'select'
-	            },
-	            {
-	            	header: '제품명',
-	                name: 'proName',
-	                filter : 'text'
-	             },
-	             {
-	             	header: '제품재고수량',
-	                name: 'proNum'
-	             }
-	              
-	        ]
-		});
-		
-		
 		
 		//견적코드 모달창
 		const grid4 = new Grid({
@@ -370,16 +328,6 @@
 				url:'/listOrders',
 				success : function(result) {
 					grid.resetData(result);
-				},
-				error : function(error){
-					console.log(error);
-				}
-			}),
-			
-			$.ajax({
-				url:'/proList',
-				success : function(result) {
-					grid3.resetData(result);
 				},
 				error : function(error){
 					console.log(error);
@@ -508,6 +456,8 @@
 									console.log(result)
 									swal("주문 등록 완료")
 									ordersList();
+									searchEstmtCode();
+									
 									
 								},
 								error : function(error){
@@ -533,7 +483,7 @@
 			ordersList();
 			//등록버튼 누르면 모달창 닫고 화면
 			 $('#staticBackdrop').modal('hide');
-			
+			 location.reload()
 			
 		}
 	// 한 줄 선택시 컬러.
@@ -561,7 +511,7 @@
 
 	
 	estmtDateSearch.addEventListener('click', () => {
-		grid.filter('orderCode' , [{code:'contain', value:$('#InEstmtCodeSearch').val()}])
+		grid.filter('orderCode' , [{code:'contain', value:$('#InEstmtCodeSearch').val().toUpperCase()}])
 		grid.filter('clientName' , [{code:'contain', value:$('#InClientCodeSearch').val().toUpperCase()}])
 		if($('#InEstmtDateSearch').val() != '' ){
 			grid.filter('orderDate' , [{code:'beforeEq', value:$('#InEstmtDateSearch').val()}])
@@ -578,22 +528,10 @@
 		document.getElementById('InEstmtDateSearch').value = '';
 		grid.unfilter('orderDate');
 		
-	})	
-	
-	
-	proSearch.addEventListener('click', () => {
-		grid3.filter('proName' , [{code:'contain', value:$('#InProduct').val()}])
-			
-		
-	});
-
-
-	proReset.addEventListener('click', () => {
-		document.getElementById('InProduct').value = '';
-		grid3.unfilter('proName');
 		planAll.checked = true;
+		grid.unfilter('orderSt')
+		
 	})	
-	
 	
 	 
 	

@@ -669,11 +669,11 @@
 					 {"bomGroup" : $('#bomGroup').val(),"bomManager": $('#empcode').val(),"proCode" : $('#proCode').val(),"bomNeedDay" :leadtime,"totalPrice" : 0}
 					]
 		     if ($('#empcode').val() ==null || $('#empcode').val() ==''){
-				alert('담당자를 선택해주세요')
+				toast('warning','담당자를 선택해주세요')
 			}else if ($('#bomGroup').val() =='==선택==' || $('#bomGroup').val() ==''){
-				alert('bom구분을 선택해주세요 ')
+				toast('warning','bom구분을 선택해주세요 ')
 			}else if ($('#proCode').val() ==null || $('#proCode').val() ==''){
-				alert('모제품을 선택해주세요  ')
+				toast('warning','모제품을 선택해주세요  ')
 			}else {
 				gird1.refreshLayout(); 
 				gird1.clear()

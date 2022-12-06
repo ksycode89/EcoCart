@@ -116,7 +116,7 @@
 	
 	<!-- 주문서 번호 가져오기 -->
 	<select id="getOrderCode" resultType="com.cart.eco.open.service.OrdersVO" parameterType="String">
-		select  concat('ord' , 
+		select  concat('ORD' , 
   					concat (to_char(sysdate,'YYmmdd'), 
         			concat ('-', nvl(max(to_number(substr(order_code, 11))),0)+1 )
         			)) "orderCode"
@@ -127,8 +127,8 @@
 	
 	<!-- 주문서 등록 -->
 	<insert id="insertOrder" parameterType="com.cart.eco.open.service.OrdersVO" >
-		insert into orders (order_code, client_code, order_date, de_date, order_st,all_sum, order_mf)
-			values( #{orderCode}, #{clientCode}, current_date, #{deDate}, '진행',#{allSum},'미생산' )
+		insert into orders (order_code, client_code, order_date, de_date, order_st,all_sum)
+			values( #{orderCode}, #{clientCode}, current_date, #{deDate}, '진행',#{allSum})
 		
 	</insert>
 	

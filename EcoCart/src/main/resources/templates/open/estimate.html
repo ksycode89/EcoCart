@@ -121,6 +121,9 @@
 				        <div style="margin-bottom:5px"> 		
 				         	<label for="row3" style="width:80px; height: 30px; text-align:center;">수량</label>	
 				         		<input type="number"  min="1" class="form-control"style="width:150px; display:inline" id="productNum">
+				         	
+				        </div>
+				        <div style="margin-bottom:5px">  	
 					         	<button onclick="modalResetBtn()" type="button"  class="btn-sm btn-secondary" style="float:right;" >초기화</button>
 					         	<button onclick="deletePro()" type="button" class="btn-sm btn-primary" style="float:right; margin-right:5px">제품삭제</button>
 					         	<button onclick="plusPro()" type="button" class="btn-sm btn-primary" style="float:right; margin-right:5px" >제품추가</button>
@@ -324,14 +327,15 @@
 	
 	function handleOnChange5(e){
 		if($("#select5").val() != '선택'){
-		/* 	var a = $("#select5").val()
-			$("#select8 option[]:selected").val(a)
+			var idx = $("#select5 option").index( $("#select5 option:selected") );
+		    document.getElementById("select8").selectedIndex =idx;
+			
+			
 			$("#select8").attr('disabled', true)
-			 */
-			const text = e.value;
+			/* const text = e.value;
 			
 			//선택한 텍스트 출력
-			document.getElementById('select').value = text;
+			document.getElementById('select').value = text; */
 			
 		}
 	} 
@@ -339,14 +343,15 @@
 	
 	function handleOnChange8(e){
 		if($("#select8").val() != '선택'){
-		/* 	var a = $("#select8").val()
-			$("#select5 option:selected").text(a)
-			$("#select5").attr('disabled', true) */
+			var idx = $("#select8 option").index( $("#select8 option:selected") );
+		    document.getElementById("select5").selectedIndex =idx;
+		    
+			$("#select5").attr('disabled', true) 
 			
-			const text = e.value;
+			/* const text = e.value;
 			
 			//선택한 텍스트 출력
-			document.getElementById('result').value = text;
+			document.getElementById('result').value = text; */
 		}
 	
 	}
@@ -463,6 +468,7 @@
 			 
 			const rowData = [
 				{
+					estmtCode : $('#estmtCode').val(),
 					proCode : (a.split('/'))[0],
 					proName : $('#select7 option:selected').text(),
 					sellNum : $('#productNum').val(),
@@ -522,6 +528,7 @@
  			}
  		]
 		masterinsert(data);
+ 		$('#staticBackdrop').modal('hide');
 		 
 	 } else if($("#select8").val() != '선택' && $("#deDate").val() !=''){
 	 		
@@ -540,9 +547,8 @@
 			// 견적서 input에 있는 값들 insert 
 	 		masterinsert(data);
 	 		//등록버튼 누르면 모달창 닫고 화면 gridreload
-	 		 $('#staticBackdrop').modal('hide');
-	 			 grid.refreshLayout();
-	 			 grid2.refreshLayout();
+	 		$('#staticBackdrop').modal('hide');
+	 		
 	 		 
 		
 	}else{
@@ -627,7 +633,7 @@
     })
 	
 	estmtDateSearch.addEventListener('click', () => {
-		grid.filter('estmtCode' , [{code:'contain', value:$('#InEstmtCodeSearch').val()	}])
+		grid.filter('estmtCode' , [{code:'contain', value:$('#InEstmtCodeSearch').val().toUpperCase()	}])
 		grid.filter('clientCode' , [{code:'contain', value:$('#InClientCodeSearch').val().toUpperCase() }])
 		if($('#InEstmtDateSearch').val() != '' ){
 			grid.filter('estmtDate' , [{code:'beforeEq', value:$('#InEstmtDateSearch').val()}])
@@ -644,6 +650,7 @@
 		document.getElementById('InEstmtDateSearch').value = '';
 		grid.unfilter('estmtDate');
 		planAll.checked = true;
+		grid.unfilter('estmtSt')
 	})	
 	
 	
@@ -676,8 +683,6 @@
 		$("#select8").attr('disabled', false)
 		
 		var a = "----선 택----";
-		$("#select8 option[]:selected").val()
-		
 		document.getElementById("select5").value = '선택';
 		document.getElementById("select8").value = '선택';
 		document.getElementById("select7").value = '선택';

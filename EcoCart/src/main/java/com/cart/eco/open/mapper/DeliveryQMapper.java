@@ -36,6 +36,8 @@ public interface DeliveryQMapper {
 	
 	//요청 시 주문서 남품수량 +
 	public int updateOrderNum(OrderDVO vo);
+	
+	public int updateOrder(OrdersVO vo);
 	//
 	
 	//////////////////////////////////////////////////////////////////////////
@@ -69,6 +71,8 @@ public interface DeliveryQMapper {
 	
 	//재고 수량 -
 	public int updateProduct(ProductVO vo);
+	
+	
 
 	////////////////////////////////////////////////////////////////////////////
 	
