@@ -22,11 +22,11 @@ function swal (a,b,c){
     })
 }
 
-function sweetConfirm(msg, callBack){
+function sweetConfirm(msg, callBack,c){
 	let msgA = {'C' : '등록' , 'R' : '조회' , 'U' : '마감', 'D' : '삭제' }
 	 
 Swal.fire({
-   title: '주문마감하겠습니까?',
+   title: c,
    icon: 'warning',
    
    showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음

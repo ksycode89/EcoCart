@@ -1,6 +1,8 @@
 package com.cart.eco.common.service;
 
-import java.sql.Date;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
@@ -19,13 +21,15 @@ public class ProAllVO {
 	private String proGroup; 		// 구분
 	private String lotUsed;			// LOT 여부
 	private String testUsed; 		// 검사 여부
-	private String proHire;			// 등록일
-	private int leadTime; 			// 제작소요일
-	private int bs; 				// 안전재고량
-	private int ppd; 				// 일생산량
-	private int proNum;				// 수량
-	private int cost;  				// 원가
-	private int sellPrice; 			// 판매단가
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private java.util.Date proHire;			// 등록일
+	private Integer leadTime; 			// 제작소요일
+	private Integer bs; 				// 안전재고량
+	private Integer ppd; 				// 일생산량
+	private Integer proNum;				// 수량
+	private Integer cost;  				// 원가
+	private Integer sellPrice; 			// 판매단가
 	private String standard; 		// 규격
 	private String unit; 			// 단위
 	private String codeContent;		// 

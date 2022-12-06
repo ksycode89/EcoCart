@@ -39,7 +39,7 @@
 			</div>
 		</div>
 			<div class="col-lg-auto col-sm-12">
-			<input  id="proName" name="proName" placeholder="품목군명" class="form-control">
+			<input  id="proName" name="proName" placeholder="품목군명" class="form-control" readonly>
 			</div>
 		</div>
 	
@@ -146,13 +146,13 @@
 											
 											<label class="col-lg-3 col-sm-12 col-form-label">제품코드</label>
 											<div class="col-lg-auto col-sm-6">
-												<input id="proCode2" name="proCode" class="form-control">
+												<input id="proCode2" name="proCode" class="form-control" readonly>
 											</div>
 											
 											<div class="mt-3 mb-3 row">
 												<label class="col-lg-3 col-sm-12 col-form-label">제품명</label>
 												<div class="col-lg-auto col-sm-6">
-													<input id="proName2" name="proName" class="form-control">
+													<input id="proName2" name="proName" class="form-control" readonly>
 												</div>
 											</div>
 											<div class="mt-3 mb-3 row">
@@ -262,7 +262,7 @@
 										</div>
 										<div class="col-lg-3 col-md-auto col-sm-12">
 											<input id="clientName" name="clientName" placeholder="거래처명"
-												class="form-control"> 
+												class="form-control" readonly> 
 										</div>		
 									</div>
 								<!--  -->
@@ -283,13 +283,13 @@
 													aria-label="Recipient's username"
 													aria-describedby="button-addon2"> <span
 													class="input-group-text " data-bs-toggle="modal"
-													data-bs-target="#large2" id="basic-addon1"
+													data-bs-target="#large3" id="basic-addon1"
 													style="cursor: pointer"><i class="bi bi-search"></i></span>
 											</div>
 										</div>
 										<div class="col-lg-3 col-md-auto col-sm-12">
 											<input id="empName" name="empName" placeholder="담당자이름"
-												class="form-control"> 
+												class="form-control" readonly> 
 										</div>		
 									</div>
 								 <!--  -->	
@@ -334,14 +334,14 @@
 		<!-- END -->
 		
 		
-	<!-- 품목구분 모달 Modal lg size -->  
+	<!-- 품목군 모달 Modal lg size -->  
     <div class="modal fade text-left" id="large" tabindex="-1" role="dialog"
         aria-labelledby="myModalLabel17" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
             role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel17">품목구분목록</h4>
+                    <h4 class="modal-title" id="myModalLabel17">품목군목록</h4>
                     <button type="button" class="close" data-bs-dismiss="modal"
                         aria-label="Close">
                         <i data-feather="x"></i>
@@ -501,6 +501,7 @@
 				}, {
 					header : '구분',
 					name : 'proGroup',
+				    formatter: 'listItemText',
 					editor: {
 					      type: 'select',
 					      options: {
@@ -532,7 +533,6 @@
 			           start : [ev.rowKey,0],
 			           end : [ev.rowKey,grid.getColumns().length]
 			          }
-				            grid.setSelectionRange(record);
 			          });
 			  
 
@@ -540,7 +540,8 @@
 			function addEmp() {
 				let data = { pro_code : "", pro_name : "", pro_group: ""}
 				
-				grid.appendRow(data);
+				grid.appendRow(data,{'at':0}); // 새로운 행 젤 윗줄에 추가.
+				
 			}
 			
 			
@@ -709,7 +710,7 @@
 				$('#ppd').val(grid.getRow(ev.rowKey).ppd);
 				$('#clientCode').val(grid.getRow(ev.rowKey).clientCode);
 				$('#clientName').val(grid.getRow(ev.rowKey).clientName);
-				$('#proManager').val(grid.getRow(ev.rowKey).empNum);
+				$('#proManager').val(grid.getRow(ev.rowKey).proManager);
 				$('#empName').val(grid.getRow(ev.rowKey).empName);
 				$('#cost2').val((grid.getRow(ev.rowKey).cost).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
 				$('#sellPrice2').val((grid.getRow(ev.rowKey).sellPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
@@ -754,24 +755,47 @@
 		// 물품 등록.(한 건)
 		function insertPro(){
 				   
-				$.ajax({
-		   				url : "ajax/insertPro",
-		   				type : 'post',
-		   				data :$('#proData').serialize()
-		   				,
-		   				 beforeSend : function(xhr){
-		                		xhr.setRequestHeader(header, token);
-		                	 },
-		   				success : function(data) {
-		   					//console.log(data)
-		   					swal("등록 완료!!!!")
-		   					selectPro();
-		   				
-		   				}, error : function(error) {
-		   					swal("등록 실패!!!!!");
-		   					console.log(error);
-		   				}
-		   			})
+				// 필수값 체크하기.
+				let proRowKey = grid.getRow(grid.getData().length-1);
+				if(grid.getData().length > 0){
+					console.log(123,grid.getRow(grid.getData().length-1))
+					if(proRowKey.proCode == '' || proRowKey.proCode == null){
+						swal("제품코드를 입력해주세요","","info");
+					}
+					else if(proRowKey.proName == '' || proRowKey.proName == null){
+						swal("제품이름을 입력해주세요","","info");
+					}
+					else if(proRowKey.proItem == '' || proRowKey.proItem == null){
+						swal("품목군을 입력해주세요","","info")
+					}
+					else if(proRowKey.proGet == '' || proRowKey.proGet == null){
+						swal("구분을 입력해주세요","","info")
+					} else {
+						$.ajax({
+			   				url : "ajax/insertPro",
+			   				type : 'post',
+			   				data :$('#proData').serialize()
+			   				,
+			   				 beforeSend : function(xhr){
+			                		xhr.setRequestHeader(header, token);
+			                	 },
+			   				success : function(data) {
+			   					//console.log(data)
+			   					swal("success","등록 성공!!!","success")
+			   					selectPro();
+			   				
+			   				}, error : function(error) {
+			   					swal("error","등록 실패!!!","error");
+			   					console.log(error);
+			   				}
+			   			})
+					}
+				} else {
+					swal(123);
+				} 
+				
+				
+				
 		              
 		}
 		

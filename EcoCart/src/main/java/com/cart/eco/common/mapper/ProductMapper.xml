@@ -13,9 +13,9 @@
 		
 		SELECT p.pro_code, c.code_id, c.code_name, cl.client_code, 
        		   cl.client_name, o.pro_manager, e.emp_name, p.pro_name,
-               c2.code_name "pro_group", p.lot_used, p.test_used, p.pro_hire,p.pro_num,
+                p.lot_used, p.test_used, p.pro_hire,p.pro_num,
                o.lead_time, o.bs, o.ppd, o.cost, o.sell_price, o.standard, o.unit,p.pro_get
-               ,p.pro_group "code_content"
+               ,p.pro_group
 		FROM product p
 		   LEFT JOIN common_code c
 		    ON p.pro_item = c.code_id
@@ -60,7 +60,7 @@
 	<insert id="insertPro" parameterType="com.cart.eco.common.service.ProAllVO">
 		       
 		INSERT INTO product (pro_code, pro_name, pro_group,pro_item, pro_get,lot_used, test_used, pro_hire,pro_num)
-		VALUES(#{proCode},#{proName},#{proGroup},#{proItem},null,#{lotUsed},#{testUsed},#{proHire},0)
+		VALUES(#{proCode},#{proName},#{proGroup},#{proItem},#{proGet},#{lotUsed},#{testUsed},#{proHire},0)
 	</insert>
 		
 		 
@@ -68,8 +68,41 @@
 	 <!--물품 옵션 등록.-->
 	<insert id="insertProOption" parameterType="com.cart.eco.common.service.ProAllVO">
 	
-		INSERT INTO product_option (pro_code,lead_time, bs, ppd, client_code, pro_manager, cost, sell_price)
-		VALUES(#{proCode},#{leadTime},#{bs},#{ppd},#{clientCode},#{proManager},#{cost},#{sellPrice})
+		INSERT INTO product_option (pro_code,
+		<if test="leadTime != 0">
+			lead_time, 
+		</if>
+		<if test="bs != 0">
+			bs, 
+		</if>
+		<if test="ppd != 0">
+			ppd, 
+		</if>
+			client_code, pro_manager, 
+		<if test="cost != 0">
+			cost, 
+		</if>
+		<if test="sellPrice != 0">
+			sell_price)
+		</if>
+		
+		VALUES(#{proCode},
+		<if test="leadTime != 0">
+			#{leadTime},
+		</if>
+		<if test="bs != 0">
+			#{bs},
+		</if>
+		<if test="ppd != 0">
+			#{ppd},
+		</if>
+			#{clientCode},#{proManager},
+		<if test="cost != 0">
+			#{cost},
+		</if>	
+		<if test="sellPrice != 0">
+			#{sellPrice})
+		</if>
 		
 	</insert>
 	
