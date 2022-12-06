@@ -62,7 +62,7 @@ public class CommonController {
 	// 페이지 이동
 	@GetMapping("/login")
 	public String loginForm() {
-
+			
 		return "common/login.html";
 	}
 
@@ -292,11 +292,9 @@ public class CommonController {
 
 	@GetMapping("/coCode")
 	public String moveCoCode(Model model) {
-		CommonVO vo = new CommonVO();
 		List<CommonVO> list = commonService.commonGroupNull();
 
 		String json = new Gson().toJson(list);
-		System.out.println(json);
 
 		model.addAttribute("list", json);
 		return "common/coCode";
@@ -386,13 +384,12 @@ public class CommonController {
 	@PostMapping("/WHInsert")
 	@ResponseBody
 	public int WHInsert(@RequestBody ToastGridVO<WHVO> vo) {
-		System.out.println("create : " + vo.getCreatedRows());
 		int result = 0;
 		for (WHVO wh : vo.getCreatedRows()) {
 
 			result += whService.WHInsert(wh);
 		}
-		System.out.println("결과값 합산 : " + result);
+		//System.out.println("결과값 합산 : " + result);
 		return result;
 	}
 
@@ -400,13 +397,12 @@ public class CommonController {
 	@PostMapping("/WHUpdate")
 	@ResponseBody
 	public int WHUpdate(@RequestBody ToastGridVO<WHVO> vo) {
-		System.out.println("update : " + vo.getUpdatedRows());
 		int result = 0;
 		for (WHVO wh : vo.getUpdatedRows()) {
 
 			result += whService.WHUpdate(wh);
 		}
-		System.out.println("결과값 합산 : " + result);
+		//System.out.println("결과값 합산 : " + result);
 		return result;
 	}
 
