@@ -68,42 +68,42 @@
 	 <!--물품 옵션 등록.-->
 	<insert id="insertProOption" parameterType="com.cart.eco.common.service.ProAllVO">
 	
-		INSERT INTO product_option (pro_code,
-		<if test="leadTime != 0">
-			lead_time, 
+		INSERT INTO product_option (pro_code
+		<if test="leadTime != null">
+			,lead_time
 		</if>
-		<if test="bs != 0">
-			bs, 
+		<if test="bs != null">
+			,bs 
 		</if>
-		<if test="ppd != 0">
-			ppd, 
+		<if test="ppd != null">
+			,ppd
 		</if>
-			client_code, pro_manager, 
-		<if test="cost != 0">
-			cost, 
+			,client_code, pro_manager 
+		<if test="cost != null">
+			,cost
 		</if>
-		<if test="sellPrice != 0">
-			sell_price)
+		<if test="sellPrice != null">
+			,sell_price
 		</if>
-		
-		VALUES(#{proCode},
-		<if test="leadTime != 0">
-			#{leadTime},
+		)
+		VALUES(#{proCode}
+		<if test="leadTime != null">
+			,#{leadTime}
 		</if>
-		<if test="bs != 0">
-			#{bs},
+		<if test="bs != null">
+			,#{bs}
 		</if>
-		<if test="ppd != 0">
-			#{ppd},
+		<if test="ppd != null">
+			,#{ppd}
 		</if>
-			#{clientCode},#{proManager},
-		<if test="cost != 0">
-			#{cost},
+			,#{clientCode},#{proManager}
+		<if test="cost != null">
+			,#{cost}
 		</if>	
-		<if test="sellPrice != 0">
-			#{sellPrice})
+		<if test="sellPrice != null">
+			,#{sellPrice}
 		</if>
-		
+		)
 	</insert>
 	
 	<!--물품 수정.-->
