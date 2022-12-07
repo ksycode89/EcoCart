@@ -1,50 +1,61 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
 <head>
 <meta charset="UTF-8">
-<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
-<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
 <title>생산관리</title>
 </head>
 <body>
-	<div layout:fragment="header" class="page-heading"><h2>생산관리</h2></div>
+	<div layout:fragment="header" class="page-heading">
+		<h2>생산관리</h2>
+	</div>
 	<div layout:fragment="content" class="page-content">
 		<div>
-			<h4 style="height:40px">생산가동설정</h4>
+			<h4 style="height: 40px">생산가동설정</h4>
 			<div id=makingGridId></div>
-		</div><br>
+		</div>
+		<br>
 		<div>
-			<div style="height:40px;">
-				<h4 style="display:inline">생산가동현황</h4>
-				<button type="button" class="btn btn-sm btn-primary" id="finishBtn" style="float:right; display:none">공정이동표 발행</button>
+			<div style="height: 40px;">
+				<h4 style="display: inline">생산가동현황</h4>
+				<button type="button" class="btn btn-sm btn-primary" id="finishBtn"
+					style="float: right; display: none">공정이동표 발행</button>
 			</div>
 			<div id="mfResultGridId"></div>
-		</div><br>
+		</div>
+		<br>
 		<div>
-			<h4 style="height:40px">생산가동현황상세</h4>
+			<h4 style="height: 40px">생산가동상세</h4>
 			<div id="makingDetailGridId"></div>
-		</div><br>
-		
+		</div>
+		<br>
+
 		<!-- 확정지시 Modal -->
-			<div class="modal fade" id="decideOrderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="decideOrderList" aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="decideOrderList">확정지시조회</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<div id="orderDecideModalGridId"></div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">닫기</button>						
-						</div>
+		<div class="modal fade" id="decideOrderModal"
+			data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="decideOrderList" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="decideOrderList">확정지시조회</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="orderDecideModalGridId"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sm btn-secondary"
+							data-bs-dismiss="modal">닫기</button>
 					</div>
 				</div>
 			</div>
+		</div>
 		<script>
 		
 		var token = $("meta[name='_csrf']").attr("content");
@@ -463,7 +474,7 @@
 		    				console.log(error);
 		    			}
 		        	});
-					setInterval(startProcessing, 300);
+					makingInterval = setInterval(startProcessing, 300);
 				} else {
 					swal(
 			           	'생산지시가 설정되지 않았습니다.\n생산지시를 설정해주세요.',

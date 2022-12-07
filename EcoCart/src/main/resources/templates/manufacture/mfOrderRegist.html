@@ -19,6 +19,11 @@
 					<button type="button" class="btn btn-sm btn-primary" id="selectPlanBtn" data-bs-toggle="modal" data-bs-target="#planListModal" style="float:right">미지시 계획 조회</button>
 				</div>
 				<div id="mfPlanSelectGridId"></div>
+				<div style="height:40px; margin-top:8px">
+					<span>* 생산계획행을 누르면 생산지시행이 추가됩니다.</span><br>
+					<span>* 생산계획의 필요수량과 생산지시의 지시수량 총 합이 동일해야 합니다.</span><br>
+					<span>* 공정라인을 설정하지 않을 시 LINE-1로 지정됩니다.</span>
+				</div>
 			</div>
 			<div class="col-7">
 				<div style="height:40px">
@@ -82,7 +87,8 @@
 		el: document.getElementById('mfPlanSelectGridId'),
 		scrollX: false,
 		scrollY: false,
-		bodyHeight: 160,
+		bodyHeight: 80,
+		minBodyHeight: 80,
 		columns: [
 			{
 	          header: '생산계획코드',
@@ -383,7 +389,7 @@
     		$("#insertOrderBtn").show();
     		let b = mfOrderGrid.getRowCount();
     		for(i=0; i<b; i++){
-    			if(mfOrderGrid.getRow(i).mfOrderNum == null || mfOrderGrid.getRow(i).mfOrderNum == '' || mfOrderGrid.getRow(i).mfOrderNum == 0){
+    			if(mfOrderGrid.getRow(i).mfOrderNum == null || mfOrderGrid.getRow(i).mfOrderNum == 0){
     				mfOrderGrid.removeRow(i);
     			}
     		}
@@ -479,8 +485,13 @@
     });
     
     insertOrderBtn.addEventListener('click', (ev) => {
-    	let count = mfNeedGrid.getRowCount()-1;
-    	if(mfNeedGrid.getRow(count).restNum != null){
+    	let count = 0;
+    	for(i=0; i<mfNeedGrid.getRowCount();i++){
+    		if(mfNeedGrid.getRow(i).lotCode == null){
+    			count++;
+    		}
+    	}
+    	if(count == 0){
     		$.ajax({
 	    		url: '/mfPlanProgressUpdate',
 	    		type: 'POST',
@@ -546,12 +557,12 @@
         	        	        		           		xhr.setRequestHeader(header, token);
         	        	        		           	},
         	        	        		    		success: function(data){
-        	        	        		    			if(data != 0){
+        	        	        		    			if(data != 0){/* 
         	        	        		    				swal(
         	        	            		            		'자재출고요청이 완료되었습니다!',
         	        	            		            	  	'',
         	        	            		            	  	'success'
-        	        	            		            	);
+        	        	            		            	); */
         	        	        		    				//alert('자재출고요청이 완료되었습니다.');
         	        	        		    				$.ajax({
         	        	        		    	        		url: '/mfReceivingDetailUpdate',
@@ -575,7 +586,10 @@
         	                	        		    	               	},
         	                	        		    	        		success: function(data){
         	                	        		    	        			console.log(data);
-        	                	        		    	        			location.reload();
+        	                	        		    	        			mfPlanSelectGrid.clear();
+        	                	        		    	        			mfOrderGrid.clear();
+        	                	        		    	        			mfNeedGrid.clear();
+        	                	        		    	        			count=0;
         	                	        		    	        		},
         	                	        		    	        		error: function(error){
         	                	        	        		    			console.log(error);
