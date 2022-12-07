@@ -96,5 +96,13 @@
 			FROM employees
 			WHERE emp_num = #{empNum}
 		</delete>
+		
+	<select id="sessionEmp" resultType="com.cart.eco.common.service.EmpVO">
+			    SELECT emp_num,emp_name,code_name "empDept"		
+				FROM employees e join common_code c
+				on e.emp_dept = c.code_id
+				where emp_num = #{empNum}
+	</select>
+	
 
 </mapper>

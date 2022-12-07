@@ -27,5 +27,7 @@ public interface EmpService {
 
 	//단건 사원 조회
 		public EmpVO selectEmpOne(String empNum);
+		//세션용
+		public EmpVO sessionEmp(EmpVO vo);
 
 }

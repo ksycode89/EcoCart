@@ -70,6 +70,13 @@ public class EmpServiceImpl implements EmpService {
 		
 		return 0 ;
 	}
+
+
+	@Override
+	public EmpVO sessionEmp(EmpVO vo) {
+		
+		return empMapper.sessionEmp(vo);
+	}
 	
 
 }

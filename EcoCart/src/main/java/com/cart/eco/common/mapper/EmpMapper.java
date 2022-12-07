@@ -26,4 +26,6 @@ public interface EmpMapper {
 
 	// 담당자 조회.
 	public List<EmpVO> selectM(EmpVO vo);
+	//세션용
+	public EmpVO sessionEmp(EmpVO vo);
 }

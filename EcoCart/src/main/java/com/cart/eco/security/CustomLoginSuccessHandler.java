@@ -31,8 +31,9 @@ public class CustomLoginSuccessHandler
 		String name = authentication.getName();
 		System.out.println(name);
 //		System.out.println("CustomLoginSuccessHandler : " + name);
-	
-		EmpVO empVo= empSer.selectEmpOne(name);
+		EmpVO vo = new EmpVO();
+		vo.setEmpNum(name);
+		EmpVO empVo= empSer.sessionEmp(vo);
 		System.out.println("inner succhand : "+empVo);
 		
 		request.getSession().setAttribute("infos", empVo);
