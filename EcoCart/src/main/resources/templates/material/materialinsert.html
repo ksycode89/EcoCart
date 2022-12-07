@@ -209,6 +209,7 @@
    
    //자재검색 목록
    function inseto() {
+
     	   $.ajax({
     		   url:'/proInfo',
     		   type : 'GET',
@@ -220,7 +221,7 @@
     			   console.log(reject)
     		   }
     	   })
-       
+
    }
    
    var gridData = [
@@ -325,21 +326,24 @@
         header: '단가',
         name: 'sellPrice',
         formatter : function (ev){
-        	console.log(ev)
-            return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          },
-          align : 'right'
+
+           	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            },
+            align : 'right'
+
       },
       {
         header: '공급가',
         name: 'sumPrice',
         formatter : function (ev){
+
             var a = ev;
             const b= Object.values(a)[2]
             const c = b + '';
             return c.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
              },
           align : 'right'
+
       }
     ]
   });
@@ -404,10 +408,10 @@
      	        	header: '단가',
       	            name: 'sellPrice',
       	          formatter : function (ev){
-      	        	console.log(ev)
-      	            return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      	          },
-      	          align : 'right'
+
+      	           	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      	            },
+
      	         },
      	        {
       	        	header: '단위',

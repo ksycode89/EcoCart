@@ -18,8 +18,6 @@
 		
 		<div id="grid"></div>
 		<br>
-		<br>
-		<br>
 		<div id="grid2"></div>
 		
 		<script>
@@ -37,7 +35,8 @@
 		    el: document.getElementById('grid'),
 		    data: gridData,
 		    scrollX: false,
-		    scrollY: false,
+		    scrollY: true,
+		    bodyHeight : 320,
 		    position : "bottom",
 		    columns: [
 		      {
@@ -114,7 +113,14 @@
 		  })
 	  })
 	   
-    
+    // 한 줄 선택시 컬러.
+	grid.on('click', ev=>{
+		 var record = {
+	           start : [ev.rowKey,0],
+	           end : [ev.rowKey,grid.getColumns().length]
+	          }
+		            grid.setSelectionRange(record);
+    });
 	    
    </script>
 
