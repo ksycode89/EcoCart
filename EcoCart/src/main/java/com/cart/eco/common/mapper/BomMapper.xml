@@ -71,10 +71,11 @@
 		
 	</insert>
 <!-- 	bom자제품검 -->
-	<select id="bomChildren" parameterType="com.cart.eco.common.service.BomVO" resultType="com.cart.eco.common.service.BomVO">
-		SELECT bom_code,por_code,bom_hire,bom_fire,p.pro_name "bom_need_day",bom_group
-		FROM bom_children 
-		WHERE bom_code = #{bomCode}
+	<select id="bomChildren" parameterType="com.cart.eco.common.service.BomVO" resultType="com.cart.eco.common.service.BomChildernVO">
+	SELECT bom_code, c.pro_code , p.pro_name,bom_num, loss,need_num
+	FROM bom_children c JOIN product p 
+    	 ON c.pro_code = p.pro_code
+   	WHERE bom_code = #{bomCode} 	 
 	</select>
 	
 	<select id="getChildPro" resultType="com.cart.eco.common.service.BomVO">

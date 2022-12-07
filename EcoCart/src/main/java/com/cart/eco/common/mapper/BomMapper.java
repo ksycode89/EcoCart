@@ -12,7 +12,7 @@ public interface BomMapper {
 		public List<BomVO>  bomList(BomVO vo);
 		
 		//bom 자제품
-		public List<BomVO>  bomChildren(BomVO vo);
+		public List<BomChildernVO>  bomChildren(BomVO vo);
 		
 		//모제품 등록
 		public int bomInsert(BomVO vo);

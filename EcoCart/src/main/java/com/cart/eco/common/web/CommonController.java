@@ -440,7 +440,7 @@ public class CommonController {
 	// 자제품조회 bomChildren
 	@PostMapping("/bomChildren")
 	@ResponseBody
-	public List<BomVO> bomChildren(BomVO vo) {
+	public List<BomChildernVO> bomChildren(BomVO vo) {
 		System.out.println("bomChildren : " + vo);
 		return bomService.bomChildren(vo);
 	}

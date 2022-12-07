@@ -30,7 +30,7 @@ public class BomServiceImpl  implements BomService{
 	}
 
 	@Override
-	public List<BomVO> bomChildren(BomVO vo) {
+	public List<BomChildernVO> bomChildren(BomVO vo) {
 		
 		return mapper.bomChildren(vo);
 	}
@@ -41,13 +41,8 @@ public class BomServiceImpl  implements BomService{
 		int reSum = 0 ;
 		 String bomCode = vo.get(vo.size()-1).getBomCode();
 		 
-		System.out.println("bomCode"+bomCode);
-		
 		for(int i=0; i <vo.size()-1; i++) {
 			vo.get(i).setBomCode(bomCode);
-			
-			System.out.println("inner imple"+vo.get(i));
-			
 			reSum += mapper.bomInsertOP(vo.get(i));
 		}
 		if (reSum == vo.size()-1) {
