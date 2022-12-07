@@ -199,8 +199,6 @@
    }
    function inseto() {
        
-       $('#addBtn').on('click', (col) =>{
-    	   $('#staticBackdrop2').modal("show");
     	   $.ajax({
     		   url:'/proInfo',
     		   type : 'GET',
@@ -212,7 +210,7 @@
     			   console.log(reject)
     		   }
     	   })
-       })
+     
    }
    
    var gridData = [
@@ -315,10 +313,22 @@
       {
         header: '단가',
         name: 'sellPrice',
+        formatter : function (ev){
+           	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            },
+            align : 'right'
       },
       {
         header: '공급가',
-        name: 'sumPrice'
+        name: 'sumPrice',
+        formatter : function (ev){
+        	var a = ev;
+        	const b= Object.values(a)[2]
+        	const c = b + '';
+        	return c.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            },
+         align : 'right'
+        
       }
     ]
   });
@@ -382,6 +392,9 @@
     	         {
      	        	header: '단가',
       	            name: 'sellPrice',
+      	          formatter : function (ev){
+      	           	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      	            },
      	         },
      	        {
       	        	header: '단위',

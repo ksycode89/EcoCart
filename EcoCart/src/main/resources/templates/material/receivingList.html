@@ -136,7 +136,14 @@
 	
 		
 	
-	
+	  // 한 줄 선택시 컬러.
+	grid.on('click', ev=>{
+		 var record = {
+	           start : [ev.rowKey,0],
+	           end : [ev.rowKey,grid.getColumns().length]
+	          }
+		            grid.setSelectionRange(record);
+    });
 		
 		
 		

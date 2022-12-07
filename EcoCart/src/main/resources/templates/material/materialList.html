@@ -47,7 +47,7 @@
 			<div>
 				<div id="grid"></div>
 			</div>
-		</div>
+		</div><br>
 			<div class="row" >
 				<div id="grid2" ></div>
 			</div>
@@ -63,7 +63,7 @@
 	          el: document.getElementById('grid'),
 	          scrollX: false,
 	          scrollY: true	,
-	          bodyHeight: 400,
+	          bodyHeight: 320,
 	          rowHeaders : ['checkbox'],
 	          columns: [
 	            {
@@ -332,6 +332,14 @@
 		}	
 	} 
 	 
+	// 한 줄 선택시 컬러.
+	grid.on('click', ev=>{
+		 var record = {
+	           start : [ev.rowKey,0],
+	           end : [ev.rowKey,grid.getColumns().length]
+	          }
+		            grid.setSelectionRange(record);
+    });
 
    </script>
 	</div>
