@@ -158,7 +158,7 @@
 											<div class="mt-3 mb-3 row">
 												<label class="col-lg-3 col-sm-12 col-form-label">품목군</label>
 												<div class="col-lg-auto col-sm-6">
-												<input id="proItem2" name="proItem" class="form-control">
+												<input id="proItem2" name="proItem" class="form-control" readonly>
 												</div>
 											</div>	
 											<div class="mt-1 mb-3 row">
@@ -353,11 +353,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light-secondary"
-                        data-bs-dismiss="modal">
-                        <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Close</span>
-                    </button>
+                 
                     <button type="button" class="btn btn-primary ml-1"
                         data-bs-dismiss="modal">
                         <i class="bx bx-check d-block d-sm-none"></i>
@@ -387,11 +383,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light-secondary"
-                        data-bs-dismiss="modal">
-                        <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Close</span>
-                    </button>
+                    
                     <button type="button" class="btn btn-primary ml-1"
                         data-bs-dismiss="modal">
                         <i class="bx bx-check d-block d-sm-none"></i>
@@ -421,11 +413,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light-secondary"
-                        data-bs-dismiss="modal">
-                        <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Close</span>
-                    </button>
+                   
                     <button type="button" class="btn btn-primary ml-1"
                         data-bs-dismiss="modal">
                         <i class="bx bx-check d-block d-sm-none"></i>
@@ -538,7 +526,7 @@
 
 			// 등록-행 추가.
 			function addEmp() {
-				let data = { pro_code : "", pro_name : "", pro_group: ""}
+			 	let data = { proCode : "", proName : "", proGroup: ""} 
 				
 				grid.appendRow(data,{'at':0}); // 새로운 행 젤 윗줄에 추가.
 				
@@ -702,7 +690,7 @@
 				console.log(grid.getRow(ev.rowKey).proGroup)
 				//console.log("A",$('#proGroup2').val())
 				
-				$('#proItem2').val(grid.getRow(ev.rowKey).codeId);							// 품목
+				$('#proItem2').val(grid.getRow(ev.rowKey).codeId);	// 품목
 				$('#proCode2').val(grid.getRow(ev.rowKey).proCode);
 				$('#proName2').val(grid.getRow(ev.rowKey).proName);
 				$('#proGroup2').val(grid.getRow(ev.rowKey).proGroup).prop("selected",true); // 구분
@@ -762,33 +750,36 @@
 		function insertPro(){
 				   
 				// 필수값 체크하기.
-				let proRowKey = grid.getRow(grid.getData().length-1);
+				//let proRowKey = grid.getRow(grid.getData().length-1);
+				
 				if(grid.getData().length > 0){
-					console.log(123,grid.getRow(grid.getData().length-1))
-					if(proRowKey.proCode == '' || proRowKey.proCode == null){
+					
+					if($('#proCode2').val() == '' || $('#proCode2').val() == null){
 						swal("제품코드를 입력해주세요","","info");
 					}
-					else if(proRowKey.proName == '' || proRowKey.proName == null){
+					else if($('#proName2').val() == '' || $('#proName2').val() == null){
 						swal("제품이름을 입력해주세요","","info");
 					}
-					else if(proRowKey.proItem == '' || proRowKey.proItem == null){
+					else if($('#proItem2').val() == '' || $('#proItem2').val() == null){
+						console.log($('#codeId2').val())
 						swal("품목군을 입력해주세요","","info")
-					}
-					else if(proRowKey.proGet == '' || proRowKey.proGet == null){
-						swal("구분을 입력해주세요","","info")
+					 } 
+					else if($('#proGroup2').val() == '' || $('#proGroup2').val() == null){
+						swal("구분을 입력해주세요","","info") 
+					
 					} else {
 						$.ajax({
 			   				url : "ajax/insertPro",
 			   				type : 'post',
-			   				data :$('#proData').serialize()
+			   				data :$('#proData').serialize() // form 안에 값들을 한 번에 전송 가능한 data로 만들어줌.
 			   				,
 			   				 beforeSend : function(xhr){
 			                		xhr.setRequestHeader(header, token);
 			                	 },
 			   				success : function(data) {
-			   					//console.log(data)
-			   					swal("success","등록 성공!!!","success")
+			   					
 			   					selectPro();
+			   					swal("success","등록 성공!!!","success")
 			   				
 			   				}, error : function(error) {
 			   					swal("error","등록 실패!!!","error");
@@ -797,14 +788,11 @@
 			   			})
 					}
 				} else {
-					swal();
+					swal("새로운 등록행을 추가해주세요","","info");
 				} 
-				
-				
-				
-		              
 		}
-		
+				
+				
 		 grid.on("keydown", ev => {
 			// console.log(ev)
 			 if(ev.columnName == 'proGroup'){
@@ -819,6 +807,9 @@
 			 }
 				 
 		 })
+				
+		              
+		
 		
 		
 		 
@@ -864,8 +855,8 @@
 	                	 },
 	   				success : function(data) {
 	   					//console.log(data)
-	   					swal("수정 완료!!!!")
 	   					selectPro();
+	   					swal("수정 완료!!!!")
 	   				
 	   				}, error : function(error) {
 	   					swal("수정 실패!!!!!");

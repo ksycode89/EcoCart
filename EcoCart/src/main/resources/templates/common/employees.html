@@ -177,11 +177,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light-secondary"
-                        data-bs-dismiss="modal">
-                        <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Close</span>
-                    </button>
+                 
                     <button type="button" class="btn btn-primary ml-1"
                         data-bs-dismiss="modal">
                         <i class="bx bx-check d-block d-sm-none"></i>
@@ -213,11 +209,7 @@
 				<div id="gridEmp2" class="mb-3 row"></div>	                     
              </div>
              <div class="modal-footer">
-                 <button type="button" class="btn btn-light-secondary"
-                     data-bs-dismiss="modal">
-                     <i class="bx bx-x d-block d-sm-none"></i>
-                     <span class="d-none d-sm-block">Close</span>
-                 </button>
+                
                  <button type="button" class="btn btn-primary ml-1"
                      data-bs-dismiss="modal">
                      <i class="bx bx-check d-block d-sm-none"></i>
@@ -247,11 +239,7 @@
 				<div id="gridD" class="mb-3 row"></div>                      
               </div>
               <div class="modal-footer">
-                  <button type="button" class="btn btn-light-secondary"
-                      data-bs-dismiss="modal">
-                      <i class="bx bx-x d-block d-sm-none"></i>
-                      <span class="d-none d-sm-block">Close</span>
-                  </button>
+                 
                   <button type="button" class="btn btn-primary ml-1"
                       data-bs-dismiss="modal">
                       <i class="bx bx-check d-block d-sm-none"></i>
@@ -281,11 +269,7 @@
 				<div id="gridEmp" class="mb-3 row"></div>	                                                
              </div>
              <div class="modal-footer">
-                 <button type="button" class="btn btn-light-secondary"
-                     data-bs-dismiss="modal">
-                     <i class="bx bx-x d-block d-sm-none"></i>
-                     <span class="d-none d-sm-block">Close</span>
-                 </button>
+               
                  <button type="button" class="btn btn-primary ml-1"
                      data-bs-dismiss="modal">
                      <i class="bx bx-check d-block d-sm-none"></i>
@@ -314,11 +298,7 @@
 				<div id="gridmn" class="mb-3 row"></div>                       
              </div>
              <div class="modal-footer">
-                 <button type="button" class="btn btn-light-secondary"
-                     data-bs-dismiss="modal">
-                     <i class="bx bx-x d-block d-sm-none"></i>
-                     <span class="d-none d-sm-block">취소</span>
-                 </button>
+                
                  <button type="button" class="btn btn-primary ml-1"
                      data-bs-dismiss="modal" onclick="valueIn()">
 				    <i class="bx bx-check d-block d-sm-none"></i>
@@ -566,11 +546,13 @@
 			document.getElementById('codeName').value='';
 			document.getElementById('empNum').value='';
 			document.getElementById('empName').value='';
-			document.getElementById('empName').value='';
-			document.getElementById('empName').value='';
-			document.getElementById('empName').value='';
-			document.getElementById('empName').value='';
-			document.getElementById('empName').value='';
+			
+			document.getElementById('empNum2').value='';
+			document.getElementById('empName2').value='';
+			document.getElementById('codeId2').value='';
+			document.getElementById('codeName2').value='';
+			document.getElementById('empMail2').value='';
+			document.getElementById('empTel2').value='';
 			
 			
 			
@@ -740,9 +722,9 @@
 							
 					
 							
+							selectEmp();
 							swal("success","등록에 성공했습니다!!!","success")
 							
-							selectEmp();
 						
 						}, error : function(error) {
 							swal("error","등록에 실패했습니다!!!","error");
