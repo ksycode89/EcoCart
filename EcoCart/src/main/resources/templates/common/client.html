@@ -305,7 +305,8 @@
 		//grid로 필터링/전체조회 (조회버튼)
 		function getListClient (){
 			//console.log("check hire ",$('#clientHire').val())
-			let data = {"clientCode" : $('#clientCode').val(),"workType" : $('#workType').val(),"clientGrade" : $('#clientGrade').val(),"clientHire" : $('#startDay').val(),"clientTel" : $('#endDay').val() }
+			let data = {"clientCode" : $('#clientCode').val(),"workType" : $('#workType').val(),"clientGrade" : $('#clientGrade').val(),
+						"clientHire" : $('#startDay').val(),"clientTel" : $('#endDay').val() }
 			ClientListAjax(grid,data)
 		}	
 		//거래처 추가

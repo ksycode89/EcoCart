@@ -553,16 +553,12 @@
 	///버튼들///
 	//등록
 	function insertBOM(){
-      
-     
-		console.log('==등록버튼==')
 		let checkNum =false;
 		$(grid2.getData()).each((a,b)=>{
 			if(b.bomNum == null || b.bomNum == ''){
 				checkNum =true;
 			}
 		})
-	
 		if(gird1.getRow(0).bomHire ==null || gird1.getRow(0).bomHire == ''){
 	 	   alert('시작일을 선택해주세요')
 		}else if(gird1.getRow(0).bomFire ==null || gird1.getRow(0).bomFire == ''){
@@ -573,7 +569,6 @@
 			alert('자재품의 수량을 입력해주세요.')
 		}else{
 		 	if(gird1.getCheckedRows().length==1){
-		 		console.log(gird1.getCheckedRows()[0])
 			/*  gird1.on('afterRequest', function(ev) {  }) */
 		 		 $.ajax({
 		               url : "/bomInsert",
@@ -583,8 +578,6 @@
 		           		},
 		           		data :  gird1.getCheckedRows()[0],
 		               success : function(data){
-		                  console.log(data);
-		            
 		                let dataOP = grid2.getData()
 		                   dataOP.push(data)
 				                //상세인서트
@@ -597,7 +590,7 @@
 				           		xhr.setRequestHeader(header, token);
 				             	 }, 
 				               success : function(data){
-				               alert(data)
+				               swal(data)
 				               },
 				               error : err=>{
 				                  console.log(err)
@@ -695,7 +688,6 @@
 		  })
 	 //모제품체크 
 	if(gird1.getCheckedRows().length != 0  ||  $('#chprocode').val() != null){
-				
 		
 			//실질체크
 			if(check){
@@ -703,12 +695,12 @@
 						console.log("자제품추가grid", $('#chprocode').val())
 						grid2.appendRows(data)
 					 }else {
-						 alert("추가할 자제품을 선택해주세요")
+						 toast("warning","추가할 자제품을 선택해주세요")
 					  }
 			 }else{
-				  alert("같은 자제품이 존재합니다.") }
+				 toast("warning","같은 자제품이 존재합니다.") }
 			 
-	   }else {  alert("등록할 모제품을 선택해주세요") }
+	   }else {  toast("warning","등록할 모제품을 선택해주세요") }
 		}		
 		 //BOM조회 - 모제품필수 /옵션 구분/담당자
 	 function getList(){

@@ -52,7 +52,6 @@
  
    <div style="margin-left: 3px;">   
          <button id="insertBtn" type="button" class="btn btn-sm btn-primary" style="width: 80px; float:right; margin:5px;">등록</button>
-         <button id="test" type="button" class="btn btn-sm btn-primary" style="width: 80px; float:right; margin:5px;">test</button>
    </div>
    <div id="grid"></div>   
          
@@ -139,7 +138,9 @@
       $('#addBtn').click(inseto)  //자재추가
    })
    
+    
    
+   // 등록 ajax
    function insertInfo() {
 	   console.log(grid.getData()[0])
 	   $.ajax({
@@ -151,8 +152,10 @@
 		   contentType: 'application/json',
 		   data : JSON.stringify({'morder' : grid.getData()[0], 'detailOrder': grid2.getData()    }),
 		   success : function(data) {
-			  swal(data)
-			   location.reload();
+			  swal('등록이 성공하였습니다.')
+			  setTimeout(function() {
+	              location.reload();
+	            }, 3000);
 		   },
 		   error : function(error) {
 			   console.log(error);
@@ -162,6 +165,8 @@
    }
    
    
+   
+   //사원정보 ajax
    function empList() {
       $.ajax({
          url : 'ajax/list',
@@ -180,6 +185,8 @@
       })
    }
    
+   
+   //거래처목록 ajax
    function clientList (){
 	   $.ajax({
 	         url : '/callClient',
@@ -197,8 +204,12 @@
 	      })
 	   
    }
+   
+   
+   
+   //자재검색 목록
    function inseto() {
-       
+
     	   $.ajax({
     		   url:'/proInfo',
     		   type : 'GET',
@@ -210,7 +221,7 @@
     			   console.log(reject)
     		   }
     	   })
-     
+
    }
    
    var gridData = [
@@ -296,6 +307,7 @@
       {
         header: '단위',
         name: 'unit',
+        
       },
     
           {
@@ -314,21 +326,24 @@
         header: '단가',
         name: 'sellPrice',
         formatter : function (ev){
+
            	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             },
             align : 'right'
+
       },
       {
         header: '공급가',
         name: 'sumPrice',
         formatter : function (ev){
-        	var a = ev;
-        	const b= Object.values(a)[2]
-        	const c = b + '';
-        	return c.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            },
-         align : 'right'
-        
+
+            var a = ev;
+            const b= Object.values(a)[2]
+            const c = b + '';
+            return c.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+             },
+          align : 'right'
+
       }
     ]
   });
@@ -393,8 +408,10 @@
      	        	header: '단가',
       	            name: 'sellPrice',
       	          formatter : function (ev){
+
       	           	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       	            },
+
      	         },
      	        {
       	        	header: '단위',
@@ -471,29 +488,7 @@
     	  gridClient.refreshLayout(); 
        })
        
-     $('#test').on('click',()=>{
-    	 Swal.fire({
-    		   title: '정말로 그렇게 하시겠습니까?',
-    		   text: '다시 되돌릴 수 없습니다. 신중하세요.',
-    		   icon: 'warning',
-    		   
-    		   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
-    		   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
-    		   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
-    		   confirmButtonText: '승인', // confirm 버튼 텍스트 지정
-    		   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
-    		   
-    		   reverseButtons: true, // 버튼 순서 거꾸로
-    		   
-    		}).then(result => {
-    		   // 만약 Promise리턴을 받으면,
-    		   if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
-    		   
-    		      Swal.fire('승인이 완료되었습니다.', '화끈하시네요~!', 'success');
-    		   }
-    		});
-    	 
-     })
+   
    </script>
    </div>
 </body>
