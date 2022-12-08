@@ -137,8 +137,7 @@ public interface DeliveryQMapper {
 	public List<DeliveryProVO> selectBom();
 	public List<OrdersVO> selectOrderCode();
 	
-
-
+	public List<DeliveryGDVO> forChart();
 	
 	
 }

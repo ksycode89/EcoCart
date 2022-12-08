@@ -329,6 +329,16 @@ public class DeliveryQController {
 		return deliverQService.productList2();
 
 	}
+	//lay용 창
+	@GetMapping("/forChart")
+	@ResponseBody
+	public List<DeliveryGDVO> forChart() {
+		
+		return deliverQService.forChart();
+		
+	}
+	
+	
 
 	
 }

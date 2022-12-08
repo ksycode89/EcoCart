@@ -286,14 +286,31 @@
 				</div>
 			</footer>
 			<script type="text/javascript">
-		
+			$.ajax({
+				url:'/forChart',
+				success : function(result) {
+					let dataNew =[	{name : '전기바이크001',
+									 data : '1'},
+									{name : '전기바이크002'},
+									{name : '전기바이크003'},
+									{name : '전기바이크004'}]
+									
+					$(result).each((a,val)=>{
+							
+					})
+
+				},
+				error : function(error){
+					console.log(error);
+				}
+			})
 			
 			const data = {
 					  categories: ['1분기', '2분기',  '3분기',  '4분기'],
 					  series: [
 					    {
 					      name: '전기바이크01',
-					      data: [5000, 3000, 5000, 7000, 6000, 4000, 1000]
+					      data: [5000, 3000, 5000, 7000,]
 					    },
 					    {
 					      name: '전기바이크02',
@@ -348,7 +365,6 @@
 		                 header: '총합계액',
 		                 name: 'allSum',
 		                 formatter : function (ev){
-		                   	 console.log(ev)
 		                 return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                    },
 		                  align : 'right'

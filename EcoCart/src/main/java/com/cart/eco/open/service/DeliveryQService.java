@@ -126,7 +126,7 @@ public interface DeliveryQService {
 	public List<DeliveryProVO> selectBom();
 	public List<OrdersVO> selectOrderCode();
 
-	
+	public List<DeliveryGDVO> forChart();
 	
 	
 	

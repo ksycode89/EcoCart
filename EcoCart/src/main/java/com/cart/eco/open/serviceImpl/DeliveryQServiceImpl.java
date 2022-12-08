@@ -345,7 +345,12 @@ public class DeliveryQServiceImpl implements DeliveryQService{
 		return result;
 	}
 
-	
+	@Override
+	public List<DeliveryGDVO> forChart(){
+		
+		
+		return mapper.forChart();
+	}
 
 	
 

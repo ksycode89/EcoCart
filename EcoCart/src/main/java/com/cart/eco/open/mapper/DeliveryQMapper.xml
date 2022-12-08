@@ -369,7 +369,12 @@
 	</select>
 	
 	
-	
+	<select id="forChart" resultType="com.cart.eco.open.service.DeliveryGDVO">
+		select d.pro_code, c.pro_name,substr(to_char(dlivy_g_code),6,2) "dsellNum"
+		from delivery_Gd  d join product c
+	    on d.pro_code=c.pro_code
+	    where d.pro_code like '%ELSP%'	
+	</select>
 	
 	
 	
