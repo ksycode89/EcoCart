@@ -150,7 +150,7 @@
          		xhr.setRequestHeader(header, token);
          	},
 		   contentType: 'application/json',
-		   data : JSON.stringify({'morder' : grid.getData()[0], 'detailOrder': grid2.getData()    }),
+		   data : JSON.stringify({'morder' : grid.getData()[0], 'detailOrder': grid2.getData()}),
 		   success : function(data) {
 			  swal('등록이 성공하였습니다.')
 			  setTimeout(function() {
@@ -309,26 +309,22 @@
         name: 'unit',
         
       },
-    
-          {
+      {
         header: '발주수량',
         name: 'orderNum',
         editor : 'text',
-        onAfterChange : function(ev) {
-	        //console.log(ev.value,this)	
+        onAfterChange : function(ev) {	
 	        let row = grid2.getRow(ev.rowKey)
 	        let sum = row.sellPrice * ev.value
 	        grid2.setValue(ev.rowKey, 'sumPrice', sum)
-        }
+      }
 	  },
-	 
       {
         header: '단가',
         name: 'sellPrice',
         formatter : function (ev){
-
            	return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            },
+      },
             align : 'right'
 
       },
@@ -465,7 +461,9 @@
         gridClient.on('click', ev=>{
         	console.log(gridClient.getRow(ev.rowKey))
         	grid.setValue(getRowClient,'clientCode',gridClient.getRow(ev.rowKey).clientCode)
-       })  
+       }) 
+       
+       
        //거래처등록
        let getRowClient;
       	grid.on('click',ev=>{
