@@ -9,12 +9,13 @@
 	
 	
 	<select id="dataList" parameterType="com.cart.eco.material.service.MreleaseVO" resultType="com.cart.eco.material.service.MreleaseVO">
-		select m.release_no, m.release_code, m.release_status, m.pro_code, m.pro_name, m.request_num, r.lot_code
+		select * from (select ROWNUM as rn, m.release_no, m.release_code, m.release_status, m.pro_code, m.pro_name, m.request_num, r.lot_code
 		from m_release_detail m
 		join receiving_detail r
 		on m.lot_code = r.lot_code
 		where release_code= #{releaseCode}
-		ORDER BY release_no DESC
+		ORDER BY release_no DESC)
+		ORDER BY rn desc
 	</select>
 	
 </mapper>

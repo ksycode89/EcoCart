@@ -30,4 +30,5 @@ public class MreleaseVO {
 	private String releaseStatus;
 	private String proCode; //제품코드
 	
+	private int rn;
 }

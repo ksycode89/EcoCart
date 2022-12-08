@@ -182,7 +182,9 @@
 		   
 	   })
 	/* =================기=능===================== */
- //조회
+	
+	
+ 		//조회
 	function getList (){
 		  $('#orderNo').attr('readonly',false)
 		  $('#orderReceiving').attr('readonly',false)
@@ -209,6 +211,8 @@
 				}
 		   }
 	   }
+	   
+	   
 	   
 	 // 진행구분
 		planAll.addEventListener('click', () => {
@@ -302,7 +306,7 @@
 			            		xhr.setRequestHeader(header, token);
 			            	 },
 							success : function(data) {
-								let mes = data+'건 확정'
+								let mes = data+'건 취소'
 								swal(mes)
 							$.ajax({
 								url : '/materialListInfo',
