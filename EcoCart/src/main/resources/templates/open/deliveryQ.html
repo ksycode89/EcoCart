@@ -256,8 +256,6 @@
 		          name: 'dsellNum',
 		          editor: 'text',
 		          onBeforeChange  : function(ev){
-		        	  console.log(ev)
-		        	  console.log(grid5.getValue(ev.rowKey, "doDlivyNum"))
 		        	  let a = grid5.getValue(ev.rowKey, "doDlivyNum")
 		        	  if(ev.nextValue > a){
 		        		  swal("적은수량을 입력하세요.")
@@ -285,8 +283,6 @@
 			url:'/listOrdersOk',
 			success : function(result) {
 				for(let i =0; i< result.length; i++){
-					console.log("ss")
-					console.log()
 					result[i].dlivyQCode= $("#dlivyCode").val()
 				}
 				grid4.resetData(result);
@@ -381,19 +377,18 @@
 	 
 	 //모달창에서 출고요청 버튼 눌렀을때
 	function goDlivy(){
-	//그리드4번 체크 하나만되도록
+		 
 	if(grid4.getCheckedRows().length == 1){
-		
+
 	//출고해야하는 수량 > 출고 할 수량
 	let a = 0;
-	
 	for(let i = 0; i < grid5.getData().length; i++){
-		if( grid5.getData()[i].doDlivyNum >= grid5.getData()[i].dsellNum && grid5.getData()[i].dsellNum != '' && grid5.getData()[i].dsellNum != 0){
+		if( grid5.getData()[i].doDlivyNum >= grid5.getData()[i].dsellNum 
+					&& grid5.getData()[i].dsellNum != '' && grid5.getData()[i].dsellNum != 0){
 		 	a += 0
-		 	console.log("성공");
 		}else {
 		 	a += 1
-		 	swal("숫자를 다시 입력해주세요.")
+		 	swal("적은 수량을 입력하세요.")
 		}
 	}	
 	

@@ -34,20 +34,11 @@ public class EstimateController {
 	//견적 페이지 보여주는거 (+전체조회)
 	@GetMapping("/estimate")
 	public String Estimate(EstimateVO vo, Model model) {
-		//셀렉트 옵션에 제품코드 가져오기, 제품,  거래처명,
+		//셀렉트 옵션에 DB에 등록된 값 가져오기
 		model.addAttribute("proCode",estimateService.selectProCode());
 		model.addAttribute("clientName",estimateService.selectClientName());
 		
-		
 		Map<String, String> estmtPlusPro= new HashMap<>();
-		
-		//
-//		String product[];
-//		model.addAttribute("proCode",product[]);
-//		
-		
-		
-		
 
 		return "open/estimate";
 	}
@@ -65,13 +56,9 @@ public class EstimateController {
 	@GetMapping("/listEstimated")
 	@ResponseBody
 	public List<Map<String, Object>> listEstimated(String estmtCode){
-//		System.out.println(estmtCode);
 		
 		Object a = estimateService.EstimateDList(estmtCode);
-		System.out.println(a);
-//		Map<String, Object>map =new HashMap<String, Object>();
 		return estimateService.EstimateDList(estmtCode);
-		
 	}
 	
 	//견적번호 가져오기

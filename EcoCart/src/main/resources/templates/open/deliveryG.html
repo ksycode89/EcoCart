@@ -338,7 +338,6 @@
 			//요청수량 > 재고수량	
 			}else{
 				a +=1
-				console.log("dsf")
 				swal("재고가 부족합니다.")
 			}
 		}
@@ -357,7 +356,6 @@
 	           		xhr.setRequestHeader(header, token);
 	           	 },
 				success : function(result) {
-					console.log(result);
 					
 					//출고등록상세 등록 여러번
 					$.ajax({
@@ -370,8 +368,6 @@
 			           		xhr.setRequestHeader(header, token);
 			           	 },
 						success : function(result) {
-							console.log(result);
-							
 							
 							//출고 등록 한 만큰 재고-
 							$.ajax({
@@ -384,7 +380,6 @@
 				           		xhr.setRequestHeader(header, token);
 				           	 },
 							success : function(result) {
-								console.log(result);
 								
 								//출고요청 상태 변경
 								$.ajax({

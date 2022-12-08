@@ -10,7 +10,7 @@
 		from delivery_q d, client c, employees e
 		where d.client_code = c.client_code
 		and e.emp_num = d.emp_num
-		order by dlivy_q_code desc
+		order by dlivy_date
 	
 	</select>
 	
@@ -97,7 +97,7 @@
 		from delivery_g d, client c, employees e
 		where d.client_code = c.client_code
 		and e.emp_num = d.emp_num
-		order by dlivy_g_code desc
+		order by dlivy_date
 	
 	</select>
 	
@@ -277,6 +277,7 @@
 		select d.dlivy_pro_code, d.dlivy_date, c.client_name "clientName", d.dlivy_mth, d.dlivy_code, d.dlivy_name, d.dlivy_pnum
 		from delivery_pro d, client c
 		where d.client_code = c.client_code
+		order by dlivy_date
 	
 	</select>
 	
