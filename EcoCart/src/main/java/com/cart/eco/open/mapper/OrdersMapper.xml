@@ -7,7 +7,7 @@
 		select o.order_code, c.client_name, c.client_code, o.order_date, o.de_date, o.all_sum, order_st
 		from orders o, client c
 		where o.client_code = c.client_code
-		order by order_code desc
+		order by de_date 
 		
 	</select>
 	
@@ -59,6 +59,7 @@
 		where o.client_code = c.client_code
 		and order_st = '마감' 
 		or order_st = '승인'
+		order by de_date 
 	
 	</select>
 	

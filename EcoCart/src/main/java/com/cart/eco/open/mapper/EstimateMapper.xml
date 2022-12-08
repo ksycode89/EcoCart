@@ -12,7 +12,7 @@
 		       e.estmt_st
 		 from estimate e, client c
 		where e.client_code = c.client_code
-		order by estmt_code desc
+		order by de_date
 		
 	</select>
 
@@ -37,7 +37,6 @@
 		  and e.estmt_code = #{estmtCode}
 		  
 		order by estmt_dno
-	
 	</select>
 
    <!-- 셀렉트 옵션 -->

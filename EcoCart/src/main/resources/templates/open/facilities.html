@@ -212,12 +212,6 @@
 
 	//설비등록
 	function insertSys(){
-		console.log($("#sysNamee").val())
-		console.log($("#sysMoney").val())
-		console.log($("#testCycle").val())
-		
-		
-		
 		const data = [
 			{
 				sysName : $("#sysNamee").val(),
@@ -226,9 +220,10 @@
 				sysMoney : $("#sysMoney").val(),
 				testCycle : $("#testCycle").val(),
 			}
-			
 		]
+		
 		var a = $("#selectSys option:selected").text();
+		
 		if( a =='프레임' ){
 			$.ajax({
 					method:'POST',
@@ -242,7 +237,7 @@
 					success : function(result) {
 						swal("설비등록 완료")
 						 $('#staticBackdrop').modal('hide');
-			 			 grid.refreshLayout();
+						facList()
 					},
 					error : function(error){
 						swal("설비등록 실패")
@@ -262,7 +257,7 @@
 					success : function(result) {
 						swal("설비등록 완료")
 						 $('#staticBackdrop').modal('hide');
-			 			 grid.refreshLayout();
+						facList()
 					},
 					error : function(error){
 						swal("설비등록 실패")					}
@@ -281,7 +276,7 @@
 					success : function(result) {
 						swal("설비등록 완료")
 						 $('#staticBackdrop').modal('hide');
-			 			 grid.refreshLayout();
+						facList()
 					},
 					error : function(error){
 						swal("설비등록 실패")
@@ -301,7 +296,7 @@
 					success : function(result) {
 						swal("설비등록 완료")
 						 $('#staticBackdrop').modal('hide');
-			 			 grid.refreshLayout();
+						facList()
 					},
 					error : function(error){
 						swal("설비등록 실패")
