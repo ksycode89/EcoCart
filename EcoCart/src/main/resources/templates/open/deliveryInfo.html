@@ -272,13 +272,13 @@
 		
 		grid2.on("click", event => {
 			
-			console.log(grid2.getRow(event.rowKey).orderCode)
+			console.log(grid2.getRow(event.rowKey))
 			let data = { 
 					dlivyProCode : "",
 					dlivyGCode : grid2.getRow(event.rowKey).dlivyGCode,
 					orderCode : grid2.getRow(event.rowKey).orderCode,
 					dlivyDate : "" , 
-					clientName : "",
+					clientName : grid2.getRow(event.rowKey).clientName,
 					clientCode : grid2.getRow(event.rowKey).clientCode,
 					dlivyMth : "" , 
 					dlivyCode : "", 
@@ -287,6 +287,7 @@
 					dlivyPnum : ""
 			}
 			// 모달창 숨기기.
+			console.log('abc',data)
 			$('#staticBackdrop').modal('hide');
 			grid.appendRow(data);
 			grid.check(grid.getRowCount()-1);
@@ -344,7 +345,6 @@
 					error : function(error){
 						swal("출고등록 상태 변경 실패")
 					}
-					
 					})
 
 				},
@@ -355,8 +355,6 @@
 			
 		}
 	}
-	
-	
 	
 	//필터
 	Searchbtn.addEventListener('click', () => {

@@ -72,6 +72,31 @@
         background-repeat : no-repeat;
         opacity: 0.5
 		}
+		
+	#div1 {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100px;
+    height: 100px;
+    -webkit-transform: scale(1);
+}
+.move_to_left {
+    -webkit-animation-name: animation_move;
+    -webkit-animation-duration: 1.5s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-fill-mode: both
+}
+
+@-webkit-keyframes animation_move {
+    0% {
+        -webkit-transform: translateX(0px) translateY(0px) scale(1);
+    }
+
+    100% {
+        -webkit-transform: translateX(1300px) translateY(0px) scale(1);
+    }
+}
 	</style>
 </head>
 
@@ -245,7 +270,9 @@
 			</div>
 			<div layout:fragment="content" class="page-content">
 				<div id="ddt" class="card" style="width: 1370px; height:120px; ">
-				
+					<div id="div1"> 
+						<img class="move_to_left" src="../../assets/images/bg/top.png" height="100" width="80" style="margin-top: 20px"/></div>
+					</div>
 				</div>
 			<div class="row">
 				<div class=" col-lg-6 card " style="margin-left:30px; height:490px">
@@ -294,9 +321,33 @@
 									{name : '전기바이크002'},
 									{name : '전기바이크003'},
 									{name : '전기바이크004'}]
-									
+						let	sum1=[0,0,0,0];		
+						let	sum2=[0,0,0,0];		
+						let	sum3=[0,0,0,0];		
+						let	sum4=[0,0,0,0];		
 					$(result).each((a,val)=>{
-							
+						switch (val.sumPrice) {
+						  case 1:
+						  case 2:
+						  case 3:
+							  sum1[0] += val.desllNum
+							   
+						  case 4:
+						  case 5:
+						  case 6:
+							  sum1[0] += val.desllNum
+							   
+						  case 7:
+						  case 8:
+						  case 9:
+							  sum3 += val.desllNum
+							  
+						  case 10:
+						  case 11:
+						  case 12:
+							  sum4 += val.desllNum
+						 
+						}
 					})
 
 				},

@@ -370,10 +370,10 @@
 	
 	
 	<select id="forChart" resultType="com.cart.eco.open.service.DeliveryGDVO">
-		select d.pro_code, c.pro_name,substr(to_char(dlivy_g_code),6,2) "dsellNum"
+		select d.pro_code, c.pro_name,substr(to_char(dlivy_g_code),6,2) "sum_price", dsell_num
 		from delivery_Gd  d join product c
 	    on d.pro_code=c.pro_code
-	    where d.pro_code like '%ELSP%'	
+	    where d.pro_code like '%ELSP%'
 	</select>
 	
 	
