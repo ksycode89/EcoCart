@@ -47,6 +47,9 @@
 	<link rel="stylesheet"	href="../assets/vendors/toast/tui-grid.css" />
 	<script src="../assets/vendors/toast/tui-grid.js"></script>
 	
+	<!-- chart -->
+	<link rel="stylesheet" href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css" />
+<script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
 	
 	<!-- SweetAlert2 -->
      <script src="../assets/vendors/sweetalert2/sweetalert2.all.min.js"></script>
@@ -60,18 +63,27 @@
 	<link rel="stylesheet" href="../assets/css/customCSS.css" />
 	<script src="../assets/js/customJS.js"></script>
 	
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+	<style type="text/css">
+		#ddt{
+       
+			background-image: url("../../assets/images/bg/maineco.png");
+		background-size : 1370px 300px;
+        background-repeat : no-repeat;
+        opacity: 0.5
+		}
+	</style>
 </head>
 
 <body>
-	<div id="app">
+	<div id="app"></div>
 		<div id="sidebar" class="active">
 			<div class="sidebar-wrapper active">
 				<div class="sidebar-header">
 				
 					<div class="d-flex justify-content-between">
 						<div class="logo">
-							<a href="layout.html">
+							<a href="/">
 <!-- --------------------------sec------------------- -->			
 <div sec:authorize="isAuthenticated()" style="margin-bottom: -40px">
 	<svg style="width: 100px" class="svg-inline--fa fa-plus fa-w-14 fa-fw select-all" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 512" data-fa-i2svg=""><path fill="currentColor" d="M512.9 192c-14.9-.1-29.1 2.3-42.4 6.9L437.6 144H520c13.3 0 24-10.7 24-24V88c0-13.3-10.7-24-24-24h-45.3c-6.8 0-13.3 2.9-17.8 7.9l-37.5 41.7-22.8-38C392.2 68.4 384.4 64 376 64h-80c-8.8 0-16 7.2-16 16v16c0 8.8 7.2 16 16 16h66.4l19.2 32H227.9c-17.7-23.1-44.9-40-99.9-40H72.5C59 104 47.7 115 48 128.5c.2 13 10.9 23.5 24 23.5h56c24.5 0 38.7 10.9 47.8 24.8l-11.3 20.5c-13-3.9-26.9-5.7-41.3-5.2C55.9 194.5 1.6 249.6 0 317c-1.6 72.1 56.3 131 128 131 59.6 0 109.7-40.8 124-96h84.2c13.7 0 24.6-11.4 24-25.1-2.1-47.1 17.5-93.7 56.2-125l12.5 20.8c-27.6 23.7-45.1 58.9-44.8 98.2.5 69.6 57.2 126.5 126.8 127.1 71.6.7 129.8-57.5 129.2-129.1-.7-69.6-57.6-126.4-127.2-126.9zM128 400c-44.1 0-80-35.9-80-80s35.9-80 80-80c4.2 0 8.4.3 12.5 1L99 316.4c-8.8 16 2.8 35.6 21 35.6h81.3c-12.4 28.2-40.6 48-73.3 48zm463.9-75.6c-2.2 40.6-35 73.4-75.5 75.5-46.1 2.5-84.4-34.3-84.4-79.9 0-21.4 8.4-40.8 22.1-55.1l49.4 82.4c4.5 7.6 14.4 10 22 5.5l13.7-8.2c7.6-4.5 10-14.4 5.5-22l-48.6-80.9c5.2-1.1 10.5-1.6 15.9-1.6 45.6-.1 82.3 38.2 79.9 84.3z"></path></svg>ECC<br>
@@ -232,8 +244,33 @@
 				
 			</div>
 			<div layout:fragment="content" class="page-content">
-				<div class="card" style="width: 1500px; height:250px">.</div>
-				<div class="card" style="width: 1500px; height:550px"></div>
+				<div id="ddt" class="card" style="width: 1370px; height:120px; ">
+				
+				</div>
+			<div class="row">
+				<div class=" col-lg-6 card " style="margin-left:30px; height:490px">
+				<div class="mt-1">주문현황</div>
+					<div class="row">
+						
+						<button class="col-lg-2 btn btn-primary" onclick="location.href='/mfPlanManage';" style="width: 70px; height: 35px; margin-left: 10px; margin-top: 13px">생산</button>
+						
+						<div class="flex-right mt-4 col-lg-10">
+							<div class="filters" style="height:35px">
+								<label for="planStatus" style="width:100px">진행구분</label>
+								<label><input type="radio" id="planAll"  name="plan"value="all" >전체</label>&nbsp;
+								<label><input type="radio" id="planStart"  name="plan" value="start" checked="checked">진행</label>&nbsp;
+								<label><input type="radio" id="planWait"  name="plan" value="wait">마감</label>
+								<label><input type="radio" id="planEnd"  name="plan" value="wait">완료</label>
+							</div>
+						</div>	
+					</div>				
+					<div id="orderList"></div>
+					
+				</div>
+				<div class=" col-lg-5 card " style="margin-left:50px; height:490px">
+					<div id="mfResultGridId"></div>
+				</div>
+			</div>
 			<footer>
 				<div class="footer clearfix mb-0 text-muted">
 					<div class="float-start">
@@ -248,6 +285,159 @@
 					</div>
 				</div>
 			</footer>
+			<script type="text/javascript">
+		
+			
+			const data = {
+					  categories: ['1분기', '2분기',  '3분기',  '4분기'],
+					  series: [
+					    {
+					      name: '전기바이크01',
+					      data: [5000, 3000, 5000, 7000, 6000, 4000, 1000]
+					    },
+					    {
+					      name: '전기바이크02',
+					      data: [8000, 4000, 7000, 2000, 6000, 3000, 5000]
+					    },
+					    {
+					      name: '전기바이크03',
+					      data: [4000, 4000, 6000, 3000, 4000, 5000, 7000]
+					    },
+					    {
+					      name: '전기바이크04',
+					      data: [3000, 4000, 3000, 1000, 2000, 4000, 3000]
+					    }
+					  ]
+					}
+		      const options = {
+			        chart: { title: '연출고량', width: 570, height: 500 },
+			        xAxis: { pointOnColumn: false, title: { text: '분기' } },
+			        yAxis: { title: '판매량' },
+			      };
+
+			const chart = toastui.Chart.columnChart({el:document.getElementById('mfResultGridId'), data, options});
+			
+			const grid = new tui.Grid({
+		        el: document.getElementById('orderList'), // Container element
+		        scrollX: false,
+		        scrollY: true,
+	            bodyHeight : 350,
+		        columns: [
+		            {
+		            	header: '주문코드',
+		            	name: 'orderCode',
+		            	filter : 'text'
+		            },
+		            {
+		            	header: '거래처',
+		            	name: 'clientName',
+		            	filter : 'text'
+		            },
+		            {
+		            	header: '주문등록일자',
+		                name: 'orderDate',
+		                filter : 'date'
+		                
+		             },
+		             {
+		             	header: '납기일자',
+		                name: 'deDate',
+		                filter : 'select'
+		             },
+		             {
+		                 header: '총합계액',
+		                 name: 'allSum',
+		                 formatter : function (ev){
+		                   	 console.log(ev)
+		                 return ev.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                    },
+		                  align : 'right'
+		                 
+		             },
+		             {
+	               	  	header:'상태',
+	               	  	name: 'orderSt',
+	               	 	filter : 'text',
+	               	 	align : 'center'
+	                 }
+		        ]
+			});
+			
+			//
+				$.ajax({
+				url:'/listOrders',
+				success : function(result) {
+					grid.resetData(result);
+					grid.filter('orderSt', [{code:'eq', value:'진행'}]);
+				},
+				error : function(error){
+					console.log(error);
+				}
+			})
+			// 조회버튼 / 리셋버튼
+		 	planAll.addEventListener('click', () => {
+		    	grid.unfilter('orderSt');
+		    })
+		    planEnd.addEventListener('click', () => {
+		    	grid.filter('orderSt', [{code:'eq', value:'완료'}]);
+		    })
+		    planWait.addEventListener('click', () => {
+		    	grid.filter('orderSt', [{code:'eq', value:'마감'}]);
+		    })
+		    planStart.addEventListener('click', () => {
+		    	grid.filter('orderSt', [{code:'eq', value:'진행'}]);
+		    })
+			//
+			
+			var mfResultGrid = new tui.Grid({
+			el: document.getElementById(''),
+			scrollX: false,
+			scrollY: false,
+			bodyHeight: 200,
+			rowHeaders: ['rowNum'],
+			columns: [
+		        {
+		          header: '생산코드',
+		          name: 'mfMakingCode'
+		        },
+		        {
+		          header: '생산지시코드',
+		          name: 'mfOrderCode'
+		        },
+		        {
+		          header: '라인번호',
+		          name: 'lineNo'
+		        },
+		        {
+		          header: '총투입량',
+		          name: 'inputNum'
+		        },
+		        {
+		          header: '총생산량',
+		          name: 'makingNum'
+		        },
+		        {
+		          header: '총불량량',
+		          name: 'faultyNum'
+		        },
+		        
+		        {
+		          header: '생산일자',
+		          name: 'mfOrderDate',
+		          filter: 'date'
+		        }
+			]
+		});
+		$.ajax({
+    		url:'/mfResultListAll',
+    		success:function(data){
+    			mfResultGrid.resetData(data);
+    		},
+    		error:function(error){
+    			console.log(error);
+    		}
+    	})
+			</script>
 		</div>
 	</div>
 	<script

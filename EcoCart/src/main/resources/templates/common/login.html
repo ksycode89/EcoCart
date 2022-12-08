@@ -1,5 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org"  
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"></html>
 
 
 <style>
@@ -217,6 +217,12 @@
 	    margin: 2rem 0;
 	    transition: 1s ease-in-out;
 	}
+	.text h1 {
+	    font-size: 5rem;
+	    font-weight: 800;
+	    margin: 2rem 0;
+	    transition: 1s ease-in-out;
+	}
 	
 	.text p {
 	    font-weight: 600;
@@ -229,19 +235,20 @@
 	    transition: 1s ease-in-out;
 	    transition-delay: .4s;
 	}
-	
+	.text.sign-in h1,
 	.text.sign-in h2,
 	.text.sign-in p,
 	.img.sign-in img {
 	    transform: translateX(-250%);
 	}
-	
+	.text.sign-in h1,
 	.text.sign-up h2,
 	.text.sign-up p,
 	.img.sign-up img {
 	    transform: translateX(250%);
 	}
 	
+	.container.sign-in .text.sign-in h1,
 	.container.sign-in .text.sign-in h2,
 	.container.sign-in .text.sign-in p,
 	.container.sign-in .img.sign-in img,
@@ -347,6 +354,11 @@
 	        margin: .5rem;
 	        font-size: 2rem;
 	    }
+	
+	    .text h1 {
+	        margin: .5rem;
+	        font-size: 3rem;
+	    }
 	}
 </style>
 
@@ -432,13 +444,14 @@
       <!-- SIGN IN CONTENT -->
       <div class="col align-items-center flex-col">
         <div class="text sign-in">
-          <h2>
-            Welcome
-          </h2>
-  
+	          <h2>
+	            Welcome to
+	          </h2>
         </div>
-        <div class="img sign-in">
-    
+        <div class="text sign-in" style="margin-top: -150px;  " >
+	          <h1>
+	           ECC
+	          </h1>
         </div>
       </div>
       <!-- END SIGN IN CONTENT -->
