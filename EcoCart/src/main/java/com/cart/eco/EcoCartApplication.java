@@ -29,7 +29,7 @@ public class EcoCartApplication {
 	public String index() {
 
 			
-		return "layout/layout.html";
+		return "layout/main";
 	}
 	
 
